@@ -5,4 +5,6 @@
 [node name="Game Debug" type="Node2D" unique_id=23013582]
 
 [node name="Player" parent="." unique_id=73622017 instance=ExtResource("1_6rfd2")]
-position = Vector2(-2, -30)
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1782809747]
+zoom = Vector2(3, 3)
