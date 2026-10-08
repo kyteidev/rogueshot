@@ -17,6 +17,8 @@ const COYOTE_TIME = 0.1
 const JUMP_BUFFER_TIME = 0.1
 @onready var jump_buffer_timer = $JumpBufferTimer
 
+@onready var anim_sprite = $AnimatedSprite2D
+
 
 func get_custom_gravity(vel) -> float:
 	if vel.y < 0:
@@ -48,6 +50,19 @@ func _physics_process(delta: float) -> void:
 		velocity.y *= 0.5
 
 	var direction := Input.get_axis("player_left", "player_right")
+	if direction > 0:
+		anim_sprite.flip_h = false
+	elif direction < 0:
+		anim_sprite.flip_h = true
+	
+	if is_on_floor():
+		if direction == 0:
+			anim_sprite.play("idle")
+		else:
+			anim_sprite.play("run")
+	else:
+		anim_sprite.play("jump")
+	
 	if velocity.x < 0.01 and velocity.x > -0.01: # otherwise velocity x would never be 0
 		velocity.x = 0
 	velocity.x = (velocity.x + clamp(direction * SPEED, -MAX_SPEED, MAX_SPEED)) * FRICTION

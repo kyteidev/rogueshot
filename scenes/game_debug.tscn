@@ -1,12 +1,29 @@
 [gd_scene format=3 uid="uid://br1bl3uquyddo"]
 
 [ext_resource type="PackedScene" uid="uid://cpx0iw07qf2bi" path="res://scenes/player.tscn" id="1_6rfd2"]
+[ext_resource type="Texture2D" uid="uid://2jd0urm3q804" path="res://assets/sprites/world-tileset.png" id="2_17cyv"]
 
-[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_nxcxh"]
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_hpfpv"]
+texture = ExtResource("2_17cyv")
+1:0/0 = 0
+1:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+2:0/0 = 0
+3:0/0 = 0
+3:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+4:0/0 = 0
+5:0/0 = 0
+5:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+
+[sub_resource type="TileSet" id="TileSet_nxcxh"]
+physics_layer_0/collision_layer = 1
+sources/0 = SubResource("TileSetAtlasSource_hpfpv")
 
 [node name="Game Debug" type="Node2D" unique_id=23013582]
 
 [node name="Player" parent="." unique_id=73622017 instance=ExtResource("1_6rfd2")]
+
+[node name="Camera2D" type="Camera2D" parent="Player" unique_id=1782809747]
+zoom = Vector2(3, 3)
 
 [node name="CoyoteTimer" type="Timer" parent="Player" unique_id=476835996]
 one_shot = true
@@ -14,11 +31,7 @@ one_shot = true
 [node name="JumpBufferTimer" type="Timer" parent="Player" unique_id=2040105770]
 one_shot = true
 
-[node name="Camera2D" type="Camera2D" parent="." unique_id=1782809747]
-zoom = Vector2(3, 3)
-
-[node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=2062312649]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D" unique_id=1513222902]
-position = Vector2(0, 42)
-shape = SubResource("WorldBoundaryShape2D_nxcxh")
+[node name="TileMap" type="TileMap" parent="." unique_id=768231789]
+tile_set = SubResource("TileSet_nxcxh")
+format = 2
+layer_0/tile_data = PackedInt32Array(65534, 65536, 0, 65535, 65536, 0, 0, 65536, 0, 1, 65536, 0, 2, 65536, 0, 65533, 65536, 0, 3, 65536, 0, 131069, 131072, 0, 131070, 131072, 0, 131071, 131072, 0, 196607, 131072, 0, 196606, 262144, 0, 196605, 131072, 0, 65536, 262144, 0, 131074, 262144, 0, 65537, 131072, 0, 131073, 131072, 0, 131072, 131072, 0, 65538, 131072, 0, 65539, 131072, 0, 131075, 131072, 0, 4, 65536, 0, 5, 65536, 0, 6, 65536, 0, 7, 65536, 0, 8, 65536, 0, 65532, 65536, 0, -65528, 327680, 0, -131064, 327680, 0, -196600, 327680, 0, -262136, 327680, 0, -65533, 327680, 0, -131069, 327680, 0, -3, 327680, 0, -65539, 327680, 0, -131075, 327680, 0, -196611, 327680, 0)
