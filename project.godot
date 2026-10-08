@@ -35,4 +35,5 @@ enabled=PackedStringArray("res://addons/godot_super-wakatime/plugin.cfg", "res:/
 
 [rendering]
 
+textures/canvas_textures/default_texture_filter=0
 rendering_device/driver.windows="d3d12"
