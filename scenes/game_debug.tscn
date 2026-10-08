@@ -2,9 +2,23 @@
 
 [ext_resource type="PackedScene" uid="uid://cpx0iw07qf2bi" path="res://scenes/player.tscn" id="1_6rfd2"]
 
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_nxcxh"]
+
 [node name="Game Debug" type="Node2D" unique_id=23013582]
 
 [node name="Player" parent="." unique_id=73622017 instance=ExtResource("1_6rfd2")]
 
+[node name="CoyoteTimer" type="Timer" parent="Player" unique_id=476835996]
+one_shot = true
+
+[node name="JumpBufferTimer" type="Timer" parent="Player" unique_id=2040105770]
+one_shot = true
+
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1782809747]
 zoom = Vector2(3, 3)
+
+[node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=2062312649]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D" unique_id=1513222902]
+position = Vector2(0, 42)
+shape = SubResource("WorldBoundaryShape2D_nxcxh")

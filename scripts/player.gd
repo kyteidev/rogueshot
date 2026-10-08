@@ -1,21 +1,58 @@
 extends CharacterBody2D
 
 
-const SPEED = 300.0
-const JUMP_VELOCITY = -400.0
+const SPEED = 60.0
+const MAX_SPEED = 500.0
+
+const FRICTION = 0.7
+const JUMP_VELOCITY = -250.0
+const JUMP_VELOCITY_CUT = JUMP_VELOCITY / 3
+
+const GRAVITY = 900
+const FALL_GRAVITY = GRAVITY * 1.5
+
+const COYOTE_TIME = 0.1
+@onready var coyote_timer = $CoyoteTimer
+
+const JUMP_BUFFER_TIME = 0.1
+@onready var jump_buffer_timer = $JumpBufferTimer
+
+
+func get_custom_gravity(vel) -> float:
+	if vel.y < 0:
+		return GRAVITY
+	return FALL_GRAVITY
 
 
 func _physics_process(delta: float) -> void:
+	var was_on_floor = is_on_floor()
+	
 	if not is_on_floor():
-		velocity += get_gravity() * delta
+		velocity.y += get_custom_gravity(velocity) * delta
+		
+	if Input.is_action_just_pressed("player_jump"):
+		jump_buffer_timer.start(JUMP_BUFFER_TIME)
+		
+	if Input.is_action_just_released("player_jump") and velocity.y < JUMP_VELOCITY_CUT:
+		velocity.y = JUMP_VELOCITY_CUT
 
-	if Input.is_action_just_pressed("ui_accept") and is_on_floor():
+	var wants_jump = not jump_buffer_timer.is_stopped()
+	var can_jump = is_on_floor() or not coyote_timer.is_stopped()
+
+	if wants_jump and can_jump:
 		velocity.y = JUMP_VELOCITY
+		jump_buffer_timer.stop()
+		coyote_timer.stop()
+		
+	if is_on_ceiling():
+		velocity.y *= 0.5
 
-	var direction := Input.get_axis("ui_left", "ui_right")
-	if direction:
-		velocity.x = direction * SPEED
-	else:
-		velocity.x = move_toward(velocity.x, 0, SPEED)
+	var direction := Input.get_axis("player_left", "player_right")
+	if velocity.x < 0.01 and velocity.x > -0.01: # otherwise velocity x would never be 0
+		velocity.x = 0
+	velocity.x = (velocity.x + clamp(direction * SPEED, -MAX_SPEED, MAX_SPEED)) * FRICTION
 
 	move_and_slide()
+	
+	if was_on_floor and not is_on_floor() and velocity.y >= 0:
+		coyote_timer.start(COYOTE_TIME)
