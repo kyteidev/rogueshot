@@ -4,7 +4,7 @@ extends CharacterBody2D
 const SPEED = 60.0
 const MAX_SPEED = 500.0
 
-const WALLBOUNCE_VELOCITY = 300
+const WALLBOUNCE_VELOCITY = 250
 const AIR_MAX_SPEED = 180.0
 const AIR_ACCEL = 800.0
 
