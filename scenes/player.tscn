@@ -2,6 +2,8 @@
 
 [ext_resource type="Script" uid="uid://b573fhbhe8bh4" path="res://scripts/player.gd" id="1_g2els"]
 [ext_resource type="Texture2D" uid="uid://qbn3jpuccsqe" path="res://assets/sprites/player.png" id="2_g2els"]
+[ext_resource type="PackedScene" uid="uid://byeekqi7jy3jk" path="res://scenes/weapon.tscn" id="3_qhqgy"]
+[ext_resource type="Script" uid="uid://wriiopds5fel" path="res://scripts/weapon.gd" id="4_dqkch"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_qhqgy"]
 atlas = ExtResource("2_g2els")
@@ -100,3 +102,14 @@ autoplay = "idle"
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1475566916]
 position = Vector2(0, -7)
 shape = SubResource("CapsuleShape2D_nxcxh")
+
+[node name="CoyoteTimer" type="Timer" parent="." unique_id=2118204060]
+one_shot = true
+
+[node name="JumpBufferTimer" type="Timer" parent="." unique_id=1411532615]
+one_shot = true
+
+[node name="Weapon" parent="." unique_id=1767955034 instance=ExtResource("3_qhqgy")]
+position = Vector2(0, -4)
+scale = Vector2(0.75, 0.75)
+script = ExtResource("4_dqkch")

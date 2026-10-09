@@ -31,12 +31,6 @@ sources/0 = SubResource("TileSetAtlasSource_hpfpv")
 position = Vector2(0, -60)
 zoom = Vector2(3, 3)
 
-[node name="CoyoteTimer" type="Timer" parent="Player" unique_id=476835996]
-one_shot = true
-
-[node name="JumpBufferTimer" type="Timer" parent="Player" unique_id=2040105770]
-one_shot = true
-
 [node name="TileMap" type="TileMap" parent="." unique_id=768231789]
 tile_set = SubResource("TileSet_nxcxh")
 format = 2
