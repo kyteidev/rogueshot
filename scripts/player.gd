@@ -83,7 +83,13 @@ func _physics_process(delta: float) -> void:
 	
 	# wallbounce
 	if is_on_wall() and not is_on_floor() and Input.is_action_just_pressed("player_jump"):
-		velocity.x += WALLBOUNCE_VELOCITY * get_wall_normal().x
+		var wall_normal = get_wall_normal().x
+		if wall_normal > 0:
+			anim_sprite.flip_h = false
+		elif wall_normal < 0:
+			anim_sprite.flip_h = true
+		
+		velocity.x += WALLBOUNCE_VELOCITY * wall_normal
 		velocity.y = JUMP_VELOCITY
 		
 		coyote_timer.stop()
