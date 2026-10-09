@@ -1,7 +1,7 @@
 extends CharacterBody2D
 
 
-const SPEED = 2500
+const SPEED = 1000
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
