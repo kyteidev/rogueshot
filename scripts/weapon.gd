@@ -1,8 +1,13 @@
 extends Node2D
 
+
 var weapons: Array = []
 var current_weapon_index = 0
 var current_weapon: Sprite2D = null
+var current_weapon_muzzle: Marker2D = null
+
+const BULLET = preload("res://scenes/bullet.tscn")
+const BULLET_SCALE = 0.2
 
 
 func _ready() -> void:
@@ -11,6 +16,7 @@ func _ready() -> void:
 
 
 func _process(_delta: float) -> void:
+	# weapon switching
 	if Input.is_action_just_pressed("weapon_next"):
 		var next_index = (current_weapon_index + 1) % weapons.size()
 		equip_weapon(next_index)
@@ -30,14 +36,24 @@ func _process(_delta: float) -> void:
 		current_weapon.scale.y = abs(weapon_scale) * -1
 	else:
 		current_weapon.scale.y = abs(weapon_scale)
+	
+	# weapon firing
+	if Input.is_action_just_pressed("player_shoot"):
+		var bullet_instance = BULLET.instantiate()
+		get_tree().root.add_child(bullet_instance)
+		
+		bullet_instance.global_position = current_weapon_muzzle.global_position
+		bullet_instance.rotation = global_rotation
+		bullet_instance.scale = Vector2(BULLET_SCALE, BULLET_SCALE)
 		
 
 func equip_weapon(index: int):
-	var prev_weapon = current_weapon
-	
 	current_weapon_index = index
 	current_weapon = weapons[index]
+	current_weapon_muzzle = current_weapon.get_child(0)
 	
-	if prev_weapon != current_weapon and prev_weapon != null:
-		prev_weapon.hide()
-	current_weapon.show()
+	for i in range(weapons.size()):
+		if i != current_weapon_index:
+			weapons[i].hide()
+		else:
+			weapons[i].show()
