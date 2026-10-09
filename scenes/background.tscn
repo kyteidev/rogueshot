@@ -1,0 +1,46 @@
+[gd_scene format=3 uid="uid://7bm071w04gnc"]
+
+[ext_resource type="Texture2D" uid="uid://2u0tpos1jicx" path="res://assets/sprites/background/Layer1.png" id="1_cbsqf"]
+[ext_resource type="Texture2D" uid="uid://b5rmpryo0bohx" path="res://assets/sprites/background/Layer2.png" id="1_jougr"]
+[ext_resource type="Texture2D" uid="uid://d3rebiiaue1hy" path="res://assets/sprites/background/Layer3.png" id="2_cbsqf"]
+[ext_resource type="Texture2D" uid="uid://l6gdc1wt1dbf" path="res://assets/sprites/background/Layer4.png" id="3_wisxt"]
+
+[node name="Background" type="Node2D" unique_id=1305377215]
+
+[node name="Layer0" type="CanvasLayer" parent="." unique_id=1102373698]
+layer = -10
+
+[node name="TextureRect" type="TextureRect" parent="Layer0" unique_id=1368290093]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_cbsqf")
+
+[node name="Laver1" type="Parallax2D" parent="." unique_id=1781033397]
+scroll_scale = Vector2(0.05, 0.05)
+scroll_offset = Vector2(-200, 120)
+repeat_size = Vector2(480, 0)
+
+[node name="Sprite2D" type="Sprite2D" parent="Laver1" unique_id=1933524760]
+texture = ExtResource("1_jougr")
+offset = Vector2(240, 135)
+
+[node name="Layer2" type="Parallax2D" parent="." unique_id=1749565630]
+scroll_scale = Vector2(0.1, 0.1)
+scroll_offset = Vector2(-200, 120)
+repeat_size = Vector2(480, 0)
+
+[node name="Sprite2D" type="Sprite2D" parent="Layer2" unique_id=1392360814]
+texture = ExtResource("2_cbsqf")
+offset = Vector2(240, 135)
+
+[node name="Layer3" type="Parallax2D" parent="." unique_id=347219413]
+scroll_scale = Vector2(0.15, 0.15)
+scroll_offset = Vector2(-200, 120)
+repeat_size = Vector2(480, 0)
+
+[node name="Sprite2D" type="Sprite2D" parent="Layer3" unique_id=209914064]
+texture = ExtResource("3_wisxt")
+offset = Vector2(240, 135)
