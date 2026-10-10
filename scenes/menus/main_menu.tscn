@@ -12,6 +12,10 @@
 font = ExtResource("1_xqga4")
 font_size = 96
 
+[sub_resource type="LabelSettings" id="LabelSettings_4iqke"]
+font = ExtResource("1_xqga4")
+font_size = 32
+
 [node name="MainMenu" type="CanvasLayer" unique_id=1172912784]
 script = ExtResource("1_8r73w")
 
@@ -113,6 +117,17 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("6_ng0o5")
 text = "Quit"
+
+[node name="Version" type="Label" parent="." unique_id=1103752527]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 6.0
+offset_top = -38.0
+offset_right = 196.0
+grow_vertical = 0
+text = "v. 0.1.0-alpha.1"
+label_settings = SubResource("LabelSettings_4iqke")
 
 [connection signal="pressed" from="PlayButton" to="." method="_on_play_button_pressed"]
 [connection signal="pressed" from="QuitButton" to="." method="_on_quit_button_pressed"]
