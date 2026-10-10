@@ -8,6 +8,9 @@
 z_index = 1
 script = ExtResource("1_uxn4k")
 
+[node name="Timer" type="Timer" parent="." unique_id=873251949]
+one_shot = true
+
 [node name="Pistol" type="Sprite2D" parent="." unique_id=1996490115]
 visible = false
 scale = Vector2(0.75, 0.75)
@@ -18,6 +21,7 @@ offset = Vector2(3, 0)
 position = Vector2(8, -2)
 
 [node name="Rifle1" type="Sprite2D" parent="." unique_id=163470129]
+visible = false
 scale = Vector2(0.6, 0.6)
 texture = ExtResource("3_bmw2d")
 offset = Vector2(3, 0)
