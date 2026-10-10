@@ -1,0 +1,118 @@
+[gd_scene format=3 uid="uid://chfpusxyw2q4d"]
+
+[ext_resource type="Script" uid="uid://by78hotd4ovup" path="res://scripts/menus/main_menu.gd" id="1_8r73w"]
+[ext_resource type="FontFile" uid="uid://4jxi61jcsc2c" path="res://assets/fonts/groundhog.ttf" id="1_xqga4"]
+[ext_resource type="Texture2D" uid="uid://2u0tpos1jicx" path="res://assets/sprites/background/Layer1.png" id="2_imvie"]
+[ext_resource type="Texture2D" uid="uid://b5rmpryo0bohx" path="res://assets/sprites/background/Layer2.png" id="3_ng0o5"]
+[ext_resource type="Texture2D" uid="uid://d3rebiiaue1hy" path="res://assets/sprites/background/Layer3.png" id="4_8r73w"]
+[ext_resource type="Texture2D" uid="uid://l6gdc1wt1dbf" path="res://assets/sprites/background/Layer4.png" id="5_1hnlc"]
+[ext_resource type="Theme" uid="uid://bni7fdd41lv54" path="res://settings/button_title.tres" id="6_ng0o5"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_nxcxh"]
+font = ExtResource("1_xqga4")
+font_size = 96
+
+[node name="MainMenu" type="CanvasLayer" unique_id=1172912784]
+script = ExtResource("1_8r73w")
+
+[node name="BG1" type="TextureRect" parent="." unique_id=1624108880]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_imvie")
+
+[node name="Node" type="Control" parent="." unique_id=1621844467]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 176.0
+offset_bottom = 176.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="BG2" type="TextureRect" parent="Node" unique_id=1090405650]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_ng0o5")
+
+[node name="BG3" type="TextureRect" parent="Node" unique_id=443403562]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("4_8r73w")
+
+[node name="BG4" type="TextureRect" parent="Node" unique_id=1281483266]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 1.0
+offset_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("5_1hnlc")
+
+[node name="Shade" type="ColorRect" parent="." unique_id=1073934760]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 1.0
+offset_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.49019608)
+
+[node name="Title" type="Label" parent="." unique_id=60277904]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -210.0
+offset_top = 115.0
+offset_right = 210.0
+offset_bottom = 229.0
+grow_horizontal = 2
+text = "rogueshot"
+label_settings = SubResource("LabelSettings_nxcxh")
+
+[node name="PlayButton" type="Button" parent="." unique_id=1994759747]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -75.0
+offset_top = 10.0
+offset_right = 75.0
+offset_bottom = 75.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("6_ng0o5")
+text = "Play"
+
+[node name="QuitButton" type="Button" parent="." unique_id=1654224469]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -74.0
+offset_top = 78.0
+offset_right = 76.0
+offset_bottom = 143.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("6_ng0o5")
+text = "Quit"
+
+[connection signal="pressed" from="PlayButton" to="." method="_on_play_button_pressed"]
+[connection signal="pressed" from="QuitButton" to="." method="_on_quit_button_pressed"]
