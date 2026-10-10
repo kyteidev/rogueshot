@@ -41,7 +41,7 @@ const WEAPON_STATS = {
 		"kick_recovery": 60.0,
 		"spread": 3.0,
 		"max_spread": 8.0,
-		"spread_recovery": 12.0
+		"spread_recovery": 8.0
 	},
 	"rifle1": {
 		"damage": 15,
@@ -52,7 +52,7 @@ const WEAPON_STATS = {
 		"kick_recovery": 40.0,
 		"spread": 1.2,
 		"max_spread": 7.0,
-		"spread_recovery": 10.0
+		"spread_recovery": 5.0
 	}
 }
 
