@@ -16,6 +16,8 @@ const JUMP_VELOCITY_CUT = JUMP_VELOCITY / 3
 const GRAVITY = 900
 const FALL_GRAVITY = GRAVITY * 1.5
 
+const STRETCH = 0.3
+
 const COYOTE_TIME = 0.1
 @onready var coyote_timer = $CoyoteTimer
 
@@ -23,6 +25,9 @@ const JUMP_BUFFER_TIME = 0.1
 @onready var jump_buffer_timer = $JumpBufferTimer
 
 @onready var anim_sprite = $AnimatedSprite2D
+
+var was_airborne = false
+var reached_peak = false
 
 
 func get_custom_gravity(vel) -> float:
@@ -34,9 +39,14 @@ func get_custom_gravity(vel) -> float:
 func _physics_process(delta: float) -> void:
 	var was_on_floor = is_on_floor()
 	
-	# gravity
+	# gravity and jump stretch
 	if not is_on_floor():
 		velocity.y += get_custom_gravity(velocity) * delta
+		was_airborne = true
+		
+		if not reached_peak and velocity.y >= 0:
+			reached_peak = true
+			anim_sprite.scale = Vector2(1.0, 1.0)
 		
 	# player jump system
 	if Input.is_action_just_pressed("player_jump"):
@@ -52,6 +62,10 @@ func _physics_process(delta: float) -> void:
 		velocity.y = JUMP_VELOCITY
 		jump_buffer_timer.stop()
 		coyote_timer.stop()
+		
+		# jump stretch
+		anim_sprite.scale = Vector2(1 - STRETCH, 1 + STRETCH)
+		reached_peak = false
 	
 	# reduce y velocity if player hits ceiling
 	if is_on_ceiling():
@@ -94,6 +108,13 @@ func _physics_process(delta: float) -> void:
 		
 		coyote_timer.stop()
 		jump_buffer_timer.stop()
+		
+		# jump stretch
+		anim_sprite.scale = Vector2(1 - STRETCH, 1 + STRETCH)
+		reached_peak = false
+	
+	# smoothly revert back from jump stretch scale to normal scale
+	anim_sprite.scale = anim_sprite.scale.lerp(Vector2(1.0, 1.0), 10.0 * delta)
 
 	move_and_slide()
 	
