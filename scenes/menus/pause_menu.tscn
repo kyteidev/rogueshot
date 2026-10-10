@@ -1,0 +1,50 @@
+[gd_scene format=3 uid="uid://bojjbmn2cos6p"]
+
+[ext_resource type="Script" uid="uid://djgydwpynveae" path="res://scripts/menus/pause_menu.gd" id="1_fwndu"]
+[ext_resource type="FontFile" uid="uid://4jxi61jcsc2c" path="res://assets/fonts/groundhog.ttf" id="2_7unhi"]
+[ext_resource type="Theme" uid="uid://buqqcuajkeqph" path="res://settings/button.tres" id="3_gsnt3"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_nxcxh"]
+font = ExtResource("2_7unhi")
+font_size = 64
+
+[node name="PauseManu" type="CanvasLayer" unique_id=1248834952]
+process_mode = 3
+script = ExtResource("1_fwndu")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=559006965]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.60784316)
+
+[node name="Label" type="Label" parent="." unique_id=690713559]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -133.0
+offset_top = 143.0
+offset_right = 134.0
+offset_bottom = 200.0
+grow_horizontal = 2
+text = "Game Paused"
+label_settings = SubResource("LabelSettings_nxcxh")
+
+[node name="Button" type="Button" parent="." unique_id=558445550]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -35.0
+offset_top = -15.5
+offset_right = 35.0
+offset_bottom = 15.5
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("3_gsnt3")
+text = "Resume"
+
+[connection signal="pressed" from="Button" to="." method="_on_resume_button_pressed"]
