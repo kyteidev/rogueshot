@@ -1,0 +1,23 @@
+[gd_scene format=3 uid="uid://c6evxkovosp2y"]
+
+[ext_resource type="LabelSettings" uid="uid://clt58t4s48cxb" path="res://settings/label_hud.tres" id="1_ahhtf"]
+[ext_resource type="Script" uid="uid://dynt2sniw8un4" path="res://scripts/hud.gd" id="1_oo0fn"]
+
+[node name="HUD" type="CanvasLayer" unique_id=465990537]
+script = ExtResource("1_oo0fn")
+
+[node name="AmmoMagLabel" type="Label" parent="." unique_id=667591211]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -210.0
+offset_top = -46.0
+offset_right = -8.0
+offset_bottom = -7.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "30/30 | 5 Mags"
+label_settings = ExtResource("1_ahhtf")
+horizontal_alignment = 2

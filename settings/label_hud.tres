@@ -1,0 +1,7 @@
+[gd_resource type="LabelSettings" format=3 uid="uid://clt58t4s48cxb"]
+
+[ext_resource type="FontFile" uid="uid://4jxi61jcsc2c" path="res://assets/fonts/groundhog.ttf" id="1_l63x1"]
+
+[resource]
+font = ExtResource("1_l63x1")
+font_size = 32
