@@ -14,3 +14,7 @@ func _physics_process(delta: float) -> void:
 		var hit = collided.get_collider()
 		if not hit.is_in_group("player"):
 			queue_free()
+
+
+func _on_visible_on_screen_notifier_2d_screen_exited() -> void:
+	queue_free()
