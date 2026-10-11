@@ -3,4 +3,5 @@
 /android/
 .DS_Store
 /addons/
+/export/
 kanban_tasks_data.kanban
