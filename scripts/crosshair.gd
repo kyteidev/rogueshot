@@ -24,7 +24,7 @@ func _process(_delta: float) -> void:
 
 func _input(_event: InputEvent) -> void:
 	if Input.is_action_just_pressed("weapon_reload"):
-		start_reload()
+		start_reload() # temporary
 
 
 func start_reload() -> void:
