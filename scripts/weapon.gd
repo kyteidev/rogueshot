@@ -43,7 +43,8 @@ var weapon_rest_pos: Vector2 = Vector2.ZERO
 const BULLET = preload("res://scenes/bullet.tscn")
 const BULLET_SCALE = 0.2
 
-@onready var crosshair = get_node("../").crosshair
+@onready var player = get_node("../")
+@onready var crosshair = player.crosshair
 
 var can_fire = true
 
@@ -112,7 +113,7 @@ func _process(delta: float) -> void:
 	current_weapon.position = weapon_rest_pos + Vector2(-kick_offset, 0)
 	
 	# weapon firing
-	if Input.is_action_pressed("player_shoot"):
+	if Input.is_action_pressed("player_shoot") and player.stamina > 0.0:
 		if can_fire and ammo > 0:
 			# spawn bullet
 			var bullet_instance = BULLET.instantiate()
@@ -131,6 +132,9 @@ func _process(delta: float) -> void:
 			# apply recoil
 			current_spread = min(current_spread + spread_per_shot, max_spread)
 			kick_offset = min(kick_offset + kick, kick * 2.0)
+			
+			# deduct stamina
+			player.stamina -= player.SHOOT_STAMINA_RATE
 		
 		# firing speed timeout
 		if fire_rate == 0.0 and can_fire:
