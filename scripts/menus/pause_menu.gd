@@ -6,18 +6,15 @@ func _ready() -> void:
 	get_tree().paused = false
 	
 
+func _toggle_pause() -> void:
+	visible = not visible
+	get_tree().paused = not get_tree().paused
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE if get_tree().paused else Input.MOUSE_MODE_HIDDEN
+	
+
 func _input(_event: InputEvent) -> void:
 	if Input.is_action_just_pressed("ui_cancel"):
-		if get_tree().paused:
-			visible = false
-			get_tree().paused = false
-			Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
-		else:
-			visible = true
-			get_tree().paused = true
-			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+		_toggle_pause()
 
 func _on_resume_button_pressed() -> void:
-	visible = false
-	get_tree().paused = false
-	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	_toggle_pause()
