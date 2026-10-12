@@ -3,6 +3,8 @@ extends Node2D
 
 var sm = StateManager
 
+const MAX_STAMINA_SPREAD_MULTIPLIER = 2.0
+
 var weapons: Array = []
 var equipped_weapons = []
 var weapon_index: int = 0
@@ -113,14 +115,15 @@ func _process(delta: float) -> void:
 	current_weapon.position = weapon_rest_pos + Vector2(-kick_offset, 0)
 	
 	# weapon firing
-	if Input.is_action_pressed("player_shoot") and player.stamina > 0.0:
+	if Input.is_action_pressed("player_shoot"):
 		if can_fire and ammo > 0:
 			# spawn bullet
 			var bullet_instance = BULLET.instantiate()
 			get_tree().root.add_child(bullet_instance)
 
 			# apply spread
-			var spread_angle = deg_to_rad(randf_range(-current_spread, current_spread))
+			var spread_angle = deg_to_rad(randf_range(-current_spread, current_spread)) \
+									* ((100 - player.stamina) / 100) * MAX_STAMINA_SPREAD_MULTIPLIER
 
 			bullet_instance.global_position = weapon_muzzle.global_position
 			bullet_instance.rotation = global_rotation + spread_angle
