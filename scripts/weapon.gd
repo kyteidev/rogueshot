@@ -31,6 +31,8 @@ var weapon_rest_pos: Vector2 = Vector2.ZERO
 const BULLET = preload("res://scenes/bullet.tscn")
 const BULLET_SCALE = 0.2
 
+@onready var crosshair = get_node("../").crosshair
+
 var can_fire = true
 
 const WEAPON_STATS = {
@@ -170,7 +172,7 @@ func equip_weapon(index: int):
 	spread_recovery = stats.spread_recovery
 	
 	reload_time = stats.reload_time
-	sm.reload_time = reload_time # so that reload animation works properly
+	crosshair.reload_time = reload_time
 
 	current_spread = 0.0
 	kick_offset = 0.0
@@ -195,3 +197,5 @@ func equip_weapon(index: int):
 			weapons[i].hide()
 		else:
 			weapons[i].show()
+			
+	crosshair.cancel_reload()

@@ -1,6 +1,8 @@
 extends CharacterBody2D
 
 
+@export var crosshair: CanvasLayer
+
 const SPEED = 60.0
 const MAX_SPEED = 500.0
 

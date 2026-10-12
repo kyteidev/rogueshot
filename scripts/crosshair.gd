@@ -10,6 +10,8 @@ const STEPS: int = 16
 var sm = StateManager
 var tween: Tween
 
+var reload_time: float = 0.0
+
 
 func _ready() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
@@ -36,9 +38,17 @@ func start_reload() -> void:
 	
 	# smoothly fill up ring progress bar
 	tween = create_tween()
-	tween.tween_method(_set_ring, 0.0, 1.0, sm.reload_time)
+	tween.tween_method(_set_ring, 0.0, 1.0, reload_time)
 	tween.finished.connect(_finish_reload)
 	
+
+func cancel_reload() -> void:
+	if tween:
+		tween.kill()
+		
+		# fixes issue where ring and reticle is null when scene is initialized for some reason
+		# KEEP INSIDE IF STATEMENT
+		_finish_reload()
 
 func _set_ring(tick: float) -> void:
 	ring.value = tick * STEPS
