@@ -170,6 +170,7 @@ func _physics_process(delta: float) -> void:
 	else:
 		accel = GROUND_ACCEL if is_on_floor() else AIR_ACCEL
 		
+		# makes turns faster
 		if velocity.x != 0 and sign(velocity.x) != sign(direction):
 			accel *= TURN_MULTIPLIER
 	velocity.x = move_toward(velocity.x, direction * speed, accel * delta)
