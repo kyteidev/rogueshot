@@ -32,7 +32,7 @@ grow_horizontal = 2
 text = "Game Paused"
 label_settings = SubResource("LabelSettings_nxcxh")
 
-[node name="Button" type="Button" parent="." unique_id=558445550]
+[node name="ResumeButton" type="Button" parent="." unique_id=558445550]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -47,4 +47,20 @@ grow_vertical = 2
 theme = ExtResource("3_gsnt3")
 text = "Resume"
 
-[connection signal="pressed" from="Button" to="." method="_on_resume_button_pressed"]
+[node name="MenuButton" type="Button" parent="." unique_id=903730864]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -55.0
+offset_top = 26.0
+offset_right = 55.0
+offset_bottom = 72.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("3_gsnt3")
+text = "Menu"
+
+[connection signal="pressed" from="ResumeButton" to="." method="_on_resume_button_pressed"]
+[connection signal="pressed" from="MenuButton" to="." method="_on_menu_button_pressed"]
