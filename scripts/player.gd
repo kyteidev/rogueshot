@@ -91,7 +91,7 @@ func _physics_process(delta: float) -> void:
 	var wants_jump = not jump_buffer_timer.is_stopped()
 	var can_jump = is_on_floor() or not coyote_timer.is_stopped()
 
-	if wants_jump and can_jump and stamina > 0.0:
+	if wants_jump and can_jump:
 		velocity.y = JUMP_VELOCITY
 		jump_buffer_timer.stop()
 		coyote_timer.stop()
@@ -148,7 +148,7 @@ func _physics_process(delta: float) -> void:
 		velocity.x = move_toward(velocity.x, direction * AIR_MAX_SPEED, AIR_ACCEL * delta)
 	
 	# wallbounce
-	if is_on_wall() and not is_on_floor() and Input.is_action_just_pressed("player_jump"):
+	if is_on_wall() and not is_on_floor() and Input.is_action_just_pressed("player_jump") and stamina > 0.0:
 		var wall_normal = get_wall_normal().x
 		if wall_normal > 0:
 			anim_sprite.flip_h = false
