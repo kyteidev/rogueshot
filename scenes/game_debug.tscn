@@ -3,6 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://cpx0iw07qf2bi" path="res://scenes/player.tscn" id="1_6rfd2"]
 [ext_resource type="PackedScene" uid="uid://7bm071w04gnc" path="res://scenes/background.tscn" id="1_hpfpv"]
 [ext_resource type="Texture2D" uid="uid://hop8m0c1ubuo" path="res://assets/sprites/world-tileset.png" id="2_17cyv"]
+[ext_resource type="Script" uid="uid://ffbt8aq075s4" path="res://scripts/camera.gd" id="3_2wr2m"]
 [ext_resource type="PackedScene" uid="uid://c6evxkovosp2y" path="res://scenes/hud.tscn" id="4_1s6p4"]
 [ext_resource type="PackedScene" uid="uid://byg2oli55neme" path="res://scenes/crosshair.tscn" id="4_8285f"]
 [ext_resource type="PackedScene" uid="uid://bojjbmn2cos6p" path="res://scenes/menus/pause_menu.tscn" id="5_d1y6d"]
@@ -24,16 +25,18 @@ texture = ExtResource("2_17cyv")
 physics_layer_0/collision_layer = 1
 sources/0 = SubResource("TileSetAtlasSource_hpfpv")
 
-[node name="Game Debug" type="Node2D" unique_id=23013582]
+[node name="Game Debug" type="Node2D" unique_id=1078131783]
 
 [node name="Background" parent="." unique_id=1305377215 instance=ExtResource("1_hpfpv")]
 
 [node name="Player" parent="." unique_id=73622017 node_paths=PackedStringArray("crosshair") instance=ExtResource("1_6rfd2")]
 crosshair = NodePath("../CrosshairCanvas")
 
-[node name="Camera2D" type="Camera2D" parent="Player" unique_id=1782809747]
+[node name="Camera" type="Camera2D" parent="." unique_id=1782809747]
 position = Vector2(0, -60)
 zoom = Vector2(3, 3)
+process_callback = 0
+script = ExtResource("3_2wr2m")
 
 [node name="TileMap" type="TileMap" parent="." unique_id=768231789]
 tile_set = SubResource("TileSet_nxcxh")
