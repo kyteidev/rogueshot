@@ -1,6 +1,7 @@
 extends CharacterBody2D
 
 
+var sm = StateManager
 @export var crosshair: CanvasLayer
 
 const BASE_SPEED = 60.0
@@ -79,6 +80,9 @@ func _physics_process(delta: float) -> void:
 	# sprint system
 	if Input.is_action_pressed("player_sprint"):
 		speed = BASE_SPEED * SPRINT_MULTIPLIER
+		
+		if sm.reloading:
+			crosshair.cancel_reload()
 	else:
 		speed = BASE_SPEED
 	

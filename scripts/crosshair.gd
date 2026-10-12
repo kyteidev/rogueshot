@@ -27,6 +27,9 @@ func start_reload() -> void:
 	# prevent duplicate reloads
 	if tween and tween.is_running():
 		return
+	
+	sm.reloading = true
+	
 	ring.visible = true
 	reticle.visible = false
 	ring.value = STEPS
@@ -53,3 +56,5 @@ func _set_ring(tick: float) -> void:
 func _finish_reload() -> void:
 	ring.visible = false
 	reticle.visible = true
+	
+	sm.reloading = false
