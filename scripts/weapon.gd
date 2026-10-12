@@ -72,6 +72,7 @@ func sync_state() -> void:
 	sm.max_ammo = max_ammo
 	sm.mags = mags
 
+
 func _ready() -> void:
 	weapons = get_children()
 	weapons.pop_front() # first element is the timer
@@ -141,13 +142,23 @@ func _process(delta: float) -> void:
 	if fire_rate == 0.0 and Input.is_action_just_released("player_shoot"):
 		can_fire = true
 		
-	if Input.is_action_just_pressed("weapon_reload") and mags > 0 and ammo != max_ammo:
-		ammo = max_ammo
-		mags -= 1
-		sync_state()
+	if Input.is_action_just_pressed("weapon_reload"):
+		reload_weapon()
 		
 
-func equip_weapon(index: int):
+func reload_weapon() -> void:
+	if mags > 0 and ammo != max_ammo:
+		crosshair.start_reload()
+		crosshair.tween.finished.connect(_finish_reload)
+		
+
+func _finish_reload() -> void:
+	ammo = max_ammo
+	mags -= 1
+	sync_state()
+	
+
+func equip_weapon(index: int) -> void:
 	# save weapon stats before switching
 	if current_weapon != null:
 		current_weapon.position = weapon_rest_pos

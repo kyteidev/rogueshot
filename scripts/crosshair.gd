@@ -23,11 +23,6 @@ func _process(_delta: float) -> void:
 	cursor.position = get_viewport().get_mouse_position()
 	
 
-func _input(_event: InputEvent) -> void:
-	if Input.is_action_just_pressed("weapon_reload"):
-		start_reload() # temporary
-
-
 func start_reload() -> void:
 	# prevent duplicate reloads
 	if tween and tween.is_running():
@@ -49,6 +44,7 @@ func cancel_reload() -> void:
 		# fixes issue where ring and reticle is null when scene is initialized for some reason
 		# KEEP INSIDE IF STATEMENT
 		_finish_reload()
+
 
 func _set_ring(tick: float) -> void:
 	ring.value = tick * STEPS
