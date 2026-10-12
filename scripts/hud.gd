@@ -1,24 +1,25 @@
 extends CanvasLayer
 
 
-var sm = StateManager
 const STAMINA_BAR_DELAY = 0.5
 
 const STAMINA_COLOR = Color("3cffae")
 const STAMINA_FLASH_COLOR = Color("32757c")
 const STAMINA_FLASH_DELAY = 0.5
 
-@onready var ammo_mag_label = $AmmoMagLabel
-
-@onready var stamina_bar = $StaminaBarOutline/StaminaBar
-@onready var stamina_loss_bar = $StaminaBarOutline/StaminaLossBar
-@onready var stamina_timer = $StaminaBarOutline/StaminaBarTimer
+var sm = StateManager
 
 var displayed_stamina_loss = 100.0
 var delayed_stamina_loss = true
 
 var stamina_tween: Tween
 var stamina_was_depleted = false
+
+@onready var ammo_mag_label = $AmmoMagLabel
+
+@onready var stamina_bar = $StaminaBarOutline/StaminaBar
+@onready var stamina_loss_bar = $StaminaBarOutline/StaminaLossBar
+@onready var stamina_timer = $StaminaBarOutline/StaminaBarTimer
 
 
 func _process(delta: float) -> void:

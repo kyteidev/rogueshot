@@ -1,9 +1,12 @@
 extends Node2D
 
 
-var sm = StateManager
-
 const MAX_STAMINA_SPREAD_MULTIPLIER = 2.0
+
+const BULLET = preload("res://scenes/bullet.tscn")
+const BULLET_SCALE = 0.2
+
+var sm = StateManager
 
 var weapons: Array = []
 var equipped_weapons = []
@@ -40,16 +43,14 @@ var current_spread: float = 0.0
 var kick_offset: float = 0.0
 var weapon_rest_pos: Vector2 = Vector2.ZERO
 
-@onready var timer = $Timer
+var can_fire = true
 
-const BULLET = preload("res://scenes/bullet.tscn")
-const BULLET_SCALE = 0.2
+@onready var timer = $Timer
 
 @onready var player = get_node("../")
 @onready var crosshair = player.crosshair
 
-var can_fire = true
-
+# weapon stats and state, have them here and dont move these up!!!
 const WEAPON_STATS = {
 	"pistol": {
 		"damage": 25,
@@ -77,7 +78,7 @@ const WEAPON_STATS = {
 	}
 }
 
-# format: [weapon_name, ammo, mags]
+# format: weapon_name: { ammo, mags }
 var weapon_state: Dictionary = {}
 
 

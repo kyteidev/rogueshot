@@ -1,9 +1,6 @@
 extends CharacterBody2D
 
 
-var sm = StateManager
-@export var crosshair: CanvasLayer
-
 const BASE_SPEED = 126.0
 const SPRINT_MULTIPLIER = 1.25
 
@@ -35,11 +32,9 @@ const STRETCH = 0.2
 const COYOTE_TIME = 0.12
 const JUMP_BUFFER_TIME = 0.12
 
-@onready var coyote_timer = $CoyoteTimer
-@onready var jump_buffer_timer = $JumpBufferTimer
+@export var crosshair: CanvasLayer
 
-@onready var anim_sprite = $AnimatedSprite2D
-@onready var stamina_timer = $StaminaTimer
+var sm = StateManager
 
 var was_airborne = false
 var reached_peak = false
@@ -70,6 +65,12 @@ var stamina_depleted = false:
 		stamina_depleted = value
 		sm.stamina_depleted = value
 		
+@onready var coyote_timer = $CoyoteTimer
+@onready var jump_buffer_timer = $JumpBufferTimer
+
+@onready var anim_sprite = $AnimatedSprite2D
+@onready var stamina_timer = $StaminaTimer
+
 
 func _ready() -> void:
 	# have this in _ready so max stamina only needs to be adjusted here,
@@ -120,7 +121,7 @@ func _physics_process(delta: float) -> void:
 	
 	# get direction of player
 	# right: 1, left: -1, neutral (not moving): 0
-	var direction := Input.get_axis("player_left", "player_right")
+	var direction = Input.get_axis("player_left", "player_right")
 		
 	# sprint system
 	if is_on_floor():

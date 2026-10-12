@@ -3,14 +3,14 @@ extends CanvasLayer
 
 const STEPS: int = 128
 
-@onready var cursor = $Cursor
-@onready var reticle = $Cursor/Reticle
-@onready var ring = $Cursor/ReloadRing 
-
 var sm = StateManager
 var tween: Tween
 
 var reload_time: float = 0.0
+
+@onready var cursor = $Cursor
+@onready var reticle = $Cursor/Reticle
+@onready var ring = $Cursor/ReloadRing 
 
 
 func _ready() -> void:
