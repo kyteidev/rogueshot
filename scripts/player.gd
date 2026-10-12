@@ -46,6 +46,7 @@ var speed = 0.0
 var sprinting = false
 
 var regenerating_stamina = true
+var prev_stamina = MAX_STAMINA
 var stamina:
 	set(value):
 		stamina = clamp(value, 0.0, 100.0)
@@ -55,6 +56,10 @@ var stamina:
 			stamina_timer.start(STAMINA_RECOVERY_DELAY)
 		else:
 			regenerating_stamina = false
+			
+		if value < prev_stamina:
+			sm.used_stamina = true
+		prev_stamina = value
 		
 
 func _ready() -> void:
