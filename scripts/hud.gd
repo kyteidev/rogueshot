@@ -15,9 +15,11 @@ var delayed_stamina_loss = true
 
 
 func _process(delta: float) -> void:
+	# update ammo info
 	var ammo_text = "%s/%s | %s %s"
 	ammo_mag_label.text = ammo_text % [sm.ammo, sm.max_ammo, sm.mags, "Mag" if sm.mags == 1 else "Mags"]
 	
+	# update stamina info
 	stamina_bar.value = sm.stamina
 
 	if sm.used_stamina:
