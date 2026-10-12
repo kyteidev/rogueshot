@@ -34,6 +34,7 @@ var was_airborne = false
 var reached_peak = false
 
 var speed = 0.0
+var sprinting = false
 
 
 func get_custom_gravity(vel) -> float:
@@ -79,11 +80,13 @@ func _physics_process(delta: float) -> void:
 		
 	# sprint system
 	if Input.is_action_pressed("player_sprint"):
+		sprinting = true
 		speed = BASE_SPEED * SPRINT_MULTIPLIER
 		
 		if sm.reloading:
 			crosshair.cancel_reload()
 	else:
+		sprinting = false
 		speed = BASE_SPEED
 	
 	# flip direction
@@ -98,6 +101,7 @@ func _physics_process(delta: float) -> void:
 		if direction == 0:
 			anim_sprite.play("idle")
 		else:
+			anim_sprite.speed_scale = 1.5 if sprinting else 1.0
 			anim_sprite.play("run")
 	else:
 		anim_sprite.play("jump")
