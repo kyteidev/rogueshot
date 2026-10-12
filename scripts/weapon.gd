@@ -1,6 +1,8 @@
 extends Node2D
 
 
+var sm = StateManager
+
 var weapons: Array = []
 var equipped_weapons = []
 var weapon_index: int = 0
@@ -10,9 +12,19 @@ var weapon_muzzle: Marker2D = null
 
 var base_damage: int = 0
 var fire_rate: float = 0.0
-var ammo: int = 0
-var max_ammo: int = 0
-var mags: int = 0
+
+var ammo: int = 0:
+	set(value):
+		ammo = value
+		sm.ammo = value
+var max_ammo: int = 0:
+	set(value):
+		max_ammo = value
+		sm.max_ammo = value
+var mags: int = 0:
+	set(value):
+		mags = value
+		sm.mags = value
 
 var kick: float = 0.0
 var kick_recovery: float = 0.0
@@ -62,15 +74,8 @@ const WEAPON_STATS = {
 	}
 }
 
-var sm = StateManager
 # format: [weapon_name, ammo, mags]
 var weapon_state: Dictionary = {}
-
-
-func sync_state() -> void:
-	sm.ammo = ammo
-	sm.max_ammo = max_ammo
-	sm.mags = mags
 
 
 func _ready() -> void:
@@ -122,7 +127,6 @@ func _process(delta: float) -> void:
 			
 			# subtract ammo and sync state with state manager
 			ammo -= 1
-			sync_state()
 
 			# apply recoil
 			current_spread = min(current_spread + spread_per_shot, max_spread)
@@ -155,7 +159,6 @@ func reload_weapon() -> void:
 func _finish_reload() -> void:
 	ammo = max_ammo
 	mags -= 1
-	sync_state()
 	
 
 func equip_weapon(index: int) -> void:
@@ -200,7 +203,6 @@ func equip_weapon(index: int) -> void:
 	ammo = weapon_state[weapon_name].ammo
 	mags = weapon_state[weapon_name].mags
 	can_fire = true
-	sync_state()
 	
 	# only show active weapon
 	for i in range(weapons.size()):
