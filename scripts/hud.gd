@@ -4,6 +4,10 @@ extends CanvasLayer
 var sm = StateManager
 const STAMINA_BAR_DELAY = 0.5
 
+const STAMINA_COLOR = Color("3cffae")
+const STAMINA_FLASH_COLOR = Color("32757c")
+const STAMINA_FLASH_DELAY = 0.5
+
 @onready var ammo_mag_label = $AmmoMagLabel
 
 @onready var stamina_bar = $StaminaBarOutline/StaminaBar
@@ -13,6 +17,9 @@ const STAMINA_BAR_DELAY = 0.5
 var displayed_stamina_loss = 100.0
 var delayed_stamina_loss = true
 
+var stamina_tween: Tween
+var stamina_was_depleted = false
+
 
 func _process(delta: float) -> void:
 	# update ammo info
@@ -21,7 +28,15 @@ func _process(delta: float) -> void:
 	
 	# update stamina info
 	stamina_bar.value = sm.stamina
-
+	
+	# flash stamina bar if completely depleted
+	if sm.stamina_depleted and not stamina_was_depleted:
+		start_stamina_flash()
+	elif not sm.stamina_depleted and stamina_was_depleted:
+		stop_stamina_flash()
+	stamina_was_depleted = sm.stamina_depleted
+	
+	# delay the stamina loss bar
 	if sm.used_stamina:
 		sm.used_stamina = false
 		delayed_stamina_loss = false
@@ -37,6 +52,22 @@ func _process(delta: float) -> void:
 			displayed_stamina_loss = sm.stamina
 	
 	stamina_loss_bar.value = displayed_stamina_loss
+
+
+func start_stamina_flash() -> void:
+	if stamina_tween:
+		stamina_tween.kill()
+	
+	stamina_tween = create_tween().set_loops()
+	stamina_tween.tween_property(stamina_bar, "tint_progress", STAMINA_FLASH_COLOR, STAMINA_FLASH_DELAY)
+	stamina_tween.tween_property(stamina_bar, "tint_progress", STAMINA_COLOR, STAMINA_FLASH_DELAY)
+	
+
+func stop_stamina_flash() -> void:
+	if stamina_tween:
+		stamina_tween.kill()
+	
+	create_tween().tween_property(stamina_bar, "tint_progress", STAMINA_COLOR, STAMINA_FLASH_DELAY)
 
 
 func _on_stamina_bar_timer_timeout() -> void:

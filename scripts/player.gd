@@ -11,6 +11,7 @@ const SPRINT_MULTIPLIER = 1.5
 const MAX_STAMINA = 100.0
 const STAMINA_RECOVERY_DELAY = 2.0
 const STAMINA_RECOVERY_RATE = 20.0
+const STAMINA_SLOW_RECOVERY_MULTIPLIER = 0.75
 
 const SPRINT_STAMINA_RATE = 25.0
 const WALLBOUNCE_STAMINA_RATE = 20.0
@@ -60,6 +61,13 @@ var stamina:
 		if value < prev_stamina:
 			sm.used_stamina = true
 		prev_stamina = value
+		
+		if stamina == 0:
+			stamina_depleted = true
+var stamina_depleted = false:
+	set(value):
+		stamina_depleted = value
+		sm.stamina_depleted = value
 		
 
 func _ready() -> void:
@@ -112,7 +120,7 @@ func _physics_process(delta: float) -> void:
 	# sprint system
 	speed = BASE_SPEED
 	if is_on_floor():
-		if Input.is_action_pressed("player_sprint") and stamina > 0.0:
+		if Input.is_action_pressed("player_sprint") and stamina > 0.0 and not stamina_depleted:
 			sprinting = true
 			speed *= SPRINT_MULTIPLIER
 			stamina -= SPRINT_STAMINA_RATE * delta
@@ -125,7 +133,10 @@ func _physics_process(delta: float) -> void:
 	# recover stamina when not sprinting
 	if stamina_timer.is_stopped():
 		regenerating_stamina = true
-		stamina += STAMINA_RECOVERY_RATE * delta
+		stamina += STAMINA_RECOVERY_RATE * delta * (STAMINA_SLOW_RECOVERY_MULTIPLIER if stamina_depleted else 1.0)
+		
+		if stamina == MAX_STAMINA:
+			stamina_depleted = false
 	
 	# flip direction
 	var direction := Input.get_axis("player_left", "player_right")
@@ -153,7 +164,7 @@ func _physics_process(delta: float) -> void:
 		velocity.x = move_toward(velocity.x, direction * AIR_MAX_SPEED, AIR_ACCEL * delta)
 	
 	# wallbounce
-	if is_on_wall() and not is_on_floor() and Input.is_action_just_pressed("player_jump") and stamina > 0.0:
+	if is_on_wall() and not is_on_floor() and Input.is_action_just_pressed("player_jump") and stamina > 0.0 and not stamina_depleted:
 		var wall_normal = get_wall_normal().x
 		if wall_normal > 0:
 			anim_sprite.flip_h = false
