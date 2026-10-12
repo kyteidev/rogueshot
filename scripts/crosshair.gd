@@ -1,7 +1,7 @@
 extends CanvasLayer
 
 
-const STEPS: int = 16
+const STEPS: int = 128
 
 @onready var cursor = $Cursor
 @onready var reticle = $Cursor/Reticle
