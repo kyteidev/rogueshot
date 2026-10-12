@@ -20,6 +20,8 @@ var spread_per_shot: float = 0.0
 var max_spread: float = 0.0
 var spread_recovery: float = 0.0
 
+var reload_time: float = 0.0
+
 var current_spread: float = 0.0
 var kick_offset: float = 0.0
 var weapon_rest_pos: Vector2 = Vector2.ZERO
@@ -41,7 +43,8 @@ const WEAPON_STATS = {
 		"kick_recovery": 60.0,
 		"spread": 3.0,
 		"max_spread": 8.0,
-		"spread_recovery": 8.0
+		"spread_recovery": 8.0,
+		"reload_time": 0.9
 	},
 	"rifle1": {
 		"damage": 15,
@@ -52,7 +55,8 @@ const WEAPON_STATS = {
 		"kick_recovery": 40.0,
 		"spread": 1.2,
 		"max_spread": 7.0,
-		"spread_recovery": 5.0
+		"spread_recovery": 5.0,
+		"reload_time": 2.6
 	}
 }
 
@@ -164,6 +168,9 @@ func equip_weapon(index: int):
 	spread_per_shot = stats.spread
 	max_spread = stats.max_spread
 	spread_recovery = stats.spread_recovery
+	
+	reload_time = stats.reload_time
+	sm.reload_time = reload_time # so that reload animation works properly
 
 	current_spread = 0.0
 	kick_offset = 0.0

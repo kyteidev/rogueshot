@@ -3,12 +3,11 @@ extends CanvasLayer
 
 const STEPS: int = 16
 
-var reload_time = 1.5
-
 @onready var cursor = $Cursor
 @onready var reticle = $Cursor/Reticle
 @onready var ring = $Cursor/ReloadRing 
 
+var sm = StateManager
 var tween: Tween
 
 
@@ -37,7 +36,7 @@ func start_reload() -> void:
 	
 	# smoothly fill up ring progress bar
 	tween = create_tween()
-	tween.tween_method(_set_ring, 0.0, 1.0, reload_time)
+	tween.tween_method(_set_ring, 0.0, 1.0, sm.reload_time)
 	tween.finished.connect(_finish_reload)
 	
 
