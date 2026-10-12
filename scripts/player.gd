@@ -79,15 +79,16 @@ func _physics_process(delta: float) -> void:
 		velocity.y *= 0.5
 		
 	# sprint system
-	if Input.is_action_pressed("player_sprint"):
-		sprinting = true
-		speed = BASE_SPEED * SPRINT_MULTIPLIER
-		
-		if sm.reloading:
-			crosshair.cancel_reload()
-	else:
-		sprinting = false
-		speed = BASE_SPEED
+	speed = BASE_SPEED
+	if is_on_floor():
+		if Input.is_action_pressed("player_sprint"):
+			sprinting = true
+			speed *= SPRINT_MULTIPLIER
+			
+			if sm.reloading:
+				crosshair.cancel_reload()
+		else:
+			sprinting = false
 	
 	# flip direction
 	var direction := Input.get_axis("player_left", "player_right")
