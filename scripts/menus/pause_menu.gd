@@ -16,5 +16,6 @@ func _input(_event: InputEvent) -> void:
 	if Input.is_action_just_pressed("ui_cancel"):
 		_toggle_pause()
 
+
 func _on_resume_button_pressed() -> void:
 	_toggle_pause()
