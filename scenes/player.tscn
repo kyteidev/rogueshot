@@ -108,5 +108,8 @@ one_shot = true
 [node name="JumpBufferTimer" type="Timer" parent="." unique_id=1411532615]
 one_shot = true
 
+[node name="StaminaTimer" type="Timer" parent="." unique_id=82113234]
+one_shot = true
+
 [node name="Weapon" parent="." unique_id=1767955034 instance=ExtResource("3_qhqgy")]
 position = Vector2(0, -4)

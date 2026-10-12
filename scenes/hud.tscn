@@ -2,6 +2,9 @@
 
 [ext_resource type="LabelSettings" uid="uid://clt58t4s48cxb" path="res://settings/label_hud.tres" id="1_ahhtf"]
 [ext_resource type="Script" uid="uid://dynt2sniw8un4" path="res://scripts/hud.gd" id="1_oo0fn"]
+[ext_resource type="Texture2D" uid="uid://bwbf1impms38d" path="res://assets/sprites/bar/bar-base.png" id="3_6fi6k"]
+[ext_resource type="Texture2D" uid="uid://cdf5h5jgg2u5w" path="res://assets/sprites/bar/bar-outline.png" id="3_uo2fv"]
+[ext_resource type="Texture2D" uid="uid://dg3duty4ycseo" path="res://assets/sprites/bar/bar-progress-stamina.png" id="4_uo2fv"]
 
 [node name="HUD" type="CanvasLayer" unique_id=465990537]
 script = ExtResource("1_oo0fn")
@@ -21,3 +24,28 @@ grow_vertical = 0
 text = "30/30 | 5 Mags"
 label_settings = ExtResource("1_ahhtf")
 horizontal_alignment = 2
+
+[node name="StaminaBarOutline" type="TextureRect" parent="." unique_id=2145359264]
+anchors_preset = -1
+anchor_top = 0.9814815
+anchor_right = 0.15625
+anchor_bottom = 1.037037
+offset_left = 12.0
+offset_top = -36.0
+offset_right = -108.0
+offset_bottom = -60.0
+grow_vertical = 0
+scale = Vector2(3, 3)
+texture = ExtResource("3_uo2fv")
+stretch_mode = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="StaminaBar" type="TextureProgressBar" parent="StaminaBarOutline" unique_id=1860971369]
+layout_mode = 1
+offset_left = 2.0
+offset_top = 2.0
+offset_right = 58.0
+offset_bottom = 10.0
+value = 100.0
+texture_under = ExtResource("3_6fi6k")
+texture_progress = ExtResource("4_uo2fv")

@@ -8,6 +8,13 @@ const BASE_SPEED = 60.0
 const MAX_SPEED = 500.0
 const SPRINT_MULTIPLIER = 1.5
 
+const MAX_STAMINA = 100.0
+const STAMINA_RECOVERY_DELAY = 2.0
+const STAMINA_RECOVERY_RATE = 20.0
+
+const SPRINT_STAMINA_RATE = 25.0
+const WALLBOUNCE_STAMINA_RATE = 30.0
+
 const WALLBOUNCE_VELOCITY = 250
 const AIR_MAX_SPEED = 180.0
 const AIR_ACCEL = 800.0
@@ -29,12 +36,30 @@ const JUMP_BUFFER_TIME = 0.1
 @onready var jump_buffer_timer = $JumpBufferTimer
 
 @onready var anim_sprite = $AnimatedSprite2D
+@onready var stamina_timer = $StaminaTimer
 
 var was_airborne = false
 var reached_peak = false
 
 var speed = 0.0
 var sprinting = false
+
+var regenerating_stamina = true
+var stamina:
+	set(value):
+		stamina = clamp(value, 0.0, 100.0)
+		sm.stamina = stamina
+		
+		if not regenerating_stamina:
+			stamina_timer.start(STAMINA_RECOVERY_DELAY)
+		else:
+			regenerating_stamina = false
+		
+
+func _ready() -> void:
+	# have this in _ready so max stamina only needs to be adjusted here,
+	# otherwise i'd have to change max stamina here and in state manager
+	stamina = MAX_STAMINA
 
 
 func get_custom_gravity(vel) -> float:
@@ -65,7 +90,7 @@ func _physics_process(delta: float) -> void:
 	var wants_jump = not jump_buffer_timer.is_stopped()
 	var can_jump = is_on_floor() or not coyote_timer.is_stopped()
 
-	if wants_jump and can_jump:
+	if wants_jump and can_jump and stamina > 0.0:
 		velocity.y = JUMP_VELOCITY
 		jump_buffer_timer.stop()
 		coyote_timer.stop()
@@ -81,14 +106,20 @@ func _physics_process(delta: float) -> void:
 	# sprint system
 	speed = BASE_SPEED
 	if is_on_floor():
-		if Input.is_action_pressed("player_sprint"):
+		if Input.is_action_pressed("player_sprint") and stamina > 0.0:
 			sprinting = true
 			speed *= SPRINT_MULTIPLIER
+			stamina -= SPRINT_STAMINA_RATE * delta
 			
 			if sm.reloading:
 				crosshair.cancel_reload()
 		else:
 			sprinting = false
+			
+	# recover stamina when not sprinting
+	if stamina_timer.is_stopped():
+		regenerating_stamina = true
+		stamina += STAMINA_RECOVERY_RATE * delta
 	
 	# flip direction
 	var direction := Input.get_axis("player_left", "player_right")
@@ -125,6 +156,8 @@ func _physics_process(delta: float) -> void:
 		
 		velocity.x += WALLBOUNCE_VELOCITY * wall_normal
 		velocity.y = JUMP_VELOCITY
+		
+		stamina -= WALLBOUNCE_STAMINA_RATE
 		
 		coyote_timer.stop()
 		jump_buffer_timer.stop()
