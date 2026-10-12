@@ -3,8 +3,9 @@ extends CharacterBody2D
 
 @export var crosshair: CanvasLayer
 
-const SPEED = 60.0
+const BASE_SPEED = 60.0
 const MAX_SPEED = 500.0
+const SPRINT_MULTIPLIER = 1.5
 
 const WALLBOUNCE_VELOCITY = 250
 const AIR_MAX_SPEED = 180.0
@@ -30,6 +31,8 @@ const JUMP_BUFFER_TIME = 0.1
 
 var was_airborne = false
 var reached_peak = false
+
+var speed = 0.0
 
 
 func get_custom_gravity(vel) -> float:
@@ -72,6 +75,12 @@ func _physics_process(delta: float) -> void:
 	# reduce y velocity if player hits ceiling
 	if is_on_ceiling():
 		velocity.y *= 0.5
+		
+	# sprint system
+	if Input.is_action_pressed("player_sprint"):
+		speed = BASE_SPEED * SPRINT_MULTIPLIER
+	else:
+		speed = BASE_SPEED
 	
 	# flip direction
 	var direction := Input.get_axis("player_left", "player_right")
@@ -93,7 +102,7 @@ func _physics_process(delta: float) -> void:
 	if is_on_floor():
 		if velocity.x < 0.01 and velocity.x > -0.01: # otherwise velocity x would never be 0
 			velocity.x = 0
-		velocity.x = (velocity.x + clamp(direction * SPEED, -MAX_SPEED, MAX_SPEED)) * GROUND_FRICTION
+		velocity.x = (velocity.x + clamp(direction * speed, -MAX_SPEED, MAX_SPEED)) * GROUND_FRICTION
 	else:
 		velocity.x = move_toward(velocity.x, direction * AIR_MAX_SPEED, AIR_ACCEL * delta)
 	
