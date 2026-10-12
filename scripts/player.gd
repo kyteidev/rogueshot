@@ -124,9 +124,11 @@ func _physics_process(delta: float) -> void:
 			sprinting = true
 			speed *= SPRINT_MULTIPLIER
 			
+			# don't deplete stamina if not moving
 			if Input.is_action_pressed("player_left") or Input.is_action_pressed("player_right"):
 				stamina -= SPRINT_STAMINA_RATE * delta
 			
+			# cancel reload if sprinting
 			if sm.reloading:
 				crosshair.cancel_reload()
 		else:
