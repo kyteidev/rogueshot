@@ -4,37 +4,38 @@ extends CharacterBody2D
 var sm = StateManager
 @export var crosshair: CanvasLayer
 
-const BASE_SPEED = 60.0
-const MAX_SPEED = 500.0
-const SPRINT_MULTIPLIER = 1.5
+const BASE_SPEED = 126.0
+const SPRINT_MULTIPLIER = 1.25
 
 const MAX_STAMINA = 100.0
-const STAMINA_RECOVERY_DELAY = 2.0
-const STAMINA_RECOVERY_RATE = 20.0
+const STAMINA_RECOVERY_DELAY = 1.5
+const STAMINA_RECOVERY_RATE = 30.0
 const STAMINA_SLOW_RECOVERY_MULTIPLIER = 0.75
 
-const SPRINT_STAMINA_RATE = 25.0
-const WALLBOUNCE_STAMINA_RATE = 20.0
+const SPRINT_STAMINA_RATE = 20.0
+const WALLBOUNCE_STAMINA_RATE = 15.0
 const SHOOT_STAMINA_RATE = 2.0
 
-const WALLBOUNCE_VELOCITY = 250
-const AIR_MAX_SPEED = 180.0
-const AIR_ACCEL = 800.0
+const WALLBOUNCE_VELOCITY = 150
 
-const GROUND_FRICTION = 0.7
-const AIR_FRICTION = 0.75
-const JUMP_VELOCITY = -250.0
+const GROUND_ACCEL = 900.0
+const GROUND_FRICTION = 1100.0
+const AIR_ACCEL = 600.0
+const AIR_FRICTION = 300.0
+const TURN_MULTIPLIER = 1.5
+
+const JUMP_VELOCITY = -200.0
 const JUMP_VELOCITY_CUT = JUMP_VELOCITY / 3
 
-const GRAVITY = 900
+const GRAVITY = 750
 const FALL_GRAVITY = GRAVITY * 1.5
 
-const STRETCH = 0.3
+const STRETCH = 0.2
 
-const COYOTE_TIME = 0.1
+const COYOTE_TIME = 0.12
+const JUMP_BUFFER_TIME = 0.12
+
 @onready var coyote_timer = $CoyoteTimer
-
-const JUMP_BUFFER_TIME = 0.1
 @onready var jump_buffer_timer = $JumpBufferTimer
 
 @onready var anim_sprite = $AnimatedSprite2D
@@ -116,16 +117,20 @@ func _physics_process(delta: float) -> void:
 	# reduce y velocity if player hits ceiling
 	if is_on_ceiling():
 		velocity.y *= 0.5
+	
+	# get direction of player
+	# right: 1, left: -1, neutral (not moving): 0
+	var direction := Input.get_axis("player_left", "player_right")
 		
 	# sprint system
-	speed = BASE_SPEED
 	if is_on_floor():
+		speed = BASE_SPEED
 		if Input.is_action_pressed("player_sprint") and stamina > 0.0 and not stamina_depleted:
 			sprinting = true
 			speed *= SPRINT_MULTIPLIER
 			
 			# don't deplete stamina if not moving
-			if Input.is_action_pressed("player_left") or Input.is_action_pressed("player_right"):
+			if direction != 0.0:
 				stamina -= SPRINT_STAMINA_RATE * delta
 			
 			# cancel reload if sprinting
@@ -143,7 +148,6 @@ func _physics_process(delta: float) -> void:
 			stamina_depleted = false
 	
 	# flip direction
-	var direction := Input.get_axis("player_left", "player_right")
 	if direction > 0:
 		anim_sprite.flip_h = false
 	elif direction < 0:
@@ -154,18 +158,21 @@ func _physics_process(delta: float) -> void:
 		if direction == 0:
 			anim_sprite.play("idle")
 		else:
-			anim_sprite.speed_scale = 1.5 if sprinting else 1.0
+			anim_sprite.speed_scale = SPRINT_MULTIPLIER if sprinting else 1.0
 			anim_sprite.play("run")
 	else:
 		anim_sprite.play("jump")
 	
 	# calculate x velocity
-	if is_on_floor():
-		if velocity.x < 0.01 and velocity.x > -0.01: # otherwise velocity x would never be 0
-			velocity.x = 0
-		velocity.x = (velocity.x + clamp(direction * speed, -MAX_SPEED, MAX_SPEED)) * GROUND_FRICTION
+	var accel: float
+	if direction == 0: # apply friction when not moving
+		accel = GROUND_FRICTION if is_on_floor() else AIR_FRICTION
 	else:
-		velocity.x = move_toward(velocity.x, direction * AIR_MAX_SPEED, AIR_ACCEL * delta)
+		accel = GROUND_ACCEL if is_on_floor() else AIR_ACCEL
+		
+		if velocity.x != 0 and sign(velocity.x) != sign(direction):
+			accel *= TURN_MULTIPLIER
+	velocity.x = move_toward(velocity.x, direction * speed, accel * delta)
 	
 	# wallbounce
 	if is_on_wall() and not is_on_floor() and Input.is_action_just_pressed("player_jump") and stamina > 0.0 and not stamina_depleted:
