@@ -10,11 +10,10 @@
 
 [sub_resource type="LabelSettings" id="LabelSettings_nxcxh"]
 font = ExtResource("1_xqga4")
-font_size = 96
+font_size = 64
 
 [sub_resource type="LabelSettings" id="LabelSettings_4iqke"]
 font = ExtResource("1_xqga4")
-font_size = 32
 
 [node name="MainMenu" type="CanvasLayer" unique_id=1172912784]
 script = ExtResource("1_8r73w")
@@ -81,12 +80,14 @@ anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
 offset_left = -210.0
-offset_top = 115.0
+offset_top = 56.0
 offset_right = 210.0
-offset_bottom = 229.0
+offset_bottom = 170.0
 grow_horizontal = 2
 text = "rogueshot"
 label_settings = SubResource("LabelSettings_nxcxh")
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="PlayButton" type="Button" parent="." unique_id=1994759747]
 anchors_preset = 8
@@ -95,9 +96,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -75.0
-offset_top = 10.0
+offset_top = 24.0
 offset_right = 75.0
-offset_bottom = 75.0
+offset_bottom = 74.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("6_ng0o5")
@@ -112,7 +113,7 @@ anchor_bottom = 0.5
 offset_left = -74.0
 offset_top = 78.0
 offset_right = 76.0
-offset_bottom = 143.0
+offset_bottom = 128.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("6_ng0o5")
@@ -122,9 +123,10 @@ text = "Quit"
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
-offset_left = 6.0
-offset_top = -38.0
-offset_right = 196.0
+offset_left = 5.0
+offset_top = -20.0
+offset_right = 195.0
+offset_bottom = -1.0
 grow_vertical = 0
 text = "v. 0.1.0-dev.1 (itch.io)"
 label_settings = SubResource("LabelSettings_4iqke")

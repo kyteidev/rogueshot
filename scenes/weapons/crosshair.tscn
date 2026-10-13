@@ -8,7 +8,6 @@
 script = ExtResource("1_norqy")
 
 [node name="Cursor" type="Node2D" parent="." unique_id=537525748]
-scale = Vector2(1.5, 1.5)
 
 [node name="Reticle" type="Sprite2D" parent="Cursor" unique_id=864043456]
 texture = ExtResource("2_qnjby")

@@ -38,7 +38,7 @@ position = Vector2(116, -17)
 
 [node name="Camera" type="Camera2D" parent="." unique_id=1782809747]
 position = Vector2(0, -60)
-zoom = Vector2(3, 3)
+zoom = Vector2(2, 2)
 process_callback = 0
 script = ExtResource("3_2wr2m")
 
