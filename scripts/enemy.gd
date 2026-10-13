@@ -5,7 +5,7 @@ enum State { IDLE, PATROL, CHASE, ATTACK, RETREAT, DEAD }
 
 const MAX_HEALTH = 100.0
 
-const BASE_SPEED = 300.0
+const PATROL_SPEED = 30.0
 const JUMP_VELOCITY = -200.0
 
 const GROUND_ACCEL = 900.0
@@ -23,6 +23,8 @@ var state = State.PATROL
 var target: CharacterBody2D = null
 
 var health = MAX_HEALTH
+var direction = 1
+var speed = 0.0
 
 @onready var anim = $AnimatedSprite2D
 @onready var wall_ray = $WallRay
@@ -48,6 +50,18 @@ func _physics_process(delta: float) -> void:
 		State.RETREAT: _state_retreat()
 		State.DEAD: _state_dead(delta)
 	
+	# calculate x velocity
+	var accel: float
+	if direction == 0: # apply friction when not moving
+		accel = GROUND_FRICTION if is_on_floor() else AIR_FRICTION
+	else:
+		accel = GROUND_ACCEL if is_on_floor() else AIR_ACCEL
+		
+		# makes turns faster
+		if velocity.x != 0 and sign(velocity.x) != sign(direction):
+			accel *= TURN_MULTIPLIER
+	velocity.x = move_toward(velocity.x, direction * speed, accel * delta)
+	
 	move_and_slide()
 	
 
@@ -68,8 +82,15 @@ func _state_idle() -> void:
 	
 
 func _state_patrol() -> void:
-	pass
+	anim.play("run")
+	anim.speed_scale = 0.9
 	
+	if is_on_floor() and (wall_ray.is_colliding() or not ledge_ray.is_colliding()):
+		direction *= -1
+		anim.flip_h = not anim.flip_h
+		wall_ray.target_position *= -1
+		ledge_ray.position.x *= -1
+	speed = PATROL_SPEED
 
 func _state_chase() -> void:
 	pass

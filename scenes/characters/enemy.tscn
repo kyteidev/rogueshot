@@ -143,5 +143,9 @@ position = Vector2(0, -7)
 shape = SubResource("CapsuleShape2D_nxcxh")
 
 [node name="WallRay" type="RayCast2D" parent="." unique_id=254261750]
+position = Vector2(0, -7)
+target_position = Vector2(16, 0)
 
 [node name="LedgeRay" type="RayCast2D" parent="." unique_id=2076729340]
+position = Vector2(7, 0)
+target_position = Vector2(0, 4)
