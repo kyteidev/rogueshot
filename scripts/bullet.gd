@@ -13,7 +13,7 @@ func _physics_process(delta: float) -> void:
 	if collided:
 		var hit = collided.get_collider()
 		if not hit.is_in_group("player"):
-			if hit.has_method("take_damage"):
+			if hit.has_method("take_damage"): # maybe use classes instead?
 				hit.take_damage(sm.damage)
 			queue_free()
 
