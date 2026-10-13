@@ -1,13 +1,11 @@
 extends CharacterBody2D
 
 
-const SPEED = 1000
+const SPEED = 2000
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta: float) -> void:
-	position += transform.x * SPEED * delta
-	
 	var collided = move_and_collide(transform.x * SPEED * delta)
 	
 	if collided:
