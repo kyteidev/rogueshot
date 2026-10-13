@@ -10,7 +10,6 @@ const STAMINA_FLASH_DELAY = 0.5
 var sm = StateManager
 
 var displayed_stamina_loss = 100.0
-var delayed_stamina_loss = true
 
 var stamina_tween: Tween
 var stamina_was_depleted = false
@@ -44,12 +43,11 @@ func _process(delta: float) -> void:
 	# delay the stamina loss bar
 	if sm.used_stamina:
 		sm.used_stamina = false
-		delayed_stamina_loss = false
 		stamina_timer.start(STAMINA_BAR_DELAY)
 	
 	if sm.stamina >= displayed_stamina_loss:
 		displayed_stamina_loss = sm.stamina
-	elif delayed_stamina_loss:
+	elif stamina_timer.is_stopped():
 		displayed_stamina_loss = lerpf(displayed_stamina_loss, sm.stamina, 1.0 - exp(-10.0 * delta))
 		
 		# snap to value if close enough
@@ -73,7 +71,3 @@ func stop_stamina_flash() -> void:
 		stamina_tween.kill()
 	
 	create_tween().tween_property(stamina_bar, "tint_progress", STAMINA_COLOR, STAMINA_FLASH_DELAY)
-
-
-func _on_stamina_bar_timer_timeout() -> void:
-	delayed_stamina_loss = true

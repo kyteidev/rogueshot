@@ -60,5 +60,3 @@ texture_progress = ExtResource("5_uo2fv")
 
 [node name="StaminaBarTimer" type="Timer" parent="StaminaBarOutline" unique_id=423335567]
 one_shot = true
-
-[connection signal="timeout" from="StaminaBarOutline/StaminaBarTimer" to="." method="_on_stamina_bar_timer_timeout"]
