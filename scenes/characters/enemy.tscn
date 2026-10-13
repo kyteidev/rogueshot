@@ -128,7 +128,8 @@ animations = [{
 radius = 5.0
 height = 14.0
 
-[node name="Enemy" type="CharacterBody2D" unique_id=73622017 groups=["player"]]
+[node name="Enemy" type="CharacterBody2D" unique_id=73622017]
+collision_mask = 3
 script = ExtResource("1_4ra3w")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1345892962]
@@ -140,3 +141,7 @@ autoplay = "idle"
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1475566916]
 position = Vector2(0, -7)
 shape = SubResource("CapsuleShape2D_nxcxh")
+
+[node name="WallRay" type="RayCast2D" parent="." unique_id=254261750]
+
+[node name="LedgeRay" type="RayCast2D" parent="." unique_id=2076729340]

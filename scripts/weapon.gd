@@ -15,7 +15,10 @@ var current_weapon: Sprite2D = null
 var weapon_name: String = ""
 var weapon_muzzle: Marker2D = null
 
-var base_damage: int = 0
+var base_damage: int = 0:
+	set(value):
+		base_damage = value
+		sm.damage = value
 var fire_rate: float = 0.0
 
 var ammo: int = 0:
