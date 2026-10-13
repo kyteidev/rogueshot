@@ -125,7 +125,6 @@ func _process(delta: float) -> void:
 			bullet_instance.rotation = global_rotation + spread_angle
 			bullet_instance.scale = Vector2(BULLET_SCALE, BULLET_SCALE)
 			
-			# subtract ammo and sync state with state manager
 			ammo -= 1
 
 			# cap spread and kick
