@@ -219,9 +219,6 @@ func equip_weapon(index: int) -> void:
 	
 	# only show active weapon
 	for i in range(weapons.size()):
-		if i != weapon_index:
-			weapons[i].hide()
-		else:
-			weapons[i].show()
+		weapons[i].visible = true if i == weapon_index else false
 			
 	crosshair.cancel_reload()

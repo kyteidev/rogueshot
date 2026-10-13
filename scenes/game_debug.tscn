@@ -29,7 +29,6 @@ sources/0 = SubResource("TileSetAtlasSource_hpfpv")
 [node name="Game Debug" type="Node2D" unique_id=1078131783]
 
 [node name="Background" parent="." unique_id=1305377215 instance=ExtResource("1_hpfpv")]
-visible = false
 
 [node name="Player" parent="." unique_id=73622017 node_paths=PackedStringArray("crosshair") instance=ExtResource("1_6rfd2")]
 crosshair = NodePath("../CrosshairCanvas")

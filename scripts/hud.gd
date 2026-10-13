@@ -22,6 +22,10 @@ var stamina_was_depleted = false
 @onready var stamina_timer = $StaminaBarOutline/StaminaBarTimer
 
 
+func _ready() -> void:
+	visible = true
+
+
 func _process(delta: float) -> void:
 	# update ammo info
 	var ammo_text = "%s/%s | %s %s"
