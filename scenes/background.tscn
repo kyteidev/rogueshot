@@ -19,8 +19,7 @@ grow_vertical = 2
 texture = ExtResource("1_cbsqf")
 
 [node name="Laver1" type="Parallax2D" parent="." unique_id=1781033397]
-scroll_scale = Vector2(0.05, 0.05)
-scroll_offset = Vector2(-200, 120)
+scroll_scale = Vector2(0.02, 0.02)
 repeat_size = Vector2(480, 0)
 
 [node name="Sprite2D" type="Sprite2D" parent="Laver1" unique_id=1933524760]
@@ -28,8 +27,7 @@ texture = ExtResource("1_jougr")
 centered = false
 
 [node name="Layer2" type="Parallax2D" parent="." unique_id=1749565630]
-scroll_scale = Vector2(0.1, 0.1)
-scroll_offset = Vector2(-200, 120)
+scroll_scale = Vector2(0.05, 0.05)
 repeat_size = Vector2(480, 0)
 
 [node name="Sprite2D" type="Sprite2D" parent="Layer2" unique_id=1392360814]
@@ -37,8 +35,7 @@ texture = ExtResource("2_cbsqf")
 centered = false
 
 [node name="Layer3" type="Parallax2D" parent="." unique_id=347219413]
-scroll_scale = Vector2(0.15, 0.15)
-scroll_offset = Vector2(-200, 120)
+scroll_scale = Vector2(0.08, 0.08)
 repeat_size = Vector2(480, 0)
 
 [node name="Sprite2D" type="Sprite2D" parent="Layer3" unique_id=209914064]
