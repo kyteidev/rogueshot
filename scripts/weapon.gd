@@ -9,7 +9,7 @@ const BULLET_SCALE = 0.2
 var sm = StateManager
 
 var weapons: Array = []
-var equipped_weapons = []
+var equipped_weapons: Array = []
 var weapon_index: int = 0
 var current_weapon: Sprite2D = null
 var weapon_name: String = ""
@@ -89,14 +89,6 @@ func _ready() -> void:
 
 
 func _process(delta: float) -> void:
-	# weapon switching
-	if Input.is_action_just_pressed("weapon_next"):
-		var next_index = (weapon_index + 1) % weapons.size()
-		equip_weapon(next_index)
-	elif Input.is_action_just_pressed("weapon_previous"):
-		var prev_index = (weapon_index - 1 + weapons.size()) % weapons.size()
-		equip_weapon(prev_index)
-	
 	# make weapon point towards mouse pointer
 	look_at(get_global_mouse_position())
 	
@@ -156,6 +148,19 @@ func _process(delta: float) -> void:
 		
 	if Input.is_action_just_pressed("weapon_reload"):
 		reload_weapon()
+		
+
+func _input(_event: InputEvent) -> void:
+	# weapon switching
+	if Input.is_action_just_pressed("weapon_cycle"):
+		var next_index = (weapon_index + 1) % weapons.size()
+		equip_weapon(next_index)
+	
+	# manually select primary/secondary weapon
+	if Input.is_action_just_pressed("weapon_1"):
+		equip_weapon(0)
+	elif Input.is_action_just_pressed("weapon_2"):
+		equip_weapon(1)
 		
 
 func reload_weapon() -> void:
