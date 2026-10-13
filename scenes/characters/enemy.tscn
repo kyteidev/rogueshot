@@ -158,7 +158,7 @@ position = Vector2(16, -0.5)
 [node name="Timer" type="Timer" parent="Weapon" unique_id=1442157855]
 
 [node name="WallRay" type="RayCast2D" parent="." unique_id=254261750]
-position = Vector2(0, -7)
+position = Vector2(0, -1)
 target_position = Vector2(16, 0)
 
 [node name="LedgeRay" type="RayCast2D" parent="." unique_id=2076729340]
