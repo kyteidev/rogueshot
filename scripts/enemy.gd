@@ -17,6 +17,8 @@ const TURN_MULTIPLIER = 1.5
 const GRAVITY = 750
 const FALL_GRAVITY = GRAVITY * 1.5
 
+const DAMAGE_FLASH_DELAY = 0.04
+
 var state = State.PATROL
 var target: CharacterBody2D = null
 
@@ -50,6 +52,11 @@ func _physics_process(delta: float) -> void:
 	
 
 func take_damage(damage) -> void:
+	var tween = create_tween()
+	tween.tween_property(self, "modulate", Color("ff0000"), DAMAGE_FLASH_DELAY)
+	tween.tween_property(self, "modulate", Color("ffffff"), DAMAGE_FLASH_DELAY)
+	
+	
 	health -= damage
 	if health <= 0:
 		state = State.DEAD
