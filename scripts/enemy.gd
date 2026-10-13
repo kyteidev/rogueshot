@@ -52,6 +52,7 @@ func _physics_process(delta: float) -> void:
 	
 
 func take_damage(damage) -> void:
+	# flash red when taking damage
 	var tween = create_tween()
 	tween.tween_property(self, "modulate", Color("ff0000"), DAMAGE_FLASH_DELAY)
 	tween.tween_property(self, "modulate", Color("ffffff"), DAMAGE_FLASH_DELAY)
@@ -83,7 +84,9 @@ func _state_retreat() -> void:
 	
 
 func _state_dead(delta) -> void:
+	# if enemy is moving, quickly but smoothly stop
 	velocity.x = move_toward(velocity.x, 0.0, 400.0 * delta)
 	
+	# once enemy has stopped, destroy node
 	if velocity.x == 0.0:
 		queue_free()
