@@ -105,7 +105,7 @@ func _process(delta: float) -> void:
 	else:
 		current_weapon.scale.y = abs(weapon_scale)
 		
-	# recoil recovery
+	# recoil and kick recovery and apply kick
 	current_spread = move_toward(current_spread, 0.0, spread_recovery * delta)
 	kick_offset = move_toward(kick_offset, 0.0, kick_recovery * delta)
 	current_weapon.position = weapon_rest_pos + Vector2(-kick_offset, 0)
