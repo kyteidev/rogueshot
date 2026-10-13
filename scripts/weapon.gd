@@ -128,7 +128,7 @@ func _process(delta: float) -> void:
 			# subtract ammo and sync state with state manager
 			ammo -= 1
 
-			# apply recoil
+			# cap spread and kick
 			current_spread = min(current_spread + spread_per_shot, max_spread)
 			kick_offset = min(kick_offset + kick, kick * 2.0)
 			
