@@ -3,7 +3,7 @@ extends Node2D
 
 const MAX_STAMINA_SPREAD_MULTIPLIER = 2.0
 
-const BULLET = preload("res://scenes/bullet.tscn")
+const BULLET = preload("res://scenes/weapons/bullet.tscn")
 const BULLET_SCALE = 0.2
 
 var sm = StateManager
