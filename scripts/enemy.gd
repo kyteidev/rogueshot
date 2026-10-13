@@ -21,6 +21,7 @@ const DAMAGE_FLASH_DELAY = 0.04
 
 var state = State.PATROL
 var target: CharacterBody2D = null
+var died = false
 
 var health = MAX_HEALTH
 var direction = 1
@@ -60,7 +61,9 @@ func _physics_process(delta: float) -> void:
 		# makes turns faster
 		if velocity.x != 0 and sign(velocity.x) != sign(direction):
 			accel *= TURN_MULTIPLIER
-	velocity.x = move_toward(velocity.x, direction * speed, accel * delta)
+			
+	if state != State.DEAD:
+		velocity.x = move_toward(velocity.x, direction * speed, accel * delta)
 	
 	move_and_slide()
 	
@@ -92,6 +95,7 @@ func _state_patrol() -> void:
 		ledge_ray.position.x *= -1
 	speed = PATROL_SPEED
 
+
 func _state_chase() -> void:
 	pass
 	
@@ -106,8 +110,14 @@ func _state_retreat() -> void:
 
 func _state_dead(delta) -> void:
 	# if enemy is moving, quickly but smoothly stop
-	velocity.x = move_toward(velocity.x, 0.0, 400.0 * delta)
-	
+	velocity.x = move_toward(velocity.x, 0.0, 200.0 * delta)
+
 	# once enemy has stopped, destroy node
-	if velocity.x == 0.0:
-		queue_free()
+	if velocity.x == 0.0 and is_on_floor():
+		if not died:
+			died = true
+			anim.play("death")
+		elif not anim.is_playing():
+			var tween = create_tween()
+			tween.tween_property(self, "modulate", Color("ffffff00"), 0.5)
+			tween.finished.connect(queue_free)
