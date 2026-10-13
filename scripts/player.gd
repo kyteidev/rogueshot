@@ -1,7 +1,7 @@
 extends CharacterBody2D
 
 
-const BASE_SPEED = 126.0
+const BASE_SPEED = 80.0
 const SPRINT_MULTIPLIER = 1.25
 
 const MAX_STAMINA = 100.0
