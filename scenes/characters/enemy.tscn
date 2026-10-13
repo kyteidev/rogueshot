@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://bpqxislc5uiqk" path="res://scripts/enemy.gd" id="1_4ra3w"]
 [ext_resource type="Texture2D" uid="uid://bxil48e432vuf" path="res://assets/sprites/enemy1.png" id="1_md0e3"]
+[ext_resource type="Texture2D" uid="uid://b01e1rwshiegl" path="res://assets/sprites/weapons/rifle.png" id="3_f2e6v"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_md484"]
 atlas = ExtResource("1_md0e3")
@@ -135,14 +136,26 @@ script = ExtResource("1_4ra3w")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1345892962]
 position = Vector2(0, -8)
 sprite_frames = SubResource("SpriteFrames_md0e3")
-animation = &"death"
+animation = &"idle"
 autoplay = "idle"
-frame = 2
-frame_progress = 0.61326486
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1475566916]
 position = Vector2(0, -7)
 shape = SubResource("CapsuleShape2D_nxcxh")
+
+[node name="Weapon" type="Node2D" parent="." unique_id=619093705]
+position = Vector2(0, -5)
+rotation = 0.2617994
+
+[node name="Rifle1" type="Sprite2D" parent="Weapon" unique_id=455243674]
+scale = Vector2(0.6, 0.6)
+texture = ExtResource("3_f2e6v")
+offset = Vector2(3, 0)
+
+[node name="Marker2D" type="Marker2D" parent="Weapon/Rifle1" unique_id=554835805]
+position = Vector2(16, -0.5)
+
+[node name="Timer" type="Timer" parent="Weapon" unique_id=1442157855]
 
 [node name="WallRay" type="RayCast2D" parent="." unique_id=254261750]
 position = Vector2(0, -7)

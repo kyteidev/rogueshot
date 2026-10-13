@@ -19,6 +19,8 @@ const FALL_GRAVITY = GRAVITY * 1.5
 
 const DAMAGE_FLASH_DELAY = 0.04
 
+const PATROL_WEAPON_TILT = 15.0
+
 var state = State.PATROL
 var target: CharacterBody2D = null
 var died = false
@@ -28,6 +30,9 @@ var direction = 1
 var speed = 0.0
 
 @onready var anim = $AnimatedSprite2D
+@onready var weapon = $Weapon
+@onready var weapon_sprite = $Weapon/Rifle1
+
 @onready var wall_ray = $WallRay
 @onready var ledge_ray = $LedgeRay
 
@@ -36,6 +41,14 @@ func get_custom_gravity(vel) -> float:
 	if vel.y < 0:
 		return GRAVITY
 	return FALL_GRAVITY
+	
+
+func _process(_delta: float) -> void:
+	var weapon_scale = weapon_sprite.scale.y
+	if direction < 0:
+		weapon_sprite.scale.y = abs(weapon_scale) * -1
+	else:
+		weapon_sprite.scale.y = abs(weapon_scale)
 
 
 func _physics_process(delta: float) -> void:
@@ -90,6 +103,8 @@ func _state_patrol() -> void:
 	
 	if is_on_floor() and (wall_ray.is_colliding() or not ledge_ray.is_colliding()):
 		direction *= -1
+		weapon.rotation = deg_to_rad(PATROL_WEAPON_TILT if direction > 0 else 180.0 - PATROL_WEAPON_TILT)
+		
 		anim.flip_h = not anim.flip_h
 		wall_ray.target_position *= -1
 		ledge_ray.position.x *= -1
