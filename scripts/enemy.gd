@@ -1,7 +1,7 @@
 extends CharacterBody2D
 
 
-enum State { IDLE, PATROL, CHASE, ATTACK, RETREAT, DEAD }
+enum State { IDLE, PATROL, INVESTIGATE, CHASE, ATTACK, RETREAT, DEAD }
 
 const MAX_HEALTH = 100.0
 
@@ -29,12 +29,16 @@ var health = MAX_HEALTH
 var direction = 1
 var speed = 0.0
 
+var is_detecting = false
+var is_aggroing = false
+
 @onready var anim = $AnimatedSprite2D
 @onready var weapon = $Weapon
 @onready var weapon_sprite = $Weapon/Rifle1
 
 @onready var wall_ray = $WallRay
 @onready var ledge_ray = $LedgeRay
+@onready var los_ray = $LOSRay
 
 
 func get_custom_gravity(vel) -> float:
@@ -44,12 +48,26 @@ func get_custom_gravity(vel) -> float:
 	
 
 func _process(_delta: float) -> void:
+	# flip weapon if necessary
 	var weapon_scale = weapon_sprite.scale.y
 	if direction < 0:
 		weapon_sprite.scale.y = abs(weapon_scale) * -1
 	else:
 		weapon_sprite.scale.y = abs(weapon_scale)
-
+	
+	# if player enters detection range
+	if is_detecting and target != null:
+		los_ray.look_at(target.global_position)
+		
+		# make sure enemy has line of sight to player
+		var ray_target = los_ray.get_collider()
+		if ray_target.is_in_group("player"):
+			state = State.INVESTIGATE
+			
+			# if player enters aggro range and enemy has line of sight
+			if is_aggroing:
+				state = State.ATTACK
+		
 
 func _physics_process(delta: float) -> void:
 	# gravity
@@ -59,6 +77,7 @@ func _physics_process(delta: float) -> void:
 	match state:
 		State.IDLE: _state_idle()
 		State.PATROL: _state_patrol()
+		State.INVESTIGATE: _state_investigate()
 		State.CHASE: _state_chase()
 		State.ATTACK: _state_attack()
 		State.RETREAT: _state_retreat()
@@ -110,6 +129,10 @@ func _state_patrol() -> void:
 		wall_ray.target_position *= -1
 		ledge_ray.position.x *= -1
 	speed = PATROL_SPEED
+	
+
+func _state_investigate() -> void:
+	pass
 
 
 func _state_chase() -> void:
@@ -137,3 +160,25 @@ func _state_dead(delta) -> void:
 			var tween = create_tween()
 			tween.tween_property(self, "modulate", Color("ffffff00"), 0.5)
 			tween.finished.connect(queue_free)
+
+
+func _on_detection_area_body_entered(body: Node2D) -> void:
+	if body.is_in_group("player"):
+		is_detecting = true
+		target = body
+		
+
+func _on_detection_area_body_exited(body: Node2D) -> void:
+	if body.is_in_group("player"):
+		is_detecting = false
+		target = null
+		
+
+func _on_aggro_area_body_entered(body: Node2D) -> void:
+	if body.is_in_group("player"):
+		is_aggroing = true
+
+
+func _on_aggro_area_body_exited(body: Node2D) -> void:
+	if body.is_in_group("player"):
+		is_aggroing = false

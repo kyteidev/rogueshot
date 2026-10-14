@@ -129,6 +129,12 @@ animations = [{
 radius = 5.0
 height = 14.0
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_f2e6v"]
+radius = 250.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_21x0f"]
+radius = 175.0
+
 [node name="Enemy" type="CharacterBody2D" unique_id=73622017]
 collision_mask = 3
 script = ExtResource("1_4ra3w")
@@ -164,3 +170,27 @@ target_position = Vector2(16, 0)
 [node name="LedgeRay" type="RayCast2D" parent="." unique_id=2076729340]
 position = Vector2(7, 0)
 target_position = Vector2(0, 4)
+
+[node name="LOSRay" type="RayCast2D" parent="." unique_id=1916510562]
+position = Vector2(0, -10)
+target_position = Vector2(250, 0)
+
+[node name="DetectionArea" type="Area2D" parent="." unique_id=1094551148]
+position = Vector2(0, -10)
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionArea" unique_id=469845586]
+shape = SubResource("CircleShape2D_f2e6v")
+
+[node name="AggroArea" type="Area2D" parent="." unique_id=919520652]
+position = Vector2(0, -10)
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AggroArea" unique_id=968259423]
+position = Vector2(0, -7)
+shape = SubResource("CircleShape2D_21x0f")
+
+[connection signal="body_entered" from="DetectionArea" to="." method="_on_detection_area_body_entered"]
+[connection signal="body_exited" from="DetectionArea" to="." method="_on_detection_area_body_exited"]
+[connection signal="body_entered" from="AggroArea" to="." method="_on_aggro_area_body_entered"]
+[connection signal="body_exited" from="AggroArea" to="." method="_on_aggro_area_body_exited"]
