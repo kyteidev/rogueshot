@@ -95,6 +95,7 @@ func take_damage(damage) -> void:
 
 func _state_idle() -> void:
 	anim.play("idle")
+	anim.speed_scale = 1.0
 	
 
 func _state_patrol() -> void:
