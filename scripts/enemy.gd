@@ -138,8 +138,13 @@ func _check_awareness() -> void:
 	# make sure enemy is not dead and player is detected
 	if state == State.DEAD or not is_detecting or not target:
 		return
-
-	los_ray.look_at(target.get_node("LOSTarget").global_position)
+	
+	# get player los target pos and cast ray if enemy faces player
+	var target_pos = target.get_node("LOSTarget").global_position
+	if sign(global_position.x - target_pos.x) == sign(direction):
+		return
+	
+	los_ray.look_at(target_pos)
 	los_ray.force_raycast_update()
 		
 	# make sure enemy has line of sight to player
