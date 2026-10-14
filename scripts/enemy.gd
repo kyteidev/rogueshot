@@ -45,12 +45,6 @@ var status_icons = [preload("res://assets/sprites/icons/question mark.png"), pre
 @onready var wall_ray = $WallRay
 @onready var ledge_ray = $LedgeRay
 @onready var los_ray = $LOSRay
-
-
-func get_custom_gravity(vel) -> float:
-	if vel.y < 0:
-		return GRAVITY
-	return FALL_GRAVITY
 	
 
 func _process(_delta: float) -> void:
@@ -79,7 +73,7 @@ func _process(_delta: float) -> void:
 func _physics_process(delta: float) -> void:
 	# gravity
 	if not is_on_floor():
-		velocity.y += get_custom_gravity(velocity) * delta
+		velocity.y += _get_custom_gravity(velocity) * delta
 		
 	match state:
 		State.IDLE: _state_idle()
@@ -117,6 +111,12 @@ func take_damage(damage) -> void:
 	health -= damage
 	if health <= 0:
 		state = State.DEAD
+		
+
+func _get_custom_gravity(vel) -> float:
+	if vel.y < 0:
+		return GRAVITY
+	return FALL_GRAVITY
 
 
 func _state_idle() -> void:

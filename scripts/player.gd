@@ -78,18 +78,12 @@ func _ready() -> void:
 	stamina = MAX_STAMINA
 
 
-func get_custom_gravity(vel) -> float:
-	if vel.y < 0:
-		return GRAVITY
-	return FALL_GRAVITY
-
-
 func _physics_process(delta: float) -> void:
 	var was_on_floor = is_on_floor()
 	
 	# gravity and jump stretch
 	if not is_on_floor():
-		velocity.y += get_custom_gravity(velocity) * delta
+		velocity.y += _get_custom_gravity(velocity) * delta
 		was_airborne = true
 		
 		if not reached_peak and velocity.y >= 0:
@@ -204,3 +198,9 @@ func _physics_process(delta: float) -> void:
 	# coyote time management
 	if was_on_floor and not is_on_floor() and velocity.y >= 0:
 		coyote_timer.start(COYOTE_TIME)
+
+
+func _get_custom_gravity(vel) -> float:
+	if vel.y < 0:
+		return GRAVITY
+	return FALL_GRAVITY
