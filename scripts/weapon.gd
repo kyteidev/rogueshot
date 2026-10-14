@@ -119,7 +119,7 @@ func _process(delta: float) -> void:
 
 			# apply spread
 			var spread_angle = deg_to_rad(randf_range(-current_spread, current_spread)) \
-									* ((100 - player.stamina) / 100) * MAX_STAMINA_SPREAD_MULTIPLIER
+					* ((100 - player.stamina) / 100) * MAX_STAMINA_SPREAD_MULTIPLIER
 
 			bullet_instance.global_position = weapon_muzzle.global_position
 			bullet_instance.rotation = global_rotation + spread_angle
