@@ -102,6 +102,10 @@ func take_damage(damage) -> void:
 	health -= damage
 	if health <= 0:
 		_change_state(State.DEAD)
+		
+		# make enemy red when dead
+		tween.tween_property(self, "modulate", Color("ff0000"), DAMAGE_FLASH_DELAY)
+
 
 
 func _get_custom_gravity(vel) -> float:
