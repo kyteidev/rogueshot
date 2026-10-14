@@ -45,7 +45,7 @@ var status_icons = [preload("res://assets/sprites/icons/question mark.png"), pre
 @onready var wall_ray = $WallRay
 @onready var ledge_ray = $LedgeRay
 @onready var los_ray = $LOSRay
-	
+
 
 func _process(_delta: float) -> void:
 	# flip weapon if necessary
@@ -54,26 +54,14 @@ func _process(_delta: float) -> void:
 		weapon_sprite.scale.y = abs(weapon_scale) * -1
 	else:
 		weapon_sprite.scale.y = abs(weapon_scale)
-	
-	# if player enters detection range
-	if state != State.DEAD and is_detecting and target != null:
-		los_ray.look_at(target.global_position)
-		
-		# make sure enemy has line of sight to player
-		var ray_target = los_ray.get_collider()
-		if ray_target and ray_target.is_in_group("player"):
-			# set appropriate state once
-			if is_aggroing:
-				if state != State.ATTACK:
-					state = State.ATTACK
-			elif state != State.INVESTIGATE:
-				state = State.INVESTIGATE
 		
 
 func _physics_process(delta: float) -> void:
 	# gravity
 	if not is_on_floor():
 		velocity.y += _get_custom_gravity(velocity) * delta
+		
+	_check_awareness()
 		
 	match state:
 		State.IDLE: _state_idle()
@@ -102,6 +90,9 @@ func _physics_process(delta: float) -> void:
 	
 
 func take_damage(damage) -> void:
+	if state == State.DEAD:
+		return
+	
 	# flash red when taking damage
 	var tween = create_tween()
 	tween.tween_property(self, "modulate", Color("ff0000"), DAMAGE_FLASH_DELAY)
@@ -110,13 +101,47 @@ func take_damage(damage) -> void:
 	
 	health -= damage
 	if health <= 0:
-		state = State.DEAD
-		
+		_change_state(State.DEAD)
+
 
 func _get_custom_gravity(vel) -> float:
 	if vel.y < 0:
 		return GRAVITY
 	return FALL_GRAVITY
+	
+
+func _change_state(new_state) -> void:
+	# make sure state is not changed to same state again
+	if state == State.DEAD or state == new_state:
+		return
+		
+	state = new_state
+	_enter_state(new_state)
+
+
+func _enter_state(new_state) -> void:
+	match new_state:
+		State.PATROL:
+			speed = PATROL_SPEED
+		State.INVESTIGATE, State.ATTACK:
+			speed = 0.0
+			
+			status_icon.texture = status_icons[0] if state == State.INVESTIGATE else status_icons[1]
+			status_icon.play_anim()
+			
+
+func _check_awareness() -> void:
+	# make sure enemy is not dead and player is detected
+	if state == State.DEAD or not is_detecting or not target:
+		return
+
+	los_ray.look_at(target.get_node("LOSTarget").global_position)
+	los_ray.force_raycast_update()
+		
+	# make sure enemy has line of sight to player
+	var ray_target = los_ray.get_collider()
+	if ray_target and ray_target.is_in_group("player"):
+		_change_state(State.ATTACK if is_aggroing else State.INVESTIGATE)
 
 
 func _state_idle() -> void:
@@ -142,13 +167,7 @@ func _state_patrol() -> void:
 	
 
 func _state_investigate() -> void:
-	if can_play_icon_anim:
-		speed = 0.0
-		
-		status_icon.texture = status_icons[0]
-		status_icon.play_anim()
-		
-		can_play_icon_anim = false
+	pass
 
 
 func _state_chase() -> void:
@@ -156,13 +175,7 @@ func _state_chase() -> void:
 	
 	
 func _state_attack() -> void:
-	if can_play_icon_anim:
-		speed = 0.0
-		
-		status_icon.texture = status_icons[1]
-		status_icon.play_anim()
-		
-		can_play_icon_anim = false
+	pass
 
 
 func _state_retreat() -> void:
@@ -189,27 +202,18 @@ func _on_detection_area_body_entered(body: Node2D) -> void:
 		is_detecting = true
 		target = body
 		
-		can_play_icon_anim = true
-		
 
 func _on_detection_area_body_exited(body: Node2D) -> void:
 	if body.is_in_group("player"):
 		is_detecting = false
 		target = null
-		
-		can_play_icon_anim = false
+
 
 func _on_aggro_area_body_entered(body: Node2D) -> void:
 	if body.is_in_group("player"):
 		is_aggroing = true
-		# set state in this frame, otherwise aggro status wont show
-		state = State.ATTACK
-		
-		can_play_icon_anim = true
 
 
 func _on_aggro_area_body_exited(body: Node2D) -> void:
 	if body.is_in_group("player"):
 		is_aggroing = false
-		
-		can_play_icon_anim = false
