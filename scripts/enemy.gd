@@ -62,16 +62,17 @@ func _process(_delta: float) -> void:
 		weapon_sprite.scale.y = abs(weapon_scale)
 	
 	# if player enters detection range
-	if is_detecting and target != null:
+	if state != State.DEAD and is_detecting and target != null:
 		los_ray.look_at(target.global_position)
 		
 		# make sure enemy has line of sight to player
 		var ray_target = los_ray.get_collider()
 		if ray_target and ray_target.is_in_group("player"):
-			# set appropriate state
+			# set appropriate state once
 			if is_aggroing:
-				state = State.ATTACK
-			else:
+				if state != State.ATTACK:
+					state = State.ATTACK
+			elif state != State.INVESTIGATE:
 				state = State.INVESTIGATE
 		
 
@@ -184,7 +185,6 @@ func _state_dead(delta) -> void:
 
 
 func _on_detection_area_body_entered(body: Node2D) -> void:
-	print("inv")
 	if body.is_in_group("player"):
 		is_detecting = true
 		target = body
@@ -200,7 +200,6 @@ func _on_detection_area_body_exited(body: Node2D) -> void:
 		can_play_icon_anim = false
 
 func _on_aggro_area_body_entered(body: Node2D) -> void:
-	print("aggro")
 	if body.is_in_group("player"):
 		is_aggroing = true
 		# set state in this frame, otherwise aggro status wont show
