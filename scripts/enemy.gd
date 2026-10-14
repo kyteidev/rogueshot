@@ -32,9 +32,15 @@ var speed = 0.0
 var is_detecting = false
 var is_aggroing = false
 
+var can_play_icon_anim = false
+
+# index 0: question mark, index 1: exclamation mark
+var status_icons = [preload("res://assets/sprites/icons/question mark.png"), preload("res://assets/sprites/icons/exclamation mark.png")]
+
 @onready var anim = $AnimatedSprite2D
 @onready var weapon = $Weapon
 @onready var weapon_sprite = $Weapon/Rifle1
+@onready var status_icon = $StatusIcon
 
 @onready var wall_ray = $WallRay
 @onready var ledge_ray = $LedgeRay
@@ -61,12 +67,12 @@ func _process(_delta: float) -> void:
 		
 		# make sure enemy has line of sight to player
 		var ray_target = los_ray.get_collider()
-		if ray_target.is_in_group("player"):
-			state = State.INVESTIGATE
-			
-			# if player enters aggro range and enemy has line of sight
+		if ray_target and ray_target.is_in_group("player"):
+			# set appropriate state
 			if is_aggroing:
 				state = State.ATTACK
+			else:
+				state = State.INVESTIGATE
 		
 
 func _physics_process(delta: float) -> void:
@@ -121,6 +127,7 @@ func _state_patrol() -> void:
 	anim.play("run")
 	anim.speed_scale = 0.9
 	
+	# flip necessary values
 	if is_on_floor() and (wall_ray.is_colliding() or not ledge_ray.is_colliding()):
 		direction *= -1
 		weapon.rotation = deg_to_rad(PATROL_WEAPON_TILT if direction > 0 else 180.0 - PATROL_WEAPON_TILT)
@@ -128,11 +135,19 @@ func _state_patrol() -> void:
 		anim.flip_h = not anim.flip_h
 		wall_ray.target_position *= -1
 		ledge_ray.position.x *= -1
+		
+		status_icon.position.x *= -1
 	speed = PATROL_SPEED
 	
 
 func _state_investigate() -> void:
-	pass
+	if can_play_icon_anim:
+		speed = 0.0
+		
+		status_icon.texture = status_icons[0]
+		status_icon.play_anim()
+		
+		can_play_icon_anim = false
 
 
 func _state_chase() -> void:
@@ -140,7 +155,13 @@ func _state_chase() -> void:
 	
 	
 func _state_attack() -> void:
-	pass
+	if can_play_icon_anim:
+		speed = 0.0
+		
+		status_icon.texture = status_icons[1]
+		status_icon.play_anim()
+		
+		can_play_icon_anim = false
 
 
 func _state_retreat() -> void:
@@ -163,9 +184,12 @@ func _state_dead(delta) -> void:
 
 
 func _on_detection_area_body_entered(body: Node2D) -> void:
+	print("inv")
 	if body.is_in_group("player"):
 		is_detecting = true
 		target = body
+		
+		can_play_icon_anim = true
 		
 
 func _on_detection_area_body_exited(body: Node2D) -> void:
@@ -173,12 +197,20 @@ func _on_detection_area_body_exited(body: Node2D) -> void:
 		is_detecting = false
 		target = null
 		
+		can_play_icon_anim = false
 
 func _on_aggro_area_body_entered(body: Node2D) -> void:
+	print("aggro")
 	if body.is_in_group("player"):
 		is_aggroing = true
+		# set state in this frame, otherwise aggro status wont show
+		state = State.ATTACK
+		
+		can_play_icon_anim = true
 
 
 func _on_aggro_area_body_exited(body: Node2D) -> void:
 	if body.is_in_group("player"):
 		is_aggroing = false
+		
+		can_play_icon_anim = false
