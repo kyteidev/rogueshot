@@ -263,7 +263,11 @@ func _state_attack(delta) -> void:
 		
 		if in_aggro_area:
 			speed = 0.0
+			
+			anim.speed_scale = 1.0
+			anim.play("idle")
 		else:
+			anim.speed_scale = 0.7
 			_move_toward(known_target_pos, BASE_SPEED)
 
 
