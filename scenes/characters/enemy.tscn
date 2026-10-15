@@ -138,7 +138,6 @@ radius = 200.0
 radius = 125.0
 
 [node name="Enemy" type="CharacterBody2D" unique_id=73622017 groups=["enemy"]]
-collision_mask = 3
 script = ExtResource("1_4ra3w")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1345892962]
