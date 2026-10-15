@@ -1,7 +1,7 @@
 extends CharacterBody2D
 
 
-enum State { IDLE, PATROL, INVESTIGATE, RETURN, CHASE, ATTACK, RETREAT, DEAD }
+enum State { IDLE, PATROL, INVESTIGATE, RETURN, CHASE, SEARCH, ATTACK, RETREAT, DEAD }
 
 const BULLET = preload("res://scenes/weapons/bullet.tscn")
 const BULLET_SCALE = 0.2
@@ -106,6 +106,7 @@ func _physics_process(delta: float) -> void:
 		State.INVESTIGATE: _state_investigate()
 		State.RETURN: _state_return()
 		State.CHASE: _state_chase()
+		State.SEARCH: _state_search()
 		State.ATTACK: _state_attack(delta)
 		State.RETREAT: _state_retreat()
 		State.DEAD: _state_dead(delta)
@@ -259,6 +260,10 @@ func _state_chase() -> void:
 		_change_state(State.ATTACK)
 		is_aggroing = true
 	
+
+func _state_search() -> void:
+	pass
+
 	
 func _state_attack(delta) -> void:
 	# chase target if outside detection range
