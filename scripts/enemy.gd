@@ -44,6 +44,8 @@ const RETURN_DELAY = 2.5
 const ATTACK_DELAY = 1.5
 const ATTACK_FIRE_RATE = 0.12
 
+const MAX_AMMO = 30
+
 var state = State.PATROL
 var target: CharacterBody2D = null
 var died = false
@@ -51,7 +53,7 @@ var died = false
 var health = MAX_HEALTH
 var direction = 1
 var speed = 0.0
-var ammo = 30
+var ammo = MAX_AMMO
 
 var is_detecting = false
 var is_aggroing = false
@@ -326,7 +328,7 @@ func _shoot() -> void:
 		ammo -= 1
 	elif ammo == 0:
 		weapon_reload_timer.start(WEAPON_RELOAD_TIME)
-		ammo = 30
+		ammo = MAX_AMMO
 
 
 func _move_toward(pos, move_speed) -> float:
