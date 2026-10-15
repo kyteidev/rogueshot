@@ -3,6 +3,9 @@ extends CharacterBody2D
 
 enum State { IDLE, PATROL, INVESTIGATE, RETURN, CHASE, ATTACK, RETREAT, DEAD }
 
+const BULLET = preload("res://scenes/weapons/bullet.tscn")
+const BULLET_SCALE = 0.2
+
 const MAX_HEALTH = 100.0
 
 const BASE_SPEED = 80.0
@@ -21,11 +24,18 @@ const FALL_GRAVITY = GRAVITY * 1.5
 const DAMAGE_FLASH_DELAY = 0.04
 
 const PATROL_WEAPON_TILT = 15.0
+const WEAPON_ROTATION_SPEED = 10.0
+const WEAPON_SPREAD = 2.0
+const WEAPON_KICK = 3.0
+const WEAPON_KICK_RECOVERY = 42.0
 
 const INV_DELAY = 1.0
 const INV_MIN_MOVE_DIST = 20.0
 
 const RETURN_DELAY = 2.5
+
+const ATTACK_DELAY = 1.5
+const ATTACK_FIRE_RATE = 0.12
 
 var state = State.PATROL
 var target: CharacterBody2D = null
@@ -40,12 +50,16 @@ var is_aggroing = false
 
 var known_target_pos: Vector2
 
+var kick_offset = 0.0
+
 # index 0: question mark, index 1: exclamation mark
 var status_icons = [preload("res://assets/sprites/icons/question mark.png"), preload("res://assets/sprites/icons/exclamation mark.png")]
 
 @onready var anim = $AnimatedSprite2D
 @onready var weapon = $Weapon
 @onready var weapon_sprite = $Weapon/Rifle1
+@onready var weapon_muzzle = $Weapon/Rifle1/Marker2D
+@onready var weapon_timer = $Weapon/WeaponTimer
 @onready var status_icon = $StatusIcon
 
 @onready var wall_ray = $WallRay
@@ -55,6 +69,7 @@ var status_icons = [preload("res://assets/sprites/icons/question mark.png"), pre
 @onready var state_timer = $StateTimer
 
 @onready var patrol_pos = global_position
+@onready var weapon_rest_pos = weapon.position
 
 
 func _process(_delta: float) -> void:
@@ -79,7 +94,7 @@ func _physics_process(delta: float) -> void:
 		State.INVESTIGATE: _state_investigate()
 		State.RETURN: _state_return()
 		State.CHASE: _state_chase()
-		State.ATTACK: _state_attack()
+		State.ATTACK: _state_attack(delta)
 		State.RETREAT: _state_retreat()
 		State.DEAD: _state_dead(delta)
 	
@@ -144,7 +159,7 @@ func _enter_state(new_state) -> void:
 			status_icon.texture = status_icons[0] if state == State.INVESTIGATE else status_icons[1]
 			status_icon.play_anim()
 			
-			state_timer.start(INV_DELAY)
+			state_timer.start(INV_DELAY if state == State.INVESTIGATE else ATTACK_DELAY)
 			
 			if state == State.ATTACK:
 				status_icon.can_fade = true
@@ -205,24 +220,49 @@ func _state_investigate() -> void:
 
 func _state_return() -> void:
 	if state_timer.is_stopped():
-		anim.speed_scale = 0.7
-		
-		# move toward patrol position
-		var pos_diff = _move_toward(patrol_pos, PATROL_SPEED)
-		if pos_diff == 0:
-			_change_state(State.PATROL)
+		if weapon_timer.is_stopped():
+			anim.speed_scale = 0.7
 			
-			# fade status icon
-			status_icon.fade_timer.start()
-			status_icon.can_fade = true
+			# move toward patrol position
+			var pos_diff = _move_toward(patrol_pos, PATROL_SPEED)
+			if pos_diff == 0:
+				_change_state(State.PATROL)
+				
+				# fade status icon
+				status_icon.fade_timer.start()
+				status_icon.can_fade = true
+			
+			weapon_timer.start(ATTACK_FIRE_RATE)
 
 
 func _state_chase() -> void:
 	pass
 	
 	
-func _state_attack() -> void:
-	pass
+func _state_attack(delta) -> void:
+	var desired_rotation = (known_target_pos - global_position).angle()
+	weapon.rotation = lerp_angle(weapon.rotation, desired_rotation, 1.0 - exp(-WEAPON_ROTATION_SPEED * delta))
+	
+	# after attack delay has passed
+	if state_timer.is_stopped():
+		kick_offset = move_toward(kick_offset, 0.0, WEAPON_KICK_RECOVERY * delta)
+		weapon.position = weapon_rest_pos + Vector2(-kick_offset, 0)
+		
+		# fire weapon
+		if weapon_timer.is_stopped():
+			var bullet_instance = BULLET.instantiate()
+			bullet_instance.type = bullet_instance.Types.ENEMY
+			get_tree().root.add_child(bullet_instance)
+			
+			var spread_angle = deg_to_rad(randf_range(-WEAPON_SPREAD, WEAPON_SPREAD))
+			
+			bullet_instance.global_position = weapon_muzzle.global_position
+			bullet_instance.rotation = weapon.global_rotation + spread_angle
+			bullet_instance.scale = Vector2(BULLET_SCALE, BULLET_SCALE)
+			
+			kick_offset = min(kick_offset + WEAPON_KICK, WEAPON_KICK * 2.0)
+			
+			weapon_timer.start(ATTACK_FIRE_RATE)
 
 
 func _state_retreat() -> void:

@@ -115,6 +115,7 @@ func _process(delta: float) -> void:
 		if can_fire and ammo > 0:
 			# spawn bullet
 			var bullet_instance = BULLET.instantiate()
+			bullet_instance.type = bullet_instance.Types.FRIENDLY
 			get_tree().root.add_child(bullet_instance)
 
 			# apply spread
