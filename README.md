@@ -8,6 +8,30 @@ Currently shooting, movement, and stamina is finished. There is a dev room where
 
 Enemies are currently being worked on.
 
+LIST OF FINISHED FEATURES (updated Oct. 15 2026):
+- Build 1 (0.1.0-dev.1)
+    - Shooting
+        - Ammo
+        - Reload (partially)
+        - Spread and recoil
+    - Movement
+        - Walking
+        - Running
+        - Jumping
+        - Wallbounce
+    - Main menu and pause menu (basic)
+    - HUD (basic)
+    - Custom reticle (partially)
+- Build 2 (0.1.0-dev.2)
+    - Shooting
+        - Reload
+    - Custom reticle
+    - Stamina
+    - Enemies
+        - State indicator
+        - Health 
+        - Patrol
+
 ### THIRD PARTY ASSETS
 - Groundhog font by ChevyRay - https://chevyray.itch.io/pixel-font-groundhog
 - Cyberpunk Tileset - 16X16 by MORDA - https://morda-studios.itch.io/cyberpunk-tileset-16x16?download
