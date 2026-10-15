@@ -6,6 +6,11 @@ enum State { IDLE, PATROL, INVESTIGATE, RETURN, CHASE, ATTACK, RETREAT, DEAD }
 const BULLET = preload("res://scenes/weapons/bullet.tscn")
 const BULLET_SCALE = 0.2
 
+const ANIM_REF_SPEED = 65.0
+const ANIM_MIN_SCALE = 0.4
+const ANIM_MAX_SCALE = 2.0
+const ANIM_EXP = 0.34
+
 const MAX_HEALTH = 100.0
 
 const BASE_SPEED = 80.0
@@ -134,6 +139,11 @@ func take_damage(damage) -> void:
 		tween.tween_property(self, "modulate", Color("ff0000"), DAMAGE_FLASH_DELAY)
 
 
+func _set_run_anim(move_speed) -> void:
+	anim.speed_scale = clamp((move_speed / ANIM_REF_SPEED) ** ANIM_EXP, ANIM_MIN_SCALE, ANIM_MAX_SCALE)
+	anim.play("run")
+
+
 func _get_custom_gravity(vel) -> float:
 	if vel.y < 0:
 		return GRAVITY
@@ -197,8 +207,7 @@ func _state_idle() -> void:
 	
 
 func _state_patrol() -> void:
-	anim.play("run")
-	anim.speed_scale = 0.7
+	_set_run_anim(PATROL_SPEED)
 	
 	# flip necessary values
 	if is_on_floor() and (wall_ray.is_colliding() or not ledge_ray.is_colliding()):
@@ -212,8 +221,6 @@ func _state_patrol() -> void:
 
 func _state_investigate() -> void:
 	if state_timer.is_stopped():
-		anim.speed_scale = 1.0
-		
 		# move towards known target position
 		# known target position only updates when it is in detection area
 		var pos_diff = _move_toward(known_target_pos, BASE_SPEED)
@@ -224,8 +231,6 @@ func _state_investigate() -> void:
 func _state_return() -> void:
 	if state_timer.is_stopped():
 		if weapon_timer.is_stopped():
-			anim.speed_scale = 0.7
-			
 			# move toward patrol position
 			var pos_diff = _move_toward(patrol_pos, PATROL_SPEED)
 			if pos_diff == 0:
@@ -267,7 +272,6 @@ func _state_attack(delta) -> void:
 			anim.speed_scale = 1.0
 			anim.play("idle")
 		else:
-			anim.speed_scale = 0.7
 			_move_toward(known_target_pos, BASE_SPEED)
 
 
@@ -312,7 +316,7 @@ func _move_toward(pos, move_speed) -> float:
 		anim.play("idle")
 		return 0.0
 
-	anim.play("run")
+	_set_run_anim(move_speed)
 	direction = 1 if pos_diff < 0 else -1
 	speed = move_speed
 	
