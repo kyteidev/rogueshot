@@ -60,6 +60,7 @@ var is_aggroing = false
 var in_aggro_area = false
 
 var known_target_pos: Vector2
+var in_los = false
 
 var kick_offset = 0.0
 
@@ -104,7 +105,7 @@ func _physics_process(delta: float) -> void:
 		State.IDLE: _state_idle()
 		State.PATROL: _state_patrol()
 		State.INVESTIGATE: _state_investigate()
-		State.RETURN: _state_return()
+		State.RETURN: _state_return(delta)
 		State.CHASE: _state_chase()
 		State.SEARCH: _state_search()
 		State.ATTACK: _state_attack(delta)
@@ -209,6 +210,9 @@ func _check_awareness() -> void:
 		
 		# update known target position if still in line of sight
 		known_target_pos = target_pos
+		in_los = true
+	else:
+		in_los = false
 
 
 func _state_idle() -> void:
@@ -238,27 +242,32 @@ func _state_investigate() -> void:
 			_change_state(State.RETURN)
 
 
-func _state_return() -> void:
+func _state_return(delta) -> void:
 	if state_timer.is_stopped():
-		if weapon_timer.is_stopped():
-			# move toward patrol position
-			var pos_diff = _move_toward(patrol_pos, PATROL_SPEED)
-			if pos_diff == 0:
-				_change_state(State.PATROL)
-				
-				# fade status icon
-				status_icon.fade_timer.start()
-				status_icon.can_fade = true
+		# rotate weapon
+		var desired_rotation = deg_to_rad(PATROL_WEAPON_TILT if direction > 0 else 180.0 - PATROL_WEAPON_TILT)
+		weapon.rotation = lerp_angle(weapon.rotation, desired_rotation, 1.0 - exp(-WEAPON_ROTATION_SPEED * delta))
+		
+		# move toward patrol position
+		var pos_diff = _move_toward(patrol_pos, PATROL_SPEED)
+		if pos_diff == 0:
+			_change_state(State.PATROL)
 			
-			weapon_timer.start(ATTACK_FIRE_RATE)
+			# fade status icon
+			status_icon.fade_timer.start()
+			status_icon.can_fade = true
 
 
 func _state_chase() -> void:
-	_move_toward(known_target_pos, RUN_SPEED)
+	var pos_diff = _move_toward(known_target_pos, RUN_SPEED)
 	
 	if is_detecting:
 		_change_state(State.ATTACK)
 		is_aggroing = true
+	
+	if pos_diff == 0 and not is_detecting:
+		_change_state(State.RETURN)
+		# TODO: implement search state
 	
 
 func _state_search() -> void:
@@ -288,13 +297,16 @@ func _state_attack(delta) -> void:
 			_shoot()
 			weapon_timer.start(ATTACK_FIRE_RATE)
 		
-		if in_aggro_area:
+		if in_aggro_area and in_los:
 			speed = 0.0
 			
 			anim.speed_scale = 1.0
 			anim.play("idle")
 		else:
-			_move_toward(known_target_pos, BASE_SPEED)
+			var pos_diff = _move_toward(known_target_pos, BASE_SPEED)
+		
+			if pos_diff == 0 and not in_los:
+				_change_state(State.RETURN)
 
 
 func _state_retreat() -> void:
