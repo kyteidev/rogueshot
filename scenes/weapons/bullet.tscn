@@ -3,6 +3,14 @@
 [ext_resource type="Texture2D" uid="uid://dfmvm3hb6slg" path="res://assets/sprites/weapons/bullet.png" id="1_mkf8s"]
 [ext_resource type="Script" uid="uid://ct25setqlsdgc" path="res://scripts/bullet.gd" id="1_y25gk"]
 
+[sub_resource type="Curve" id="Curve_4iqke"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 0.27123284), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Gradient" id="Gradient_e0k1m"]
+offsets = PackedFloat32Array(0.0061728396, 0.97530866)
+colors = PackedColorArray(0, 0, 0, 0, 0.9843137, 0.9490196, 0.21176471, 1)
+
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_nxcxh"]
 radius = 3.0
 height = 12.0
@@ -11,14 +19,21 @@ height = 12.0
 collision_layer = 2
 script = ExtResource("1_y25gk")
 
+[node name="Trail" type="Line2D" parent="." unique_id=343892780]
+width = 5.0
+width_curve = SubResource("Curve_4iqke")
+gradient = SubResource("Gradient_e0k1m")
+
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1814169947]
 texture = ExtResource("1_mkf8s")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1074824542]
+visible = false
 rotation = 1.5707964
 shape = SubResource("CapsuleShape2D_nxcxh")
 
 [node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="." unique_id=291184140]
+visible = false
 position = Vector2(-18, 18)
 rect = Rect2(-10, -46, 56, 56)
 

@@ -1,19 +1,24 @@
 extends CharacterBody2D
 
 
-const SPEED = 2000
-
-
 enum Types { FRIENDLY, ENEMY }
+
+const SPEED = 2000
+const TRAIL_MAX_POINTS = 4
 
 var sm = StateManager
 var type = Types.FRIENDLY
 
 var origin_pos: Vector2
 
+@onready var trail = $Trail
+
 
 func _ready() -> void:
 	origin_pos = global_position
+	
+	trail.top_level = true
+	trail.clear_points()
 
 
 func _physics_process(delta: float) -> void:
@@ -36,6 +41,11 @@ func _physics_process(delta: float) -> void:
 				if hit.has_method("take_damage"):
 					hit.take_damage(sm.damage)
 				queue_free()
+	
+	# add bullet trail
+	trail.add_point(global_position)
+	if trail.get_point_count() > TRAIL_MAX_POINTS:
+		trail.remove_point(0)
 
 
 func _on_visible_on_screen_notifier_2d_screen_exited() -> void:
