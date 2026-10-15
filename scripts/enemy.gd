@@ -1,10 +1,11 @@
 extends CharacterBody2D
 
 
-enum State { IDLE, PATROL, INVESTIGATE, CHASE, ATTACK, RETREAT, DEAD }
+enum State { IDLE, PATROL, INVESTIGATE, RETURN, CHASE, ATTACK, RETREAT, DEAD }
 
 const MAX_HEALTH = 100.0
 
+const BASE_SPEED = 80.0
 const PATROL_SPEED = 30.0
 const JUMP_VELOCITY = -200.0
 
@@ -21,6 +22,11 @@ const DAMAGE_FLASH_DELAY = 0.04
 
 const PATROL_WEAPON_TILT = 15.0
 
+const INV_DELAY = 1.0
+const INV_MIN_MOVE_DIST = 20.0
+
+const RETURN_DELAY = 2.5
+
 var state = State.PATROL
 var target: CharacterBody2D = null
 var died = false
@@ -32,7 +38,7 @@ var speed = 0.0
 var is_detecting = false
 var is_aggroing = false
 
-var can_play_icon_anim = false
+var known_target_pos: Vector2
 
 # index 0: question mark, index 1: exclamation mark
 var status_icons = [preload("res://assets/sprites/icons/question mark.png"), preload("res://assets/sprites/icons/exclamation mark.png")]
@@ -45,6 +51,10 @@ var status_icons = [preload("res://assets/sprites/icons/question mark.png"), pre
 @onready var wall_ray = $WallRay
 @onready var ledge_ray = $LedgeRay
 @onready var los_ray = $LOSRay
+
+@onready var state_timer = $StateTimer
+
+@onready var patrol_pos = global_position
 
 
 func _process(_delta: float) -> void:
@@ -67,6 +77,7 @@ func _physics_process(delta: float) -> void:
 		State.IDLE: _state_idle()
 		State.PATROL: _state_patrol()
 		State.INVESTIGATE: _state_investigate()
+		State.RETURN: _state_return()
 		State.CHASE: _state_chase()
 		State.ATTACK: _state_attack()
 		State.RETREAT: _state_retreat()
@@ -107,7 +118,6 @@ func take_damage(damage) -> void:
 		tween.tween_property(self, "modulate", Color("ff0000"), DAMAGE_FLASH_DELAY)
 
 
-
 func _get_custom_gravity(vel) -> float:
 	if vel.y < 0:
 		return GRAVITY
@@ -128,11 +138,18 @@ func _enter_state(new_state) -> void:
 		State.PATROL:
 			speed = PATROL_SPEED
 		State.INVESTIGATE, State.ATTACK:
+			anim.play("idle")
 			speed = 0.0
 			
 			status_icon.texture = status_icons[0] if state == State.INVESTIGATE else status_icons[1]
 			status_icon.play_anim()
 			
+			state_timer.start(INV_DELAY)
+		State.RETURN:
+			speed = 0.0
+			state_timer.start(RETURN_DELAY)
+			# TODO: hide status icon
+
 
 func _check_awareness() -> void:
 	# make sure enemy is not dead and player is detected
@@ -151,6 +168,9 @@ func _check_awareness() -> void:
 	var ray_target = los_ray.get_collider()
 	if ray_target and ray_target.is_in_group("player"):
 		_change_state(State.ATTACK if is_aggroing else State.INVESTIGATE)
+		
+		# update known target position if still in line of sight
+		known_target_pos = target_pos
 
 
 func _state_idle() -> void:
@@ -160,23 +180,31 @@ func _state_idle() -> void:
 
 func _state_patrol() -> void:
 	anim.play("run")
-	anim.speed_scale = 0.9
+	anim.speed_scale = 0.7
 	
 	# flip necessary values
 	if is_on_floor() and (wall_ray.is_colliding() or not ledge_ray.is_colliding()):
 		direction *= -1
-		weapon.rotation = deg_to_rad(PATROL_WEAPON_TILT if direction > 0 else 180.0 - PATROL_WEAPON_TILT)
-		
-		anim.flip_h = not anim.flip_h
-		wall_ray.target_position *= -1
-		ledge_ray.position.x *= -1
-		
-		status_icon.position.x *= -1
+	_point_toward(direction)
 	speed = PATROL_SPEED
 	
 
 func _state_investigate() -> void:
-	pass
+	if state_timer.is_stopped():
+		anim.speed_scale = 1.0
+		
+		var pos_diff = _move_toward(known_target_pos, BASE_SPEED)
+		if pos_diff == 0:
+			_change_state(State.RETURN)
+
+
+func _state_return() -> void:
+	if state_timer.is_stopped():
+		anim.speed_scale = 0.7
+		
+		var pos_diff = _move_toward(patrol_pos, PATROL_SPEED)
+		if pos_diff == 0:
+			_change_state(State.PATROL)
 
 
 func _state_chase() -> void:
@@ -189,7 +217,7 @@ func _state_attack() -> void:
 
 func _state_retreat() -> void:
 	pass
-	
+
 
 func _state_dead(delta) -> void:
 	# if enemy is moving, quickly but smoothly stop
@@ -204,6 +232,38 @@ func _state_dead(delta) -> void:
 			var tween = create_tween()
 			tween.tween_property(self, "modulate", Color("ffffff00"), 0.5)
 			tween.finished.connect(queue_free)
+			
+
+func _move_toward(pos, move_speed) -> float:
+	var pos_diff = global_position.x - pos.x
+		
+	if abs(pos_diff) < 1.0:
+		speed = 0.0
+		anim.play("idle")
+		return 0.0
+
+	anim.play("run")
+	direction = 1 if pos_diff < 0 else -1
+	speed = move_speed
+	
+	_point_toward(direction)
+	
+	return pos_diff
+	
+
+func _point_toward(point_direction) -> void:
+	weapon.rotation = deg_to_rad(PATROL_WEAPON_TILT if point_direction > 0 else 180.0 - PATROL_WEAPON_TILT)
+	
+	anim.flip_h = false
+	wall_ray.target_position = abs(wall_ray.target_position)
+	ledge_ray.position.x = abs(ledge_ray.position.x)
+	status_icon.position.x = abs(status_icon.position.x)
+	
+	if point_direction < 0:
+		anim.flip_h = not anim.flip_h
+		wall_ray.target_position *= -1
+		ledge_ray.position.x *= -1
+		status_icon.position.x *= -1
 
 
 func _on_detection_area_body_entered(body: Node2D) -> void:

@@ -144,7 +144,7 @@ script = ExtResource("1_4ra3w")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1345892962]
 position = Vector2(0, -8)
 sprite_frames = SubResource("SpriteFrames_md0e3")
-animation = &"idle"
+animation = &"run"
 autoplay = "idle"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1475566916]
@@ -201,6 +201,9 @@ offset = Vector2(0, -8)
 script = ExtResource("5_jgk6k")
 
 [node name="FadeTimer" type="Timer" parent="StatusIcon" unique_id=69940822]
+one_shot = true
+
+[node name="StateTimer" type="Timer" parent="." unique_id=111717552]
 one_shot = true
 
 [connection signal="body_entered" from="DetectionArea" to="." method="_on_detection_area_body_entered"]
