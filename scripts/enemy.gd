@@ -249,19 +249,12 @@ func _state_attack(delta) -> void:
 		
 		# fire weapon
 		if weapon_timer.is_stopped():
-			var bullet_instance = BULLET.instantiate()
-			bullet_instance.type = bullet_instance.Types.ENEMY
-			get_tree().root.add_child(bullet_instance)
-			
-			var spread_angle = deg_to_rad(randf_range(-WEAPON_SPREAD, WEAPON_SPREAD))
-			
-			bullet_instance.global_position = weapon_muzzle.global_position
-			bullet_instance.rotation = weapon.global_rotation + spread_angle
-			bullet_instance.scale = Vector2(BULLET_SCALE, BULLET_SCALE)
-			
-			kick_offset = min(kick_offset + WEAPON_KICK, WEAPON_KICK * 2.0)
-			
+			_shoot()
 			weapon_timer.start(ATTACK_FIRE_RATE)
+		
+		# chase target if outside detection range
+		if not is_detecting:
+			_change_state(State.CHASE)
 
 
 func _state_retreat() -> void:
@@ -282,6 +275,20 @@ func _state_dead(delta) -> void:
 			tween.tween_property(self, "modulate", Color("ffffff00"), 0.5)
 			tween.finished.connect(queue_free)
 			
+
+func _shoot() -> void:
+	var bullet_instance = BULLET.instantiate()
+	bullet_instance.type = bullet_instance.Types.ENEMY
+	get_tree().root.add_child(bullet_instance)
+	
+	var spread_angle = deg_to_rad(randf_range(-WEAPON_SPREAD, WEAPON_SPREAD))
+	
+	bullet_instance.global_position = weapon_muzzle.global_position
+	bullet_instance.rotation = weapon.global_rotation + spread_angle
+	bullet_instance.scale = Vector2(BULLET_SCALE, BULLET_SCALE)
+	
+	kick_offset = min(kick_offset + WEAPON_KICK, WEAPON_KICK * 2.0)
+
 
 func _move_toward(pos, move_speed) -> float:
 	var pos_diff = global_position.x - pos.x
