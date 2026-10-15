@@ -19,9 +19,13 @@ LIST OF FINISHED FEATURES (updated Oct. 15 2026):
         - Running
         - Jumping
         - Wallbounce
+    - Main menu and pause menu (basic)
+    - HUD (basic)
+    - Custom reticle (partially)
 - Build 2 (0.1.0-dev.2)
     - Shooting
         - Reload
+    - Custom reticle
     - Stamina
     - Enemies
         - State indicator
