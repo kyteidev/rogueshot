@@ -166,6 +166,9 @@ position = Vector2(16, -0.5)
 [node name="WeaponTimer" type="Timer" parent="Weapon" unique_id=1442157855]
 one_shot = true
 
+[node name="WeaponReloadTimer" type="Timer" parent="Weapon" unique_id=453663226]
+one_shot = true
+
 [node name="WallRay" type="RayCast2D" parent="." unique_id=254261750]
 position = Vector2(0, -1)
 target_position = Vector2(16, 0)

@@ -34,6 +34,7 @@ const WEAPON_ROTATION_SPEED = 10.0
 const WEAPON_SPREAD = 2.0
 const WEAPON_KICK = 3.0
 const WEAPON_KICK_RECOVERY = 42.0
+const WEAPON_RELOAD_TIME = 2.3
 
 const INV_DELAY = 1.0
 const INV_MIN_MOVE_DIST = 20.0
@@ -50,6 +51,7 @@ var died = false
 var health = MAX_HEALTH
 var direction = 1
 var speed = 0.0
+var ammo = 30
 
 var is_detecting = false
 var is_aggroing = false
@@ -67,6 +69,7 @@ var status_icons = [preload("res://assets/sprites/icons/question mark.png"), pre
 @onready var weapon_sprite = $Weapon/Rifle1
 @onready var weapon_muzzle = $Weapon/Rifle1/Marker2D
 @onready var weapon_timer = $Weapon/WeaponTimer
+@onready var weapon_reload_timer = $Weapon/WeaponReloadTimer
 @onready var status_icon = $StatusIcon
 
 @onready var wall_ray = $WallRay
@@ -307,17 +310,23 @@ func _state_dead(delta) -> void:
 			
 
 func _shoot() -> void:
-	var bullet_instance = BULLET.instantiate()
-	bullet_instance.type = bullet_instance.Types.ENEMY
-	get_tree().root.add_child(bullet_instance)
-	
-	var spread_angle = deg_to_rad(randf_range(-WEAPON_SPREAD, WEAPON_SPREAD))
-	
-	bullet_instance.global_position = weapon_muzzle.global_position
-	bullet_instance.rotation = weapon.global_rotation + spread_angle
-	bullet_instance.scale = Vector2(BULLET_SCALE, BULLET_SCALE)
-	
-	kick_offset = min(kick_offset + WEAPON_KICK, WEAPON_KICK * 2.0)
+	if ammo > 0 and weapon_reload_timer.is_stopped():
+		var bullet_instance = BULLET.instantiate()
+		bullet_instance.type = bullet_instance.Types.ENEMY
+		get_tree().root.add_child(bullet_instance)
+		
+		var spread_angle = deg_to_rad(randf_range(-WEAPON_SPREAD, WEAPON_SPREAD))
+		
+		bullet_instance.global_position = weapon_muzzle.global_position
+		bullet_instance.rotation = weapon.global_rotation + spread_angle
+		bullet_instance.scale = Vector2(BULLET_SCALE, BULLET_SCALE)
+		
+		kick_offset = min(kick_offset + WEAPON_KICK, WEAPON_KICK * 2.0)
+		
+		ammo -= 1
+	elif ammo == 0:
+		weapon_reload_timer.start(WEAPON_RELOAD_TIME)
+		ammo = 30
 
 
 func _move_toward(pos, move_speed) -> float:
