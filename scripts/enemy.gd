@@ -14,6 +14,7 @@ const ANIM_EXP = 0.34
 const MAX_HEALTH = 100.0
 
 const BASE_SPEED = 80.0
+const RUN_SPEED = BASE_SPEED * 1.5
 const PATROL_SPEED = 30.0
 const JUMP_VELOCITY = -200.0
 
@@ -197,7 +198,8 @@ func _check_awareness() -> void:
 	# make sure enemy has line of sight to player
 	var ray_target = los_ray.get_collider()
 	if ray_target and ray_target.is_in_group("player"):
-		_change_state(State.ATTACK if is_aggroing else State.INVESTIGATE)
+		if state != State.CHASE:
+			_change_state(State.ATTACK if is_aggroing else State.INVESTIGATE)
 		
 		# update known target position if still in line of sight
 		known_target_pos = target_pos
@@ -246,7 +248,11 @@ func _state_return() -> void:
 
 
 func _state_chase() -> void:
-	pass
+	_move_toward(known_target_pos, RUN_SPEED)
+	
+	if is_detecting:
+		_change_state(State.ATTACK)
+		is_aggroing = true
 	
 	
 func _state_attack(delta) -> void:
