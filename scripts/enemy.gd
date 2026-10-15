@@ -330,6 +330,8 @@ func _state_attack(delta) -> void:
 			_shoot()
 			weapon_timer.start(ATTACK_FIRE_RATE)
 		
+		# if target in aggro area and has line of sight, don't move
+		# if not, move until target is in aggro area and in line of sight.
 		if in_aggro_area and in_los:
 			speed = 0.0
 			
