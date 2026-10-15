@@ -196,6 +196,8 @@ func _state_investigate() -> void:
 	if state_timer.is_stopped():
 		anim.speed_scale = 1.0
 		
+		# move towards known target position
+		# known target position only updates when it is in detection area
 		var pos_diff = _move_toward(known_target_pos, BASE_SPEED)
 		if pos_diff == 0:
 			_change_state(State.RETURN)
@@ -205,9 +207,15 @@ func _state_return() -> void:
 	if state_timer.is_stopped():
 		anim.speed_scale = 0.7
 		
+		# move toward patrol position
 		var pos_diff = _move_toward(patrol_pos, PATROL_SPEED)
 		if pos_diff == 0:
 			_change_state(State.PATROL)
+			
+			# fade status icon
+			status_icon.fade_timer.start()
+			status_icon.can_fade = true
+			
 
 
 func _state_chase() -> void:
