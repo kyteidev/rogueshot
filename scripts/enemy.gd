@@ -1,7 +1,7 @@
 extends CharacterBody2D
 
 
-enum State { IDLE, PATROL, INVESTIGATE, RETURN, CHASE, SEARCH, ATTACK, RETREAT, DEAD }
+enum State { IDLE, PATROL, INVESTIGATE, ALERT, RETURN, CHASE, SEARCH, ATTACK, RETREAT, DEAD }
 
 const BULLET = preload("res://scenes/weapons/bullet.tscn")
 const BULLET_SCALE = 0.2
@@ -39,6 +39,8 @@ const WEAPON_RELOAD_TIME = 2.3
 const INV_DELAY = 1.0
 const INV_MIN_MOVE_DIST = 20.0
 
+const ALERT_DELAY = 0.3
+
 const RETURN_DELAY = 2.5
 
 const ATTACK_DELAY = 1.5
@@ -60,6 +62,7 @@ var is_aggroing = false
 var in_aggro_area = false
 
 var known_target_pos: Vector2
+var bullet_origin_pos: Vector2
 var in_los = false
 
 var kick_offset = 0.0
@@ -105,6 +108,7 @@ func _physics_process(delta: float) -> void:
 		State.IDLE: _state_idle()
 		State.PATROL: _state_patrol()
 		State.INVESTIGATE: _state_investigate()
+		State.ALERT: _state_alert()
 		State.RETURN: _state_return(delta)
 		State.CHASE: _state_chase()
 		State.SEARCH: _state_search()
@@ -132,12 +136,13 @@ func _physics_process(delta: float) -> void:
 func take_damage(damage) -> void:
 	if state == State.DEAD:
 		return
+		
+	_change_state(State.ALERT)
 	
 	# flash red when taking damage
 	var tween = create_tween()
 	tween.tween_property(self, "modulate", Color("ff0000"), DAMAGE_FLASH_DELAY)
 	tween.tween_property(self, "modulate", Color("ffffff"), DAMAGE_FLASH_DELAY)
-	
 	
 	health -= damage
 	if health <= 0:
@@ -145,6 +150,10 @@ func take_damage(damage) -> void:
 		
 		# make enemy red when dead
 		tween.tween_property(self, "modulate", Color("ff0000"), DAMAGE_FLASH_DELAY)
+
+
+func set_target_pos(pos) -> void:
+	bullet_origin_pos = pos
 
 
 func _set_run_anim(move_speed) -> void:
@@ -171,17 +180,26 @@ func _enter_state(new_state) -> void:
 	match new_state:
 		State.PATROL:
 			speed = PATROL_SPEED
-		State.INVESTIGATE, State.ATTACK:
+		State.INVESTIGATE, State.ALERT, State.ATTACK:
+			# stop for a while when entering these states
 			anim.play("idle")
 			speed = 0.0
 			
-			status_icon.texture = status_icons[0] if state == State.INVESTIGATE else status_icons[1]
+			status_icon.texture = status_icons[1] if state == State.ATTACK else status_icons[0]
 			status_icon.play_anim()
 			
-			state_timer.start(INV_DELAY if state == State.INVESTIGATE else ATTACK_DELAY)
-			
-			if state == State.ATTACK:
-				status_icon.can_fade = true
+			match new_state:
+				State.ATTACK:
+					state_timer.start(ATTACK_DELAY)
+					status_icon.can_fade = true
+				State.INVESTIGATE:
+					state_timer.start(INV_DELAY)
+				State.ALERT:
+					state_timer.start(ALERT_DELAY)
+					
+					var pos_diff = global_position.x - bullet_origin_pos.x
+					direction = 1 if pos_diff < 0 else -1
+					_point_toward(direction)
 		State.RETURN:
 			speed = 0.0
 			state_timer.start(RETURN_DELAY)
@@ -205,7 +223,7 @@ func _check_awareness() -> void:
 	# make sure enemy has line of sight to player
 	var ray_target = los_ray.get_collider()
 	if ray_target and ray_target.is_in_group("player"):
-		if state != State.CHASE:
+		if state != State.CHASE and state != State.ALERT:
 			_change_state(State.ATTACK if is_aggroing else State.INVESTIGATE)
 		
 		# update known target position if still in line of sight
@@ -240,6 +258,20 @@ func _state_investigate() -> void:
 		var pos_diff = _move_toward(known_target_pos, BASE_SPEED)
 		if pos_diff == 0:
 			_change_state(State.RETURN)
+
+
+func _state_alert() -> void:
+	# alert state is same as investigate, but enemy will aggro on detection area entered
+	if state_timer.is_stopped():
+		# enemy is cautious, so slower movement
+		var pos_diff = _move_toward(bullet_origin_pos, PATROL_SPEED)
+		if pos_diff == 0:
+			_change_state(State.RETURN)
+			return
+		
+		if is_detecting:
+			_change_state(State.ATTACK)
+			is_aggroing = true
 
 
 func _state_return(delta) -> void:

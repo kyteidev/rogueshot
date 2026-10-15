@@ -9,8 +9,13 @@ enum Types { FRIENDLY, ENEMY }
 var sm = StateManager
 var type = Types.FRIENDLY
 
+var origin_pos: Vector2
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
+
+func _ready() -> void:
+	origin_pos = global_position
+
+
 func _physics_process(delta: float) -> void:
 	var collided = move_and_collide(transform.x * SPEED * delta)
 	
@@ -21,6 +26,10 @@ func _physics_process(delta: float) -> void:
 			if not hit.is_in_group("player"):
 				if hit.has_method("take_damage"):
 					hit.take_damage(sm.damage)
+				
+				if hit.has_method("set_target_pos"):
+					hit.set_target_pos(origin_pos)
+					
 				queue_free()
 		elif type == Types.ENEMY:
 			if not hit.is_in_group("enemy"):
