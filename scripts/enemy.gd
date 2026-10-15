@@ -215,7 +215,6 @@ func _state_return() -> void:
 			# fade status icon
 			status_icon.fade_timer.start()
 			status_icon.can_fade = true
-			
 
 
 func _state_chase() -> void:
