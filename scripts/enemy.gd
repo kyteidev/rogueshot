@@ -185,8 +185,10 @@ func _check_awareness() -> void:
 		return
 	
 	# get player los target pos and cast ray if enemy faces player
+	# abs(poss_diff) > 3.0 prevents enemy losing sight if target jumps over enemy
 	var target_pos = target.get_node("LOSTarget").global_position
-	if sign(global_position.x - target_pos.x) == sign(direction):
+	var pos_diff = global_position.x - target_pos.x
+	if sign(pos_diff) == sign(direction) and abs(pos_diff) > 3.0:
 		return
 	
 	los_ray.look_at(target_pos)
@@ -252,9 +254,13 @@ func _state_attack(delta) -> void:
 	if not is_detecting:
 		_change_state(State.CHASE)
 		return
-
+	
+	# rotate weapon towards target
 	var desired_rotation = (known_target_pos - global_position).angle()
 	weapon.rotation = lerp_angle(weapon.rotation, desired_rotation, 1.0 - exp(-WEAPON_ROTATION_SPEED * delta))
+	
+	direction = 1 if global_position.x - known_target_pos.x < 0.0 else -1
+	_point_toward(direction)
 	
 	# after attack delay has passed
 	if state_timer.is_stopped():
