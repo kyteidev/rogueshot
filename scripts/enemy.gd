@@ -166,7 +166,6 @@ func _enter_state(new_state) -> void:
 		State.RETURN:
 			speed = 0.0
 			state_timer.start(RETURN_DELAY)
-			# TODO: hide status icon
 
 
 func _check_awareness() -> void:
