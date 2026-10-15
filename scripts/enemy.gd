@@ -16,7 +16,7 @@ const MAX_HEALTH = 100.0
 const BASE_SPEED = 80.0
 const RUN_SPEED = BASE_SPEED * 1.5
 const PATROL_SPEED = 30.0
-const JUMP_VELOCITY = -200.0
+const JUMP_VELOCITY = -150.0
 
 const GROUND_ACCEL = 900.0
 const GROUND_FRICTION = 1100.0
@@ -388,10 +388,15 @@ func _move_toward(pos, move_speed) -> float:
 		speed = 0.0
 		anim.play("idle")
 		return 0.0
-
+	
+	# moving horizontally
 	_set_run_anim(move_speed)
 	direction = 1 if pos_diff < 0 else -1
 	speed = move_speed
+	
+	# jump if necessary
+	if wall_ray.is_colliding():
+		velocity.y = JUMP_VELOCITY
 	
 	_point_toward(direction)
 	
