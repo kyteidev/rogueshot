@@ -9,20 +9,24 @@ Currently shooting, movement, and stamina is finished. There is a dev room where
 Enemies are currently being worked on.
 
 LIST OF FINISHED FEATURES (updated Oct. 15 2026):
-- Shooting
-    - Ammo
-    - Reload
-    - Spread and recoil
-- Movement
-    - Walking
-    - Running
-    - Jumping
-    - Wallbounce
-- Stamina
-- Enemies
-    - State indicator
-    - Health 
-    - Patrol
+- Build 1 (0.1.0-dev.1)
+    - Shooting
+        - Ammo
+        - Reload (partially)
+        - Spread and recoil
+    - Movement
+        - Walking
+        - Running
+        - Jumping
+        - Wallbounce
+- Build 2 (0.1.0-dev.2)
+    - Shooting
+        - Reload
+    - Stamina
+    - Enemies
+        - State indicator
+        - Health 
+        - Patrol
 
 ### THIRD PARTY ASSETS
 - Groundhog font by ChevyRay - https://chevyray.itch.io/pixel-font-groundhog
