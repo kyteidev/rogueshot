@@ -259,7 +259,7 @@ func _state_attack(delta) -> void:
 	# after attack delay has passed
 	if state_timer.is_stopped():
 		kick_offset = move_toward(kick_offset, 0.0, WEAPON_KICK_RECOVERY * delta)
-		weapon.position = weapon_rest_pos + Vector2(-kick_offset, 0)
+		weapon.position = weapon_rest_pos + kick_offset * Vector2.from_angle(weapon.rotation)
 		
 		# fire weapon
 		if weapon_timer.is_stopped():
