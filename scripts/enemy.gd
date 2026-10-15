@@ -47,6 +47,7 @@ var speed = 0.0
 
 var is_detecting = false
 var is_aggroing = false
+var in_aggro_area = false
 
 var known_target_pos: Vector2
 
@@ -205,6 +206,9 @@ func _state_patrol() -> void:
 	_point_toward(direction)
 	speed = PATROL_SPEED
 	
+	# tilt weapon
+	weapon.rotation = deg_to_rad(PATROL_WEAPON_TILT if direction > 0 else 180.0 - PATROL_WEAPON_TILT)
+	
 
 func _state_investigate() -> void:
 	if state_timer.is_stopped():
@@ -239,6 +243,11 @@ func _state_chase() -> void:
 	
 	
 func _state_attack(delta) -> void:
+	# chase target if outside detection range
+	if not is_detecting:
+		_change_state(State.CHASE)
+		return
+
 	var desired_rotation = (known_target_pos - global_position).angle()
 	weapon.rotation = lerp_angle(weapon.rotation, desired_rotation, 1.0 - exp(-WEAPON_ROTATION_SPEED * delta))
 	
@@ -252,9 +261,10 @@ func _state_attack(delta) -> void:
 			_shoot()
 			weapon_timer.start(ATTACK_FIRE_RATE)
 		
-		# chase target if outside detection range
-		if not is_detecting:
-			_change_state(State.CHASE)
+		if in_aggro_area:
+			speed = 0.0
+		else:
+			_move_toward(known_target_pos, BASE_SPEED)
 
 
 func _state_retreat() -> void:
@@ -308,8 +318,6 @@ func _move_toward(pos, move_speed) -> float:
 	
 
 func _point_toward(point_direction) -> void:
-	weapon.rotation = deg_to_rad(PATROL_WEAPON_TILT if point_direction > 0 else 180.0 - PATROL_WEAPON_TILT)
-	
 	anim.flip_h = false
 	wall_ray.target_position = abs(wall_ray.target_position)
 	ledge_ray.position.x = abs(ledge_ray.position.x)
@@ -339,3 +347,9 @@ func _on_detection_area_body_exited(body: Node2D) -> void:
 func _on_aggro_area_body_entered(body: Node2D) -> void:
 	if body.is_in_group("player"):
 		is_aggroing = true
+		in_aggro_area = true
+
+
+func _on_aggro_area_body_exited(body: Node2D) -> void:
+	if body.is_in_group("player"):
+		in_aggro_area = false
