@@ -53,5 +53,6 @@ visible = false
 [node name="HUD" parent="." unique_id=465990537 instance=ExtResource("4_1s6p4")]
 visible = false
 
-[node name="PauseManu" parent="." unique_id=1248834952 instance=ExtResource("5_d1y6d")]
+[node name="PauseManu" parent="." unique_id=1248834952 node_paths=PackedStringArray("crosshair") instance=ExtResource("5_d1y6d")]
 visible = false
+crosshair = NodePath("../CrosshairCanvas")
