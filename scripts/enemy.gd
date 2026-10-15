@@ -145,6 +145,9 @@ func _enter_state(new_state) -> void:
 			status_icon.play_anim()
 			
 			state_timer.start(INV_DELAY)
+			
+			if state == State.ATTACK:
+				status_icon.can_fade = true
 		State.RETURN:
 			speed = 0.0
 			state_timer.start(RETURN_DELAY)

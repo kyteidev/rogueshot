@@ -210,3 +210,4 @@ one_shot = true
 [connection signal="body_exited" from="DetectionArea" to="." method="_on_detection_area_body_exited"]
 [connection signal="body_entered" from="AggroArea" to="." method="_on_aggro_area_body_entered"]
 [connection signal="body_exited" from="AggroArea" to="." method="_on_aggro_area_body_exited"]
+[connection signal="timeout" from="StatusIcon/FadeTimer" to="StatusIcon" method="_on_fade_timer_timeout"]

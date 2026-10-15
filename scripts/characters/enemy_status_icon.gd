@@ -2,8 +2,8 @@ extends Sprite2D
 
 
 const STRETCH = 0.2
-const FADE_DURATION = 0.5
-const FADE_DELAY = 3.0
+const FADE_DURATION = 0.3
+const FADE_DELAY = 0.3
 
 var stretch_tween: Tween
 var fade_tween: Tween
@@ -13,6 +13,7 @@ var can_fade = false
 @onready var original_scale = scale
 
 @onready var fade_timer = $FadeTimer
+@onready var enemy = get_parent()
 
 
 func _ready() -> void:
@@ -20,14 +21,14 @@ func _ready() -> void:
 	fade_timer.wait_time = FADE_DELAY
 	
 
-func _process(_delta: float) -> void:
-	pass
-	# TODO: IMPLEMENT LATER
-	# fade out after a set time
-	#if scale == original_scale and can_fade and fade_timer.is_stopped():
-	#	fade_tween = create_tween()
-	#	fade_tween.tween_property(self, "modulate", Color("ffffff00"), FADE_DURATION)
-	#	fade_tween.finished.connect(_finish_anim)
+func _on_fade_timer_timeout() -> void:
+	if can_fade:
+		if fade_tween:
+			fade_tween.kill()
+		
+		fade_tween = create_tween()
+		fade_tween.tween_property(self, "modulate", Color("ffffff00"), FADE_DURATION)
+		fade_tween.finished.connect(_finish_anim)
 
 
 func _finish_anim() -> void:
@@ -43,7 +44,6 @@ func play_anim() -> void:
 		stretch_tween.kill()
 	
 	visible = true
-	#can_fade = true
 	
 	# icon squash and stretch animation
 	scale = Vector2(original_scale.x + STRETCH, 0.0)
