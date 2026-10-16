@@ -16,7 +16,7 @@ var weapon_index: int = 0
 var current_weapon: Sprite2D = null
 var weapon_name: String = ""
 var weapon_muzzle: Marker2D = null
-var weapon_muzzle_orig_pos: Vector2
+var weapon_muzzle_orig_pos: Vector2 = Vector2(0.0, 0.0)
 
 var base_damage: int = 0:
 	set(value):
