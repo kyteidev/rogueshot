@@ -9,20 +9,20 @@ const STAMINA_FLASH_DELAY = 0.5
 
 @export var enemy: CharacterBody2D
 
-var sm = StateManager
+var sm := StateManager
 
-var displayed_stamina_loss = 100.0
+var displayed_stamina_loss: float = 100.0
 
 var stamina_tween: Tween
-var stamina_was_depleted = false
+var stamina_was_depleted: bool = false
 
-@onready var ammo_mag_label = $AmmoMagLabel
+@onready var ammo_mag_label := $AmmoMagLabel
 
-@onready var stamina_bar = $StaminaBarOutline/StaminaBar
-@onready var stamina_loss_bar = $StaminaBarOutline/StaminaLossBar
-@onready var stamina_timer = $StaminaBarOutline/StaminaBarTimer
+@onready var stamina_bar := $StaminaBarOutline/StaminaBar
+@onready var stamina_loss_bar := $StaminaBarOutline/StaminaLossBar
+@onready var stamina_timer := $StaminaBarOutline/StaminaBarTimer
 
-@onready var debug_enemy_state_label = $DebugEnemyStateLabel
+@onready var debug_enemy_state_label := $DebugEnemyStateLabel
 
 
 func _ready() -> void:
@@ -31,7 +31,7 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	# update ammo info
-	var ammo_text = "%s/%s | %s %s"
+	var ammo_text: String = "%s/%s | %s %s"
 	ammo_mag_label.text = ammo_text % [sm.ammo, sm.max_ammo, sm.mags, "Mag" if sm.mags == 1 else "Mags"]
 	
 	# update stamina info

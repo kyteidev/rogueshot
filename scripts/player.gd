@@ -37,24 +37,24 @@ const JUMP_BUFFER_TIME = 0.12
 
 @export var crosshair: CanvasLayer
 
-var sm = StateManager
+var sm := StateManager
 
-var health = MAX_HEALTH:
+var health: float = MAX_HEALTH:
 	set(value):
 		health = value
 		sm.health = value
 
-var was_airborne = false
-var reached_peak = false
+var was_airborne: bool = false
+var reached_peak: bool = false
 
-var speed = 0.0
-var sprinting = false
+var speed: float = 0.0
+var sprinting: bool = false
 
-var is_dead = false
+var is_dead: bool = false
 
-var regenerating_stamina = true
-var prev_stamina = MAX_STAMINA
-var stamina:
+var regenerating_stamina: bool = true
+var prev_stamina: float = MAX_STAMINA
+var stamina: float:
 	set(value):
 		stamina = clamp(value, 0.0, MAX_STAMINA)
 		sm.stamina = stamina
@@ -70,18 +70,18 @@ var stamina:
 		
 		if stamina == 0:
 			stamina_depleted = true
-var stamina_depleted = false:
+var stamina_depleted: bool = false:
 	set(value):
 		stamina_depleted = value
 		sm.stamina_depleted = value
 		
-@onready var coyote_timer = $CoyoteTimer
-@onready var jump_buffer_timer = $JumpBufferTimer
+@onready var coyote_timer := $CoyoteTimer
+@onready var jump_buffer_timer := $JumpBufferTimer
 
-@onready var anim_sprite = $AnimatedSprite2D
-@onready var stamina_timer = $StaminaTimer
+@onready var anim_sprite := $AnimatedSprite2D
+@onready var stamina_timer := $StaminaTimer
 
-@onready var weapon = $Weapon
+@onready var weapon := $Weapon
 
 
 func _ready() -> void:
@@ -94,7 +94,7 @@ func _physics_process(delta: float) -> void:
 	if is_dead:
 		return
 
-	var was_on_floor = is_on_floor()
+	var was_on_floor: bool = is_on_floor()
 	
 	# gravity and jump stretch
 	if not is_on_floor():
@@ -112,8 +112,8 @@ func _physics_process(delta: float) -> void:
 	if Input.is_action_just_released("player_jump") and velocity.y < JUMP_VELOCITY_CUT:
 		velocity.y = JUMP_VELOCITY_CUT
 
-	var wants_jump = not jump_buffer_timer.is_stopped()
-	var can_jump = is_on_floor() or not coyote_timer.is_stopped()
+	var wants_jump: bool = not jump_buffer_timer.is_stopped()
+	var can_jump: bool = is_on_floor() or not coyote_timer.is_stopped()
 
 	if wants_jump and can_jump:
 		velocity.y = JUMP_VELOCITY
@@ -130,7 +130,7 @@ func _physics_process(delta: float) -> void:
 	
 	# get direction of player
 	# right: 1, left: -1, neutral (not moving): 0
-	var direction = Input.get_axis("player_left", "player_right")
+	var direction: float = Input.get_axis("player_left", "player_right")
 		
 	# sprint system
 	if is_on_floor():
@@ -187,7 +187,7 @@ func _physics_process(delta: float) -> void:
 	
 	# wallbounce
 	if is_on_wall() and not is_on_floor() and Input.is_action_just_pressed("player_jump") and stamina > 0.0 and not stamina_depleted:
-		var wall_normal = get_wall_normal().x
+		var wall_normal: float = get_wall_normal().x
 		if wall_normal > 0:
 			anim_sprite.flip_h = false
 		elif wall_normal < 0:
@@ -215,9 +215,9 @@ func _physics_process(delta: float) -> void:
 		coyote_timer.start(COYOTE_TIME)
 
 
-func take_damage(damage):
+func take_damage(damage: float) -> void:
 	# flash red when taking damage
-	var tween = create_tween()
+	var tween := create_tween()
 	tween.tween_property(self, "modulate", Color("ff0000"), DAMAGE_FLASH_DELAY)
 	tween.tween_property(self, "modulate", Color("ffffff"), DAMAGE_FLASH_DELAY)
 	
@@ -232,11 +232,11 @@ func take_damage(damage):
 			anim_sprite.animation_finished.connect(_death_menu)
 
 
-func _death_menu():
+func _death_menu() -> void:
 	get_tree().change_scene_to_file("res://scenes/menus/death_menu.tscn")
 
 
-func _get_custom_gravity(vel) -> float:
+func _get_custom_gravity(vel: Vector2) -> float:
 	if vel.y < 0:
 		return GRAVITY
 	return FALL_GRAVITY

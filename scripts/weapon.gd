@@ -8,7 +8,7 @@ const BULLET_SCALE = 0.2
 
 const FADE_DURATION = 0.15
 
-var sm = StateManager
+var sm := StateManager
 
 var weapons: Array = []
 var equipped_weapons: Array = []
@@ -49,12 +49,12 @@ var kick_offset: float = 0.0
 var weapon_rest_pos: Vector2 = Vector2.ZERO
 var camera_shake: float = 0.0
 
-var can_fire = true
+var can_fire: bool = true
 
-@onready var timer = $Timer
+@onready var timer := $Timer
 
-@onready var player = get_node("../")
-@onready var crosshair = player.crosshair
+@onready var player := get_node("../")
+@onready var crosshair: CanvasLayer = player.crosshair
 
 # weapon stats and state, have them here and dont move these up!!!
 const WEAPON_STATS = {
@@ -104,10 +104,10 @@ func _process(delta: float) -> void:
 	look_at(get_global_mouse_position())
 	
 	# flip direction if necessary
-	var mouse_pos = get_global_mouse_position()
-	var direction = mouse_pos - global_position
+	var mouse_pos: Vector2 = get_global_mouse_position()
+	var direction: Vector2 = mouse_pos - global_position
 	
-	var weapon_scale = current_weapon.scale.y
+	var weapon_scale: float = current_weapon.scale.y
 	if direction.x < 0:
 		current_weapon.scale.y = abs(weapon_scale) * -1
 	else:
@@ -122,12 +122,12 @@ func _process(delta: float) -> void:
 	if Input.is_action_pressed("player_shoot"):
 		if can_fire and ammo > 0:
 			# spawn bullet
-			var bullet_instance = BULLET.instantiate()
+			var bullet_instance := BULLET.instantiate()
 			bullet_instance.type = bullet_instance.Types.FRIENDLY
 			get_tree().root.add_child(bullet_instance)
 
 			# apply spread
-			var spread_angle = deg_to_rad(randf_range(-current_spread, current_spread)) \
+			var spread_angle: float = deg_to_rad(randf_range(-current_spread, current_spread)) \
 					* ((100 - player.stamina) / 100) * MAX_STAMINA_SPREAD_MULTIPLIER
 
 			bullet_instance.global_position = weapon_muzzle.global_position
@@ -146,7 +146,7 @@ func _process(delta: float) -> void:
 			player.stamina -= player.SHOOT_STAMINA_RATE
 			
 			# shake camera
-			var camera = get_node("../../Camera")
+			var camera := get_node("../../Camera")
 			camera.shake_strength = camera_shake
 		
 		# firing speed timeout
@@ -173,7 +173,7 @@ func _input(_event: InputEvent) -> void:
 
 	# weapon switching
 	if Input.is_action_just_pressed("weapon_cycle"):
-		var next_index = (weapon_index + 1) % weapons.size()
+		var next_index: int = (weapon_index + 1) % weapons.size()
 		equip_weapon(next_index)
 	
 	# manually select primary/secondary weapon
@@ -184,7 +184,7 @@ func _input(_event: InputEvent) -> void:
 
 
 func fade_weapon() -> void:
-	var fade_tween = create_tween()
+	var fade_tween := create_tween()
 	fade_tween.tween_property(self, "modulate", Color("ffffff00"), FADE_DURATION)\
 			.set_ease(Tween.EASE_OUT)
 
@@ -213,7 +213,7 @@ func equip_weapon(index: int) -> void:
 	weapon_muzzle = current_weapon.get_child(0)
 	
 	# set weapon stats
-	var stats = WEAPON_STATS[weapon_name]
+	var stats: Dictionary = WEAPON_STATS[weapon_name]
 	base_damage = stats.damage
 	fire_rate = stats.fire_rate
 	max_ammo = stats.mag_size

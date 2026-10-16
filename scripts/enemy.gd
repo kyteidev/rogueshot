@@ -51,49 +51,49 @@ const ATTACK_MAX_POS_DIFF = 180.0
 
 const MAX_AMMO = 30
 
-var state = State.PATROL
+var state: State = State.PATROL
 var target: CharacterBody2D = null
-var died = false
+var died: bool = false
 
-var health = MAX_HEALTH
-var direction = 1
-var speed = 0.0
-var ammo = MAX_AMMO
+var health: float = MAX_HEALTH
+var direction: int = 1
+var speed: float = 0.0
+var ammo: int = MAX_AMMO
 
-var is_detecting = false
-var is_aggroing = false
-var in_aggro_area = false
+var is_detecting: bool = false
+var is_aggroing: bool = false
+var in_aggro_area: bool = false
 
 var known_target_pos: Vector2
 var bullet_origin_pos: Vector2
-var in_los = false
+var in_los: bool = false
 
-var kick_offset = 0.0
-var desired_weapon_rotation = deg_to_rad(PATROL_WEAPON_TILT)
+var kick_offset: float = 0.0
+var desired_weapon_rotation: float = deg_to_rad(PATROL_WEAPON_TILT)
 
 # index 0: question mark, index 1: exclamation mark
-var status_icons = [preload("res://assets/sprites/icons/question mark.png"), preload("res://assets/sprites/icons/exclamation mark.png")]
+var status_icons: Array = [preload("res://assets/sprites/icons/question mark.png"), preload("res://assets/sprites/icons/exclamation mark.png")]
 
-var sm = StateManager
+var sm := StateManager
 
-@onready var anim = $AnimatedSprite2D
-@onready var weapon = $Weapon
-@onready var weapon_sprite = $Weapon/Rifle1
-@onready var weapon_muzzle = $Weapon/Rifle1/Marker2D
-@onready var weapon_los_ray = $Weapon/WeaponLOSRay
-@onready var weapon_shoot_timer = $Weapon/WeaponShootTimer
-@onready var weapon_reload_timer = $Weapon/WeaponReloadTimer
-@onready var status_icon = $StatusIcon
+@onready var anim := $AnimatedSprite2D
+@onready var weapon := $Weapon
+@onready var weapon_sprite := $Weapon/Rifle1
+@onready var weapon_muzzle := $Weapon/Rifle1/Marker2D
+@onready var weapon_los_ray := $Weapon/WeaponLOSRay
+@onready var weapon_shoot_timer := $Weapon/WeaponShootTimer
+@onready var weapon_reload_timer := $Weapon/WeaponReloadTimer
+@onready var status_icon := $StatusIcon
 
-@onready var wall_ray = $WallRay
-@onready var high_wall_ray = $HighWallRay
-@onready var ledge_ray = $LedgeRay
-@onready var los_ray = $LOSRay
+@onready var wall_ray := $WallRay
+@onready var high_wall_ray := $HighWallRay
+@onready var ledge_ray := $LedgeRay
+@onready var los_ray := $LOSRay
 
-@onready var state_timer = $StateTimer
+@onready var state_timer := $StateTimer
 
-@onready var patrol_pos = global_position
-@onready var weapon_rest_pos = weapon.position
+@onready var patrol_pos: Vector2 = global_position
+@onready var weapon_rest_pos: Vector2 = weapon.position
 
 
 func _ready() -> void:
@@ -102,7 +102,7 @@ func _ready() -> void:
 
 func _process(_delta: float) -> void:
 	# flip weapon if necessary
-	var weapon_scale = weapon_sprite.scale.y
+	var weapon_scale: float = weapon_sprite.scale.y
 	if direction < 0:
 		weapon_sprite.scale.y = abs(weapon_scale) * -1
 	else:
@@ -148,16 +148,16 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 	
 
-func take_damage(damage) -> void:
+func take_damage(damage: float) -> void:
 	if state == State.DEAD:
 		return
 		
 	if state != State.ATTACK and state != State.CHASE:
 		# delay changing state to end of frame so that bullet origin pos is correct
-		(func(): _change_state(State.ALERT)).call_deferred()
+		(func() -> void: _change_state(State.ALERT)).call_deferred()
 	
 	# flash red when taking damage
-	var tween = create_tween()
+	var tween := create_tween()
 	tween.tween_property(self, "modulate", Color("ff0000"), DAMAGE_FLASH_DELAY)
 	tween.tween_property(self, "modulate", Color("ffffff"), DAMAGE_FLASH_DELAY)
 	
@@ -170,22 +170,22 @@ func take_damage(damage) -> void:
 		tween.tween_property(self, "modulate", Color("ff0000"), DAMAGE_FLASH_DELAY)
 
 
-func set_target_pos(pos) -> void:
+func set_target_pos(pos: Vector2) -> void:
 	bullet_origin_pos = pos
 
 
-func _set_run_anim(move_speed) -> void:
+func _set_run_anim(move_speed: float) -> void:
 	anim.speed_scale = clamp((move_speed / ANIM_REF_SPEED) ** ANIM_EXP, ANIM_MIN_SCALE, ANIM_MAX_SCALE)
 	anim.play("run")
 
 
-func _get_custom_gravity(vel) -> float:
+func _get_custom_gravity(vel: Vector2) -> float:
 	if vel.y < 0:
 		return GRAVITY
 	return FALL_GRAVITY
 	
 
-func _change_state(new_state, long_delay := false) -> void:
+func _change_state(new_state: State, long_delay := false) -> void:
 	# make sure state is not changed to same state again
 	if state == State.DEAD or state == new_state:
 		return
@@ -194,7 +194,7 @@ func _change_state(new_state, long_delay := false) -> void:
 	_enter_state(new_state, long_delay)
 
 
-func _enter_state(new_state, long_delay) -> void:
+func _enter_state(new_state: State, long_delay: bool) -> void:
 	match new_state:
 		State.PATROL:
 			speed = PATROL_SPEED
@@ -206,7 +206,7 @@ func _enter_state(new_state, long_delay) -> void:
 			status_icon.texture = status_icons[1] if state == State.ATTACK else status_icons[0]
 			status_icon.play_anim()
 			
-			var pos_diff = global_position.x - known_target_pos.x
+			var pos_diff: float = global_position.x - known_target_pos.x
 			
 			match new_state:
 				State.ATTACK:
@@ -237,8 +237,8 @@ func _check_awareness() -> void:
 	
 	# get player los target pos and cast ray if enemy faces player
 	# abs(poss_diff) > 3.0 prevents enemy losing sight if target jumps over enemy
-	var target_pos = target.get_node("LOSTarget").global_position
-	var pos_diff = global_position.x - target_pos.x
+	var target_pos: Vector2 = target.get_node("LOSTarget").global_position
+	var pos_diff: float = global_position.x - target_pos.x
 	if sign(pos_diff) == sign(direction) and abs(pos_diff) > 3.0:
 		return
 	
@@ -246,7 +246,7 @@ func _check_awareness() -> void:
 	los_ray.force_raycast_update()
 		
 	# make sure enemy has line of sight to player
-	var ray_target = los_ray.get_collider()
+	var ray_target: Object = los_ray.get_collider()
 	if ray_target and ray_target.is_in_group("player"):
 		if state != State.CHASE and state != State.ALERT:
 			_change_state(State.ATTACK if is_aggroing else State.INVESTIGATE)
@@ -281,8 +281,8 @@ func _state_investigate() -> void:
 	if state_timer.is_stopped():
 		# move towards known target position
 		# known target position only updates when it is in detection area
-		var pos_diff = _move_toward(known_target_pos, BASE_SPEED, true)
-		if pos_diff == 0:
+		var pos_diff: float = _move_toward(known_target_pos, BASE_SPEED, true)
+		if pos_diff == 0.0:
 			_change_state(State.RETURN)
 
 
@@ -290,8 +290,8 @@ func _state_alert() -> void:
 	# alert state is same as investigate, but enemy will aggro on detection area entered
 	if state_timer.is_stopped():
 		# enemy is cautious, so slower movement
-		var pos_diff = _move_toward(bullet_origin_pos, PATROL_SPEED, true)
-		if pos_diff == 0:
+		var pos_diff: float = _move_toward(bullet_origin_pos, PATROL_SPEED, true)
+		if pos_diff == 0.0:
 			_change_state(State.RETURN)
 			return
 		
@@ -306,8 +306,8 @@ func _state_return() -> void:
 		desired_weapon_rotation = deg_to_rad(PATROL_WEAPON_TILT if direction > 0 else 180.0 - PATROL_WEAPON_TILT)
 		
 		# move toward patrol position
-		var pos_diff = _move_toward(patrol_pos, PATROL_SPEED)
-		if pos_diff == 0:
+		var pos_diff: float = _move_toward(patrol_pos, PATROL_SPEED)
+		if pos_diff == 0.0:
 			_change_state(State.PATROL)
 			
 			# fade status icon
@@ -316,7 +316,7 @@ func _state_return() -> void:
 
 
 func _state_chase() -> void:
-	var pos_diff = _move_toward(known_target_pos, RUN_SPEED, true)
+	var pos_diff: float = _move_toward(known_target_pos, RUN_SPEED, true)
 	
 	if is_detecting and in_los:
 		_change_state(State.ATTACK)
@@ -331,7 +331,7 @@ func _state_search() -> void:
 	pass
 
 	
-func _state_attack(delta) -> void:
+func _state_attack(delta: float) -> void:
 	# chase target if outside detection range
 	if not is_detecting:
 		_change_state(State.CHASE)
@@ -347,13 +347,13 @@ func _state_attack(delta) -> void:
 		
 		# if target in aggro area and has line of sight, don't move
 		# if not, move until target is in aggro area and in line of sight.
-		var target_pos_diff = abs(global_position - known_target_pos)
+		var target_pos_diff: Vector2 = abs(global_position - known_target_pos)
 		if in_los and target_pos_diff.x < ATTACK_MAX_POS_DIFF:
 			# make sure weapon also has line of sight, otherwise enemy just shoots at ground
 			# if weapon doesn't have line of sight, move towards known target pos
 			weapon_los_ray.force_raycast_update()
 			
-			var ray_target = weapon_los_ray.get_collider()
+			var ray_target: Object = weapon_los_ray.get_collider()
 			if ray_target and ray_target.is_in_group("player"):
 				speed = 0.0
 				
@@ -362,9 +362,9 @@ func _state_attack(delta) -> void:
 			else:
 				_move_toward(known_target_pos, BASE_SPEED)
 		else:
-			var pos_diff = _move_toward(known_target_pos, BASE_SPEED)
+			var pos_diff: float = _move_toward(known_target_pos, BASE_SPEED)
 		
-			if pos_diff == 0 and not in_los:
+			if pos_diff == 0.0 and not in_los:
 				_change_state(State.RETURN, true)
 				
 		# fire weapon
@@ -377,7 +377,7 @@ func _state_retreat() -> void:
 	pass
 
 
-func _state_dead(delta) -> void:
+func _state_dead(delta: float) -> void:
 	# if enemy is moving, quickly but smoothly stop
 	velocity.x = move_toward(velocity.x, 0.0, 200.0 * delta)
 
@@ -387,18 +387,18 @@ func _state_dead(delta) -> void:
 			died = true
 			anim.play("death")
 		elif not anim.is_playing():
-			var tween = create_tween()
+			var tween := create_tween()
 			tween.tween_property(self, "modulate", Color("ffffff00"), 0.5)
 			tween.finished.connect(queue_free)
 			
 
 func _shoot() -> void:
 	if ammo > 0 and weapon_reload_timer.is_stopped():
-		var bullet_instance = BULLET.instantiate()
+		var bullet_instance := BULLET.instantiate()
 		bullet_instance.type = bullet_instance.Types.ENEMY
 		get_tree().root.add_child(bullet_instance)
 		
-		var spread_angle = deg_to_rad(randf_range(-WEAPON_SPREAD, WEAPON_SPREAD))
+		var spread_angle: float = deg_to_rad(randf_range(-WEAPON_SPREAD, WEAPON_SPREAD))
 		
 		bullet_instance.global_position = weapon_muzzle.global_position
 		bullet_instance.rotation = weapon.global_rotation + spread_angle
@@ -412,8 +412,8 @@ func _shoot() -> void:
 		ammo = MAX_AMMO
 
 
-func _move_toward(pos, move_speed, raise_weapon := false) -> float:
-	var pos_diff = global_position.x - pos.x
+func _move_toward(pos: Vector2, move_speed: float, raise_weapon := false) -> float:
+	var pos_diff: float = global_position.x - pos.x
 		
 	if abs(pos_diff) < 1.0:
 		speed = 0.0
@@ -438,7 +438,7 @@ func _move_toward(pos, move_speed, raise_weapon := false) -> float:
 	return pos_diff
 	
 
-func _point_toward(point_direction) -> void:
+func _point_toward(point_direction: int) -> void:
 	anim.flip_h = false
 	wall_ray.target_position = abs(wall_ray.target_position)
 	high_wall_ray.target_position = abs(high_wall_ray.target_position)

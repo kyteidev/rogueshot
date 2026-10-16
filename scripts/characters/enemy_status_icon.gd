@@ -7,13 +7,13 @@ const FADE_DELAY = 0.3
 
 var stretch_tween: Tween
 var fade_tween: Tween
-var can_fade = false
+var can_fade: bool = false
 
-@onready var original_pos = position
-@onready var original_scale = scale
+@onready var original_pos: Vector2 = position
+@onready var original_scale: Vector2 = scale
 
-@onready var fade_timer = $FadeTimer
-@onready var enemy = get_parent()
+@onready var fade_timer := $FadeTimer
+@onready var enemy := get_parent()
 
 
 func _ready() -> void:

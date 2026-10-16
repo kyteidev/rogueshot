@@ -4,10 +4,10 @@ extends Camera2D
 const SMOOTHNESS = 3
 const SHAKE_FADE = 5.0
 
-@onready var player = $"../Player"
+@onready var player: CharacterBody2D = $"../Player"
 
-var rng = RandomNumberGenerator.new()
-var shake_strength = 0.0
+var rng := RandomNumberGenerator.new()
+var shake_strength: float = 0.0
 
 
 func _physics_process(delta: float) -> void:

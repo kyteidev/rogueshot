@@ -6,12 +6,12 @@ enum Types { FRIENDLY, ENEMY }
 const SPEED = 2000
 const TRAIL_MAX_POINTS = 4
 
-var sm = StateManager
-var type = Types.FRIENDLY
+var sm := StateManager
+var type: Types = Types.FRIENDLY
 
 var origin_pos: Vector2
 
-@onready var trail = $Trail
+@onready var trail: Line2D = $Trail
 
 
 func _ready() -> void:
@@ -20,11 +20,11 @@ func _ready() -> void:
 
 
 func _physics_process(delta: float) -> void:
-	var collided = move_and_collide(transform.x * SPEED * delta)
+	var collided: KinematicCollision2D = move_and_collide(transform.x * SPEED * delta)
 	
 	 # maybe use classes instead for dealing damage?
 	if collided:
-		var hit = collided.get_collider()
+		var hit: Object = collided.get_collider()
 		if type == Types.FRIENDLY:
 			if not hit.is_in_group("player"):
 				if hit.has_method("take_damage"):

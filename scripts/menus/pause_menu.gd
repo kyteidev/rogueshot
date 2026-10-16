@@ -3,7 +3,7 @@ extends CanvasLayer
 
 @export var crosshair: CanvasLayer
 
-@onready var cursor = crosshair.get_child(0)
+@onready var cursor := crosshair.get_child(0)
 
 
 func _ready() -> void:
