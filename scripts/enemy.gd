@@ -41,7 +41,8 @@ const INV_MIN_MOVE_DIST = 20.0
 
 const ALERT_DELAY = 0.3
 
-const RETURN_DELAY = 2.5
+const RETURN_DELAY = 3.5
+const RETURN_DELAY_LONG = 8.0
 
 const ATTACK_DELAY = 0.7
 const ATTACK_FIRE_RATE = 0.12
@@ -77,7 +78,7 @@ var status_icons = [preload("res://assets/sprites/icons/question mark.png"), pre
 @onready var weapon_sprite = $Weapon/Rifle1
 @onready var weapon_muzzle = $Weapon/Rifle1/Marker2D
 @onready var weapon_los_ray = $Weapon/WeaponLOSRay
-@onready var weapon_shoot_timer = $Weapon/WeaponTimer
+@onready var weapon_shoot_timer = $Weapon/WeaponShootTimer
 @onready var weapon_reload_timer = $Weapon/WeaponReloadTimer
 @onready var status_icon = $StatusIcon
 
@@ -175,16 +176,16 @@ func _get_custom_gravity(vel) -> float:
 	return FALL_GRAVITY
 	
 
-func _change_state(new_state) -> void:
+func _change_state(new_state, long_delay := false) -> void:
 	# make sure state is not changed to same state again
 	if state == State.DEAD or state == new_state:
 		return
 		
 	state = new_state
-	_enter_state(new_state)
+	_enter_state(new_state, long_delay)
 
 
-func _enter_state(new_state) -> void:
+func _enter_state(new_state, long_delay) -> void:
 	match new_state:
 		State.PATROL:
 			speed = PATROL_SPEED
@@ -210,7 +211,7 @@ func _enter_state(new_state) -> void:
 					_point_toward(direction)
 		State.RETURN:
 			speed = 0.0
-			state_timer.start(RETURN_DELAY)
+			state_timer.start(RETURN_DELAY if not long_delay else RETURN_DELAY_LONG)
 
 
 func _check_awareness() -> void:
@@ -351,7 +352,7 @@ func _state_attack(delta) -> void:
 			var pos_diff = _move_toward(known_target_pos, BASE_SPEED)
 		
 			if pos_diff == 0 and not in_los:
-				_change_state(State.RETURN)
+				_change_state(State.RETURN, true)
 				
 		# fire weapon
 		if weapon_shoot_timer.is_stopped():
