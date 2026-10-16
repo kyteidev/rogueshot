@@ -277,7 +277,7 @@ func _state_alert() -> void:
 			_change_state(State.RETURN)
 			return
 		
-		if is_detecting:
+		if is_detecting and in_los:
 			_change_state(State.ATTACK)
 			is_aggroing = true
 
