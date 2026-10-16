@@ -137,7 +137,8 @@ func take_damage(damage) -> void:
 	if state == State.DEAD:
 		return
 		
-	_change_state(State.ALERT)
+	if state != State.ATTACK and state != State.CHASE:
+		_change_state(State.ALERT)
 	
 	# flash red when taking damage
 	var tween = create_tween()
