@@ -129,6 +129,8 @@ func _process(delta: float) -> void:
 			bullet_instance.rotation = global_rotation + spread_angle
 			bullet_instance.scale = Vector2(BULLET_SCALE, BULLET_SCALE)
 			
+			bullet_instance.origin_pos = weapon_muzzle.global_position
+			
 			ammo -= 1
 
 			# cap spread and kick

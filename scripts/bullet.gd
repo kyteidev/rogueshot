@@ -15,8 +15,6 @@ var origin_pos: Vector2
 
 
 func _ready() -> void:
-	origin_pos = global_position
-	
 	trail.top_level = true
 	trail.clear_points()
 

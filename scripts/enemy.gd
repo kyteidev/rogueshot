@@ -146,7 +146,8 @@ func take_damage(damage) -> void:
 		return
 		
 	if state != State.ATTACK and state != State.CHASE:
-		_change_state(State.ALERT)
+		# delay changing state to end of frame so that bullet origin pos is correct
+		(func(): _change_state(State.ALERT)).call_deferred()
 	
 	# flash red when taking damage
 	var tween = create_tween()
