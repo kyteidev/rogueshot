@@ -77,7 +77,7 @@ var status_icons = [preload("res://assets/sprites/icons/question mark.png"), pre
 @onready var weapon_sprite = $Weapon/Rifle1
 @onready var weapon_muzzle = $Weapon/Rifle1/Marker2D
 @onready var weapon_los_ray = $Weapon/WeaponLOSRay
-@onready var weapon_timer = $Weapon/WeaponTimer
+@onready var weapon_shoot_timer = $Weapon/WeaponTimer
 @onready var weapon_reload_timer = $Weapon/WeaponReloadTimer
 @onready var status_icon = $StatusIcon
 
@@ -354,9 +354,9 @@ func _state_attack(delta) -> void:
 				_change_state(State.RETURN)
 				
 		# fire weapon
-		if weapon_timer.is_stopped():
+		if weapon_shoot_timer.is_stopped():
 			_shoot()
-			weapon_timer.start(ATTACK_FIRE_RATE)
+			weapon_shoot_timer.start(ATTACK_FIRE_RATE)
 
 
 func _state_retreat() -> void:
