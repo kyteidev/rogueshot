@@ -96,7 +96,7 @@ func _ready() -> void:
 	equip_weapon(0)
 
 
-func _process(delta: float) -> void:
+func _physics_process(delta: float) -> void:
 	if player.is_dead:
 		return
 
