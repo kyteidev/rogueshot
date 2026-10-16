@@ -43,7 +43,7 @@ const ALERT_DELAY = 0.3
 
 const RETURN_DELAY = 2.5
 
-const ATTACK_DELAY = 1.5
+const ATTACK_DELAY = 0.7
 const ATTACK_FIRE_RATE = 0.12
 const ATTACK_MAX_POS_DIFF = 180.0
 
