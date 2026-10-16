@@ -417,7 +417,7 @@ func _move_toward(pos, move_speed, raise_weapon := false) -> float:
 	_point_toward(direction)
 	
 	# jump if necessary
-	if wall_ray.is_colliding() and is_on_floor():
+	if wall_ray.is_colliding() and not high_wall_ray.is_colliding() and is_on_floor():
 		velocity.y = JUMP_VELOCITY
 	
 	# tilt weapon if needed
