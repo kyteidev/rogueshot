@@ -155,12 +155,17 @@ position = Vector2(0, -5)
 rotation = 0.2617994
 
 [node name="Rifle1" type="Sprite2D" parent="Weapon" unique_id=455243674]
-scale = Vector2(0.6, 0.6)
+scale = Vector2(0.6000001, 0.6000001)
 texture = ExtResource("3_f2e6v")
 offset = Vector2(3, 0)
 
 [node name="Marker2D" type="Marker2D" parent="Weapon/Rifle1" unique_id=554835805]
 position = Vector2(16, -0.5)
+
+[node name="WeaponLOSRay" type="RayCast2D" parent="Weapon" unique_id=2114914832]
+position = Vector2(-1.17657635e-08, -4.391046e-08)
+scale = Vector2(1.0000002, 1.0000002)
+target_position = Vector2(200, 0)
 
 [node name="WeaponTimer" type="Timer" parent="Weapon" unique_id=1442157855]
 one_shot = true

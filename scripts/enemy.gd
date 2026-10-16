@@ -74,6 +74,7 @@ var status_icons = [preload("res://assets/sprites/icons/question mark.png"), pre
 @onready var weapon = $Weapon
 @onready var weapon_sprite = $Weapon/Rifle1
 @onready var weapon_muzzle = $Weapon/Rifle1/Marker2D
+@onready var weapon_los_ray = $Weapon/WeaponLOSRay
 @onready var weapon_timer = $Weapon/WeaponTimer
 @onready var weapon_reload_timer = $Weapon/WeaponReloadTimer
 @onready var status_icon = $StatusIcon
@@ -325,23 +326,31 @@ func _state_attack(delta) -> void:
 		kick_offset = move_toward(kick_offset, 0.0, WEAPON_KICK_RECOVERY * delta)
 		weapon.position = weapon_rest_pos + kick_offset * Vector2.from_angle(weapon.rotation)
 		
-		# fire weapon
-		if weapon_timer.is_stopped():
-			_shoot()
-			weapon_timer.start(ATTACK_FIRE_RATE)
-		
 		# if target in aggro area and has line of sight, don't move
 		# if not, move until target is in aggro area and in line of sight.
 		if in_aggro_area and in_los:
-			speed = 0.0
+			# make sure weapon also has line of sight, otherwise enemy just shoots at ground
+			# if weapon doesn't have line of sight, move towards known target pos
+			weapon_los_ray.force_raycast_update()
 			
-			anim.speed_scale = 1.0
-			anim.play("idle")
+			var ray_target = weapon_los_ray.get_collider()
+			if ray_target and ray_target.is_in_group("player"):
+				speed = 0.0
+				
+				anim.speed_scale = 1.0
+				anim.play("idle")
+			else:
+				_move_toward(known_target_pos, BASE_SPEED)
 		else:
 			var pos_diff = _move_toward(known_target_pos, BASE_SPEED)
 		
 			if pos_diff == 0 and not in_los:
 				_change_state(State.RETURN)
+				
+		# fire weapon
+		if weapon_timer.is_stopped():
+			_shoot()
+			weapon_timer.start(ATTACK_FIRE_RATE)
 
 
 func _state_retreat() -> void:
