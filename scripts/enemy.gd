@@ -66,6 +66,7 @@ var bullet_origin_pos: Vector2
 var in_los = false
 
 var kick_offset = 0.0
+var desired_weapon_rotation = deg_to_rad(PATROL_WEAPON_TILT)
 
 # index 0: question mark, index 1: exclamation mark
 var status_icons = [preload("res://assets/sprites/icons/question mark.png"), preload("res://assets/sprites/icons/exclamation mark.png")]
@@ -104,13 +105,16 @@ func _physics_process(delta: float) -> void:
 		velocity.y += _get_custom_gravity(velocity) * delta
 		
 	_check_awareness()
+	
+	# rotate weapon smoothly
+	weapon.rotation = lerp_angle(weapon.rotation, desired_weapon_rotation, 1.0 - exp(-WEAPON_ROTATION_SPEED * delta))
 		
 	match state:
 		State.IDLE: _state_idle()
 		State.PATROL: _state_patrol()
 		State.INVESTIGATE: _state_investigate()
 		State.ALERT: _state_alert()
-		State.RETURN: _state_return(delta)
+		State.RETURN: _state_return()
 		State.CHASE: _state_chase()
 		State.SEARCH: _state_search()
 		State.ATTACK: _state_attack(delta)
@@ -250,14 +254,16 @@ func _state_patrol() -> void:
 	speed = PATROL_SPEED
 	
 	# tilt weapon
-	weapon.rotation = deg_to_rad(PATROL_WEAPON_TILT if direction > 0 else 180.0 - PATROL_WEAPON_TILT)
+	# directly set weapon rotation because when enemy flips direction, weapon should instantly flip too
+	desired_weapon_rotation = deg_to_rad(PATROL_WEAPON_TILT if direction > 0 else 180.0 - PATROL_WEAPON_TILT)
+	weapon.rotation = desired_weapon_rotation
 	
 
 func _state_investigate() -> void:
 	if state_timer.is_stopped():
 		# move towards known target position
 		# known target position only updates when it is in detection area
-		var pos_diff = _move_toward(known_target_pos, BASE_SPEED)
+		var pos_diff = _move_toward(known_target_pos, BASE_SPEED, true)
 		if pos_diff == 0:
 			_change_state(State.RETURN)
 
@@ -266,7 +272,7 @@ func _state_alert() -> void:
 	# alert state is same as investigate, but enemy will aggro on detection area entered
 	if state_timer.is_stopped():
 		# enemy is cautious, so slower movement
-		var pos_diff = _move_toward(bullet_origin_pos, PATROL_SPEED)
+		var pos_diff = _move_toward(bullet_origin_pos, PATROL_SPEED, true)
 		if pos_diff == 0:
 			_change_state(State.RETURN)
 			return
@@ -276,11 +282,10 @@ func _state_alert() -> void:
 			is_aggroing = true
 
 
-func _state_return(delta) -> void:
+func _state_return() -> void:
 	if state_timer.is_stopped():
 		# rotate weapon
-		var desired_rotation = deg_to_rad(PATROL_WEAPON_TILT if direction > 0 else 180.0 - PATROL_WEAPON_TILT)
-		weapon.rotation = lerp_angle(weapon.rotation, desired_rotation, 1.0 - exp(-WEAPON_ROTATION_SPEED * delta))
+		desired_weapon_rotation = deg_to_rad(PATROL_WEAPON_TILT if direction > 0 else 180.0 - PATROL_WEAPON_TILT)
 		
 		# move toward patrol position
 		var pos_diff = _move_toward(patrol_pos, PATROL_SPEED)
@@ -293,7 +298,7 @@ func _state_return(delta) -> void:
 
 
 func _state_chase() -> void:
-	var pos_diff = _move_toward(known_target_pos, RUN_SPEED)
+	var pos_diff = _move_toward(known_target_pos, RUN_SPEED, true)
 	
 	if is_detecting and in_los:
 		_change_state(State.ATTACK)
@@ -315,8 +320,7 @@ func _state_attack(delta) -> void:
 		return
 	
 	# rotate weapon towards target
-	var desired_rotation = (known_target_pos - global_position).angle()
-	weapon.rotation = lerp_angle(weapon.rotation, desired_rotation, 1.0 - exp(-WEAPON_ROTATION_SPEED * delta))
+	desired_weapon_rotation = (known_target_pos - global_position).angle()
 	
 	direction = 1 if global_position.x - known_target_pos.x < 0.0 else -1
 	_point_toward(direction)
@@ -392,7 +396,7 @@ func _shoot() -> void:
 		ammo = MAX_AMMO
 
 
-func _move_toward(pos, move_speed) -> float:
+func _move_toward(pos, move_speed, raise_weapon := false) -> float:
 	var pos_diff = global_position.x - pos.x
 		
 	if abs(pos_diff) < 1.0:
@@ -410,6 +414,10 @@ func _move_toward(pos, move_speed) -> float:
 		velocity.y = JUMP_VELOCITY
 	
 	_point_toward(direction)
+	
+	# tilt weapon if needed
+	if raise_weapon:
+		desired_weapon_rotation = 0.0 if direction > 0 else PI
 	
 	return pos_diff
 	
