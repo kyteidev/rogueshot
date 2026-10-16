@@ -95,6 +95,8 @@ var sm := StateManager
 @onready var patrol_pos: Vector2 = global_position
 @onready var weapon_rest_pos: Vector2 = weapon.position
 
+@onready var weapon_muzzle_orig_pos: Vector2 = weapon_muzzle.position
+
 
 func _ready() -> void:
 	sm.enemy_damage = DAMAGE
@@ -102,11 +104,10 @@ func _ready() -> void:
 
 func _process(_delta: float) -> void:
 	# flip weapon if necessary
-	var weapon_scale: float = weapon_sprite.scale.y
-	if direction < 0:
-		weapon_sprite.scale.y = abs(weapon_scale) * -1
-	else:
-		weapon_sprite.scale.y = abs(weapon_scale)
+	var flipped: bool = direction < 0
+	
+	weapon_sprite.flip_v = flipped
+	weapon_muzzle.position.y = -weapon_muzzle_orig_pos.y if flipped else weapon_muzzle_orig_pos.y
 		
 
 func _physics_process(delta: float) -> void:

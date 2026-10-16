@@ -16,6 +16,7 @@ var weapon_index: int = 0
 var current_weapon: Sprite2D = null
 var weapon_name: String = ""
 var weapon_muzzle: Marker2D = null
+var weapon_muzzle_orig_pos: Vector2
 
 var base_damage: int = 0:
 	set(value):
@@ -106,12 +107,10 @@ func _physics_process(delta: float) -> void:
 	# flip direction if necessary
 	var mouse_pos: Vector2 = get_global_mouse_position()
 	var direction: Vector2 = mouse_pos - global_position
+	var flipped: bool = direction.x < 0
 	
-	var weapon_scale: float = current_weapon.scale.y
-	if direction.x < 0:
-		current_weapon.scale.y = abs(weapon_scale) * -1
-	else:
-		current_weapon.scale.y = abs(weapon_scale)
+	current_weapon.flip_v = flipped
+	weapon_muzzle.position.y = -weapon_muzzle_orig_pos.y if flipped else weapon_muzzle_orig_pos.y
 		
 	# recoil and kick recovery and apply kick
 	current_spread = move_toward(current_spread, 0.0, spread_recovery * delta)
@@ -211,6 +210,7 @@ func equip_weapon(index: int) -> void:
 	current_weapon = weapons[index]
 	weapon_name = current_weapon.name.to_lower()
 	weapon_muzzle = current_weapon.get_child(0)
+	weapon_muzzle_orig_pos = weapon_muzzle.position
 	
 	# set weapon stats
 	var stats: Dictionary = WEAPON_STATS[weapon_name]
