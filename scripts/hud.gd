@@ -61,7 +61,8 @@ func _process(delta: float) -> void:
 	stamina_loss_bar.value = displayed_stamina_loss
 	
 	# DEBUG SECTION
-	debug_enemy_state_label.text = "ENEMY: %s" % enemy.State.keys()[enemy.state]
+	if enemy:
+		debug_enemy_state_label.text = "ENEMY: %s" % enemy.State.keys()[enemy.state]
 
 
 func start_stamina_flash() -> void:
