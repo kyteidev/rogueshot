@@ -177,6 +177,10 @@ one_shot = true
 position = Vector2(0, -1)
 target_position = Vector2(7, 0)
 
+[node name="HighWallRay" type="RayCast2D" parent="." unique_id=1211221419]
+position = Vector2(0, -24)
+target_position = Vector2(7, 0)
+
 [node name="LedgeRay" type="RayCast2D" parent="." unique_id=2076729340]
 position = Vector2(7, 0)
 target_position = Vector2(0, 4)

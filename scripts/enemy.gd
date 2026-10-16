@@ -83,6 +83,7 @@ var status_icons = [preload("res://assets/sprites/icons/question mark.png"), pre
 @onready var status_icon = $StatusIcon
 
 @onready var wall_ray = $WallRay
+@onready var high_wall_ray = $HighWallRay
 @onready var ledge_ray = $LedgeRay
 @onready var los_ray = $LOSRay
 
@@ -212,6 +213,10 @@ func _enter_state(new_state, long_delay) -> void:
 		State.RETURN:
 			speed = 0.0
 			state_timer.start(RETURN_DELAY if not long_delay else RETURN_DELAY_LONG)
+			
+			if high_wall_ray.is_colliding():
+				direction *= -1
+				_point_toward(direction)
 
 
 func _check_awareness() -> void:
@@ -324,9 +329,6 @@ func _state_attack(delta) -> void:
 	# rotate weapon towards target
 	desired_weapon_rotation = (known_target_pos - global_position).angle()
 	
-	direction = 1 if global_position.x - known_target_pos.x < 0.0 else -1
-	_point_toward(direction)
-	
 	# after attack delay has passed
 	if state_timer.is_stopped():
 		kick_offset = move_toward(kick_offset, 0.0, WEAPON_KICK_RECOVERY * delta)
@@ -412,11 +414,11 @@ func _move_toward(pos, move_speed, raise_weapon := false) -> float:
 	direction = 1 if pos_diff < 0 else -1
 	speed = move_speed
 	
+	_point_toward(direction)
+	
 	# jump if necessary
 	if wall_ray.is_colliding() and is_on_floor():
 		velocity.y = JUMP_VELOCITY
-	
-	_point_toward(direction)
 	
 	# tilt weapon if needed
 	if raise_weapon:
@@ -428,12 +430,14 @@ func _move_toward(pos, move_speed, raise_weapon := false) -> float:
 func _point_toward(point_direction) -> void:
 	anim.flip_h = false
 	wall_ray.target_position = abs(wall_ray.target_position)
+	high_wall_ray.target_position = abs(high_wall_ray.target_position)
 	ledge_ray.position.x = abs(ledge_ray.position.x)
 	status_icon.position.x = abs(status_icon.position.x)
 	
 	if point_direction < 0:
 		anim.flip_h = not anim.flip_h
 		wall_ray.target_position *= -1
+		high_wall_ray.target_position *= -1
 		ledge_ray.position.x *= -1
 		status_icon.position.x *= -1
 
