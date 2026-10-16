@@ -60,3 +60,13 @@ texture_progress = ExtResource("5_uo2fv")
 
 [node name="StaminaBarTimer" type="Timer" parent="StaminaBarOutline" unique_id=423335567]
 one_shot = true
+
+[node name="DebugEnemyStateLabel" type="Label" parent="." unique_id=707954335]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -87.0
+offset_bottom = 23.0
+grow_horizontal = 0
+text = "hello world"
+horizontal_alignment = 2

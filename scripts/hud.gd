@@ -7,6 +7,8 @@ const STAMINA_COLOR = Color("3cffae")
 const STAMINA_FLASH_COLOR = Color("32757c")
 const STAMINA_FLASH_DELAY = 0.5
 
+@export var enemy: CharacterBody2D
+
 var sm = StateManager
 
 var displayed_stamina_loss = 100.0
@@ -19,6 +21,8 @@ var stamina_was_depleted = false
 @onready var stamina_bar = $StaminaBarOutline/StaminaBar
 @onready var stamina_loss_bar = $StaminaBarOutline/StaminaLossBar
 @onready var stamina_timer = $StaminaBarOutline/StaminaBarTimer
+
+@onready var debug_enemy_state_label = $DebugEnemyStateLabel
 
 
 func _ready() -> void:
@@ -55,6 +59,9 @@ func _process(delta: float) -> void:
 			displayed_stamina_loss = sm.stamina
 	
 	stamina_loss_bar.value = displayed_stamina_loss
+	
+	# DEBUG SECTION
+	debug_enemy_state_label.text = "ENEMY: %s" % enemy.State.keys()[enemy.state]
 
 
 func start_stamina_flash() -> void:

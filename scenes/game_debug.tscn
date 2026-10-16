@@ -50,8 +50,9 @@ layer_0/tile_data = PackedInt32Array(65534, 0, 0, 65535, 0, 0, 0, 0, 0, 1, 0, 0,
 [node name="CrosshairCanvas" parent="." unique_id=1451679454 groups=["crosshair"] instance=ExtResource("4_8285f")]
 visible = false
 
-[node name="HUD" parent="." unique_id=465990537 instance=ExtResource("4_1s6p4")]
+[node name="HUD" parent="." unique_id=465990537 node_paths=PackedStringArray("enemy") instance=ExtResource("4_1s6p4")]
 visible = false
+enemy = NodePath("../Enemy")
 
 [node name="PauseManu" parent="." unique_id=1248834952 node_paths=PackedStringArray("crosshair") instance=ExtResource("5_d1y6d")]
 visible = false
