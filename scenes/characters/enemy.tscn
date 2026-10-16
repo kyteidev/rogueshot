@@ -132,7 +132,7 @@ radius = 5.0
 height = 14.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_nxcxh"]
-size = Vector2(14, 16)
+size = Vector2(22, 16)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_f2e6v"]
 radius = 200.0
@@ -211,7 +211,7 @@ position = Vector2(0, -12)
 collision_mask = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AggroArea" unique_id=968259423]
-position = Vector2(0, -7)
+position = Vector2(1, -7)
 shape = SubResource("CircleShape2D_21x0f")
 
 [node name="StatusIcon" type="Sprite2D" parent="." unique_id=901298442]
