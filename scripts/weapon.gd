@@ -6,6 +6,8 @@ const MAX_STAMINA_SPREAD_MULTIPLIER = 2.0
 const BULLET = preload("res://scenes/weapons/bullet.tscn")
 const BULLET_SCALE = 0.2
 
+const FADE_DURATION = 0.15
+
 var sm = StateManager
 
 var weapons: Array = []
@@ -95,6 +97,9 @@ func _ready() -> void:
 
 
 func _process(delta: float) -> void:
+	if player.is_dead:
+		return
+
 	# make weapon point towards mouse pointer
 	look_at(get_global_mouse_position())
 	
@@ -160,9 +165,12 @@ func _process(delta: float) -> void:
 		
 	if Input.is_action_just_pressed("weapon_reload"):
 		reload_weapon()
-		
+
 
 func _input(_event: InputEvent) -> void:
+	if player.is_dead:
+		return
+
 	# weapon switching
 	if Input.is_action_just_pressed("weapon_cycle"):
 		var next_index = (weapon_index + 1) % weapons.size()
@@ -173,7 +181,13 @@ func _input(_event: InputEvent) -> void:
 		equip_weapon(0)
 	elif Input.is_action_just_pressed("weapon_2"):
 		equip_weapon(1)
-		
+
+
+func fade_weapon() -> void:
+	var fade_tween = create_tween()
+	fade_tween.tween_property(self, "modulate", Color("ffffff00"), FADE_DURATION)\
+			.set_ease(Tween.EASE_OUT)
+
 
 func reload_weapon() -> void:
 	if mags > 0 and ammo != max_ammo:

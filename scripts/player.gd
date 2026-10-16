@@ -1,6 +1,9 @@
 extends CharacterBody2D
 
 
+const MAX_HEALTH = 100.0
+const DAMAGE_FLASH_DELAY = 0.04
+
 const BASE_SPEED = 80.0
 const SPRINT_MULTIPLIER = 1.25
 
@@ -36,11 +39,18 @@ const JUMP_BUFFER_TIME = 0.12
 
 var sm = StateManager
 
+var health = MAX_HEALTH:
+	set(value):
+		health = value
+		sm.health = value
+
 var was_airborne = false
 var reached_peak = false
 
 var speed = 0.0
 var sprinting = false
+
+var is_dead = false
 
 var regenerating_stamina = true
 var prev_stamina = MAX_STAMINA
@@ -71,6 +81,8 @@ var stamina_depleted = false:
 @onready var anim_sprite = $AnimatedSprite2D
 @onready var stamina_timer = $StaminaTimer
 
+@onready var weapon = $Weapon
+
 
 func _ready() -> void:
 	# have this in _ready so max stamina only needs to be adjusted here,
@@ -79,6 +91,9 @@ func _ready() -> void:
 
 
 func _physics_process(delta: float) -> void:
+	if is_dead:
+		return
+
 	var was_on_floor = is_on_floor()
 	
 	# gravity and jump stretch
@@ -198,6 +213,27 @@ func _physics_process(delta: float) -> void:
 	# coyote time management
 	if was_on_floor and not is_on_floor() and velocity.y >= 0:
 		coyote_timer.start(COYOTE_TIME)
+
+
+func take_damage(damage):
+	# flash red when taking damage
+	var tween = create_tween()
+	tween.tween_property(self, "modulate", Color("ff0000"), DAMAGE_FLASH_DELAY)
+	tween.tween_property(self, "modulate", Color("ffffff"), DAMAGE_FLASH_DELAY)
+	
+	if not is_dead:
+		health -= damage
+		if health <= 0:
+			# make player red when dead
+			is_dead = true
+			anim_sprite.play("death")
+			weapon.fade_weapon()
+			
+			anim_sprite.animation_finished.connect(_death_menu)
+
+
+func _death_menu():
+	get_tree().change_scene_to_file("res://scenes/menus/death_menu.tscn")
 
 
 func _get_custom_gravity(vel) -> float:

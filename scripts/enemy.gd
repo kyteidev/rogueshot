@@ -12,6 +12,7 @@ const ANIM_MAX_SCALE = 2.0
 const ANIM_EXP = 0.34
 
 const MAX_HEALTH = 100.0
+const DAMAGE = 12.0
 
 const BASE_SPEED = 80.0
 const RUN_SPEED = BASE_SPEED * 1.5
@@ -73,6 +74,8 @@ var desired_weapon_rotation = deg_to_rad(PATROL_WEAPON_TILT)
 # index 0: question mark, index 1: exclamation mark
 var status_icons = [preload("res://assets/sprites/icons/question mark.png"), preload("res://assets/sprites/icons/exclamation mark.png")]
 
+var sm = StateManager
+
 @onready var anim = $AnimatedSprite2D
 @onready var weapon = $Weapon
 @onready var weapon_sprite = $Weapon/Rifle1
@@ -91,6 +94,10 @@ var status_icons = [preload("res://assets/sprites/icons/question mark.png"), pre
 
 @onready var patrol_pos = global_position
 @onready var weapon_rest_pos = weapon.position
+
+
+func _ready() -> void:
+	sm.enemy_damage = DAMAGE
 
 
 func _process(_delta: float) -> void:

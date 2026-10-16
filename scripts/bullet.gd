@@ -37,7 +37,7 @@ func _physics_process(delta: float) -> void:
 		elif type == Types.ENEMY:
 			if not hit.is_in_group("enemy"):
 				if hit.has_method("take_damage"):
-					hit.take_damage(sm.damage)
+					hit.take_damage(sm.enemy_damage)
 				queue_free()
 	
 	# add bullet trail
