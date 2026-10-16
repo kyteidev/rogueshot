@@ -45,6 +45,7 @@ const RETURN_DELAY = 2.5
 
 const ATTACK_DELAY = 1.5
 const ATTACK_FIRE_RATE = 0.12
+const ATTACK_MAX_POS_DIFF = 180.0
 
 const MAX_AMMO = 30
 
@@ -332,7 +333,8 @@ func _state_attack(delta) -> void:
 		
 		# if target in aggro area and has line of sight, don't move
 		# if not, move until target is in aggro area and in line of sight.
-		if in_aggro_area and in_los:
+		var target_pos_diff = abs(global_position - known_target_pos)
+		if in_los and target_pos_diff.x < ATTACK_MAX_POS_DIFF:
 			# make sure weapon also has line of sight, otherwise enemy just shoots at ground
 			# if weapon doesn't have line of sight, move towards known target pos
 			weapon_los_ray.force_raycast_update()
