@@ -199,6 +199,8 @@ func _enter_state(new_state, long_delay) -> void:
 			status_icon.texture = status_icons[1] if state == State.ATTACK else status_icons[0]
 			status_icon.play_anim()
 			
+			var pos_diff = global_position.x - known_target_pos.x
+			
 			match new_state:
 				State.ATTACK:
 					state_timer.start(ATTACK_DELAY)
@@ -208,9 +210,10 @@ func _enter_state(new_state, long_delay) -> void:
 				State.ALERT:
 					state_timer.start(ALERT_DELAY)
 					
-					var pos_diff = global_position.x - bullet_origin_pos.x
-					direction = 1 if pos_diff < 0 else -1
-					_point_toward(direction)
+					pos_diff = global_position.x - bullet_origin_pos.x
+	
+			direction = 1 if pos_diff < 0 else -1
+			_point_toward(direction)
 		State.RETURN:
 			speed = 0.0
 			state_timer.start(RETURN_DELAY if not long_delay else RETURN_DELAY_LONG)
@@ -466,3 +469,8 @@ func _on_aggro_area_body_entered(body: Node2D) -> void:
 func _on_aggro_area_body_exited(body: Node2D) -> void:
 	if body.is_in_group("player"):
 		in_aggro_area = false
+
+
+func _on_close_range_area_body_entered(body: Node2D) -> void:
+	if body.is_in_group("player"):
+		_change_state(State.ATTACK) # there's probably a more efficient way to do this
