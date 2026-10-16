@@ -226,7 +226,6 @@ func _check_awareness() -> void:
 	if ray_target and ray_target.is_in_group("player"):
 		if state != State.CHASE and state != State.ALERT:
 			_change_state(State.ATTACK if is_aggroing else State.INVESTIGATE)
-		
 		# update known target position if still in line of sight
 		known_target_pos = target_pos
 		in_los = true
@@ -294,7 +293,7 @@ func _state_return(delta) -> void:
 func _state_chase() -> void:
 	var pos_diff = _move_toward(known_target_pos, RUN_SPEED)
 	
-	if is_detecting:
+	if is_detecting and in_los:
 		_change_state(State.ATTACK)
 		is_aggroing = true
 	
