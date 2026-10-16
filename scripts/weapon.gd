@@ -200,9 +200,11 @@ func _finish_reload() -> void:
 	
 
 func equip_weapon(index: int) -> void:
-	# save weapon stats before switching
+	# reset and save weapon stats before switching
 	if current_weapon != null:
+		current_weapon.flip_v = false
 		current_weapon.position = weapon_rest_pos
+		weapon_muzzle.position = weapon_muzzle_orig_pos
 		weapon_state[weapon_name] = {"ammo": ammo, "mags": mags}
 	
 	# get weapon stuff
