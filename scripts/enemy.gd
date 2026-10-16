@@ -304,7 +304,7 @@ func _state_chase() -> void:
 		_change_state(State.ATTACK)
 		is_aggroing = true
 	
-	if pos_diff == 0 and not is_detecting:
+	if pos_diff == 0 and (not is_detecting or not in_los):
 		_change_state(State.RETURN)
 		# TODO: implement search state
 	
