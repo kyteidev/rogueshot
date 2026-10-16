@@ -45,6 +45,7 @@ var reload_time: float = 0.0
 var current_spread: float = 0.0
 var kick_offset: float = 0.0
 var weapon_rest_pos: Vector2 = Vector2.ZERO
+var camera_shake: float = 0.0
 
 var can_fire = true
 
@@ -65,7 +66,8 @@ const WEAPON_STATS = {
 		"spread": 3.0,
 		"max_spread": 8.0,
 		"spread_recovery": 8.0,
-		"reload_time": 0.9
+		"reload_time": 0.9,
+		"camera_shake": 1.0
 	},
 	"rifle1": {
 		"damage": 15,
@@ -77,7 +79,8 @@ const WEAPON_STATS = {
 		"spread": 1.2,
 		"max_spread": 7.0,
 		"spread_recovery": 5.0,
-		"reload_time": 2.6
+		"reload_time": 2.6,
+		"camera_shake": 0.5
 	}
 }
 
@@ -134,6 +137,10 @@ func _process(delta: float) -> void:
 			
 			# deduct stamina
 			player.stamina -= player.SHOOT_STAMINA_RATE
+			
+			# shake camera
+			var camera = get_node("../../Camera")
+			camera.shake_strength = camera_shake
 		
 		# firing speed timeout
 		if fire_rate == 0.0 and can_fire:
@@ -207,6 +214,7 @@ func equip_weapon(index: int) -> void:
 	current_spread = 0.0
 	kick_offset = 0.0
 	weapon_rest_pos = current_weapon.position
+	camera_shake = stats.camera_shake
 	
 	# save weapon state if not saved previously
 	if not weapon_state.has(weapon_name):
