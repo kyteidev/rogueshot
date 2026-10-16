@@ -16,7 +16,7 @@ const MAX_HEALTH = 100.0
 const BASE_SPEED = 80.0
 const RUN_SPEED = BASE_SPEED * 1.5
 const PATROL_SPEED = 30.0
-const JUMP_VELOCITY = -120.0
+const JUMP_VELOCITY = -180.0
 
 const GROUND_ACCEL = 900.0
 const GROUND_FRICTION = 1100.0
@@ -397,7 +397,7 @@ func _move_toward(pos, move_speed) -> float:
 	speed = move_speed
 	
 	# jump if necessary
-	if wall_ray.is_colliding():
+	if wall_ray.is_colliding() and is_on_floor():
 		velocity.y = JUMP_VELOCITY
 	
 	_point_toward(direction)
