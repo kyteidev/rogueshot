@@ -134,6 +134,10 @@ height = 14.0
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_nxcxh"]
 size = Vector2(22, 16)
 
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_4iqke"]
+radius = 24.0
+height = 76.0
+
 [sub_resource type="CircleShape2D" id="CircleShape2D_f2e6v"]
 radius = 200.0
 
@@ -199,6 +203,13 @@ collision_mask = 4
 position = Vector2(0, -7)
 shape = SubResource("RectangleShape2D_nxcxh")
 
+[node name="BulletHearingArea" type="Area2D" parent="." unique_id=1294586907]
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BulletHearingArea" unique_id=522205884]
+rotation = 1.5707964
+shape = SubResource("CapsuleShape2D_4iqke")
+
 [node name="DetectionArea" type="Area2D" parent="." unique_id=1094551148]
 position = Vector2(0, -12)
 collision_mask = 4
@@ -229,6 +240,7 @@ one_shot = true
 one_shot = true
 
 [connection signal="body_entered" from="CloseRangeArea" to="." method="_on_close_range_area_body_entered"]
+[connection signal="body_entered" from="BulletHearingArea" to="." method="_on_bullet_hearing_area_body_entered"]
 [connection signal="body_entered" from="DetectionArea" to="." method="_on_detection_area_body_entered"]
 [connection signal="body_exited" from="DetectionArea" to="." method="_on_detection_area_body_exited"]
 [connection signal="body_entered" from="AggroArea" to="." method="_on_aggro_area_body_entered"]

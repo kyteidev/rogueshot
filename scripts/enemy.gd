@@ -474,3 +474,14 @@ func _on_aggro_area_body_exited(body: Node2D) -> void:
 func _on_close_range_area_body_entered(body: Node2D) -> void:
 	if body.is_in_group("player"):
 		_change_state(State.ATTACK) # there's probably a more efficient way to do this
+
+
+# for hearing projectiles
+func _on_bullet_hearing_area_body_entered(body: Node2D) -> void:
+	# make sure projectile is above or same level as enemy, enemy cant hear anything below it
+	# I STILL DONT UNDERSTAND WHY NEGATIVE Y IS UP IN GODOT AAAAAAAAHHHHHHHH
+	if body.is_in_group("projectile") and body.global_position.y <= global_position.y:
+		if state != State.ATTACK and state != State.CHASE:
+			if body.type == body.Types.FRIENDLY:
+				_change_state(State.ALERT)
+				bullet_origin_pos = body.global_position

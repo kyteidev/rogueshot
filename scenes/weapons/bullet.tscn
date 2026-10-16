@@ -15,7 +15,7 @@ colors = PackedColorArray(0, 0, 0, 0, 0.9843137, 0.9490196, 0.21176471, 1)
 radius = 3.0
 height = 12.0
 
-[node name="Bullet" type="CharacterBody2D" unique_id=890673520]
+[node name="Bullet" type="CharacterBody2D" unique_id=890673520 groups=["projectile"]]
 collision_layer = 2
 script = ExtResource("1_y25gk")
 
