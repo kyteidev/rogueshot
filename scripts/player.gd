@@ -46,7 +46,7 @@ var regenerating_stamina = true
 var prev_stamina = MAX_STAMINA
 var stamina:
 	set(value):
-		stamina = clamp(value, 0.0, 100.0)
+		stamina = clamp(value, 0.0, MAX_STAMINA)
 		sm.stamina = stamina
 		
 		if not regenerating_stamina:
