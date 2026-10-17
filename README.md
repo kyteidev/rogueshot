@@ -30,7 +30,9 @@ LIST OF FINISHED FEATURES (updated Oct. 15 2026):
     - Enemies
         - State indicator
         - Health 
-        - Patrol
+        - Patrol, attack, chase, investigate, alert, return
+    - Player health
+    - Death screen (basic)
 
 ### THIRD PARTY ASSETS
 - Groundhog font by ChevyRay - https://chevyray.itch.io/pixel-font-groundhog
