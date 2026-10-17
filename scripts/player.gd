@@ -87,6 +87,7 @@ var stamina_depleted: bool = false:
 @onready var stamina_timer := $StaminaTimer
 
 @onready var weapon := $Weapon
+@onready var collision := $CollisionShape2D
 
 
 func _ready() -> void:
@@ -95,6 +96,7 @@ func _ready() -> void:
 	stamina = MAX_STAMINA
 	
 	death_timer.wait_time = DEATH_TRANS_DELAY
+	collision.disabled = false
 
 
 func _physics_process(delta: float) -> void:
@@ -235,6 +237,7 @@ func take_damage(damage: float) -> void:
 			is_dead = true
 			anim_sprite.play("death")
 			weapon.fade_weapon()
+			collision.disabled = true
 			
 			anim_sprite.animation_finished.connect(death_timer.start)
 
