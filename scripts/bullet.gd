@@ -20,7 +20,7 @@ func _ready() -> void:
 
 
 func _physics_process(delta: float) -> void:
-	var collided: KinematicCollision2D = move_and_collide(transform.x * SPEED * delta)
+	var collided := move_and_collide(transform.x * SPEED * delta)
 	
 	# maybe use classes instead for dealing damage?
 	if collided:
