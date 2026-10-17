@@ -2,6 +2,7 @@ extends Node
 
 
 var health: float = 100.0
+var max_health: float = 100.0
 var enemy_damage: float = 0.0
 
 var damage: float = 0.0

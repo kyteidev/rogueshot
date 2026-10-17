@@ -22,6 +22,7 @@ var stamina_was_depleted: bool = false
 
 @onready var health_bar := $HealthBarOutline/HealthBar
 @onready var health_loss_bar := $HealthBarOutline/HealthLossBar
+@onready var health_bar_text := $HealthBarOutline/HealthBar/HealthBarText
 @onready var health_timer := $HealthBarOutline/HealthBarTimer
 
 @onready var stamina_bar := $StaminaBarOutline/StaminaBar
@@ -42,6 +43,7 @@ func _process(delta: float) -> void:
 	
 	# update health info
 	health_bar.value = sm.health
+	health_bar_text.text = "%s/%s" % [sm.health, sm.max_health]
 	
 	# delay the stamina loss bar
 	if sm.lost_health:

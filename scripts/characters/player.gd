@@ -102,6 +102,8 @@ func _ready() -> void:
 	
 	death_timer.wait_time = DEATH_TRANS_DELAY
 	collision.disabled = false
+	
+	sm.max_health = MAX_HEALTH
 
 
 func _physics_process(delta: float) -> void:
