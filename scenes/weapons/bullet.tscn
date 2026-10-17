@@ -28,13 +28,12 @@ gradient = SubResource("Gradient_e0k1m")
 texture = ExtResource("1_mkf8s")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1074824542]
-visible = false
 rotation = 1.5707964
 shape = SubResource("CapsuleShape2D_nxcxh")
 
 [node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="." unique_id=291184140]
-visible = false
 position = Vector2(-18, 18)
 rect = Rect2(-10, -46, 56, 56)
+show_rect = false
 
 [connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_exited"]
