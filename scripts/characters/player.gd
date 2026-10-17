@@ -45,8 +45,8 @@ var sm := StateManager
 var prev_health: float = MAX_HEALTH
 var health: float = MAX_HEALTH:
 	set(value):
-		health = value
-		sm.health = value
+		health = clamp(value, 0.0, MAX_HEALTH)
+		sm.health = health
 		
 		if value < prev_health:
 			sm.lost_health = true
