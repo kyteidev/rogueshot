@@ -35,6 +35,7 @@ const STRETCH = 0.2
 const COYOTE_TIME = 0.12
 const JUMP_BUFFER_TIME = 0.12
 
+@export var transition: CanvasLayer
 @export var crosshair: CanvasLayer
 
 var sm := StateManager
@@ -233,7 +234,8 @@ func take_damage(damage: float) -> void:
 
 
 func _death_menu() -> void:
-	get_tree().change_scene_to_file("res://scenes/menus/death_menu.tscn")
+	var scene: PackedScene = preload("res://scenes/menus/death_menu.tscn")
+	transition.start_transition(scene)
 
 
 func _get_custom_gravity(vel: Vector2) -> float:

@@ -1,0 +1,23 @@
+[gd_scene format=3 uid="uid://b7bcawpls2ixa"]
+
+[ext_resource type="Script" uid="uid://bqweycowjgb1i" path="res://scripts/transitions/transition_circle.gd" id="1_hthyn"]
+[ext_resource type="Shader" uid="uid://uvm1plsogyj" path="res://shaders/transition_circle.gdshader" id="1_m2aay"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_nx5j2"]
+shader = ExtResource("1_m2aay")
+shader_parameter/circle_size = 1.0000000475
+shader_parameter/circle_center = Vector2(0.5, 0.5)
+shader_parameter/screen_width = 640.0
+shader_parameter/screen_height = 360.0
+
+[node name="TransitionCircle" type="CanvasLayer" unique_id=1599442735]
+script = ExtResource("1_hthyn")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1813166809]
+material = SubResource("ShaderMaterial_nx5j2")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)

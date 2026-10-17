@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://c6evxkovosp2y" path="res://scenes/hud.tscn" id="4_1s6p4"]
 [ext_resource type="PackedScene" uid="uid://byg2oli55neme" path="res://scenes/weapons/crosshair.tscn" id="4_8285f"]
 [ext_resource type="PackedScene" uid="uid://bojjbmn2cos6p" path="res://scenes/menus/pause_menu.tscn" id="5_d1y6d"]
+[ext_resource type="PackedScene" uid="uid://b7bcawpls2ixa" path="res://scenes/transitions/transition_circle.tscn" id="9_bdsyy"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_hpfpv"]
 texture = ExtResource("2_17cyv")
@@ -30,7 +31,8 @@ sources/0 = SubResource("TileSetAtlasSource_hpfpv")
 
 [node name="Background" parent="." unique_id=1305377215 instance=ExtResource("1_hpfpv")]
 
-[node name="Player" parent="." unique_id=73622017 node_paths=PackedStringArray("crosshair") instance=ExtResource("1_6rfd2")]
+[node name="Player" parent="." unique_id=73622017 node_paths=PackedStringArray("transition", "crosshair") instance=ExtResource("1_6rfd2")]
+transition = NodePath("../TransitionCircle")
 crosshair = NodePath("../CrosshairCanvas")
 
 [node name="Enemy" parent="." unique_id=136999672 instance=ExtResource("3_ex044")]
@@ -57,3 +59,6 @@ enemy = NodePath("../Enemy")
 [node name="PauseManu" parent="." unique_id=1248834952 node_paths=PackedStringArray("crosshair") instance=ExtResource("5_d1y6d")]
 visible = false
 crosshair = NodePath("../CrosshairCanvas")
+
+[node name="TransitionCircle" parent="." unique_id=1599442735 node_paths=PackedStringArray("player") instance=ExtResource("9_bdsyy")]
+player = NodePath("../Player")
