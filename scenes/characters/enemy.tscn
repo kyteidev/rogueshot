@@ -135,7 +135,7 @@ height = 14.0
 size = Vector2(22, 16)
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_4iqke"]
-radius = 24.0
+radius = 26.0
 height = 76.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_f2e6v"]
