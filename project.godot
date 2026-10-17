@@ -38,6 +38,18 @@ version_control/autoload_on_startup=true
 
 enabled=PackedStringArray("res://addons/godot_super-wakatime/plugin.cfg", "res://addons/kanban_tasks/plugin.cfg")
 
+[file_customization]
+
+folder_colors={
+"res://addons/": "red",
+"res://assets/": "yellow",
+"res://export/": "orange",
+"res://scenes/": "teal",
+"res://scripts/": "blue",
+"res://settings/": "green",
+"res://shaders/": "purple"
+}
+
 [global_group]
 
 player=""

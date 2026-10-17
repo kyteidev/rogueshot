@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dpogluv54xj85"
-path="res://.godot/imported/reload_circle.png-4874860b02de7c2f644d6ff6839add88.ctex"
+uid="uid://j7h8d1tjs84j"
+path="res://.godot/imported/reticle.png-3a2731a20284ef2d82977f3691c8df8e.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sprites/reload_circle.png"
-dest_files=["res://.godot/imported/reload_circle.png-4874860b02de7c2f644d6ff6839add88.ctex"]
+source_file="res://assets/sprites/crosshair/reticle.png"
+dest_files=["res://.godot/imported/reticle.png-3a2731a20284ef2d82977f3691c8df8e.ctex"]
 
 [params]
 

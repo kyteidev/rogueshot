@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://j7h8d1tjs84j"
-path="res://.godot/imported/reticle.png-334f2f08384b975197fb7316df4f22fc.ctex"
+uid="uid://hop8m0c1ubuo"
+path="res://.godot/imported/world-tileset.png-721fcb7694d33376338314a7f309c535.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sprites/reticle.png"
-dest_files=["res://.godot/imported/reticle.png-334f2f08384b975197fb7316df4f22fc.ctex"]
+source_file="res://assets/sprites/environment/world-tileset.png"
+dest_files=["res://.godot/imported/world-tileset.png-721fcb7694d33376338314a7f309c535.ctex"]
 
 [params]
 

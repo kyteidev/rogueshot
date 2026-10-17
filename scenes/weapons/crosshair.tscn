@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://byg2oli55neme"]
 
-[ext_resource type="Texture2D" uid="uid://dpogluv54xj85" path="res://assets/sprites/reload_circle.png" id="1_6blvt"]
+[ext_resource type="Texture2D" uid="uid://dpogluv54xj85" path="res://assets/sprites/crosshair/reload_circle.png" id="1_6blvt"]
 [ext_resource type="Script" uid="uid://da2tov2kp0y53" path="res://scripts/crosshair.gd" id="1_norqy"]
-[ext_resource type="Texture2D" uid="uid://j7h8d1tjs84j" path="res://assets/sprites/reticle.png" id="2_qnjby"]
+[ext_resource type="Texture2D" uid="uid://j7h8d1tjs84j" path="res://assets/sprites/crosshair/reticle.png" id="2_qnjby"]
 
 [node name="CrosshairCanvas" type="CanvasLayer" unique_id=1451679454]
 script = ExtResource("1_norqy")

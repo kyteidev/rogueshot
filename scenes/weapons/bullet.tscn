@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://b0rerk3cn0pob"]
 
 [ext_resource type="Texture2D" uid="uid://dfmvm3hb6slg" path="res://assets/sprites/weapons/bullet.png" id="1_mkf8s"]
-[ext_resource type="Script" uid="uid://ct25setqlsdgc" path="res://scripts/bullet.gd" id="1_y25gk"]
+[ext_resource type="Script" uid="uid://ct25setqlsdgc" path="res://scripts/weapon/bullet.gd" id="1_y25gk"]
 
 [sub_resource type="Curve" id="Curve_4iqke"]
 _data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 0.27123284), 0.0, 0.0, 0, 0]

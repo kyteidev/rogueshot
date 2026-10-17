@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://c7lkx746oul73"]
 
-[ext_resource type="Script" uid="uid://bpqxislc5uiqk" path="res://scripts/enemy.gd" id="1_4ra3w"]
-[ext_resource type="Texture2D" uid="uid://bxil48e432vuf" path="res://assets/sprites/enemy1.png" id="1_md0e3"]
+[ext_resource type="Script" uid="uid://bpqxislc5uiqk" path="res://scripts/characters/enemy.gd" id="1_4ra3w"]
+[ext_resource type="Texture2D" uid="uid://bxil48e432vuf" path="res://assets/sprites/characters/enemy1.png" id="1_md0e3"]
 [ext_resource type="Texture2D" uid="uid://b01e1rwshiegl" path="res://assets/sprites/weapons/rifle.png" id="3_f2e6v"]
 [ext_resource type="Texture2D" uid="uid://sxdj3w7nress" path="res://assets/sprites/icons/question mark.png" id="4_21x0f"]
 [ext_resource type="Script" uid="uid://dtictyumsb7ps" path="res://scripts/characters/enemy_status_icon.gd" id="5_jgk6k"]
