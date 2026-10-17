@@ -103,7 +103,10 @@ func _ready() -> void:
 	death_timer.wait_time = DEATH_TRANS_DELAY
 	collision.disabled = false
 	
+	# sync values with state manager
+	sm.health = health
 	sm.max_health = MAX_HEALTH
+	sm.stamina = stamina
 
 
 func _physics_process(delta: float) -> void:
