@@ -59,6 +59,7 @@ var speed: float = 0.0
 var sprinting: bool = false
 
 var is_dead: bool = false
+var started_death_sequence: bool = false
 
 var regenerating_stamina: bool = true
 var prev_stamina: float = MAX_STAMINA
@@ -110,9 +111,6 @@ func _ready() -> void:
 
 
 func _physics_process(delta: float) -> void:
-	if is_dead:
-		return
-
 	var was_on_floor: bool = is_on_floor()
 	
 	# gravity and jump stretch
@@ -123,6 +121,20 @@ func _physics_process(delta: float) -> void:
 		if not reached_peak and velocity.y >= 0:
 			reached_peak = true
 			anim_sprite.scale = Vector2(1.0, 1.0)
+	
+	if is_dead:
+		if not is_on_floor():
+			move_and_slide()
+		elif not started_death_sequence:
+			started_death_sequence = true
+			
+			# make player red when dead
+			anim_sprite.play("death")
+			weapon.fade_weapon()
+			collision.disabled = true
+			
+			anim_sprite.animation_finished.connect(death_timer.start)
+		return
 		
 	# player jump system
 	if Input.is_action_just_pressed("player_jump"):
@@ -243,13 +255,7 @@ func take_damage(damage: float) -> void:
 	if not is_dead:
 		health -= damage
 		if health <= 0:
-			# make player red when dead
 			is_dead = true
-			anim_sprite.play("death")
-			weapon.fade_weapon()
-			collision.disabled = true
-			
-			anim_sprite.animation_finished.connect(death_timer.start)
 
 
 func _get_custom_gravity(vel: Vector2) -> float:
