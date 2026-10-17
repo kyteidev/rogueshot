@@ -37,6 +37,7 @@ LIST OF FINISHED FEATURES (updated Oct. 15 2026):
 ### THIRD PARTY ASSETS
 - Groundhog font by ChevyRay - https://chevyray.itch.io/pixel-font-groundhog
 - Cyberpunk Tileset - 16X16 by MORDA - https://morda-studios.itch.io/cyberpunk-tileset-16x16?download
+- Simple circle transition shader by agurkas - https://godotshaders.com/shader/simple-circle-transition-2/ - has been modified
 
 ### CREDITS
 - Celeste for inspiring me to add the wallbounce mechanic
