@@ -42,10 +42,15 @@ const DEATH_TRANS_DELAY = 1.0
 
 var sm := StateManager
 
+var prev_health: float = MAX_HEALTH
 var health: float = MAX_HEALTH:
 	set(value):
 		health = value
 		sm.health = value
+		
+		if value < prev_health:
+			sm.lost_health = true
+		prev_health = value
 
 var was_airborne: bool = false
 var reached_peak: bool = false

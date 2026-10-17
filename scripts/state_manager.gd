@@ -11,6 +11,8 @@ var mags: int = 0
 
 var reloading: bool = false
 
+var lost_health: bool = false
+
 var stamina: float = 100.0
 var stamina_depleted: bool = false
 var used_stamina: bool = false

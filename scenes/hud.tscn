@@ -25,7 +25,7 @@ label_settings = ExtResource("1_ahhtf")
 horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="StaminaBarOutline" type="TextureRect" parent="." unique_id=2145359264]
+[node name="HealthBarOutline" type="TextureRect" parent="." unique_id=2042992540]
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
@@ -33,6 +33,42 @@ offset_left = 16.0
 offset_top = -40.0
 offset_right = 76.0
 offset_bottom = -28.0
+grow_vertical = 0
+scale = Vector2(2, 2)
+texture = ExtResource("3_uo2fv")
+stretch_mode = 2
+
+[node name="HealthBar" type="TextureProgressBar" parent="HealthBarOutline" unique_id=378917694]
+z_index = 1
+layout_mode = 1
+offset_left = 2.0
+offset_top = 2.0
+offset_right = 58.0
+offset_bottom = 10.0
+value = 50.0
+texture_progress = ExtResource("5_uo2fv")
+tint_progress = Color(1, 0.18039216, 0.5411765, 1)
+
+[node name="HealthLossBar" type="TextureProgressBar" parent="HealthBarOutline" unique_id=210656281]
+layout_mode = 1
+offset_left = 2.0
+offset_top = 2.0
+offset_right = 58.0
+offset_bottom = 10.0
+value = 100.0
+texture_progress = ExtResource("5_uo2fv")
+
+[node name="HealthBarTimer" type="Timer" parent="HealthBarOutline" unique_id=1919540087]
+one_shot = true
+
+[node name="StaminaBarOutline" type="TextureRect" parent="." unique_id=2145359264]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = -68.0
+offset_right = 76.0
+offset_bottom = -56.0
 grow_vertical = 0
 scale = Vector2(2, 2)
 texture = ExtResource("3_uo2fv")
