@@ -134,6 +134,7 @@ func _physics_process(delta: float) -> void:
 			bullet_instance.scale = Vector2(BULLET_SCALE, BULLET_SCALE)
 			
 			bullet_instance.origin_pos = weapon_muzzle.global_position
+			bullet_instance.add_collision_exception_with(player)
 			
 			ammo -= 1
 

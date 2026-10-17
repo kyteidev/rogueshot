@@ -405,6 +405,8 @@ func _shoot() -> void:
 		bullet_instance.rotation = weapon.global_rotation + spread_angle
 		bullet_instance.scale = Vector2(BULLET_SCALE, BULLET_SCALE)
 		
+		bullet_instance.add_collision_exception_with(self)
+		
 		kick_offset = min(kick_offset + WEAPON_KICK, WEAPON_KICK * 2.0)
 		
 		ammo -= 1
