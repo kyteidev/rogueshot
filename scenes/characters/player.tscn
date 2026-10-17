@@ -173,8 +173,13 @@ one_shot = true
 [node name="StaminaTimer" type="Timer" parent="." unique_id=82113234]
 one_shot = true
 
+[node name="DeathTimer" type="Timer" parent="." unique_id=1605157575]
+one_shot = true
+
 [node name="LOSTarget" type="Marker2D" parent="." unique_id=1485639335]
 position = Vector2(0, -7.5)
 
 [node name="Weapon" parent="." unique_id=1767955034 instance=ExtResource("3_qhqgy")]
 position = Vector2(0, -4)
+
+[connection signal="timeout" from="DeathTimer" to="." method="_on_death_timer_timeout"]

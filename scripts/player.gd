@@ -35,6 +35,8 @@ const STRETCH = 0.2
 const COYOTE_TIME = 0.12
 const JUMP_BUFFER_TIME = 0.12
 
+const DEATH_TRANS_DELAY = 1.0
+
 @export var transition: CanvasLayer
 @export var crosshair: CanvasLayer
 
@@ -79,6 +81,8 @@ var stamina_depleted: bool = false:
 @onready var coyote_timer := $CoyoteTimer
 @onready var jump_buffer_timer := $JumpBufferTimer
 
+@onready var death_timer := $DeathTimer
+
 @onready var anim_sprite := $AnimatedSprite2D
 @onready var stamina_timer := $StaminaTimer
 
@@ -89,6 +93,8 @@ func _ready() -> void:
 	# have this in _ready so max stamina only needs to be adjusted here,
 	# otherwise i'd have to change max stamina here and in state manager
 	stamina = MAX_STAMINA
+	
+	death_timer.wait_time = DEATH_TRANS_DELAY
 
 
 func _physics_process(delta: float) -> void:
@@ -230,15 +236,15 @@ func take_damage(damage: float) -> void:
 			anim_sprite.play("death")
 			weapon.fade_weapon()
 			
-			anim_sprite.animation_finished.connect(_death_menu)
-
-
-func _death_menu() -> void:
-	var scene: PackedScene = preload("res://scenes/menus/death_menu.tscn")
-	transition.start_transition(scene)
+			anim_sprite.animation_finished.connect(death_timer.start)
 
 
 func _get_custom_gravity(vel: Vector2) -> float:
 	if vel.y < 0:
 		return GRAVITY
 	return FALL_GRAVITY
+
+
+func _on_death_timer_timeout() -> void:
+	var scene: PackedScene = preload("res://scenes/menus/death_menu.tscn")
+	transition.start_transition(scene)
