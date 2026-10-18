@@ -6,6 +6,8 @@ const MAX_STAMINA_SPREAD_MULTIPLIER = 2.0
 const BULLET = preload("res://scenes/weapons/bullet.tscn")
 const BULLET_SCALE = 0.2
 
+const CASING = preload("res://scenes/weapons/casing.tscn")
+
 const FADE_DURATION = 0.15
 
 var sm := StateManager
@@ -17,6 +19,8 @@ var current_weapon: Sprite2D = null
 var weapon_name: String = ""
 var weapon_muzzle: Marker2D = null
 var weapon_muzzle_orig_pos: Vector2 = Vector2(0.0, 0.0)
+var weapon_ejection: Marker2D = null
+var weapon_ejection_orig_pos: Vector2 = Vector2(0.0, 0.0)
 
 var base_damage: int = 0:
 	set(value):
@@ -111,7 +115,8 @@ func _physics_process(delta: float) -> void:
 	
 	current_weapon.flip_v = flipped
 	weapon_muzzle.position.y = -weapon_muzzle_orig_pos.y if flipped else weapon_muzzle_orig_pos.y
-		
+	weapon_ejection.position.y = -weapon_ejection_orig_pos.y if flipped else weapon_ejection_orig_pos.y
+	
 	# recoil and kick recovery and apply kick
 	current_spread = move_toward(current_spread, 0.0, spread_recovery * delta)
 	kick_offset = move_toward(kick_offset, 0.0, kick_recovery * delta)
@@ -141,6 +146,15 @@ func _physics_process(delta: float) -> void:
 			# cap spread and kick
 			current_spread = min(current_spread + spread_per_shot, max_spread)
 			kick_offset = min(kick_offset + kick, kick * 2.0)
+			
+			# eject casing
+			var casing_instance := CASING.instantiate()
+			get_tree().root.add_child(casing_instance)
+			
+			casing_instance.global_position = weapon_ejection.global_position
+			
+			casing_instance.add_collision_exception_with(player)
+			casing_instance.eject(global_rotation)
 			
 			# deduct stamina
 			player.stamina -= player.SHOOT_STAMINA_RATE
@@ -206,14 +220,17 @@ func equip_weapon(index: int) -> void:
 		current_weapon.flip_v = false
 		current_weapon.position = weapon_rest_pos
 		weapon_muzzle.position = weapon_muzzle_orig_pos
+		weapon_ejection.position = weapon_ejection_orig_pos
 		weapon_state[weapon_name] = {"ammo": ammo, "mags": mags}
 	
 	# get weapon stuff
 	weapon_index = index
 	current_weapon = weapons[index]
 	weapon_name = current_weapon.name.to_lower()
-	weapon_muzzle = current_weapon.get_child(0)
+	weapon_muzzle = current_weapon.get_node("./Muzzle")
 	weapon_muzzle_orig_pos = weapon_muzzle.position
+	weapon_ejection = current_weapon.get_node("./Ejection")
+	weapon_ejection_orig_pos = weapon_ejection.position
 	
 	# set weapon stats
 	var stats: Dictionary = WEAPON_STATS[weapon_name]

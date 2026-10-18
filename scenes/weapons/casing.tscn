@@ -1,0 +1,33 @@
+[gd_scene format=3 uid="uid://t87mtodusljj"]
+
+[ext_resource type="Script" uid="uid://d3mcdtjdo4kv8" path="res://scripts/weapon/casing.gd" id="1_ofxx0"]
+[ext_resource type="Texture2D" uid="uid://bfh76bxpvicoh" path="res://assets/sprites/weapons/bullet-casing.png" id="1_tn0ww"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_tn0ww"]
+friction = 0.6
+bounce = 0.3
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_nxcxh"]
+size = Vector2(16, 8)
+
+[node name="Casing" type="RigidBody2D" unique_id=344621201]
+collision_layer = 16
+mass = 0.07
+physics_material_override = SubResource("PhysicsMaterial_tn0ww")
+continuous_cd = 1
+linear_damp = 0.5
+angular_damp = 2.0
+script = ExtResource("1_ofxx0")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=293766367]
+scale = Vector2(0.15, 0.15)
+texture = ExtResource("1_tn0ww")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1599982844]
+scale = Vector2(0.15, 0.15)
+shape = SubResource("RectangleShape2D_nxcxh")
+
+[node name="Timer" type="Timer" parent="." unique_id=944217887]
+one_shot = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

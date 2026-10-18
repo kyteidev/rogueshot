@@ -17,14 +17,19 @@ scale = Vector2(0.75, 0.75)
 texture = ExtResource("1_xasec")
 offset = Vector2(3, 0)
 
-[node name="Marker2D" type="Marker2D" parent="Pistol" unique_id=375190326]
+[node name="Muzzle" type="Marker2D" parent="Pistol" unique_id=375190326]
 position = Vector2(8, -2)
 
+[node name="Ejection" type="Marker2D" parent="Pistol" unique_id=671354294]
+position = Vector2(1.3333334, -2.6666667)
+
 [node name="Rifle1" type="Sprite2D" parent="." unique_id=163470129]
-visible = false
 scale = Vector2(0.6, 0.6)
 texture = ExtResource("3_bmw2d")
 offset = Vector2(3, 0)
 
-[node name="Marker2D" type="Marker2D" parent="Rifle1" unique_id=1974145427]
+[node name="Muzzle" type="Marker2D" parent="Rifle1" unique_id=1974145427]
 position = Vector2(16, -0.5)
+
+[node name="Ejection" type="Marker2D" parent="Rifle1" unique_id=2008065357]
+position = Vector2(1.5, -0.5)
