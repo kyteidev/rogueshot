@@ -228,6 +228,9 @@ func _physics_process(delta: float) -> void:
 			anim_sprite.play("run")
 	else:
 		anim_sprite.play("jump")
+		
+	# apply weapon speed multiplier
+	speed *= weapon.speed_multiplier
 	
 	# calculate x velocity
 	var accel: float

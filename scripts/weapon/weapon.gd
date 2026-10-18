@@ -63,6 +63,8 @@ var camera_shake: float = 0.0
 var heat_per_shot: float = 0.0
 var cooling_rate: float = 0.0
 
+var speed_multiplier: float = 0.0
+
 var smoke: CPUParticles2D
 var heat: float = 0.0
 
@@ -88,7 +90,8 @@ const WEAPON_STATS = {
 		"reload_time": 0.9,
 		"camera_shake": 1.0,
 		"heat": 0.18,
-		"cooling_rate": 1.04
+		"cooling_rate": 1.04,
+		"speed_multiplier": 1.0,
 	},
 	"rifle1": {
 		"damage": 15,
@@ -103,7 +106,8 @@ const WEAPON_STATS = {
 		"reload_time": 2.6,
 		"camera_shake": 0.5,
 		"heat": 0.22,
-		"cooling_rate": 0.87
+		"cooling_rate": 0.87,
+		"speed_multiplier": 0.9
 	}
 }
 
@@ -285,6 +289,8 @@ func equip_weapon(index: int) -> void:
 	
 	heat_per_shot = stats.heat
 	cooling_rate = stats.cooling_rate
+	
+	speed_multiplier = stats.speed_multiplier
 	
 	# save weapon state if not saved previously
 	if not weapon_state.has(weapon_name):
