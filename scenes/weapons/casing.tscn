@@ -11,6 +11,7 @@ bounce = 0.3
 size = Vector2(16, 8)
 
 [node name="Casing" type="RigidBody2D" unique_id=344621201]
+z_index = 2
 collision_layer = 16
 mass = 0.07
 physics_material_override = SubResource("PhysicsMaterial_tn0ww")
