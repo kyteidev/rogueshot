@@ -187,21 +187,23 @@ func _physics_process(delta: float) -> void:
 	var direction: float = Input.get_axis("player_left", "player_right")
 		
 	# sprint system
+	speed = BASE_SPEED
 	if is_on_floor():
-		speed = BASE_SPEED
 		if Input.is_action_pressed("player_sprint") and stamina > 0.0 and not stamina_depleted:
 			sprinting = true
-			speed *= SPRINT_MULTIPLIER
-			
-			# don't deplete stamina if not moving
-			if direction != 0.0:
-				stamina -= SPRINT_STAMINA_RATE * delta
 			
 			# cancel reload if sprinting
 			if sm.reloading:
 				crosshair.cancel_reload()
 		else:
 			sprinting = false
+	
+	if sprinting:
+		speed *= SPRINT_MULTIPLIER
+			
+		# don't deplete stamina if not moving
+		if direction != 0.0:
+			stamina -= SPRINT_STAMINA_RATE * delta
 			
 	# recover stamina when not sprinting
 	if stamina_timer.is_stopped():
