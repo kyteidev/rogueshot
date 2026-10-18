@@ -1,22 +1,15 @@
 extends CanvasLayer
 
-const HEALTH_BAR_DELAY = 0.5
-const STAMINA_BAR_DELAY = 0.5
 
-const STAMINA_COLOR = Color("3cffae")
-const STAMINA_FLASH_COLOR = Color("32757c")
-const STAMINA_FLASH_DELAY = 0.5
+const HEALTH_BAR_DELAY = 0.5
 
 @export var enemy: CharacterBody2D
 
 var sm := StateManager
 
 var displayed_health_loss: float = 100.0
-var displayed_stamina_loss: float = 100.0
 
 var health_tween: Tween
-var stamina_tween: Tween
-var stamina_was_depleted: bool = false
 
 @onready var ammo_mag_label := $AmmoMagLabel
 
@@ -24,10 +17,6 @@ var stamina_was_depleted: bool = false
 @onready var health_loss_bar := $HealthBarOutline/HealthLossBar
 @onready var health_bar_text := $HealthBarOutline/HealthBar/HealthBarText
 @onready var health_timer := $HealthBarOutline/HealthBarTimer
-
-@onready var stamina_bar := $StaminaBarOutline/StaminaBar
-@onready var stamina_loss_bar := $StaminaBarOutline/StaminaLossBar
-@onready var stamina_timer := $StaminaBarOutline/StaminaBarTimer
 
 @onready var debug_enemy_state_label := $DebugEnemyStateLabel
 
@@ -45,7 +34,7 @@ func _process(delta: float) -> void:
 	health_bar.value = sm.health
 	health_bar_text.text = "%s/%s" % [sm.health, sm.max_health]
 	
-	# delay the stamina loss bar
+	# delay the health loss bar
 	if sm.lost_health:
 		sm.lost_health = false
 		health_timer.start(HEALTH_BAR_DELAY)
@@ -61,48 +50,6 @@ func _process(delta: float) -> void:
 	
 	health_loss_bar.value = displayed_health_loss
 	
-	# update stamina info
-	stamina_bar.value = sm.stamina
-	
-	# flash stamina bar if completely depleted
-	if sm.stamina_depleted and not stamina_was_depleted:
-		start_stamina_flash()
-	elif not sm.stamina_depleted and stamina_was_depleted:
-		stop_stamina_flash()
-	stamina_was_depleted = sm.stamina_depleted
-	
-	# delay the stamina loss bar
-	if sm.used_stamina:
-		sm.used_stamina = false
-		stamina_timer.start(STAMINA_BAR_DELAY)
-	
-	if sm.stamina >= displayed_stamina_loss:
-		displayed_stamina_loss = sm.stamina
-	elif stamina_timer.is_stopped():
-		displayed_stamina_loss = lerpf(displayed_stamina_loss, sm.stamina, 1.0 - exp(-10.0 * delta))
-		
-		# snap to value if close enough
-		if absf(displayed_stamina_loss - sm.stamina) < 0.1:
-			displayed_stamina_loss = sm.stamina
-	
-	stamina_loss_bar.value = displayed_stamina_loss
-	
 	# DEBUG SECTION
 	if enemy:
 		debug_enemy_state_label.text = "ENEMY: %s" % enemy.State.keys()[enemy.state]
-
-
-func start_stamina_flash() -> void:
-	if stamina_tween:
-		stamina_tween.kill()
-	
-	stamina_tween = create_tween().set_loops()
-	stamina_tween.tween_property(stamina_bar, "tint_progress", STAMINA_FLASH_COLOR, STAMINA_FLASH_DELAY)
-	stamina_tween.tween_property(stamina_bar, "tint_progress", STAMINA_COLOR, STAMINA_FLASH_DELAY)
-	
-
-func stop_stamina_flash() -> void:
-	if stamina_tween:
-		stamina_tween.kill()
-	
-	create_tween().tween_property(stamina_bar, "tint_progress", STAMINA_COLOR, STAMINA_FLASH_DELAY)

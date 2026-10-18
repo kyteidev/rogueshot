@@ -12,6 +12,13 @@ const STAMINA_RECOVERY_DELAY = 1.5
 const STAMINA_RECOVERY_RATE = 30.0
 const STAMINA_SLOW_RECOVERY_MULTIPLIER = 0.45
 
+const STAMINA_COLOR = Color("3cffae")
+const STAMINA_FLASH_COLOR = Color("32757c")
+const STAMINA_FLASH_DELAY = 0.5
+const STAMINA_BAR_DELAY = 0.5
+const STAMINA_BAR_FADE_DURATION = 0.3
+const STAMINA_BAR_FADE_DELAY = 1.0
+
 const SPRINT_STAMINA_RATE = 20.0
 const WALLBOUNCE_STAMINA_RATE = 15.0
 const SHOOT_STAMINA_RATE = 2.0
@@ -84,6 +91,16 @@ var stamina_depleted: bool = false:
 		stamina_depleted = value
 		sm.stamina_depleted = value
 		
+var displayed_stamina_loss: float = 100.0
+var stamina_bar_faded: bool = false
+var stamina_bar_fading: bool = false
+var stamina_fade_timer_started: bool = false
+
+var health_tween: Tween
+var stamina_tween: Tween
+var stamina_fade_tween: Tween
+var stamina_was_depleted: bool = false
+		
 @onready var coyote_timer := $CoyoteTimer
 @onready var jump_buffer_timer := $JumpBufferTimer
 
@@ -94,6 +111,12 @@ var stamina_depleted: bool = false:
 
 @onready var weapon := $Weapon
 @onready var collision := $CollisionShape2D
+
+@onready var stamina_bar_outline := $StaminaBarOutline
+@onready var stamina_bar := $StaminaBarOutline/StaminaBar
+@onready var stamina_loss_bar := $StaminaBarOutline/StaminaLossBar
+@onready var stamina_bar_timer := $StaminaBarOutline/StaminaBarTimer
+@onready var stamina_bar_fade_timer := $StaminaBarOutline/StaminaBarFadeTimer
 
 
 func _ready() -> void:
@@ -244,13 +267,17 @@ func _physics_process(delta: float) -> void:
 	# coyote time management
 	if was_on_floor and not is_on_floor() and velocity.y >= 0:
 		coyote_timer.start(COYOTE_TIME)
+		
+	# stamina
+	_update_stamina_bar(delta)
+	
 
 
 func take_damage(damage: float) -> void:
 	# flash red when taking damage
 	var tween := create_tween()
-	tween.tween_property(self, "modulate", Color("ff0000"), DAMAGE_FLASH_DELAY)
-	tween.tween_property(self, "modulate", Color("ffffff"), DAMAGE_FLASH_DELAY)
+	tween.tween_property(anim_sprite, "modulate", Color("ff0000"), DAMAGE_FLASH_DELAY)
+	tween.tween_property(anim_sprite, "modulate", Color("ffffff"), DAMAGE_FLASH_DELAY)
 	
 	if not is_dead:
 		health -= damage
@@ -267,3 +294,71 @@ func _get_custom_gravity(vel: Vector2) -> float:
 func _on_death_timer_timeout() -> void:
 	var scene: PackedScene = preload("res://scenes/menus/death_menu.tscn")
 	transition.start_transition(scene)
+
+
+func _update_stamina_bar(delta: float) -> void:
+	# fade stamina bar if stamina is full
+	if sm.stamina == MAX_STAMINA:
+		# apply delay before fade
+		if not stamina_bar_faded:
+			stamina_bar_faded = true
+			if not stamina_fade_timer_started:
+				stamina_bar_fade_timer.start(STAMINA_BAR_FADE_DELAY)
+				stamina_fade_timer_started = true
+		 
+		if not stamina_bar_fading and stamina_fade_timer_started and stamina_bar_fade_timer.is_stopped():
+			stamina_bar_fading = true
+			
+			stamina_fade_tween = create_tween()
+			stamina_fade_tween.tween_property(stamina_bar_outline, "modulate", Color("ffffff00"), 0.5)\
+					.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+	else:
+		if stamina_fade_tween:
+			stamina_fade_tween.kill()
+			
+		stamina_bar_faded = false
+		stamina_bar_fading = false
+		stamina_fade_timer_started = false
+		stamina_bar_outline.modulate = Color("ffffffff")
+
+	# update stamina info
+	stamina_bar.value = sm.stamina
+	
+	# flash stamina bar if completely depleted
+	if sm.stamina_depleted and not stamina_was_depleted:
+		start_stamina_flash()
+	elif not sm.stamina_depleted and stamina_was_depleted:
+		stop_stamina_flash()
+	stamina_was_depleted = sm.stamina_depleted
+	
+	# delay the stamina loss bar
+	if sm.used_stamina:
+		sm.used_stamina = false
+		stamina_bar_timer.start(STAMINA_BAR_DELAY)
+	
+	if sm.stamina >= displayed_stamina_loss:
+		displayed_stamina_loss = sm.stamina
+	elif stamina_bar_timer.is_stopped():
+		displayed_stamina_loss = lerpf(displayed_stamina_loss, sm.stamina, 1.0 - exp(-10.0 * delta))
+		
+		# snap to value if close enough
+		if absf(displayed_stamina_loss - sm.stamina) < 0.1:
+			displayed_stamina_loss = sm.stamina
+	
+	stamina_loss_bar.value = displayed_stamina_loss
+
+
+func start_stamina_flash() -> void:
+	if stamina_tween:
+		stamina_tween.kill()
+	
+	stamina_tween = create_tween().set_loops()
+	stamina_tween.tween_property(stamina_bar, "tint_progress", STAMINA_FLASH_COLOR, STAMINA_FLASH_DELAY)
+	stamina_tween.tween_property(stamina_bar, "tint_progress", STAMINA_COLOR, STAMINA_FLASH_DELAY)
+	
+
+func stop_stamina_flash() -> void:
+	if stamina_tween:
+		stamina_tween.kill()
+	
+	create_tween().tween_property(stamina_bar, "tint_progress", STAMINA_COLOR, STAMINA_FLASH_DELAY)
