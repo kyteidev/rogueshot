@@ -3,6 +3,10 @@ extends CanvasLayer
 
 const HEALTH_BAR_DELAY = 0.5
 
+const EQUIPPED_WEAPON_COLOR = Color("759cea")
+const BASE_WEAPON_COLOR = Color("fdf1ff")
+
+@export var player: CharacterBody2D
 @export var enemy: CharacterBody2D
 
 var sm := StateManager
@@ -18,6 +22,12 @@ var health_tween: Tween
 @onready var health_bar_text := $HealthBarOutline/HealthBar/HealthBarText
 @onready var health_timer := $HealthBarOutline/HealthBarTimer
 
+@onready var primary_weapon := $EquippedContainer/Primary
+@onready var secondary_weapon := $EquippedContainer/Secondary
+
+@onready var weapon := player.get_node("./Weapon")
+
+# DEBUG
 @onready var debug_enemy_state_label := $DebugEnemyStateLabel
 
 
@@ -49,6 +59,11 @@ func _process(delta: float) -> void:
 			displayed_health_loss = sm.health
 	
 	health_loss_bar.value = displayed_health_loss
+	
+	# update equipped weapon display
+	# TODO: when inventory system is done, primary should have index 0
+	primary_weapon.modulate = EQUIPPED_WEAPON_COLOR if weapon.weapon_index == 1 else BASE_WEAPON_COLOR
+	secondary_weapon.modulate = EQUIPPED_WEAPON_COLOR if weapon.weapon_index == 0 else BASE_WEAPON_COLOR
 	
 	# DEBUG SECTION
 	if enemy:

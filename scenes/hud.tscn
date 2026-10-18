@@ -5,6 +5,8 @@
 [ext_resource type="Texture2D" uid="uid://cdf5h5jgg2u5w" path="res://assets/sprites/bar/bar-base.png" id="3_uo2fv"]
 [ext_resource type="FontFile" uid="uid://4jxi61jcsc2c" path="res://assets/fonts/groundhog.ttf" id="5_047uy"]
 [ext_resource type="Texture2D" uid="uid://wyplv53mg8ky" path="res://assets/sprites/bar/bar-progress.png" id="5_uo2fv"]
+[ext_resource type="Texture2D" uid="uid://birxq4q0v4dpe" path="res://assets/sprites/weapons/base/rifle1-base.png" id="6_5pdws"]
+[ext_resource type="Texture2D" uid="uid://d0ibfba4ttyrc" path="res://assets/sprites/weapons/base/pistol-base.png" id="7_hd3ao"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_nxcxh"]
 font = ExtResource("5_047uy")
@@ -89,6 +91,33 @@ tint_progress = Color(0.99215686, 0.94509804, 1, 1)
 
 [node name="HealthBarTimer" type="Timer" parent="HealthBarOutline" unique_id=1919540087]
 one_shot = true
+
+[node name="EquippedContainer" type="VBoxContainer" parent="." unique_id=1303273148]
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -96.0
+offset_top = 60.0
+offset_right = -56.0
+offset_bottom = 100.0
+grow_horizontal = 0
+grow_vertical = 2
+scale = Vector2(2, 2)
+alignment = 1
+
+[node name="Primary" type="TextureRect" parent="EquippedContainer" unique_id=696587501]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 4
+texture = ExtResource("6_5pdws")
+
+[node name="Secondary" type="TextureRect" parent="EquippedContainer" unique_id=1388876543]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 4
+texture = ExtResource("7_hd3ao")
 
 [node name="DebugEnemyStateLabel" type="Label" parent="." unique_id=707954335]
 anchors_preset = 1
