@@ -115,11 +115,11 @@ var stamina_was_depleted: bool = false
 
 @onready var death_timer := $DeathTimer
 
-@onready var anim_sprite := $AnimatedSprite2D
+@onready var anim_sprite := $AnimSprite
 @onready var stamina_timer := $StaminaTimer
 
 @onready var weapon := $Weapon
-@onready var collision := $CollisionShape2D
+@onready var collision := $FullCollision
 
 @onready var stamina_bar_outline := $StaminaBarOutline
 @onready var stamina_bar := $StaminaBarOutline/StaminaBar

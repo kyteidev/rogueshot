@@ -156,13 +156,13 @@ height = 14.0
 collision_layer = 5
 script = ExtResource("1_g2els")
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1345892962]
+[node name="AnimSprite" type="AnimatedSprite2D" parent="." unique_id=1345892962]
 position = Vector2(0, -8)
 sprite_frames = SubResource("SpriteFrames_6rfd2")
 animation = &"death"
 autoplay = "idle"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1475566916]
+[node name="FullCollision" type="CollisionShape2D" parent="." unique_id=1475566916]
 position = Vector2(0, -7)
 shape = SubResource("CapsuleShape2D_nxcxh")
 

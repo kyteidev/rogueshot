@@ -88,7 +88,7 @@ var status_icons: Array = [preload("res://assets/sprites/icons/question mark.png
 
 var sm := StateManager
 
-@onready var anim := $AnimatedSprite2D
+@onready var anim := $AnimSprite
 @onready var weapon := $Weapon
 @onready var weapon_sprite := $Weapon/Rifle1
 @onready var weapon_muzzle := $Weapon/Rifle1/Muzzle
