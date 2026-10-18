@@ -62,7 +62,16 @@ var health: float = MAX_HEALTH:
 var was_airborne: bool = false
 var reached_peak: bool = false
 
-var speed: float = 0.0
+var speed: float = 0.0:
+	set(value):
+		speed = value
+		
+		# dynamically change player animation speed
+		# possibly change to exponential formula?
+		# this linear formula seems to work fine for player,
+		# but not so well for enemy (maybe I'm stupid lmao)
+		var multiplier: float = value / BASE_SPEED
+		anim_sprite.speed_scale = 1.0 * multiplier
 var sprinting: bool = false
 
 var is_dead: bool = false
@@ -213,6 +222,9 @@ func _physics_process(delta: float) -> void:
 		if stamina == MAX_STAMINA:
 			stamina_depleted = false
 	
+	# apply weapon speed multiplier
+	speed *= weapon.speed_multiplier
+	
 	# flip direction
 	if direction > 0:
 		anim_sprite.flip_h = false
@@ -224,13 +236,9 @@ func _physics_process(delta: float) -> void:
 		if direction == 0:
 			anim_sprite.play("idle")
 		else:
-			anim_sprite.speed_scale = SPRINT_MULTIPLIER if sprinting else 1.0
 			anim_sprite.play("run")
 	else:
 		anim_sprite.play("jump")
-		
-	# apply weapon speed multiplier
-	speed *= weapon.speed_multiplier
 	
 	# calculate x velocity
 	var accel: float
