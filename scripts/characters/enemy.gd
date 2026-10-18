@@ -9,6 +9,8 @@ const BULLET_SCALE = 0.2
 const CASING = preload("res://scenes/weapons/casing.tscn")
 const SMOKE_PARTICLES = preload("res://scenes/particles/muzzle_smoke.tscn")
 
+const HEAD_POS = 7.0
+
 const ANIM_REF_SPEED = 65.0
 const ANIM_MIN_SCALE = 0.4
 const ANIM_MAX_SCALE = 2.0
@@ -59,6 +61,7 @@ const ATTACK_FIRE_RATE = 0.12
 const ATTACK_MAX_POS_DIFF = 180.0
 
 const MAX_AMMO = 30
+const HEADSHOT_MULTIPLIER = 2.0
 
 var state: State = State.PATROL
 var target: CharacterBody2D = null
@@ -89,6 +92,7 @@ var status_icons: Array = [preload("res://assets/sprites/icons/question mark.png
 var sm := StateManager
 
 @onready var anim := $AnimSprite
+
 @onready var weapon := $Weapon
 @onready var weapon_sprite := $Weapon/Rifle1
 @onready var weapon_muzzle := $Weapon/Rifle1/Muzzle
@@ -172,7 +176,7 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 	
 
-func take_damage(damage: float) -> void:
+func take_damage(damage: float, hit_pos: Vector2) -> void:
 	if state == State.DEAD:
 		return
 		
@@ -185,7 +189,11 @@ func take_damage(damage: float) -> void:
 	tween.tween_property(self, "modulate", Color("ff0000"), DAMAGE_FLASH_DELAY)
 	tween.tween_property(self, "modulate", Color("ffffff"), DAMAGE_FLASH_DELAY)
 	
-	health -= damage
+	if hit_pos.y <= global_position.y - HEAD_POS:
+		health -= damage * HEADSHOT_MULTIPLIER
+	else:
+		health -= damage
+		
 	if health <= 0:
 		_change_state(State.DEAD)
 		status_icon.visible = false

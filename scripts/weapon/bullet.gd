@@ -31,7 +31,7 @@ func _physics_process(delta: float) -> void:
 		if type == Types.FRIENDLY:
 			if not hit.is_in_group("player"):
 				if hit.has_method("take_damage"):
-					hit.take_damage(sm.damage)
+					hit.take_damage(sm.damage, global_position)
 				
 				if hit.has_method("set_target_pos"):
 					hit.set_target_pos(origin_pos)
