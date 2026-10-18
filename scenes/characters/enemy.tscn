@@ -166,8 +166,11 @@ scale = Vector2(0.6000001, 0.6000001)
 texture = ExtResource("3_f2e6v")
 offset = Vector2(3, 0)
 
-[node name="Marker2D" type="Marker2D" parent="Weapon/Rifle1" unique_id=554835805]
+[node name="Muzzle" type="Marker2D" parent="Weapon/Rifle1" unique_id=554835805]
 position = Vector2(16, -0.5)
+
+[node name="Ejection" type="Marker2D" parent="Weapon/Rifle1" unique_id=504769942]
+position = Vector2(1.6098762, -0.431365)
 
 [node name="WeaponLOSRay" type="RayCast2D" parent="Weapon" unique_id=2114914832]
 position = Vector2(-1.17657635e-08, -4.391046e-08)

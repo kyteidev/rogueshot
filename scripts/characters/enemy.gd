@@ -6,6 +6,8 @@ enum State { IDLE, PATROL, INVESTIGATE, ALERT, RETURN, CHASE, SEARCH, ATTACK, RE
 const BULLET = preload("res://scenes/weapons/bullet.tscn")
 const BULLET_SCALE = 0.2
 
+const CASING = preload("res://scenes/weapons/casing.tscn")
+
 const ANIM_REF_SPEED = 65.0
 const ANIM_MIN_SCALE = 0.4
 const ANIM_MAX_SCALE = 2.0
@@ -79,7 +81,8 @@ var sm := StateManager
 @onready var anim := $AnimatedSprite2D
 @onready var weapon := $Weapon
 @onready var weapon_sprite := $Weapon/Rifle1
-@onready var weapon_muzzle := $Weapon/Rifle1/Marker2D
+@onready var weapon_muzzle := $Weapon/Rifle1/Muzzle
+@onready var weapon_ejection := $Weapon/Rifle1/Ejection
 @onready var weapon_los_ray := $Weapon/WeaponLOSRay
 @onready var weapon_shoot_timer := $Weapon/WeaponShootTimer
 @onready var weapon_reload_timer := $Weapon/WeaponReloadTimer
@@ -395,6 +398,7 @@ func _state_dead(delta: float) -> void:
 
 func _shoot() -> void:
 	if ammo > 0 and weapon_reload_timer.is_stopped():
+		# spawn bullet
 		var bullet_instance := BULLET.instantiate()
 		bullet_instance.type = bullet_instance.Types.ENEMY
 		
@@ -407,6 +411,15 @@ func _shoot() -> void:
 		bullet_instance.add_collision_exception_with(self)
 		
 		get_tree().root.add_child(bullet_instance)
+		
+		# eject casing
+		var casing_instance := CASING.instantiate()
+		get_tree().root.add_child(casing_instance)
+		
+		casing_instance.global_position = weapon_ejection.global_position
+		
+		casing_instance.add_collision_exception_with(self)
+		casing_instance.eject(weapon.global_rotation)
 		
 		kick_offset = min(kick_offset + WEAPON_KICK, WEAPON_KICK * 2.0)
 		
