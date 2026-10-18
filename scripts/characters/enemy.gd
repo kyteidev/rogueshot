@@ -7,6 +7,7 @@ const BULLET = preload("res://scenes/weapons/bullet.tscn")
 const BULLET_SCALE = 0.2
 
 const CASING = preload("res://scenes/weapons/casing.tscn")
+const SMOKE_PARTICLES = preload("res://scenes/particles/muzzle_smoke.tscn")
 
 const ANIM_REF_SPEED = 65.0
 const ANIM_MIN_SCALE = 0.4
@@ -38,6 +39,12 @@ const WEAPON_SPREAD = 2.0
 const WEAPON_KICK = 3.0
 const WEAPON_KICK_RECOVERY = 42.0
 const WEAPON_RELOAD_TIME = 2.3
+const WEAPON_HEAT_PER_SHOT = 0.22
+const WEAPON_COOLING_RATE = 0.87
+
+const MAX_HEAT = 1.0
+const SMOKE_BASE_ALPHA = 0.8
+const SMOKE_FADE_SPEED = 6.0
 
 const INV_DELAY = 1.0
 const INV_MIN_MOVE_DIST = 20.0
@@ -73,6 +80,9 @@ var in_los: bool = false
 var kick_offset: float = 0.0
 var desired_weapon_rotation: float = deg_to_rad(PATROL_WEAPON_TILT)
 
+var smoke: CPUParticles2D
+var heat: float = 0.0
+
 # index 0: question mark, index 1: exclamation mark
 var status_icons: Array = [preload("res://assets/sprites/icons/question mark.png"), preload("res://assets/sprites/icons/exclamation mark.png")]
 
@@ -103,6 +113,10 @@ var sm := StateManager
 
 func _ready() -> void:
 	sm.enemy_damage = DAMAGE
+	
+	# instantiate smoke particles
+	smoke = SMOKE_PARTICLES.instantiate()
+	weapon.add_child(smoke)
 
 
 func _process(_delta: float) -> void:
@@ -123,6 +137,12 @@ func _physics_process(delta: float) -> void:
 	# rotate weapon smoothly
 	weapon.rotation = lerp_angle(weapon.rotation, desired_weapon_rotation, 1.0 - exp(-WEAPON_ROTATION_SPEED * delta))
 		
+	# muzzle smoke logic
+	heat = max(heat - WEAPON_COOLING_RATE * delta, 0.0)
+	smoke.emitting = true if heat > 0.0 else false
+	
+	smoke.modulate.a = lerp(smoke.modulate.a, smoothstep(0.0, SMOKE_BASE_ALPHA, heat), 1.0 - exp(-SMOKE_FADE_SPEED * delta))
+	
 	match state:
 		State.IDLE: _state_idle()
 		State.PATROL: _state_patrol()
@@ -424,6 +444,10 @@ func _shoot() -> void:
 		kick_offset = min(kick_offset + WEAPON_KICK, WEAPON_KICK * 2.0)
 		
 		ammo -= 1
+		
+		# smoke
+		heat = min(heat + WEAPON_HEAT_PER_SHOT, MAX_HEAT)
+		smoke.global_position = weapon_muzzle.global_position
 	elif ammo == 0:
 		weapon_reload_timer.start(WEAPON_RELOAD_TIME)
 		ammo = MAX_AMMO
