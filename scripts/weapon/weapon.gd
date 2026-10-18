@@ -4,7 +4,7 @@ extends Node2D
 const MAX_STAMINA_SPREAD_MULTIPLIER = 2.0
 
 const BULLET = preload("res://scenes/weapons/bullet.tscn")
-const BULLET_SCALE = 0.2
+const BULLET_SCALE = 0.15
 
 const CASING = preload("res://scenes/weapons/casing.tscn")
 
@@ -128,7 +128,6 @@ func _physics_process(delta: float) -> void:
 			# spawn bullet
 			var bullet_instance := BULLET.instantiate()
 			bullet_instance.type = bullet_instance.Types.FRIENDLY
-			get_tree().root.add_child(bullet_instance)
 
 			# apply spread
 			var spread_angle: float = deg_to_rad(randf_range(-current_spread, current_spread)) \
@@ -140,6 +139,8 @@ func _physics_process(delta: float) -> void:
 			
 			bullet_instance.origin_pos = weapon_muzzle.global_position
 			bullet_instance.add_collision_exception_with(player)
+			
+			get_tree().root.add_child(bullet_instance)
 			
 			ammo -= 1
 

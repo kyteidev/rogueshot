@@ -397,7 +397,6 @@ func _shoot() -> void:
 	if ammo > 0 and weapon_reload_timer.is_stopped():
 		var bullet_instance := BULLET.instantiate()
 		bullet_instance.type = bullet_instance.Types.ENEMY
-		get_tree().root.add_child(bullet_instance)
 		
 		var spread_angle: float = deg_to_rad(randf_range(-WEAPON_SPREAD, WEAPON_SPREAD))
 		
@@ -406,6 +405,8 @@ func _shoot() -> void:
 		bullet_instance.scale = Vector2(BULLET_SCALE, BULLET_SCALE)
 		
 		bullet_instance.add_collision_exception_with(self)
+		
+		get_tree().root.add_child(bullet_instance)
 		
 		kick_offset = min(kick_offset + WEAPON_KICK, WEAPON_KICK * 2.0)
 		
