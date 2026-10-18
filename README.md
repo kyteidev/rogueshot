@@ -25,6 +25,8 @@ LIST OF FINISHED FEATURES (updated Oct. 15 2026):
 - Build 2 (0.1.0-dev.2)
     - Shooting
         - Reload
+        - Bullet casing ejection
+        - Muzzle smoke
     - Custom reticle
     - Stamina
     - Enemies
