@@ -8,7 +8,13 @@ const BULLET_SCALE = 0.15
 
 const CASING = preload("res://scenes/weapons/casing.tscn")
 
+const SMOKE_PARTICLES = preload("res://scenes/particles/muzzle_smoke.tscn")
+
 const FADE_DURATION = 0.15
+const SMOKE_FADE_SPEED = 6.0
+
+const MAX_HEAT = 1.0
+const SMOKE_BASE_ALPHA = 0.8
 
 var sm := StateManager
 
@@ -54,6 +60,12 @@ var kick_offset: float = 0.0
 var weapon_rest_pos: Vector2 = Vector2.ZERO
 var camera_shake: float = 0.0
 
+var heat_per_shot: float = 0.0
+var cooling_rate: float = 0.0
+
+var smoke: CPUParticles2D
+var heat: float = 0.0
+
 var can_fire: bool = true
 
 @onready var timer := $Timer
@@ -74,7 +86,9 @@ const WEAPON_STATS = {
 		"max_spread": 8.0,
 		"spread_recovery": 8.0,
 		"reload_time": 0.9,
-		"camera_shake": 1.0
+		"camera_shake": 1.0,
+		"heat": 0.18,
+		"cooling_rate": 1.04
 	},
 	"rifle1": {
 		"damage": 15,
@@ -87,7 +101,9 @@ const WEAPON_STATS = {
 		"max_spread": 7.0,
 		"spread_recovery": 5.0,
 		"reload_time": 2.6,
-		"camera_shake": 0.5
+		"camera_shake": 0.5,
+		"heat": 0.22,
+		"cooling_rate": 0.87
 	}
 }
 
@@ -99,6 +115,10 @@ func _ready() -> void:
 	weapons = get_children()
 	weapons.pop_front() # first element is the timer
 	equip_weapon(0)
+	
+	# instantiate smoke particles
+	smoke = SMOKE_PARTICLES.instantiate()
+	add_child(smoke)
 
 
 func _physics_process(delta: float) -> void:
@@ -121,6 +141,12 @@ func _physics_process(delta: float) -> void:
 	current_spread = move_toward(current_spread, 0.0, spread_recovery * delta)
 	kick_offset = move_toward(kick_offset, 0.0, kick_recovery * delta)
 	current_weapon.position = weapon_rest_pos + Vector2(-kick_offset, 0)
+	
+	# muzzle smoke logic
+	heat = max(heat - cooling_rate * delta, 0.0)
+	smoke.emitting = true if heat > 0.0 else false
+	
+	smoke.modulate.a = lerp(smoke.modulate.a, smoothstep(0.0, SMOKE_BASE_ALPHA, heat), 1.0 - exp(-SMOKE_FADE_SPEED * delta))
 	
 	# weapon firing
 	if Input.is_action_pressed("player_shoot"):
@@ -163,6 +189,10 @@ func _physics_process(delta: float) -> void:
 			# shake camera
 			var camera := get_node("../../Camera")
 			camera.shake_strength = camera_shake
+			
+			# smoke
+			heat = min(heat + heat_per_shot, MAX_HEAT)
+			smoke.global_position = weapon_muzzle.global_position
 		
 		# firing speed timeout
 		if fire_rate == 0.0 and can_fire:
@@ -252,6 +282,9 @@ func equip_weapon(index: int) -> void:
 	kick_offset = 0.0
 	weapon_rest_pos = current_weapon.position
 	camera_shake = stats.camera_shake
+	
+	heat_per_shot = stats.heat
+	cooling_rate = stats.cooling_rate
 	
 	# save weapon state if not saved previously
 	if not weapon_state.has(weapon_name):
