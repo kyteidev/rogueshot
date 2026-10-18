@@ -182,6 +182,7 @@ one_shot = true
 position = Vector2(0, -7.5)
 
 [node name="Weapon" parent="." unique_id=1767955034 instance=ExtResource("3_qhqgy")]
+z_index = 999
 position = Vector2(0, -4)
 
 [node name="StaminaBarOutline" type="TextureRect" parent="." unique_id=282962897]
