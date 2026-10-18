@@ -44,3 +44,4 @@ LIST OF FINISHED FEATURES (updated Oct. 15 2026):
 ### CREDITS
 - Celeste for inspiring me to add the wallbounce mechanic
 - Road to Vostok for inspiring me to implement weapon stamina
+- The Legends of Zelda: Breath of the Wild for inspiring me to add a tiered player detection for enemies
