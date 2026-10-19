@@ -7,6 +7,8 @@
 [ext_resource type="Texture2D" uid="uid://wyplv53mg8ky" path="res://assets/sprites/bar/bar-progress.png" id="5_uo2fv"]
 [ext_resource type="Texture2D" uid="uid://birxq4q0v4dpe" path="res://assets/sprites/weapons/base/rifle1-base.png" id="6_5pdws"]
 [ext_resource type="Texture2D" uid="uid://d0ibfba4ttyrc" path="res://assets/sprites/weapons/base/pistol-base.png" id="7_hd3ao"]
+[ext_resource type="Texture2D" uid="uid://clda7jp4ldk2a" path="res://assets/sprites/weapons/outline/rifle1-outline.png" id="8_0i1j5"]
+[ext_resource type="Texture2D" uid="uid://bcsuqxrinkvnt" path="res://assets/sprites/weapons/outline/pistol-outline.png" id="9_mphia"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_nxcxh"]
 font = ExtResource("5_047uy")
@@ -92,32 +94,67 @@ tint_progress = Color(0.99215686, 0.94509804, 1, 1)
 [node name="HealthBarTimer" type="Timer" parent="HealthBarOutline" unique_id=1919540087]
 one_shot = true
 
-[node name="EquippedContainer" type="VBoxContainer" parent="." unique_id=1303273148]
+[node name="EquippedWeapons" type="Control" parent="." unique_id=1270435659]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="EquippedContainer" type="VBoxContainer" parent="EquippedWeapons" unique_id=1303273148]
+layout_mode = 1
 anchors_preset = 6
 anchor_left = 1.0
 anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
-offset_left = -96.0
-offset_top = 60.0
-offset_right = -56.0
-offset_bottom = 100.0
+offset_left = 504.0
+offset_top = 220.0
+offset_right = 544.0
+offset_bottom = 260.0
 grow_horizontal = 0
 grow_vertical = 2
 scale = Vector2(2, 2)
 alignment = 1
 
-[node name="Primary" type="TextureRect" parent="EquippedContainer" unique_id=696587501]
+[node name="Primary" type="TextureRect" parent="EquippedWeapons/EquippedContainer" unique_id=696587501]
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 4
 texture = ExtResource("6_5pdws")
 
-[node name="Secondary" type="TextureRect" parent="EquippedContainer" unique_id=1388876543]
+[node name="Secondary" type="TextureRect" parent="EquippedWeapons/EquippedContainer" unique_id=1388876543]
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 4
 texture = ExtResource("7_hd3ao")
+
+[node name="EquippedOutlineContainer" type="VBoxContainer" parent="EquippedWeapons" unique_id=734681775]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = 504.0
+offset_top = 220.0
+offset_right = 544.0
+offset_bottom = 260.0
+grow_horizontal = 0
+grow_vertical = 2
+scale = Vector2(2, 2)
+alignment = 1
+
+[node name="Primary" type="TextureRect" parent="EquippedWeapons/EquippedOutlineContainer" unique_id=1786874490]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 4
+texture = ExtResource("8_0i1j5")
+
+[node name="Secondary" type="TextureRect" parent="EquippedWeapons/EquippedOutlineContainer" unique_id=1452943397]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 4
+texture = ExtResource("9_mphia")
 
 [node name="DebugEnemyStateLabel" type="Label" parent="." unique_id=707954335]
 anchors_preset = 1

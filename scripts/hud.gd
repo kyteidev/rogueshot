@@ -22,8 +22,8 @@ var health_tween: Tween
 @onready var health_bar_text := $HealthBarOutline/HealthBar/HealthBarText
 @onready var health_timer := $HealthBarOutline/HealthBarTimer
 
-@onready var primary_weapon := $EquippedContainer/Primary
-@onready var secondary_weapon := $EquippedContainer/Secondary
+@onready var primary_weapon := $EquippedWeapons/EquippedContainer/Primary
+@onready var secondary_weapon := $EquippedWeapons/EquippedContainer/Secondary
 
 @onready var weapon := player.get_node("./Weapon")
 
