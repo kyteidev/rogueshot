@@ -9,7 +9,10 @@ const BULLET_SCALE = 0.2
 const CASING = preload("res://scenes/weapons/casing.tscn")
 const SMOKE_PARTICLES = preload("res://scenes/particles/muzzle_smoke.tscn")
 
-const HEAD_POS = 7.0
+const HEAD_POS_X = -6.0
+const HEAD_POS_Y = -7.0
+const HEAD_WIDTH = 12.0
+const HEAD_HEIGHT = -7.0
 
 const ANIM_REF_SPEED = 65.0
 const ANIM_MIN_SCALE = 0.4
@@ -189,10 +192,17 @@ func take_damage(damage: float, hit_pos: Vector2) -> void:
 	tween.tween_property(self, "modulate", Color("ff0000"), DAMAGE_FLASH_DELAY)
 	tween.tween_property(self, "modulate", Color("ffffff"), DAMAGE_FLASH_DELAY)
 	
-	if hit_pos.y <= global_position.y - HEAD_POS:
-		health -= damage * HEADSHOT_MULTIPLIER
-	else:
-		health -= damage
+	# check if bullet hits enemy head
+	var multiplier: float = 1.0
+	if hit_pos.y <= global_position.y + HEAD_POS_Y:
+		# check if cursor is on enemy head
+		var crosshair_pos: Vector2 = get_local_mouse_position()
+		
+		if HEAD_POS_X <= crosshair_pos.x and crosshair_pos.x <= HEAD_POS_X + HEAD_WIDTH:
+			if HEAD_POS_Y >= crosshair_pos.y and crosshair_pos.y >= HEAD_POS_Y + HEAD_HEIGHT:
+				multiplier = HEADSHOT_MULTIPLIER
+	
+	health -= damage * multiplier
 		
 	if health <= 0:
 		_change_state(State.DEAD)
