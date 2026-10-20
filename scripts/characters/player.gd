@@ -109,6 +109,8 @@ var health_tween: Tween
 var stamina_tween: Tween
 var stamina_fade_tween: Tween
 var stamina_was_depleted: bool = false
+
+var flipped: bool = false
 		
 @onready var coyote_timer := $CoyoteTimer
 @onready var jump_buffer_timer := $JumpBufferTimer
@@ -144,6 +146,23 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	var was_on_floor: bool = is_on_floor()
+	
+	# get direction of player
+	# right: 1, left: -1, neutral (not moving): 0
+	var direction: float = Input.get_axis("player_left", "player_right")
+	var same_direction: bool = (direction == -1 and flipped) or (direction == 1 and not flipped)
+	
+	# flip direction
+	var mouse_pos: Vector2 = get_global_mouse_position()
+	var player_direction: Vector2 = mouse_pos - global_position
+	
+	if not sprinting:
+		flipped = player_direction.x < 0
+	anim_sprite.flip_h = flipped
+	
+	# apply no aim multiplier if needed
+	if not same_direction:
+		weapon.spread_multiplier *= weapon.NO_AIM_SPREAD_MULTIPLIER
 	
 	# gravity and jump stretch
 	if not is_on_floor():
@@ -191,14 +210,11 @@ func _physics_process(delta: float) -> void:
 	if is_on_ceiling():
 		velocity.y *= 0.5
 	
-	# get direction of player
-	# right: 1, left: -1, neutral (not moving): 0
-	var direction: float = Input.get_axis("player_left", "player_right")
-		
 	# sprint system
 	speed = BASE_SPEED
 	if is_on_floor():
-		if Input.is_action_pressed("player_sprint") and stamina > 0.0 and not stamina_depleted:
+		var enough_stamina: bool = stamina > 0.0 and not stamina_depleted
+		if Input.is_action_pressed("player_sprint") and enough_stamina and same_direction:
 			sprinting = true
 			
 			# cancel reload if sprinting
@@ -224,12 +240,6 @@ func _physics_process(delta: float) -> void:
 	
 	# apply weapon speed multiplier
 	speed *= weapon.speed_multiplier
-	
-	# flip direction
-	var mouse_pos: Vector2 = get_global_mouse_position()
-	var player_direction: Vector2 = mouse_pos - global_position
-	var flipped: bool = player_direction.x < 0
-	anim_sprite.flip_h = flipped
 	
 	# plays correct animation
 	if is_on_floor():

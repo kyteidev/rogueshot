@@ -2,6 +2,7 @@ extends Node2D
 
 
 const MAX_STAMINA_SPREAD_MULTIPLIER = 2.0
+const NO_AIM_SPREAD_MULTIPLIER = 2.0
 
 const BULLET = preload("res://scenes/weapons/bullet.tscn")
 const BULLET_SCALE = 0.15
@@ -66,6 +67,8 @@ var heat_per_shot: float = 0.0
 var cooling_rate: float = 0.0
 
 var speed_multiplier: float = 0.0
+
+var spread_multiplier: float = 1.0
 
 var muzzle_flash: Node2D
 var smoke: CPUParticles2D
@@ -134,6 +137,9 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	if player.is_dead:
 		return
+	
+	# reset spread multiplier, otherwise it will scale infinitely
+	spread_multiplier = 1.0
 
 	# make weapon point towards mouse pointer
 	look_at(get_global_mouse_position())
@@ -166,8 +172,9 @@ func _physics_process(delta: float) -> void:
 			bullet_instance.type = bullet_instance.Types.FRIENDLY
 
 			# apply spread
+			spread_multiplier *= ((100 - player.stamina) / 100) * MAX_STAMINA_SPREAD_MULTIPLIER
 			var spread_angle: float = deg_to_rad(randf_range(-current_spread, current_spread)) \
-					* ((100 - player.stamina) / 100) * MAX_STAMINA_SPREAD_MULTIPLIER
+					* spread_multiplier
 
 			bullet_instance.global_position = weapon_muzzle.global_position
 			bullet_instance.rotation = global_rotation + spread_angle
