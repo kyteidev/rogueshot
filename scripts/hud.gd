@@ -15,7 +15,8 @@ var displayed_health_loss: float = 100.0
 
 var health_tween: Tween
 
-@onready var ammo_mag_label := $AmmoMagLabel
+@onready var ammo_label := $AmmoMagContainer/AmmoContainer/AmmoLabel
+@onready var mag_label := $AmmoMagContainer/MagContainer/MagLabel
 
 @onready var health_bar := $HealthBarOutline/HealthBar
 @onready var health_loss_bar := $HealthBarOutline/HealthLossBar
@@ -37,8 +38,11 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	# update ammo info
-	var ammo_text: String = "%s/%s | %s %s"
-	ammo_mag_label.text = ammo_text % [sm.ammo, sm.max_ammo, sm.mags, "Mag" if sm.mags == 1 else "Mags"]
+	var ammo_text: String = "%s/%s"
+	ammo_label.text = ammo_text % [sm.ammo, sm.max_ammo]
+	
+	# update mag info
+	mag_label.text = str(sm.mags)
 	
 	# update health info
 	health_bar.value = sm.health

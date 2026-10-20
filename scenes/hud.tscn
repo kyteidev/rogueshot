@@ -2,7 +2,9 @@
 
 [ext_resource type="LabelSettings" uid="uid://clt58t4s48cxb" path="res://settings/label_hud.tres" id="1_ahhtf"]
 [ext_resource type="Script" uid="uid://dynt2sniw8un4" path="res://scripts/hud.gd" id="1_oo0fn"]
+[ext_resource type="Texture2D" uid="uid://qkbkrm2koru3" path="res://assets/sprites/icons/magazine.png" id="3_0m4u7"]
 [ext_resource type="Texture2D" uid="uid://cdf5h5jgg2u5w" path="res://assets/sprites/bar/bar-base.png" id="3_uo2fv"]
+[ext_resource type="Texture2D" uid="uid://16mhj3qealya" path="res://assets/sprites/icons/bullet.png" id="4_apjy4"]
 [ext_resource type="FontFile" uid="uid://4jxi61jcsc2c" path="res://assets/fonts/groundhog.ttf" id="5_047uy"]
 [ext_resource type="Texture2D" uid="uid://wyplv53mg8ky" path="res://assets/sprites/bar/bar-progress.png" id="5_uo2fv"]
 [ext_resource type="Texture2D" uid="uid://birxq4q0v4dpe" path="res://assets/sprites/weapons/base/rifle1-base.png" id="6_5pdws"]
@@ -10,6 +12,13 @@
 [ext_resource type="Texture2D" uid="uid://d0ibfba4ttyrc" path="res://assets/sprites/weapons/base/pistol-base.png" id="7_hd3ao"]
 [ext_resource type="Texture2D" uid="uid://clda7jp4ldk2a" path="res://assets/sprites/weapons/outline/rifle1-outline.png" id="8_0i1j5"]
 [ext_resource type="Texture2D" uid="uid://bcsuqxrinkvnt" path="res://assets/sprites/weapons/outline/pistol-outline.png" id="9_mphia"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_apjy4"]
+font = ExtResource("5_047uy")
+font_size = 20
+font_color = Color(0.99215686, 0.94509804, 1, 1)
+outline_size = 8
+outline_color = Color(0.08235294, 0.039215688, 0.20392157, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_nxcxh"]
 font = ExtResource("5_047uy")
@@ -21,22 +30,59 @@ outline_color = Color(0.08235294, 0.039215688, 0.20392157, 1)
 [node name="HUD" type="CanvasLayer" unique_id=465990537]
 script = ExtResource("1_oo0fn")
 
-[node name="AmmoMagLabel" type="Label" parent="." unique_id=667591211]
+[node name="AmmoMagContainer" type="HBoxContainer" parent="." unique_id=1283879224]
 anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -167.0
-offset_top = -44.0
-offset_right = -14.0
+offset_left = -129.0
+offset_top = -45.0
+offset_right = -12.0
 offset_bottom = -5.0
 grow_horizontal = 0
 grow_vertical = 0
-text = "30/30 | 5 Mags"
+theme_override_constants/separation = 12
+alignment = 2
+
+[node name="MagContainer" type="HBoxContainer" parent="AmmoMagContainer" unique_id=732503666]
+layout_mode = 2
+theme_override_constants/separation = 0
+alignment = 2
+
+[node name="MagLabel" type="Label" parent="AmmoMagContainer/MagContainer" unique_id=945767650]
+layout_mode = 2
+text = "5"
+label_settings = SubResource("LabelSettings_apjy4")
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="MagIcon" type="TextureRect" parent="AmmoMagContainer/MagContainer" unique_id=1788942234]
+custom_maximum_size = Vector2(14, 14)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("3_0m4u7")
+stretch_mode = 4
+
+[node name="AmmoContainer" type="HBoxContainer" parent="AmmoMagContainer" unique_id=1165337424]
+layout_mode = 2
+theme_override_constants/separation = 0
+alignment = 2
+
+[node name="AmmoLabel" type="Label" parent="AmmoMagContainer/AmmoContainer" unique_id=1694591801]
+layout_mode = 2
+text = "30/30"
 label_settings = ExtResource("1_ahhtf")
 horizontal_alignment = 2
 vertical_alignment = 1
+
+[node name="AmmoIcon" type="TextureRect" parent="AmmoMagContainer/AmmoContainer" unique_id=973714395]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("4_apjy4")
+stretch_mode = 2
 
 [node name="HealthBarOutline" type="TextureRect" parent="." unique_id=2042992540]
 anchors_preset = 2
