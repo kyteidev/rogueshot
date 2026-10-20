@@ -8,7 +8,9 @@ const BULLET_SCALE = 0.15
 
 const CASING = preload("res://scenes/weapons/casing.tscn")
 
+const MUZZLE_FLASH = preload("res://scenes/weapons/muzzle_flash.tscn")
 const SMOKE_PARTICLES = preload("res://scenes/particles/muzzle_smoke.tscn")
+const SPARK_PARTICLES = preload("res://scenes/particles/muzzle_sparks.tscn")
 
 const FADE_DURATION = 0.15
 const SMOKE_FADE_SPEED = 6.0
@@ -65,6 +67,7 @@ var cooling_rate: float = 0.0
 
 var speed_multiplier: float = 0.0
 
+var muzzle_flash: Node2D
 var smoke: CPUParticles2D
 var heat: float = 0.0
 
@@ -120,7 +123,10 @@ func _ready() -> void:
 	weapons.pop_front() # first element is the timer
 	equip_weapon(0)
 	
-	# instantiate smoke particles
+	# instantiate muzzle flash and smoke particles
+	muzzle_flash = MUZZLE_FLASH.instantiate()
+	add_child(muzzle_flash)
+	
 	smoke = SMOKE_PARTICLES.instantiate()
 	add_child(smoke)
 
@@ -172,6 +178,19 @@ func _physics_process(delta: float) -> void:
 			
 			get_tree().root.add_child(bullet_instance)
 			
+			# muzzle flash
+			muzzle_flash.fire(weapon_muzzle.global_position, global_rotation)
+			
+			# muzzle sparks
+			var spark_instance := SPARK_PARTICLES.instantiate()
+			spark_instance.position = muzzle_flash.position
+			add_child(spark_instance)
+			
+			# smoke
+			heat = min(heat + heat_per_shot, MAX_HEAT)
+			smoke.global_position = weapon_muzzle.global_position
+			
+			# deduct ammo
 			ammo -= 1
 
 			# cap spread and kick
@@ -193,10 +212,6 @@ func _physics_process(delta: float) -> void:
 			# shake camera
 			var camera := get_node("../../Camera")
 			camera.shake_strength = camera_shake
-			
-			# smoke
-			heat = min(heat + heat_per_shot, MAX_HEAT)
-			smoke.global_position = weapon_muzzle.global_position
 		
 		# firing speed timeout
 		if fire_rate == 0.0 and can_fire:

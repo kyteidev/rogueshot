@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://bs2fmbmnv57im"]
+
+[ext_resource type="Script" uid="uid://cmxtt01e6jxwm" path="res://scripts/particles/muzzle_sparks.gd" id="1_e2jjr"]
+
+[sub_resource type="Gradient" id="Gradient_00jo1"]
+interpolation_mode = 1
+offsets = PackedFloat32Array(0, 0.3, 0.65, 1)
+colors = PackedColorArray(1, 0.98039216, 0.88235295, 1, 1, 0.8784314, 0.4, 1, 1, 0.5882353, 0.18039216, 1, 0.84, 0.31023997, 0.11759999, 0)
+metadata/_snap_enabled = true
+metadata/_snap_count = 20
+
+[node name="MuzzleSparks" type="CPUParticles2D" unique_id=2012481975]
+emitting = false
+amount = 2
+lifetime = 0.1
+one_shot = true
+explosiveness = 1.0
+spread = 25.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 40.0
+initial_velocity_max = 65.0
+scale_amount_min = 0.4
+scale_amount_max = 0.6
+color_ramp = SubResource("Gradient_00jo1")
+script = ExtResource("1_e2jjr")

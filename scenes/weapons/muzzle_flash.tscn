@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://5ipv6mc3lh64"]
+
+[ext_resource type="Script" uid="uid://cjipkip4scx4v" path="res://scripts/weapon/muzzle_flash.gd" id="1_iepi1"]
+[ext_resource type="Texture2D" uid="uid://c1yv5n3sqtw67" path="res://assets/sprites/weapons/muzzle-flash.png" id="2_xoi2e"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_nxcxh"]
+blend_mode = 1
+
+[node name="MuzzleFlash" type="Node2D" unique_id=639738963]
+z_index = 2
+material = SubResource("CanvasItemMaterial_nxcxh")
+script = ExtResource("1_iepi1")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=151361744]
+texture = ExtResource("2_xoi2e")
+
+[node name="PointLight2D" type="PointLight2D" parent="." unique_id=1860529168]
+color = Color(1, 0.6901961, 0.3764706, 1)
+energy = 15.0
+texture = ExtResource("2_xoi2e")
+
+[node name="Timer" type="Timer" parent="." unique_id=1552335316]
+one_shot = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
