@@ -3,6 +3,9 @@ extends CharacterBody2D
 
 enum State { IDLE, PATROL, INVESTIGATE, ALERT, RETURN, CHASE, SEARCH, ATTACK, RETREAT, DEAD }
 
+const DAMAGE_COLOR = Color("ff0000")
+const PARTIAL_DAMAGE_COLOR = Color(2.0, 2.0, 2.0)
+
 const BULLET = preload("res://scenes/weapons/bullet.tscn")
 const BULLET_SCALE = 0.2
 
@@ -213,11 +216,11 @@ func take_damage(damage: float, hit_pos: Vector2) -> void:
 	if not_in_body_x or not_in_body_y:
 		multiplier *= PARTIAL_DMG_MULTIPLIER
 		
-		# flash pink instead of red if only partial damage is applied
-		tween.tween_property(anim, "modulate", Color(2.0, 2.0, 2.0, 1.0), DAMAGE_FLASH_DELAY)
+		# flash white instead of red if only partial damage is applied
+		tween.tween_property(anim, "modulate", PARTIAL_DAMAGE_COLOR, DAMAGE_FLASH_DELAY)
 	else:
 		# flash red if taking damage
-		tween.tween_property(anim, "modulate", Color("ff0000"), DAMAGE_FLASH_DELAY)
+		tween.tween_property(anim, "modulate", DAMAGE_COLOR, DAMAGE_FLASH_DELAY)
 	tween.tween_property(anim, "modulate", Color("ffffff"), DAMAGE_FLASH_DELAY)
 	
 	health -= damage * multiplier
@@ -227,7 +230,7 @@ func take_damage(damage: float, hit_pos: Vector2) -> void:
 		status_icon.visible = false
 		
 		# make enemy red when dead
-		tween.tween_property(anim, "modulate", Color("ff0000"), DAMAGE_FLASH_DELAY)
+		tween.tween_property(anim, "modulate", DAMAGE_COLOR, DAMAGE_FLASH_DELAY)
 
 
 func set_target_pos(pos: Vector2) -> void:
