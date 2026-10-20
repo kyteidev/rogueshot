@@ -33,6 +33,7 @@ func eject(weapon_rotation: float) -> void:
 	
 	linear_velocity = direction * speed
 	angular_velocity = randf_range(-spin, spin)
+	global_rotation = weapon_rotation
 
 
 # unload casing with fade after lifetime
