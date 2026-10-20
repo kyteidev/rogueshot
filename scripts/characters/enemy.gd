@@ -14,6 +14,11 @@ const HEAD_POS_Y = -7.0
 const HEAD_WIDTH = 12.0
 const HEAD_HEIGHT = -7.0
 
+const BODY_POS_X = -6.0
+const BODY_POS_Y = 0.0
+const BODY_WIDTH = 12.0
+const BODY_HEIGHT = -14.0
+
 const ANIM_REF_SPEED = 65.0
 const ANIM_MIN_SCALE = 0.4
 const ANIM_MAX_SCALE = 2.0
@@ -64,7 +69,9 @@ const ATTACK_FIRE_RATE = 0.12
 const ATTACK_MAX_POS_DIFF = 180.0
 
 const MAX_AMMO = 30
+
 const HEADSHOT_MULTIPLIER = 2.0
+const PARTIAL_DMG_MULTIPLIER = 0.5
 
 var state: State = State.PATROL
 var target: CharacterBody2D = null
@@ -187,20 +194,31 @@ func take_damage(damage: float, hit_pos: Vector2) -> void:
 		# delay changing state to end of frame so that bullet origin pos is correct
 		(func() -> void: _change_state(State.ALERT)).call_deferred()
 	
-	# flash red when taking damage
-	var tween := create_tween()
-	tween.tween_property(self, "modulate", Color("ff0000"), DAMAGE_FLASH_DELAY)
-	tween.tween_property(self, "modulate", Color("ffffff"), DAMAGE_FLASH_DELAY)
+	
+	var multiplier: float = 1.0
+	var crosshair_pos: Vector2 = get_local_mouse_position()
 	
 	# check if bullet hits enemy head
-	var multiplier: float = 1.0
 	if hit_pos.y <= global_position.y + HEAD_POS_Y:
 		# check if cursor is on enemy head
-		var crosshair_pos: Vector2 = get_local_mouse_position()
-		
 		if HEAD_POS_X <= crosshair_pos.x and crosshair_pos.x <= HEAD_POS_X + HEAD_WIDTH:
 			if HEAD_POS_Y >= crosshair_pos.y and crosshair_pos.y >= HEAD_POS_Y + HEAD_HEIGHT:
-				multiplier = HEADSHOT_MULTIPLIER
+				multiplier *= HEADSHOT_MULTIPLIER
+	
+	# check if crosshair is not on body
+	# split into variables because otherwise the if statement is too long lol
+	var not_in_body_x: bool = BODY_POS_X >= crosshair_pos.x or crosshair_pos.x >= BODY_POS_X + BODY_WIDTH
+	var not_in_body_y: bool = BODY_POS_Y <= crosshair_pos.y or crosshair_pos.y <= BODY_POS_Y + BODY_HEIGHT
+	var tween := create_tween()
+	if not_in_body_x or not_in_body_y:
+		multiplier *= PARTIAL_DMG_MULTIPLIER
+		
+		# flash pink instead of red if only partial damage is applied
+		tween.tween_property(anim, "modulate", Color(2.0, 1.026, 1.026, 1.0), DAMAGE_FLASH_DELAY)
+	else:
+		# flash red if taking damage
+		tween.tween_property(anim, "modulate", Color(2.0, 0.0, 0.0, 1.0), DAMAGE_FLASH_DELAY)
+	tween.tween_property(anim, "modulate", Color("ffffff"), DAMAGE_FLASH_DELAY)
 	
 	health -= damage * multiplier
 		
@@ -209,7 +227,7 @@ func take_damage(damage: float, hit_pos: Vector2) -> void:
 		status_icon.visible = false
 		
 		# make enemy red when dead
-		tween.tween_property(self, "modulate", Color("ff0000"), DAMAGE_FLASH_DELAY)
+		tween.tween_property(anim, "modulate", Color("ff0000"), DAMAGE_FLASH_DELAY)
 
 
 func set_target_pos(pos: Vector2) -> void:
