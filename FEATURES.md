@@ -26,3 +26,5 @@ LIST OF FINISHED FEATURES (updated Oct. 20 2026):
 	- Player health
 	- Death screen (basic)
 	- Equipped weapon display
+- Build 3 (0.1.0-dev.3)
+	- Partial damage system
