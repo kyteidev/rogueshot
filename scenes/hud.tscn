@@ -6,6 +6,7 @@
 [ext_resource type="FontFile" uid="uid://4jxi61jcsc2c" path="res://assets/fonts/groundhog.ttf" id="5_047uy"]
 [ext_resource type="Texture2D" uid="uid://wyplv53mg8ky" path="res://assets/sprites/bar/bar-progress.png" id="5_uo2fv"]
 [ext_resource type="Texture2D" uid="uid://birxq4q0v4dpe" path="res://assets/sprites/weapons/base/rifle1-base.png" id="6_5pdws"]
+[ext_resource type="Texture2D" uid="uid://cw7lkbujj1r54" path="res://assets/sprites/icons/heart.png" id="6_mphia"]
 [ext_resource type="Texture2D" uid="uid://d0ibfba4ttyrc" path="res://assets/sprites/weapons/base/pistol-base.png" id="7_hd3ao"]
 [ext_resource type="Texture2D" uid="uid://clda7jp4ldk2a" path="res://assets/sprites/weapons/outline/rifle1-outline.png" id="8_0i1j5"]
 [ext_resource type="Texture2D" uid="uid://bcsuqxrinkvnt" path="res://assets/sprites/weapons/outline/pistol-outline.png" id="9_mphia"]
@@ -41,9 +42,9 @@ vertical_alignment = 1
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
-offset_left = 16.0
+offset_left = 32.0
 offset_top = -39.0
-offset_right = 254.0
+offset_right = 270.0
 offset_bottom = 7.0
 grow_vertical = 0
 scale = Vector2(0.5, 0.5)
@@ -90,6 +91,18 @@ grow_vertical = 2
 value = 100.0
 texture_progress = ExtResource("5_uo2fv")
 tint_progress = Color(0.99215686, 0.94509804, 1, 1)
+
+[node name="Hearticon" type="TextureRect" parent="HealthBarOutline" unique_id=702504159]
+z_index = 2
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.13445379
+anchor_top = -0.39130434
+anchor_right = 0.20168068
+anchor_bottom = 1.3478261
+texture = ExtResource("6_mphia")
+stretch_mode = 4
+metadata/_edit_use_anchors_ = true
 
 [node name="HealthBarTimer" type="Timer" parent="HealthBarOutline" unique_id=1919540087]
 one_shot = true
