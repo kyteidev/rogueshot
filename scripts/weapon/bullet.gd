@@ -3,6 +3,8 @@ extends CharacterBody2D
 
 enum Types { FRIENDLY, ENEMY }
 
+const IMPACT_PARTICLES = preload("res://scenes/particles/bullet_impact.tscn")
+
 const SPEED = 1000
 const TRAIL_MAX_POINTS = 7
 
@@ -28,26 +30,42 @@ func _physics_process(delta: float) -> void:
 	if collided:
 		var hit: Object = collided.get_collider()
 		trail.add_point(collided.get_position())
+		
+		var friendly_fire: bool = true
 		if type == Types.FRIENDLY:
 			if not hit.is_in_group("player"):
-				if hit.has_method("take_damage"):
-					hit.take_damage(sm.damage, global_position)
-				
-				if hit.has_method("set_target_pos"):
-					hit.set_target_pos(origin_pos)
-					
-				_unload_bullet()
+				friendly_fire = false
 		elif type == Types.ENEMY:
 			if not hit.is_in_group("enemy"):
-				if hit.has_method("take_damage"):
-					hit.take_damage(sm.enemy_damage)
-				_unload_bullet()
+				friendly_fire = false
+		
+		if not friendly_fire:
+			if hit.has_method("take_damage"):
+				hit.take_damage(sm.damage, global_position)
+				
+			if hit.has_method("set_target_pos"):
+				hit.set_target_pos(origin_pos)
+			
+			if hit.is_in_group("living"):
+				_draw_impact_particles(1)
+			else:
+				_draw_impact_particles(0)
+			_unload_bullet()
 	else:
 		trail.add_point(global_position)
 		
 	if trail.get_point_count() > TRAIL_MAX_POINTS:
 		trail.remove_point(0)
 
+
+func _draw_impact_particles(impact_type: int) -> void:
+	var impact_particles := IMPACT_PARTICLES.instantiate()
+	impact_particles.global_position = global_position
+	impact_particles.global_rotation = global_rotation + PI
+	impact_particles.set_impact_color(impact_type)
+	
+	get_tree().current_scene.add_child(impact_particles)
+	
 
 func _unload_bullet() -> void:
 	# bullet gets unloaded before tween finishes, so reparent trail

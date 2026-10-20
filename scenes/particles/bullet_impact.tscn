@@ -1,0 +1,26 @@
+[gd_scene format=3 uid="uid://bu1tsxrex8kb2"]
+
+[ext_resource type="Script" uid="uid://4ss0tbye41ug" path="res://scripts/particles/bullet_impact.gd" id="1_6w140"]
+
+[sub_resource type="Curve" id="Curve_6w140"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.5952381, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="Gradient" id="Gradient_nxcxh"]
+
+[node name="BulletImpact" type="CPUParticles2D" unique_id=437934017]
+emitting = false
+amount = 4
+lifetime = 0.3
+one_shot = true
+explosiveness = 1.0
+gravity = Vector2(0, 200)
+initial_velocity_min = 30.0
+initial_velocity_max = 60.0
+damping_min = 100.0
+damping_max = 140.0
+scale_amount_min = 0.8
+scale_amount_max = 1.2
+scale_amount_curve = SubResource("Curve_6w140")
+color_ramp = SubResource("Gradient_nxcxh")
+script = ExtResource("1_6w140")

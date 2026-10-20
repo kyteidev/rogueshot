@@ -286,7 +286,7 @@ func _physics_process(delta: float) -> void:
 	
 
 
-func take_damage(damage: float) -> void:
+func take_damage(damage: float, _global_position: Vector2) -> void:
 	# flash red when taking damage
 	var tween := create_tween()
 	tween.tween_property(anim_sprite, "modulate", Color("ff0000"), DAMAGE_FLASH_DELAY)
