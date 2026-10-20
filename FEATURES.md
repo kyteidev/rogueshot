@@ -1,0 +1,28 @@
+LIST OF FINISHED FEATURES (updated Oct. 20 2026):
+- Build 1 (0.1.0-dev.1)
+	- Shooting
+		- Ammo
+		- Reload (partially)
+		- Spread and recoil
+	- Movement
+		- Walking
+		- Running
+		- Jumping
+		- Wallbounce
+	- Main menu and pause menu (basic)
+	- HUD (basic)
+	- Custom reticle (partially)
+- Build 2 (0.1.0-dev.2)
+	- Shooting
+		- Reload
+		- Bullet casing ejection
+		- Muzzle smoke
+	- Custom reticle
+	- Stamina
+	- Enemies
+		- State indicator
+		- Health 
+		- Patrol, attack, chase, investigate, alert, return
+	- Player health
+	- Death screen (basic)
+	- Equipped weapon display

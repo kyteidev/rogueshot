@@ -4,38 +4,11 @@ This is a 2D platformer shooter game developed using Godot 4.7 and GDScript. Sti
 Still working on the story :P (I'm getting the main mechanics done though)
 
 ### STATE OF DEVELOPMENT
-Currently shooting, movement, and stamina is finished. There is a dev room where you can try out the movement and shooting mechanics.
+Currently shooting, movement, stamina, and enemies (partially) is finished. There is a dev room where you can try out the movement and shooting mechanics.
 
-Enemies are currently being worked on.
+Next major feature is the inventory system.
 
-LIST OF FINISHED FEATURES (updated Oct. 15 2026):
-- Build 1 (0.1.0-dev.1)
-    - Shooting
-        - Ammo
-        - Reload (partially)
-        - Spread and recoil
-    - Movement
-        - Walking
-        - Running
-        - Jumping
-        - Wallbounce
-    - Main menu and pause menu (basic)
-    - HUD (basic)
-    - Custom reticle (partially)
-- Build 2 (0.1.0-dev.2)
-    - Shooting
-        - Reload
-        - Bullet casing ejection
-        - Muzzle smoke
-    - Custom reticle
-    - Stamina
-    - Enemies
-        - State indicator
-        - Health 
-        - Patrol, attack, chase, investigate, alert, return
-    - Player health
-    - Death screen (basic)
-    - Equipped weapon display
+To see full list of finished features, see FEATURES.md
 
 ### THIRD PARTY ASSETS
 - Groundhog font by ChevyRay - https://chevyray.itch.io/pixel-font-groundhog
