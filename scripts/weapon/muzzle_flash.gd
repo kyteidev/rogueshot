@@ -8,7 +8,7 @@ const OFFSET = 1.0
 
 const FLASH_TIME = 0.05
 
-@onready var timer := $Timer
+var tween: Tween
 
 
 func _ready() -> void:
@@ -23,8 +23,8 @@ func fire(muzzle_position: Vector2, weapon_rotation: float) -> void:
 	scale = Vector2.ONE * randf_range(MIN_SCALE, MAX_SCALE)
 	visible = true
 	
-	timer.start(FLASH_TIME)
-
-
-func _on_timer_timeout() -> void:
-	visible = false
+	if tween:
+		tween.kill()
+	tween = create_tween()
+	tween.tween_interval(FLASH_TIME)
+	tween.finished.connect(hide)

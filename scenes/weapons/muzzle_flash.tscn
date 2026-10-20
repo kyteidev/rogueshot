@@ -18,8 +18,3 @@ texture = ExtResource("2_xoi2e")
 color = Color(1, 0.6901961, 0.3764706, 1)
 energy = 15.0
 texture = ExtResource("2_xoi2e")
-
-[node name="Timer" type="Timer" parent="." unique_id=1552335316]
-one_shot = true
-
-[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
