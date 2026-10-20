@@ -226,19 +226,24 @@ func _physics_process(delta: float) -> void:
 	speed *= weapon.speed_multiplier
 	
 	# flip direction
-	if direction > 0:
-		anim_sprite.flip_h = false
-	elif direction < 0:
-		anim_sprite.flip_h = true
+	var mouse_pos: Vector2 = get_global_mouse_position()
+	var player_direction: Vector2 = mouse_pos - global_position
+	var flipped: bool = player_direction.x < 0
+	anim_sprite.flip_h = flipped
 	
 	# plays correct animation
 	if is_on_floor():
 		if direction == 0:
-			anim_sprite.play("idle")
+			anim_sprite.animation = "idle"
 		else:
-			anim_sprite.play("run")
+			anim_sprite.animation = "run"
 	else:
-		anim_sprite.play("jump")
+		anim_sprite.animation = "jump"
+	
+	if flipped:
+		anim_sprite.play_backwards()
+	else:
+		anim_sprite.play()
 	
 	# calculate x velocity
 	var accel: float
