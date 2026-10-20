@@ -272,6 +272,8 @@ func equip_weapon(index: int) -> void:
 		weapon_muzzle.position = weapon_muzzle_orig_pos
 		weapon_ejection.position = weapon_ejection_orig_pos
 		weapon_state[weapon_name] = {"ammo": ammo, "mags": mags}
+		
+		heat = 0.0
 	
 	# get weapon stuff
 	weapon_index = index
