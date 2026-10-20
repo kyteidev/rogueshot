@@ -214,10 +214,10 @@ func take_damage(damage: float, hit_pos: Vector2) -> void:
 		multiplier *= PARTIAL_DMG_MULTIPLIER
 		
 		# flash pink instead of red if only partial damage is applied
-		tween.tween_property(anim, "modulate", Color(2.0, 1.026, 1.026, 1.0), DAMAGE_FLASH_DELAY)
+		tween.tween_property(anim, "modulate", Color(2.0, 2.0, 2.0, 1.0), DAMAGE_FLASH_DELAY)
 	else:
 		# flash red if taking damage
-		tween.tween_property(anim, "modulate", Color(2.0, 0.0, 0.0, 1.0), DAMAGE_FLASH_DELAY)
+		tween.tween_property(anim, "modulate", Color("ff0000"), DAMAGE_FLASH_DELAY)
 	tween.tween_property(anim, "modulate", Color("ffffff"), DAMAGE_FLASH_DELAY)
 	
 	health -= damage * multiplier
