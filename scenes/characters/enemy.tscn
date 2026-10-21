@@ -163,7 +163,6 @@ animation = &"death"
 autoplay = "idle"
 
 [node name="FullCollision" type="CollisionShape2D" parent="." unique_id=1475566916]
-visible = false
 position = Vector2(0, -7)
 shape = SubResource("CapsuleShape2D_nxcxh")
 
@@ -210,7 +209,6 @@ position = Vector2(0, -12)
 target_position = Vector2(200, 0)
 
 [node name="CloseRangeArea" type="Area2D" parent="." unique_id=273323011]
-visible = false
 collision_mask = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="CloseRangeArea" unique_id=2052857948]
@@ -218,7 +216,6 @@ position = Vector2(0, -7)
 shape = SubResource("RectangleShape2D_nxcxh")
 
 [node name="BulletHearingArea" type="Area2D" parent="." unique_id=1294586907]
-visible = false
 collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="BulletHearingArea" unique_id=522205884]
