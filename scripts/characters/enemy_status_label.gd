@@ -5,8 +5,6 @@ const FADE_DURATION = 0.3
 
 var fade_tween: Tween
 
-@onready var timer := $FadeTimer
-
 
 func _ready() -> void:
 	visible = false
