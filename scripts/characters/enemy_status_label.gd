@@ -2,7 +2,6 @@ extends Label
 
 
 const FADE_DURATION = 0.3
-const VISIBLE_DURATION = 3.0
 
 var fade_tween: Tween
 
@@ -11,10 +10,9 @@ var fade_tween: Tween
 
 func _ready() -> void:
 	visible = false
-	timer.wait_time = VISIBLE_DURATION
 
 
-func set_status_label(status_text: String) -> void:
+func show_status_label(status_text: String) -> void:
 	text = status_text
 	modulate = Color("ffffff00")
 	visible = true
@@ -23,16 +21,18 @@ func set_status_label(status_text: String) -> void:
 	if fade_tween:
 		fade_tween.kill()
 		
-		fade_tween = create_tween()
-		fade_tween.tween_property(self, "modulate", Color("ffffff"), FADE_DURATION)
-		fade_tween.finished.connect(timer.start)
+	fade_tween = create_tween()
+	fade_tween.tween_property(self, "modulate", Color("ffffff"), FADE_DURATION)
 
 
-func _on_fade_timer_timeout() -> void:
+func hide_status_label() -> void:
+	if not visible:
+		return
+	
 	# fade out animation
 	if fade_tween:
 		fade_tween.kill()
 		
-		fade_tween = create_tween()
-		fade_tween.tween_property(self, "modulate", Color("ffffff00"), FADE_DURATION)
-		fade_tween.finished.connect(func() -> void: visible = false)
+	fade_tween = create_tween()
+	fade_tween.tween_property(self, "modulate", Color("ffffff00"), FADE_DURATION)
+	fade_tween.finished.connect(func() -> void: visible = false)

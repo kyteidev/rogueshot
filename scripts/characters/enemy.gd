@@ -114,6 +114,7 @@ var sm := StateManager
 @onready var weapon_shoot_timer := $Weapon/WeaponShootTimer
 @onready var weapon_reload_timer := $Weapon/WeaponReloadTimer
 @onready var status_icon := $StatusIcon
+@onready var status_label := $StatusLabel
 
 @onready var wall_ray := $WallRay
 @onready var high_wall_ray := $HighWallRay
@@ -457,6 +458,7 @@ func _state_dead(delta: float) -> void:
 
 func _shoot() -> void:
 	if ammo > 0 and weapon_reload_timer.is_stopped():
+		status_label.hide_status_label()
 		# spawn bullet
 		var bullet_instance := BULLET.instantiate()
 		bullet_instance.type = bullet_instance.Types.ENEMY
@@ -490,6 +492,8 @@ func _shoot() -> void:
 	elif ammo == 0:
 		weapon_reload_timer.start(WEAPON_RELOAD_TIME)
 		ammo = MAX_AMMO
+		
+		status_label.show_status_label("RELOADING")
 
 
 func _move_toward(pos: Vector2, move_speed: float, raise_weapon := false) -> float:
