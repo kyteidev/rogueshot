@@ -111,7 +111,6 @@ var stamina_fade_tween: Tween
 var stamina_was_depleted: bool = false
 
 var flipped: bool = false
-var force_turned: bool = false
 		
 @onready var coyote_timer := $CoyoteTimer
 @onready var jump_buffer_timer := $JumpBufferTimer
@@ -147,7 +146,6 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	var was_on_floor: bool = is_on_floor()
-	var was_sprinting: bool = sprinting
 	
 	# get direction of player
 	# right: 1, left: -1, neutral (not moving): 0
@@ -157,15 +155,11 @@ func _physics_process(delta: float) -> void:
 	var mouse_pos: Vector2 = get_global_mouse_position()
 	var cursor_direction: Vector2 = mouse_pos - global_position
 		
-	# force turn if key pressed
-	if Input.is_action_just_pressed("player_force_turn") and direction != 0.0:
+	# force turn if keybind held down when moving
+	if Input.is_action_pressed("player_force_turn") and direction != 0.0:
 		flipped = direction < 0.0
-		force_turned = true
-	elif not force_turned and not sprinting:
+	elif Input.is_action_just_released("player_force_turn"):
 		flipped = cursor_direction.x < 0
-	
-	if (force_turned and direction == 0.0) or (was_sprinting and not sprinting):
-		force_turned = false
 	
 	anim_sprite.flip_h = flipped
 	var same_direction: bool = (direction == -1 and flipped) or (direction == 1 and not flipped)
