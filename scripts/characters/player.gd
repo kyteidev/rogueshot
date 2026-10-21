@@ -158,7 +158,7 @@ func _physics_process(delta: float) -> void:
 	# force turn if keybind held down when moving
 	if Input.is_action_pressed("player_facing_lock") and direction != 0.0:
 		flipped = direction < 0.0
-	elif Input.is_action_just_released("player_facing_lock"):
+	elif not Input.is_action_pressed("player_facing_lock"):
 		flipped = cursor_direction.x < 0
 	
 	anim_sprite.flip_h = flipped
