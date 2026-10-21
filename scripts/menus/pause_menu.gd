@@ -2,6 +2,7 @@ extends CanvasLayer
 
 
 @export var crosshair: CanvasLayer
+@export var inventory: CanvasLayer
 
 @onready var cursor := crosshair.get_child(0)
 
@@ -18,6 +19,10 @@ func _toggle_pause() -> void:
 	
 	if cursor.position != get_viewport().get_mouse_position():
 		get_viewport().warp_mouse(cursor.position)
+	
+	# hide inventory
+	if inventory.visible:
+		inventory.toggle_inventory()
 
 
 func _input(_event: InputEvent) -> void:
