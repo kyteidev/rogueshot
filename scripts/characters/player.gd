@@ -1,7 +1,7 @@
 extends CharacterBody2D
 
 
-const MAX_HEALTH = 10000.0
+const MAX_HEALTH = 100.0
 const DAMAGE_FLASH_DELAY = 0.04
 
 const BASE_SPEED = 80.0
