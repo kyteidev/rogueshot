@@ -249,9 +249,9 @@ script = ExtResource("5_jgk6k")
 one_shot = true
 
 [node name="StatusLabel" type="Label" parent="." unique_id=388896039]
-offset_left = -22.5
+offset_left = -21.5
 offset_top = -23.0
-offset_right = 22.5
+offset_right = 23.5
 offset_bottom = -13.0
 text = "hello world"
 label_settings = SubResource("LabelSettings_x5khh")

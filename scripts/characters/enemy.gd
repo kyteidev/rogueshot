@@ -12,6 +12,8 @@ const BULLET_SCALE = 0.2
 const CASING = preload("res://scenes/weapons/casing.tscn")
 const SMOKE_PARTICLES = preload("res://scenes/particles/muzzle_smoke.tscn")
 
+const STATUS_LABEL_CENTER_X = -22.5
+
 const HEAD_POS_X = -6.0
 const HEAD_POS_Y = -7.0
 const HEAD_WIDTH = 12.0
@@ -528,6 +530,7 @@ func _point_toward(point_direction: int) -> void:
 	high_wall_ray.target_position = abs(high_wall_ray.target_position)
 	ledge_ray.position.x = abs(ledge_ray.position.x)
 	status_icon.position.x = abs(status_icon.position.x)
+	status_label.position.x = STATUS_LABEL_CENTER_X + 1.0
 	
 	if point_direction < 0:
 		anim.flip_h = not anim.flip_h
@@ -535,6 +538,7 @@ func _point_toward(point_direction: int) -> void:
 		high_wall_ray.target_position *= -1
 		ledge_ray.position.x *= -1
 		status_icon.position.x *= -1
+		status_label.position.x = STATUS_LABEL_CENTER_X - 1.0
 
 
 func _on_detection_area_body_entered(body: Node2D) -> void:
