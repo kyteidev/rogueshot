@@ -10,7 +10,10 @@ const BULLET = preload("res://scenes/weapons/bullet.tscn")
 const BULLET_SCALE = 0.2
 
 const CASING = preload("res://scenes/weapons/casing.tscn")
+
+const MUZZLE_FLASH = preload("res://scenes/weapons/muzzle_flash.tscn")
 const SMOKE_PARTICLES = preload("res://scenes/particles/muzzle_smoke.tscn")
+const SPARK_PARTICLES = preload("res://scenes/particles/muzzle_sparks.tscn")
 
 const STATUS_LABEL_CENTER_X = -22.5
 
@@ -98,6 +101,7 @@ var in_los: bool = false
 var kick_offset: float = 0.0
 var desired_weapon_rotation: float = deg_to_rad(PATROL_WEAPON_TILT)
 
+var muzzle_flash: Node2D
 var smoke: CPUParticles2D
 var heat: float = 0.0
 
@@ -134,7 +138,10 @@ var sm := StateManager
 func _ready() -> void:
 	sm.enemy_damage = DAMAGE
 	
-	# instantiate smoke particles
+	# instantiate muzzle flash and smoke particles
+	muzzle_flash = MUZZLE_FLASH.instantiate()
+	weapon.add_child(muzzle_flash)
+	
 	smoke = SMOKE_PARTICLES.instantiate()
 	weapon.add_child(smoke)
 
@@ -491,6 +498,14 @@ func _shoot() -> void:
 		# smoke
 		heat = min(heat + WEAPON_HEAT_PER_SHOT, MAX_HEAT)
 		smoke.global_position = weapon_muzzle.global_position
+		
+		# muzzle flash
+		muzzle_flash.fire(weapon_muzzle.global_position, weapon.global_rotation)
+		
+		# muzzle sparks
+		var spark_instance := SPARK_PARTICLES.instantiate()
+		spark_instance.position = muzzle_flash.position
+		weapon.add_child(spark_instance)
 	elif ammo == 0:
 		weapon_reload_timer.start(WEAPON_RELOAD_TIME)
 		ammo = MAX_AMMO
