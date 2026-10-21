@@ -165,6 +165,11 @@ func _physics_process(delta: float) -> void:
 			weapon.fade_weapon()
 			collision.disabled = true
 			
+			# fade stamina bar
+			var stamina_hide_fade_tween := create_tween()
+			stamina_hide_fade_tween.tween_property(stamina_bar_outline, "modulate", Color("ffffff00"), 0.5)\
+					.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+			
 			anim_sprite.animation_finished.connect(death_timer.start)
 		return
 		
