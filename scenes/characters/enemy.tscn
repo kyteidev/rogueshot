@@ -5,6 +5,8 @@
 [ext_resource type="Texture2D" uid="uid://b01e1rwshiegl" path="res://assets/sprites/weapons/rifle.png" id="3_f2e6v"]
 [ext_resource type="Texture2D" uid="uid://sxdj3w7nress" path="res://assets/sprites/icons/question mark.png" id="4_21x0f"]
 [ext_resource type="Script" uid="uid://dtictyumsb7ps" path="res://scripts/characters/enemy_status_icon.gd" id="5_jgk6k"]
+[ext_resource type="FontFile" uid="uid://4jxi61jcsc2c" path="res://assets/fonts/groundhog.ttf" id="6_3k4es"]
+[ext_resource type="Script" uid="uid://1w732e3gs1gb" path="res://scripts/characters/enemy_status_label.gd" id="7_x5khh"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_md484"]
 atlas = ExtResource("1_md0e3")
@@ -144,6 +146,13 @@ radius = 200.0
 [sub_resource type="CircleShape2D" id="CircleShape2D_21x0f"]
 radius = 125.0
 
+[sub_resource type="LabelSettings" id="LabelSettings_x5khh"]
+font = ExtResource("6_3k4es")
+font_size = 8
+font_color = Color(0.99215686, 0.94509804, 1, 1)
+outline_size = 3
+outline_color = Color(0.08235294, 0.039215688, 0.20392157, 1)
+
 [node name="Enemy" type="CharacterBody2D" unique_id=73622017 groups=["enemy", "living"]]
 script = ExtResource("1_4ra3w")
 
@@ -239,6 +248,19 @@ script = ExtResource("5_jgk6k")
 [node name="FadeTimer" type="Timer" parent="StatusIcon" unique_id=69940822]
 one_shot = true
 
+[node name="StatusLabel" type="Label" parent="." unique_id=388896039]
+offset_left = -22.0
+offset_top = -25.0
+offset_right = 23.0
+offset_bottom = -15.0
+text = "hello world"
+label_settings = SubResource("LabelSettings_x5khh")
+horizontal_alignment = 1
+vertical_alignment = 1
+script = ExtResource("7_x5khh")
+
+[node name="FadeTimer" type="Timer" parent="StatusLabel" unique_id=749259373]
+
 [node name="StateTimer" type="Timer" parent="." unique_id=111717552]
 one_shot = true
 
@@ -249,3 +271,4 @@ one_shot = true
 [connection signal="body_entered" from="AggroArea" to="." method="_on_aggro_area_body_entered"]
 [connection signal="body_exited" from="AggroArea" to="." method="_on_aggro_area_body_exited"]
 [connection signal="timeout" from="StatusIcon/FadeTimer" to="StatusIcon" method="_on_fade_timer_timeout"]
+[connection signal="timeout" from="StatusLabel/FadeTimer" to="StatusLabel" method="_on_fade_timer_timeout"]
