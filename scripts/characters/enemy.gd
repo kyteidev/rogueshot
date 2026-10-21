@@ -10,7 +10,12 @@ const BULLET = preload("res://scenes/weapons/bullet.tscn")
 const BULLET_SCALE = 0.2
 
 const CASING = preload("res://scenes/weapons/casing.tscn")
+
+const MUZZLE_FLASH = preload("res://scenes/weapons/muzzle_flash.tscn")
 const SMOKE_PARTICLES = preload("res://scenes/particles/muzzle_smoke.tscn")
+const SPARK_PARTICLES = preload("res://scenes/particles/muzzle_sparks.tscn")
+
+const STATUS_LABEL_CENTER_X = -22.5
 
 const HEAD_POS_X = -6.0
 const HEAD_POS_Y = -7.0
@@ -96,6 +101,7 @@ var in_los: bool = false
 var kick_offset: float = 0.0
 var desired_weapon_rotation: float = deg_to_rad(PATROL_WEAPON_TILT)
 
+var muzzle_flash: Node2D
 var smoke: CPUParticles2D
 var heat: float = 0.0
 
@@ -114,6 +120,7 @@ var sm := StateManager
 @onready var weapon_shoot_timer := $Weapon/WeaponShootTimer
 @onready var weapon_reload_timer := $Weapon/WeaponReloadTimer
 @onready var status_icon := $StatusIcon
+@onready var status_label := $StatusLabel
 
 @onready var wall_ray := $WallRay
 @onready var high_wall_ray := $HighWallRay
@@ -131,7 +138,10 @@ var sm := StateManager
 func _ready() -> void:
 	sm.enemy_damage = DAMAGE
 	
-	# instantiate smoke particles
+	# instantiate muzzle flash and smoke particles
+	muzzle_flash = MUZZLE_FLASH.instantiate()
+	weapon.add_child(muzzle_flash)
+	
 	smoke = SMOKE_PARTICLES.instantiate()
 	weapon.add_child(smoke)
 
@@ -457,6 +467,7 @@ func _state_dead(delta: float) -> void:
 
 func _shoot() -> void:
 	if ammo > 0 and weapon_reload_timer.is_stopped():
+		status_label.hide_status_label()
 		# spawn bullet
 		var bullet_instance := BULLET.instantiate()
 		bullet_instance.type = bullet_instance.Types.ENEMY
@@ -487,9 +498,19 @@ func _shoot() -> void:
 		# smoke
 		heat = min(heat + WEAPON_HEAT_PER_SHOT, MAX_HEAT)
 		smoke.global_position = weapon_muzzle.global_position
+		
+		# muzzle flash
+		muzzle_flash.fire(weapon_muzzle.global_position, weapon.global_rotation)
+		
+		# muzzle sparks
+		var spark_instance := SPARK_PARTICLES.instantiate()
+		spark_instance.position = muzzle_flash.position
+		weapon.add_child(spark_instance)
 	elif ammo == 0:
 		weapon_reload_timer.start(WEAPON_RELOAD_TIME)
 		ammo = MAX_AMMO
+		
+		status_label.show_status_label("RELOADING")
 
 
 func _move_toward(pos: Vector2, move_speed: float, raise_weapon := false) -> float:
@@ -524,6 +545,7 @@ func _point_toward(point_direction: int) -> void:
 	high_wall_ray.target_position = abs(high_wall_ray.target_position)
 	ledge_ray.position.x = abs(ledge_ray.position.x)
 	status_icon.position.x = abs(status_icon.position.x)
+	status_label.position.x = STATUS_LABEL_CENTER_X + 1.0
 	
 	if point_direction < 0:
 		anim.flip_h = not anim.flip_h
@@ -531,6 +553,7 @@ func _point_toward(point_direction: int) -> void:
 		high_wall_ray.target_position *= -1
 		ledge_ray.position.x *= -1
 		status_icon.position.x *= -1
+		status_label.position.x = STATUS_LABEL_CENTER_X - 1.0
 
 
 func _on_detection_area_body_entered(body: Node2D) -> void:
