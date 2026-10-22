@@ -1,7 +1,6 @@
 [gd_scene format=3 uid="uid://bv8l68anm4bn0"]
 
 [ext_resource type="Script" uid="uid://dpg4bey3oklf6" path="res://scripts/inventory/inventory.gd" id="1_4mxsq"]
-[ext_resource type="Texture2D" uid="uid://cy2jecj3ydjpe" path="res://assets/sprites/ui/inventory/inventory-bg.png" id="1_36a6o"]
 [ext_resource type="Texture2D" uid="uid://bqpmoqx5btq2n" path="res://assets/sprites/ui/inventory/inventory.png" id="2_waxho"]
 
 [node name="Inventory" type="CanvasLayer" unique_id=1946403224]
@@ -23,25 +22,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Background" type="TextureRect" parent="InventoryContainer" unique_id=1008684573]
-visible = false
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -300.0
-offset_top = -169.0
-offset_right = 300.0
-offset_bottom = 169.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("1_36a6o")
-stretch_mode = 5
-
 [node name="Layout" type="TextureRect" parent="InventoryContainer" unique_id=1004782079]
-visible = false
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
