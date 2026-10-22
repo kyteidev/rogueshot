@@ -84,32 +84,55 @@ size_flags_vertical = 4
 texture = ExtResource("4_apjy4")
 stretch_mode = 2
 
-[node name="HealthBarOutline" type="TextureRect" parent="." unique_id=2042992540]
+[node name="HealthBarContainer" type="CanvasGroup" parent="." unique_id=1480480813]
+
+[node name="HealthBarOutline" type="TextureRect" parent="HealthBarContainer" unique_id=2042992540]
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
 offset_left = 32.0
-offset_top = -39.0
+offset_top = 321.0
 offset_right = 270.0
-offset_bottom = 7.0
+offset_bottom = 367.0
 grow_vertical = 0
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("3_uo2fv")
 stretch_mode = 2
 
-[node name="HealthBar" type="TextureProgressBar" parent="HealthBarOutline" unique_id=378917694]
-z_index = 1
-layout_mode = 1
+[node name="HealthBarTimer" type="Timer" parent="HealthBarContainer/HealthBarOutline" unique_id=1919540087]
+one_shot = true
+
+[node name="HealthLossBar" type="TextureProgressBar" parent="HealthBarContainer" unique_id=210656281]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = 32.0
+offset_top = 321.0
+offset_right = 270.0
+offset_bottom = 367.0
 grow_horizontal = 2
 grow_vertical = 2
+scale = Vector2(0.5, 0.5)
+value = 100.0
+texture_progress = ExtResource("5_uo2fv")
+tint_progress = Color(0.99215686, 0.94509804, 1, 1)
+
+[node name="HealthBar" type="TextureProgressBar" parent="HealthBarContainer" unique_id=378917694]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 32.0
+offset_top = 321.0
+offset_right = 270.0
+offset_bottom = 367.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.5, 0.5)
 value = 50.0
 texture_progress = ExtResource("5_uo2fv")
 tint_progress = Color(1, 0.18039216, 0.5411765, 1)
 
-[node name="HealthBarText" type="Label" parent="HealthBarOutline/HealthBar" unique_id=413259845]
+[node name="HealthBarText" type="Label" parent="HealthBarContainer/HealthBar" unique_id=413259845]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -127,89 +150,67 @@ label_settings = SubResource("LabelSettings_nxcxh")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="HealthLossBar" type="TextureProgressBar" parent="HealthBarOutline" unique_id=210656281]
-layout_mode = 1
+[node name="Hearticon" type="TextureRect" parent="HealthBarContainer" unique_id=702504159]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = 312.0
+offset_right = 56.0
+offset_bottom = 352.0
 grow_horizontal = 2
 grow_vertical = 2
-value = 100.0
-texture_progress = ExtResource("5_uo2fv")
-tint_progress = Color(0.99215686, 0.94509804, 1, 1)
-
-[node name="Hearticon" type="TextureRect" parent="HealthBarOutline" unique_id=702504159]
-z_index = 2
-layout_mode = 1
-anchors_preset = -1
-anchor_left = -0.13445379
-anchor_top = -0.39130434
-anchor_right = 0.20168068
-anchor_bottom = 1.3478261
 texture = ExtResource("6_mphia")
 stretch_mode = 4
-metadata/_edit_use_anchors_ = true
 
-[node name="HealthBarTimer" type="Timer" parent="HealthBarOutline" unique_id=1919540087]
-one_shot = true
+[node name="Bounds" type="ColorRect" parent="HealthBarContainer" unique_id=911756119]
+offset_left = 16.0
+offset_top = 312.0
+offset_right = 152.0
+offset_bottom = 352.0
+color = Color(1, 1, 1, 0)
 
-[node name="EquippedWeapons" type="Control" parent="." unique_id=1270435659]
-layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
-
-[node name="EquippedContainer" type="VBoxContainer" parent="EquippedWeapons" unique_id=1303273148]
-layout_mode = 1
-anchors_preset = 6
+[node name="EquippedWeaponsContainer" type="MarginContainer" parent="." unique_id=73224369]
+anchors_preset = 3
 anchor_left = 1.0
-anchor_top = 0.5
+anchor_top = 1.0
 anchor_right = 1.0
-anchor_bottom = 0.5
-offset_left = 504.0
-offset_top = 220.0
-offset_right = 544.0
-offset_bottom = 260.0
+anchor_bottom = 1.0
+offset_left = -80.0
+offset_top = -112.0
+offset_right = -48.0
+offset_bottom = -76.0
 grow_horizontal = 0
-grow_vertical = 2
+grow_vertical = 0
 scale = Vector2(2, 2)
+
+[node name="EquippedContainer" type="VBoxContainer" parent="EquippedWeaponsContainer" unique_id=1303273148]
+layout_mode = 2
 alignment = 1
 
-[node name="Primary" type="TextureRect" parent="EquippedWeapons/EquippedContainer" unique_id=696587501]
+[node name="Primary" type="TextureRect" parent="EquippedWeaponsContainer/EquippedContainer" unique_id=696587501]
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 4
 texture = ExtResource("6_5pdws")
 
-[node name="Secondary" type="TextureRect" parent="EquippedWeapons/EquippedContainer" unique_id=1388876543]
+[node name="Secondary" type="TextureRect" parent="EquippedWeaponsContainer/EquippedContainer" unique_id=1388876543]
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 4
 texture = ExtResource("7_hd3ao")
 
-[node name="EquippedOutlineContainer" type="VBoxContainer" parent="EquippedWeapons" unique_id=734681775]
-layout_mode = 1
-anchors_preset = 6
-anchor_left = 1.0
-anchor_top = 0.5
-anchor_right = 1.0
-anchor_bottom = 0.5
-offset_left = 504.0
-offset_top = 220.0
-offset_right = 544.0
-offset_bottom = 260.0
-grow_horizontal = 0
-grow_vertical = 2
-scale = Vector2(2, 2)
+[node name="EquippedOutlineContainer" type="VBoxContainer" parent="EquippedWeaponsContainer" unique_id=734681775]
+layout_mode = 2
 alignment = 1
 
-[node name="Primary" type="TextureRect" parent="EquippedWeapons/EquippedOutlineContainer" unique_id=1786874490]
+[node name="Primary" type="TextureRect" parent="EquippedWeaponsContainer/EquippedOutlineContainer" unique_id=1786874490]
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 4
 texture = ExtResource("8_0i1j5")
 
-[node name="Secondary" type="TextureRect" parent="EquippedWeapons/EquippedOutlineContainer" unique_id=1452943397]
+[node name="Secondary" type="TextureRect" parent="EquippedWeaponsContainer/EquippedOutlineContainer" unique_id=1452943397]
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 4

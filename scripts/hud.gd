@@ -6,6 +6,8 @@ const HEALTH_BAR_DELAY = 0.5
 const EQUIPPED_WEAPON_COLOR = Color("759cea")
 const BASE_WEAPON_COLOR = Color("fdf1ff")
 
+const FADE_DURATION = 0.1
+
 @export var player: CharacterBody2D
 @export var enemy: CharacterBody2D
 
@@ -15,16 +17,20 @@ var displayed_health_loss: float = 100.0
 
 var health_tween: Tween
 
+@onready var ammo_mag_container := $AmmoMagContainer
 @onready var ammo_label := $AmmoMagContainer/AmmoContainer/AmmoLabel
 @onready var mag_label := $AmmoMagContainer/MagContainer/MagLabel
 
-@onready var health_bar := $HealthBarOutline/HealthBar
-@onready var health_loss_bar := $HealthBarOutline/HealthLossBar
-@onready var health_bar_text := $HealthBarOutline/HealthBar/HealthBarText
-@onready var health_timer := $HealthBarOutline/HealthBarTimer
+@onready var health_bar_container := $HealthBarContainer
+@onready var health_bar_bounds := $HealthBarContainer/Bounds
+@onready var health_bar := $HealthBarContainer/HealthBar
+@onready var health_loss_bar := $HealthBarContainer/HealthLossBar
+@onready var health_bar_text := $HealthBarContainer/HealthBar/HealthBarText
+@onready var health_timer := $HealthBarContainer/HealthBarOutline/HealthBarTimer
 
-@onready var primary_weapon := $EquippedWeapons/EquippedContainer/Primary
-@onready var secondary_weapon := $EquippedWeapons/EquippedContainer/Secondary
+@onready var equipped_weapons_container := $EquippedWeaponsContainer
+@onready var primary_weapon := $EquippedWeaponsContainer/EquippedContainer/Primary
+@onready var secondary_weapon := $EquippedWeaponsContainer/EquippedContainer/Secondary
 
 @onready var weapon := player.get_node("./Weapon")
 
@@ -34,8 +40,18 @@ var health_tween: Tween
 
 func _ready() -> void:
 	visible = true
+	
+	# connect signals for cursor enter and exit
+	ammo_mag_container.mouse_entered.connect(func() -> void: _fade_out(ammo_mag_container))
+	ammo_mag_container.mouse_exited.connect(func() -> void: _fade_in(ammo_mag_container))
+	
+	health_bar_bounds.mouse_entered.connect(func() -> void: _fade_out(health_bar_container, true))
+	health_bar_bounds.mouse_exited.connect(func() -> void: _fade_in(health_bar_container, true))
 
-
+	equipped_weapons_container.mouse_entered.connect(func() -> void: _fade_out(equipped_weapons_container))
+	equipped_weapons_container.mouse_exited.connect(func() -> void: _fade_in(equipped_weapons_container))
+	
+	
 func _process(delta: float) -> void:
 	# update ammo info
 	var ammo_text: String = "%s/%s"
@@ -72,3 +88,13 @@ func _process(delta: float) -> void:
 	# DEBUG SECTION
 	if enemy:
 		debug_enemy_state_label.text = "ENEMY: %s" % enemy.State.keys()[enemy.state]
+
+
+func _fade_in(node: Variant, self_modulate := false) -> void:
+	var tween := create_tween()
+	tween.tween_property(node, "self_modulate" if self_modulate else "modulate", Color("ffffff"), FADE_DURATION)
+
+
+func _fade_out(node: Variant, self_modulate := false) -> void:
+	var tween := create_tween()
+	tween.tween_property(node, "self_modulate" if self_modulate else "modulate", Color("ffffff00"), FADE_DURATION)
