@@ -1,15 +1,31 @@
 extends CanvasLayer
 
 
+const SLOT_TEXTURE = preload("res://assets/sprites/ui/inventory/inventory-slot.png")
+
+const SLOT_SIZE = 24.0
+const TOTAL_SLOTS = 44
+const TOTAL_COLUMNS = 11
+
 @export var crosshair: CanvasLayer
 
 var sm := StateManager
 
 @onready var cursor := crosshair.get_child(0)
+@onready var slots_container := $InventoryContainer/Slots
 
 
 func _ready() -> void:
 	visible = false
+	
+	# set up inventory slots rendering
+	slots_container.columns = TOTAL_COLUMNS
+	
+	for index in range(TOTAL_SLOTS):
+		var slot := TextureRect.new()
+		slot.texture = SLOT_TEXTURE
+		slot.custom_minimum_size = Vector2.ONE * SLOT_SIZE
+		slots_container.add_child(slot)
 	
 
 func toggle_inventory() -> void:

@@ -41,6 +41,7 @@ texture = ExtResource("1_36a6o")
 stretch_mode = 5
 
 [node name="Layout" type="TextureRect" parent="InventoryContainer" unique_id=1004782079]
+visible = false
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -55,3 +56,13 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("2_waxho")
 stretch_mode = 4
+
+[node name="Slots" type="GridContainer" parent="InventoryContainer" unique_id=2041256834]
+layout_mode = 0
+offset_left = 320.0
+offset_top = 60.0
+offset_right = 584.0
+offset_bottom = 280.0
+theme_override_constants/h_separation = 0
+theme_override_constants/v_separation = 0
+columns = 4
