@@ -19,6 +19,9 @@ func toggle_inventory() -> void:
 	# move cursor to crosshair after exiting
 	if cursor.position != get_viewport().get_mouse_position():
 		get_viewport().warp_mouse(cursor.position)
+	
+	# cancel reload
+	crosshair.cancel_reload()
 
 
 func _input(_event: InputEvent) -> void:
