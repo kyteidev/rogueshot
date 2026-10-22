@@ -23,8 +23,4 @@ func toggle_inventory() -> void:
 
 func _input(_event: InputEvent) -> void:
 	if Input.is_action_just_pressed("ui_inventory") or (visible and Input.is_action_just_pressed("ui_cancel")):
-		# don't show inventory if game is paused
-		if get_tree().paused:
-			return
-		
 		toggle_inventory()

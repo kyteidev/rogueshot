@@ -19,15 +19,12 @@ func _toggle_pause() -> void:
 	
 	if cursor.position != get_viewport().get_mouse_position():
 		get_viewport().warp_mouse(cursor.position)
-	
-	# hide inventory
-	if inventory.visible:
-		inventory.toggle_inventory()
 
 
 func _input(_event: InputEvent) -> void:
 	if Input.is_action_just_pressed("ui_cancel"):
-		_toggle_pause()
+		if not inventory.visible:
+			_toggle_pause()
 
 
 func _on_resume_button_pressed() -> void:
