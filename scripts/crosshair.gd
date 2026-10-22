@@ -22,7 +22,8 @@ func _ready() -> void:
 
 
 func _process(_delta: float) -> void:
-	cursor.position = get_viewport().get_mouse_position()
+	if not sm.is_input_locked():
+		cursor.position = get_viewport().get_mouse_position()
 	
 
 func start_reload() -> void:

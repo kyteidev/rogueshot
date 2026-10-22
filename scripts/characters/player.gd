@@ -145,11 +145,12 @@ func _ready() -> void:
 
 
 func _physics_process(delta: float) -> void:
+	var input_locked: bool = sm.is_input_locked()
 	var was_on_floor: bool = is_on_floor()
 	
 	# get direction of player
 	# right: 1, left: -1, neutral (not moving): 0
-	var direction: float = Input.get_axis("player_left", "player_right")
+	var direction: float = 0.0 if input_locked else Input.get_axis("player_left", "player_right")
 	
 	# flip direction if needed
 	var mouse_pos: Vector2 = get_global_mouse_position()
@@ -161,7 +162,8 @@ func _physics_process(delta: float) -> void:
 	elif not Input.is_action_pressed("player_facing_lock"):
 		flipped = cursor_direction.x < 0
 	
-	anim_sprite.flip_h = flipped
+	if not input_locked:
+		anim_sprite.flip_h = flipped
 	var same_direction: bool = (direction == -1 and flipped) or (direction == 1 and not flipped)
 	
 	# apply no aim multiplier if needed
@@ -197,7 +199,7 @@ func _physics_process(delta: float) -> void:
 		return
 		
 	# player jump system
-	if Input.is_action_just_pressed("player_jump"):
+	if not input_locked and Input.is_action_just_pressed("player_jump"):
 		jump_buffer_timer.start(JUMP_BUFFER_TIME)
 		
 	if Input.is_action_just_released("player_jump") and velocity.y < JUMP_VELOCITY_CUT:

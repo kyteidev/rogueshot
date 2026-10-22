@@ -3,6 +3,8 @@ extends CanvasLayer
 
 @export var crosshair: CanvasLayer
 
+var sm := StateManager
+
 @onready var cursor := crosshair.get_child(0)
 
 
@@ -22,6 +24,9 @@ func toggle_inventory() -> void:
 	
 	# cancel reload
 	crosshair.cancel_reload()
+	
+	# lock/unlock input
+	sm.set_input_lock("inventory", visible)
 
 
 func _input(_event: InputEvent) -> void:

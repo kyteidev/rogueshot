@@ -124,7 +124,7 @@ var weapon_state: Dictionary = {}
 func _ready() -> void:
 	weapons = get_children()
 	weapons.pop_front() # first element is the timer
-	equip_weapon(0)
+	_equip_weapon(0)
 	
 	# instantiate muzzle flash and smoke particles
 	muzzle_flash = MUZZLE_FLASH.instantiate()
@@ -137,12 +137,15 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	if player.is_dead:
 		return
+		
+	var input_locked: bool = sm.is_input_locked()
 	
 	# reset spread multiplier, otherwise it will scale infinitely
 	spread_multiplier = 1.0
 
 	# make weapon point towards mouse pointer
-	look_at(get_global_mouse_position())
+	if not input_locked:
+		look_at(get_global_mouse_position())
 	
 	# flip direction if necessary
 	var mouse_pos: Vector2 = get_global_mouse_position()
@@ -165,7 +168,7 @@ func _physics_process(delta: float) -> void:
 	smoke.modulate.a = lerp(smoke.modulate.a, smoothstep(0.0, SMOKE_BASE_ALPHA, heat), 1.0 - exp(-SMOKE_FADE_SPEED * delta))
 	
 	# weapon firing
-	if Input.is_action_pressed("player_shoot"):
+	if not input_locked and Input.is_action_pressed("player_shoot"):
 		if can_fire and ammo > 0:
 			# spawn bullet
 			var bullet_instance := BULLET.instantiate()
@@ -234,7 +237,7 @@ func _physics_process(delta: float) -> void:
 	if fire_rate == 0.0 and Input.is_action_just_released("player_shoot"):
 		can_fire = true
 		
-	if Input.is_action_just_pressed("weapon_reload"):
+	if not input_locked and Input.is_action_just_pressed("weapon_reload"):
 		reload_weapon()
 
 
@@ -245,13 +248,13 @@ func _input(_event: InputEvent) -> void:
 	# weapon switching
 	if Input.is_action_just_pressed("weapon_cycle"):
 		var next_index: int = (weapon_index + 1) % weapons.size()
-		equip_weapon(next_index)
+		_equip_weapon(next_index)
 	
 	# manually select primary/secondary weapon
 	if Input.is_action_just_pressed("weapon_1"):
-		equip_weapon(0)
+		_equip_weapon(0)
 	elif Input.is_action_just_pressed("weapon_2"):
-		equip_weapon(1)
+		_equip_weapon(1)
 
 
 func fade_weapon() -> void:
@@ -271,7 +274,7 @@ func _finish_reload() -> void:
 	mags -= 1
 	
 
-func equip_weapon(index: int) -> void:
+func _equip_weapon(index: int) -> void:
 	# reset and save weapon stats before switching
 	if current_weapon != null:
 		current_weapon.flip_v = false
