@@ -18,6 +18,7 @@ config/icon="res://icon.svg"
 [autoload]
 
 StateManager="*uid://du86n6i4ajifw"
+InventoryManager="*uid://dcqr5ywk7hfig"
 
 [debug]
 

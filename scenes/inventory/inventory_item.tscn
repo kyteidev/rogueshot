@@ -1,0 +1,19 @@
+[gd_scene format=3 uid="uid://bpv2mit2hwr4k"]
+
+[ext_resource type="Texture2D" uid="uid://cws70ra7slkq6" path="res://assets/sprites/weapons/pistol.png" id="1_5agom"]
+[ext_resource type="Script" uid="uid://d6h86jkhfenr" path="res://scripts/inventory/inventory_slot.gd" id="1_u6pog"]
+
+[node name="InventoryItem" type="Panel" unique_id=475894686]
+script = ExtResource("1_u6pog")
+
+[node name="Background" type="ColorRect" parent="." unique_id=444263588]
+layout_mode = 0
+offset_right = 24.0
+offset_bottom = 24.0
+color = Color(0.3372549, 0.28627452, 0.43529412, 1)
+
+[node name="Icon" type="TextureRect" parent="." unique_id=585372530]
+layout_mode = 0
+offset_right = 24.0
+offset_bottom = 24.0
+texture = ExtResource("1_5agom")

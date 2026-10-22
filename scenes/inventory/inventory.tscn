@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://dpg4bey3oklf6" path="res://scripts/inventory/inventory.gd" id="1_4mxsq"]
 [ext_resource type="Texture2D" uid="uid://bqpmoqx5btq2n" path="res://assets/sprites/ui/inventory/inventory.png" id="2_waxho"]
+[ext_resource type="PackedScene" uid="uid://bpv2mit2hwr4k" path="res://scenes/inventory/inventory_item.tscn" id="3_el5y6"]
 
 [node name="Inventory" type="CanvasLayer" unique_id=1946403224]
 script = ExtResource("1_4mxsq")
@@ -38,7 +39,7 @@ grow_vertical = 2
 texture = ExtResource("2_waxho")
 stretch_mode = 4
 
-[node name="Slots" type="GridContainer" parent="InventoryContainer" unique_id=2041256834]
+[node name="SlotsContainer" type="GridContainer" parent="InventoryContainer" unique_id=2041256834]
 layout_mode = 0
 offset_left = 320.0
 offset_top = 60.0
@@ -47,3 +48,13 @@ offset_bottom = 280.0
 theme_override_constants/h_separation = 0
 theme_override_constants/v_separation = 0
 columns = 4
+
+[node name="ItemsContainer" type="Control" parent="InventoryContainer" unique_id=1544943345]
+anchors_preset = 0
+offset_left = 320.0
+offset_top = 60.0
+offset_right = 584.0
+offset_bottom = 280.0
+
+[node name="InventoryItem" parent="InventoryContainer/ItemsContainer" unique_id=475894686 instance=ExtResource("3_el5y6")]
+layout_mode = 0
