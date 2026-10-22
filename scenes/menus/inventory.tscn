@@ -13,7 +13,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0, 0, 0, 0.39215687)
+color = Color(0, 0, 0, 0.60784316)
 
 [node name="InventoryContainer" type="Control" parent="." unique_id=957108832]
 layout_mode = 3
@@ -24,20 +24,21 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="Background" type="TextureRect" parent="InventoryContainer" unique_id=1008684573]
-modulate = Color(1, 1, 1, 0.8627451)
+visible = false
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -240.0
-offset_top = -128.0
-offset_right = 240.0
-offset_bottom = 128.0
+offset_left = -300.0
+offset_top = -169.0
+offset_right = 300.0
+offset_bottom = 169.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("1_36a6o")
+stretch_mode = 5
 
 [node name="Layout" type="TextureRect" parent="InventoryContainer" unique_id=1004782079]
 layout_mode = 1
@@ -46,10 +47,11 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -240.0
-offset_top = -128.0
-offset_right = 240.0
-offset_bottom = 128.0
+offset_left = -360.0
+offset_top = -192.0
+offset_right = 360.0
+offset_bottom = 192.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("2_waxho")
+stretch_mode = 4
