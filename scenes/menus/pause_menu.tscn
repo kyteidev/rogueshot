@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://djgydwpynveae" path="res://scripts/menus/pause_menu.gd" id="1_fwndu"]
 [ext_resource type="FontFile" uid="uid://4jxi61jcsc2c" path="res://assets/fonts/groundhog.ttf" id="2_7unhi"]
-[ext_resource type="Theme" uid="uid://buqqcuajkeqph" path="res://settings/button.tres" id="3_gsnt3"]
+[ext_resource type="Theme" uid="uid://buqqcuajkeqph" path="res://resources/themes/button.tres" id="3_gsnt3"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_nxcxh"]
 font = ExtResource("2_7unhi")

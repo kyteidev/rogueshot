@@ -1,0 +1,6 @@
+[gd_resource type="LabelSettings" format=3 uid="uid://dg0kb8y76xk08"]
+
+[ext_resource type="FontFile" uid="uid://4jxi61jcsc2c" path="res://assets/fonts/groundhog.ttf" id="1_8mcyd"]
+
+[resource]
+font = ExtResource("1_8mcyd")

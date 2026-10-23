@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://iyw7lnfwc7ov" path="res://scripts/menus/death_menu.gd" id="1_nx5j2"]
 [ext_resource type="FontFile" uid="uid://4jxi61jcsc2c" path="res://assets/fonts/groundhog.ttf" id="1_s3l4v"]
-[ext_resource type="Theme" uid="uid://buqqcuajkeqph" path="res://settings/button.tres" id="2_jgt2l"]
+[ext_resource type="Theme" uid="uid://buqqcuajkeqph" path="res://resources/themes/button.tres" id="2_jgt2l"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_jgt2l"]
 font = ExtResource("1_s3l4v")

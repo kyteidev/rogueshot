@@ -6,12 +6,18 @@
 [ext_resource type="Texture2D" uid="uid://b5rmpryo0bohx" path="res://assets/sprites/background/Layer2.png" id="3_ng0o5"]
 [ext_resource type="Texture2D" uid="uid://d3rebiiaue1hy" path="res://assets/sprites/background/Layer3.png" id="4_8r73w"]
 [ext_resource type="Texture2D" uid="uid://l6gdc1wt1dbf" path="res://assets/sprites/background/Layer4.png" id="5_1hnlc"]
-[ext_resource type="Theme" uid="uid://bni7fdd41lv54" path="res://settings/button_title.tres" id="6_ng0o5"]
+[ext_resource type="Theme" uid="uid://bni7fdd41lv54" path="res://resources/themes/button_title.tres" id="6_ng0o5"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_nxcxh"]
 font = ExtResource("1_xqga4")
 font_size = 64
 font_color = Color(0.99215686, 0.94509804, 1, 1)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_8r73w"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ahfru"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_a3k22"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_4iqke"]
 font = ExtResource("1_xqga4")
@@ -20,7 +26,7 @@ font_color = Color(0.99215686, 0.94509804, 1, 1)
 [node name="MainMenu" type="CanvasLayer" unique_id=1172912784]
 script = ExtResource("1_8r73w")
 
-[node name="BG1" type="TextureRect" parent="." unique_id=1624108880]
+[node name="BackgroundSky" type="TextureRect" parent="." unique_id=1624108880]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -28,7 +34,7 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("2_imvie")
 
-[node name="Node" type="Control" parent="." unique_id=1621844467]
+[node name="BackgroundContainer" type="Control" parent="." unique_id=1621844467]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -38,7 +44,7 @@ offset_bottom = 176.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="BG2" type="TextureRect" parent="Node" unique_id=1090405650]
+[node name="Layer1" type="TextureRect" parent="BackgroundContainer" unique_id=1090405650]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -47,7 +53,7 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("3_ng0o5")
 
-[node name="BG3" type="TextureRect" parent="Node" unique_id=443403562]
+[node name="Layer2" type="TextureRect" parent="BackgroundContainer" unique_id=443403562]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -56,7 +62,7 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("4_8r73w")
 
-[node name="BG4" type="TextureRect" parent="Node" unique_id=1281483266]
+[node name="Layer3" type="TextureRect" parent="BackgroundContainer" unique_id=1281483266]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -78,58 +84,60 @@ grow_vertical = 2
 color = Color(0, 0, 0, 0.49019608)
 
 [node name="Title" type="Label" parent="." unique_id=60277904]
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -210.0
-offset_top = 56.0
-offset_right = 210.0
-offset_bottom = 170.0
-grow_horizontal = 2
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 64.0
+offset_top = -124.0
+offset_right = 354.0
+offset_bottom = -48.0
+grow_vertical = 2
 text = "rogueshot"
 label_settings = SubResource("LabelSettings_nxcxh")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="PlayButton" type="Button" parent="." unique_id=1994759747]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -75.0
-offset_top = 24.0
-offset_right = 75.0
-offset_bottom = 74.0
-grow_horizontal = 2
-grow_vertical = 2
-theme = ExtResource("6_ng0o5")
-theme_override_colors/font_color = Color(0.99215686, 0.94509804, 1, 1)
-theme_override_colors/font_focus_color = Color(0.99215686, 0.94509804, 1, 1)
-theme_override_colors/font_pressed_color = Color(0.99215686, 0.94509804, 1, 1)
-theme_override_colors/font_hover_color = Color(0.99215686, 0.94509804, 1, 1)
-theme_override_colors/font_hover_pressed_color = Color(0.99215686, 0.94509804, 1, 1)
-text = "Play"
+[node name="ButtonsContainer" type="VBoxContainer" parent="." unique_id=891902297]
+offset_left = 64.0
+offset_top = 160.0
+offset_right = 208.0
+offset_bottom = 306.0
 
-[node name="QuitButton" type="Button" parent="." unique_id=1654224469]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -74.0
-offset_top = 78.0
-offset_right = 76.0
-offset_bottom = 128.0
-grow_horizontal = 2
-grow_vertical = 2
+[node name="PlayButton" type="Button" parent="ButtonsContainer" unique_id=1994759747]
+layout_mode = 2
 theme = ExtResource("6_ng0o5")
 theme_override_colors/font_color = Color(0.99215686, 0.94509804, 1, 1)
 theme_override_colors/font_focus_color = Color(0.99215686, 0.94509804, 1, 1)
 theme_override_colors/font_pressed_color = Color(0.99215686, 0.94509804, 1, 1)
 theme_override_colors/font_hover_color = Color(0.99215686, 0.94509804, 1, 1)
 theme_override_colors/font_hover_pressed_color = Color(0.99215686, 0.94509804, 1, 1)
+theme_override_styles/normal = SubResource("StyleBoxEmpty_8r73w")
+text = "Play"
+alignment = 0
+
+[node name="OptionsButton" type="Button" parent="ButtonsContainer" unique_id=426535373]
+layout_mode = 2
+theme = ExtResource("6_ng0o5")
+theme_override_colors/font_color = Color(0.99215686, 0.94509804, 1, 1)
+theme_override_colors/font_focus_color = Color(0.99215686, 0.94509804, 1, 1)
+theme_override_colors/font_pressed_color = Color(0.99215686, 0.94509804, 1, 1)
+theme_override_colors/font_hover_color = Color(0.99215686, 0.94509804, 1, 1)
+theme_override_colors/font_hover_pressed_color = Color(0.99215686, 0.94509804, 1, 1)
+theme_override_styles/normal = SubResource("StyleBoxEmpty_ahfru")
+text = "Options"
+alignment = 0
+
+[node name="QuitButton" type="Button" parent="ButtonsContainer" unique_id=1654224469]
+layout_mode = 2
+theme = ExtResource("6_ng0o5")
+theme_override_colors/font_color = Color(0.99215686, 0.94509804, 1, 1)
+theme_override_colors/font_focus_color = Color(0.99215686, 0.94509804, 1, 1)
+theme_override_colors/font_pressed_color = Color(0.99215686, 0.94509804, 1, 1)
+theme_override_colors/font_hover_color = Color(0.99215686, 0.94509804, 1, 1)
+theme_override_colors/font_hover_pressed_color = Color(0.99215686, 0.94509804, 1, 1)
+theme_override_styles/normal = SubResource("StyleBoxEmpty_a3k22")
 text = "Quit"
+alignment = 0
 
 [node name="Version" type="Label" parent="." unique_id=1103752527]
 anchors_preset = 2
@@ -143,5 +151,6 @@ grow_vertical = 0
 text = "v. 0.1.0-dev.2 (itch.io)"
 label_settings = SubResource("LabelSettings_4iqke")
 
-[connection signal="pressed" from="PlayButton" to="." method="_on_play_button_pressed"]
-[connection signal="pressed" from="QuitButton" to="." method="_on_quit_button_pressed"]
+[connection signal="pressed" from="ButtonsContainer/PlayButton" to="." method="_on_play_button_pressed"]
+[connection signal="pressed" from="ButtonsContainer/OptionsButton" to="." method="_on_options_button_pressed"]
+[connection signal="pressed" from="ButtonsContainer/QuitButton" to="." method="_on_quit_button_pressed"]

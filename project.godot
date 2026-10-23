@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="rogueshot"
-run/main_scene="uid://br1bl3uquyddo"
+run/main_scene="uid://dwlmlmommt8te"
 config/features=PackedStringArray("4.7", "Forward Plus")
 config/icon="res://icon.svg"
 
@@ -19,6 +19,7 @@ config/icon="res://icon.svg"
 
 StateManager="*uid://du86n6i4ajifw"
 InventoryManager="*uid://dcqr5ywk7hfig"
+OptionsManager="*uid://0ip3hxuyg8uv"
 
 [debug]
 
@@ -37,7 +38,7 @@ version_control/autoload_on_startup=true
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/godot_super-wakatime/plugin.cfg", "res://addons/kanban_tasks/plugin.cfg")
+enabled=PackedStringArray("res://addons/godot_super-wakatime/plugin.cfg")
 
 [file_customization]
 
@@ -45,9 +46,9 @@ folder_colors={
 "res://addons/": "red",
 "res://assets/": "yellow",
 "res://export/": "orange",
+"res://resources/": "green",
 "res://scenes/": "teal",
 "res://scripts/": "blue",
-"res://settings/": "green",
 "res://shaders/": "purple"
 }
 
@@ -104,12 +105,12 @@ weapon_cycle={
 "events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":81,"key_label":0,"unicode":113,"location":0,"echo":false,"script":null)
 ]
 }
-weapon_1={
+weapon_primary={
 "deadzone": 0.2,
 "events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":49,"key_label":0,"unicode":49,"location":0,"echo":false,"script":null)
 ]
 }
-weapon_2={
+weapon_secondary={
 "deadzone": 0.2,
 "events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":50,"key_label":0,"unicode":50,"location":0,"echo":false,"script":null)
 ]

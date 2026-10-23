@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://c6evxkovosp2y"]
 
-[ext_resource type="LabelSettings" uid="uid://clt58t4s48cxb" path="res://settings/label_hud.tres" id="1_ahhtf"]
+[ext_resource type="LabelSettings" uid="uid://clt58t4s48cxb" path="res://resources/themes/label_hud.tres" id="1_ahhtf"]
 [ext_resource type="Script" uid="uid://dynt2sniw8un4" path="res://scripts/hud.gd" id="1_oo0fn"]
 [ext_resource type="Texture2D" uid="uid://qkbkrm2koru3" path="res://assets/sprites/icons/magazine.png" id="3_0m4u7"]
 [ext_resource type="Texture2D" uid="uid://cdf5h5jgg2u5w" path="res://assets/sprites/bar/bar-base.png" id="3_uo2fv"]
@@ -25,6 +25,13 @@ font = ExtResource("5_047uy")
 font_size = 24
 font_color = Color(0.99215686, 0.94509804, 1, 1)
 outline_size = 8
+outline_color = Color(0.08235294, 0.039215688, 0.20392157, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_5n1hp"]
+font = ExtResource("5_047uy")
+font_size = 4
+font_color = Color(0.99215686, 0.94509804, 1, 1)
+outline_size = 2
 outline_color = Color(0.08235294, 0.039215688, 0.20392157, 1)
 
 [node name="HUD" type="CanvasLayer" unique_id=465990537]
@@ -193,12 +200,46 @@ layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 4
 texture = ExtResource("6_5pdws")
+stretch_mode = 4
+
+[node name="KeybindLabel" type="Label" parent="EquippedWeaponsContainer/EquippedContainer/Primary" unique_id=1572042044]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -6.0
+offset_top = -5.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "1"
+label_settings = SubResource("LabelSettings_5n1hp")
+horizontal_alignment = 2
+vertical_alignment = 2
 
 [node name="Secondary" type="TextureRect" parent="EquippedWeaponsContainer/EquippedContainer" unique_id=1388876543]
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 4
 texture = ExtResource("7_hd3ao")
+stretch_mode = 4
+
+[node name="KeybindLabel" type="Label" parent="EquippedWeaponsContainer/EquippedContainer/Secondary" unique_id=565580446]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -6.0
+offset_top = -5.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "2"
+label_settings = SubResource("LabelSettings_5n1hp")
+horizontal_alignment = 2
+vertical_alignment = 2
 
 [node name="EquippedOutlineContainer" type="VBoxContainer" parent="EquippedWeaponsContainer" unique_id=734681775]
 layout_mode = 2
