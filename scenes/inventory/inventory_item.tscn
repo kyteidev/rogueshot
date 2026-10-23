@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://bpv2mit2hwr4k"]
 
 [ext_resource type="Texture2D" uid="uid://cws70ra7slkq6" path="res://assets/sprites/weapons/pistol.png" id="1_5agom"]
-[ext_resource type="Script" uid="uid://d6h86jkhfenr" path="res://scripts/inventory/inventory_slot.gd" id="1_u6pog"]
+[ext_resource type="Script" uid="uid://d6h86jkhfenr" path="res://scripts/inventory/inventory_item.gd" id="1_u6pog"]
 
 [node name="InventoryItem" type="Panel" unique_id=475894686]
 script = ExtResource("1_u6pog")
