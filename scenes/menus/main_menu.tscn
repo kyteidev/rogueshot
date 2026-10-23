@@ -152,4 +152,5 @@ text = "v. 0.1.0-dev.2 (itch.io)"
 label_settings = SubResource("LabelSettings_4iqke")
 
 [connection signal="pressed" from="ButtonsContainer/PlayButton" to="." method="_on_play_button_pressed"]
+[connection signal="pressed" from="ButtonsContainer/OptionsButton" to="." method="_on_options_button_pressed"]
 [connection signal="pressed" from="ButtonsContainer/QuitButton" to="." method="_on_quit_button_pressed"]

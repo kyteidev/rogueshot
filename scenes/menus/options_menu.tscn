@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://dwlmlmommt8te"]
 
 [ext_resource type="Texture2D" uid="uid://2u0tpos1jicx" path="res://assets/sprites/background/Layer1.png" id="1_erhyl"]
+[ext_resource type="Script" uid="uid://d0eg4qh7rhasx" path="res://scripts/menus/options_menu.gd" id="1_tiokm"]
 [ext_resource type="Texture2D" uid="uid://b5rmpryo0bohx" path="res://assets/sprites/background/Layer2.png" id="2_tiokm"]
 [ext_resource type="Texture2D" uid="uid://d3rebiiaue1hy" path="res://assets/sprites/background/Layer3.png" id="3_gjmye"]
 [ext_resource type="Texture2D" uid="uid://l6gdc1wt1dbf" path="res://assets/sprites/background/Layer4.png" id="4_muvh2"]
@@ -8,13 +9,13 @@
 [ext_resource type="Theme" uid="uid://dfg84fv2ux34y" path="res://resources/themes/tab_settings.tres" id="6_frorf"]
 [ext_resource type="ButtonGroup" uid="uid://cex2h80qiylfv" path="res://resources/groups/settings_tab_group.tres" id="7_23plx"]
 
-[sub_resource type="Theme" id="Theme_qnuys"]
-default_font = ExtResource("5_yxgvl")
-default_font_size = 24
-
 [sub_resource type="LabelSettings" id="LabelSettings_vjox6"]
 font = ExtResource("5_yxgvl")
 font_size = 32
+
+[sub_resource type="Theme" id="Theme_qnuys"]
+default_font = ExtResource("5_yxgvl")
+default_font_size = 24
 
 [node name="OptionsMenu" type="Control" unique_id=601908048]
 layout_mode = 3
@@ -23,6 +24,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_tiokm")
 
 [node name="BackgroundSky" type="TextureRect" parent="." unique_id=287344074]
 layout_mode = 1
@@ -83,22 +85,6 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 0.49019608)
 
-[node name="BackButton" type="Button" parent="." unique_id=123714607]
-layout_mode = 1
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -120.0
-offset_top = -56.0
-offset_right = -64.0
-offset_bottom = -19.0
-grow_horizontal = 0
-grow_vertical = 0
-theme = SubResource("Theme_qnuys")
-text = "Back"
-
 [node name="Title" type="Label" parent="." unique_id=1099956491]
 layout_mode = 1
 anchors_preset = 5
@@ -120,9 +106,9 @@ anchors_preset = 4
 anchor_top = 0.5
 anchor_bottom = 0.5
 offset_left = 64.0
-offset_top = -44.0
-offset_right = 180.0
-offset_bottom = 52.0
+offset_top = -94.0
+offset_right = 206.0
+offset_bottom = 102.0
 grow_vertical = 2
 
 [node name="GameplayTab" type="Button" parent="TabsContainer" unique_id=1708401170]
@@ -157,3 +143,21 @@ toggle_mode = true
 button_group = ExtResource("7_23plx")
 text = "Controls"
 alignment = 0
+
+[node name="BackButton" type="Button" parent="." unique_id=123714607]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -120.0
+offset_top = -56.0
+offset_right = -64.0
+offset_bottom = -19.0
+grow_horizontal = 0
+grow_vertical = 0
+theme = SubResource("Theme_qnuys")
+text = "Back"
+
+[connection signal="pressed" from="BackButton" to="." method="_on_back_button_pressed"]
