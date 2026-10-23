@@ -109,7 +109,7 @@ label_settings = SubResource("LabelSettings_vjox6")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="TabsContainer" type="VBoxContainer" parent="." unique_id=1847378987]
+[node name="TabButtonsContainer" type="VBoxContainer" parent="." unique_id=1847378987]
 layout_mode = 1
 anchors_preset = 4
 anchor_top = 0.5
@@ -120,7 +120,7 @@ offset_right = 206.0
 offset_bottom = 102.0
 grow_vertical = 2
 
-[node name="GameplayTab" type="Button" parent="TabsContainer" unique_id=1708401170]
+[node name="GameplayTab" type="Button" parent="TabButtonsContainer" unique_id=1708401170]
 layout_mode = 2
 theme = ExtResource("6_frorf")
 theme_override_styles/normal = SubResource("StyleBoxEmpty_tiokm")
@@ -130,7 +130,7 @@ button_group = ExtResource("7_23plx")
 text = "Gameplay"
 alignment = 0
 
-[node name="VideoTab" type="Button" parent="TabsContainer" unique_id=1112779466]
+[node name="VideoTab" type="Button" parent="TabButtonsContainer" unique_id=1112779466]
 layout_mode = 2
 theme = ExtResource("6_frorf")
 theme_override_styles/normal = SubResource("StyleBoxEmpty_gjmye")
@@ -139,7 +139,7 @@ button_group = ExtResource("7_23plx")
 text = "Video"
 alignment = 0
 
-[node name="AudioTab" type="Button" parent="TabsContainer" unique_id=274596145]
+[node name="AudioTab" type="Button" parent="TabButtonsContainer" unique_id=274596145]
 layout_mode = 2
 theme = ExtResource("6_frorf")
 theme_override_styles/normal = SubResource("StyleBoxEmpty_muvh2")
@@ -148,7 +148,7 @@ button_group = ExtResource("7_23plx")
 text = "Audio"
 alignment = 0
 
-[node name="ControlsTab" type="Button" parent="TabsContainer" unique_id=1249559282]
+[node name="ControlsTab" type="Button" parent="TabButtonsContainer" unique_id=1249559282]
 layout_mode = 2
 theme = ExtResource("6_frorf")
 theme_override_styles/normal = SubResource("StyleBoxEmpty_yxgvl")
@@ -157,18 +157,18 @@ button_group = ExtResource("7_23plx")
 text = "Controls"
 alignment = 0
 
-[node name="TabViewContainer" type="MarginContainer" parent="." unique_id=27030634]
+[node name="TabsContainer" type="MarginContainer" parent="." unique_id=27030634]
 layout_mode = 0
 offset_left = 320.0
 offset_top = 88.0
 offset_right = 576.0
 offset_bottom = 280.0
 
-[node name="Gameplay" type="Control" parent="TabViewContainer" unique_id=199546014]
+[node name="Gameplay" type="Control" parent="TabsContainer" unique_id=199546014]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="ContentContainer" type="VBoxContainer" parent="TabViewContainer/Gameplay" unique_id=1258848593]
+[node name="OptionsContainer" type="VBoxContainer" parent="TabsContainer/Gameplay" unique_id=1258848593]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -176,32 +176,92 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="OptionCameraShake" type="HBoxContainer" parent="TabViewContainer/Gameplay/ContentContainer" unique_id=2058139324]
+[node name="OptionCameraShake" type="HBoxContainer" parent="TabsContainer/Gameplay/OptionsContainer" unique_id=2058139324]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="TabViewContainer/Gameplay/ContentContainer/OptionCameraShake" unique_id=682935788]
+[node name="Label" type="Label" parent="TabsContainer/Gameplay/OptionsContainer/OptionCameraShake" unique_id=682935788]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Camera Shake"
 label_settings = ExtResource("9_gjmye")
 
-[node name="CheckButton" type="CheckButton" parent="TabViewContainer/Gameplay/ContentContainer/OptionCameraShake" unique_id=1435236203]
+[node name="CheckButton" type="CheckButton" parent="TabsContainer/Gameplay/OptionsContainer/OptionCameraShake" unique_id=1435236203]
 layout_mode = 2
 
-[node name="Video" type="Control" parent="TabViewContainer" unique_id=72644153]
+[node name="Video" type="Control" parent="TabsContainer" unique_id=72644153]
 visible = false
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Audio" type="Control" parent="TabViewContainer" unique_id=390435501]
+[node name="OptionsContainer" type="VBoxContainer" parent="TabsContainer/Video" unique_id=517212257]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="lorem ipsum" type="HBoxContainer" parent="TabsContainer/Video/OptionsContainer" unique_id=1102374291]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="TabsContainer/Video/OptionsContainer/lorem ipsum" unique_id=2070991208]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "lorem ipsum"
+label_settings = ExtResource("9_gjmye")
+
+[node name="CheckButton" type="CheckButton" parent="TabsContainer/Video/OptionsContainer/lorem ipsum" unique_id=581891719]
+layout_mode = 2
+
+[node name="Audio" type="Control" parent="TabsContainer" unique_id=390435501]
 visible = false
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Controls" type="Control" parent="TabViewContainer" unique_id=402162721]
+[node name="OptionsContainer" type="VBoxContainer" parent="TabsContainer/Audio" unique_id=921295538]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="lorem ipsum" type="HBoxContainer" parent="TabsContainer/Audio/OptionsContainer" unique_id=1440279358]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="TabsContainer/Audio/OptionsContainer/lorem ipsum" unique_id=2132732415]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "lorem ipsum"
+label_settings = ExtResource("9_gjmye")
+
+[node name="CheckButton" type="CheckButton" parent="TabsContainer/Audio/OptionsContainer/lorem ipsum" unique_id=478585720]
+layout_mode = 2
+
+[node name="Controls" type="Control" parent="TabsContainer" unique_id=402162721]
 visible = false
 layout_mode = 2
 size_flags_vertical = 3
+
+[node name="OptionsContainer" type="VBoxContainer" parent="TabsContainer/Controls" unique_id=1491984417]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="lorem ipsum" type="HBoxContainer" parent="TabsContainer/Controls/OptionsContainer" unique_id=19513926]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="TabsContainer/Controls/OptionsContainer/lorem ipsum" unique_id=2116640576]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "lorem ipsum"
+label_settings = ExtResource("9_gjmye")
+
+[node name="CheckButton" type="CheckButton" parent="TabsContainer/Controls/OptionsContainer/lorem ipsum" unique_id=1077108578]
+layout_mode = 2
 
 [node name="BackButton" type="Button" parent="." unique_id=123714607]
 layout_mode = 1
@@ -219,8 +279,8 @@ grow_vertical = 0
 theme = SubResource("Theme_qnuys")
 text = "Back"
 
-[connection signal="pressed" from="TabsContainer/GameplayTab" to="." method="_on_tab_pressed"]
-[connection signal="pressed" from="TabsContainer/VideoTab" to="." method="_on_tab_pressed"]
-[connection signal="pressed" from="TabsContainer/AudioTab" to="." method="_on_tab_pressed"]
-[connection signal="pressed" from="TabsContainer/ControlsTab" to="." method="_on_tab_pressed"]
+[connection signal="pressed" from="TabButtonsContainer/GameplayTab" to="." method="_on_tab_pressed"]
+[connection signal="pressed" from="TabButtonsContainer/VideoTab" to="." method="_on_tab_pressed"]
+[connection signal="pressed" from="TabButtonsContainer/AudioTab" to="." method="_on_tab_pressed"]
+[connection signal="pressed" from="TabButtonsContainer/ControlsTab" to="." method="_on_tab_pressed"]
 [connection signal="pressed" from="BackButton" to="." method="_on_back_button_pressed"]
