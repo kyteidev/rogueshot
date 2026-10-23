@@ -19,6 +19,7 @@ config/icon="res://icon.svg"
 
 StateManager="*uid://du86n6i4ajifw"
 InventoryManager="*uid://dcqr5ywk7hfig"
+SettingsManager="*uid://0ip3hxuyg8uv"
 
 [debug]
 
