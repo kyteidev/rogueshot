@@ -10,6 +10,7 @@
 [ext_resource type="ButtonGroup" uid="uid://cex2h80qiylfv" path="res://resources/groups/settings_tab_group.tres" id="7_23plx"]
 [ext_resource type="LabelSettings" uid="uid://dg0kb8y76xk08" path="res://resources/themes/label_options.tres" id="9_gjmye"]
 [ext_resource type="Script" uid="uid://d0o72ftsra2lh" path="res://scripts/option_controls/option_checkbutton.gd" id="10_muvh2"]
+[ext_resource type="Script" uid="uid://yub1y1mkcpw7" path="res://scripts/option_controls/option_keybind_button.gd" id="11_yxgvl"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_vjox6"]
 font = ExtResource("5_yxgvl")
@@ -166,10 +167,11 @@ offset_right = 576.0
 offset_bottom = 280.0
 
 [node name="Gameplay" type="Control" parent="TabsContainer" unique_id=199546014]
+visible = false
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="OptionsContainer" type="VBoxContainer" parent="TabsContainer/Gameplay" unique_id=1258848593]
+[node name="ScrollContainer" type="ScrollContainer" parent="TabsContainer/Gameplay" unique_id=1666140206]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -177,16 +179,20 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="OptionCameraShake" type="HBoxContainer" parent="TabsContainer/Gameplay/OptionsContainer" unique_id=2058139324]
+[node name="OptionsContainer" type="VBoxContainer" parent="TabsContainer/Gameplay/ScrollContainer" unique_id=1258848593]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="OptionCameraShake" type="HBoxContainer" parent="TabsContainer/Gameplay/ScrollContainer/OptionsContainer" unique_id=2058139324]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="TabsContainer/Gameplay/OptionsContainer/OptionCameraShake" unique_id=682935788]
+[node name="Label" type="Label" parent="TabsContainer/Gameplay/ScrollContainer/OptionsContainer/OptionCameraShake" unique_id=682935788]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Camera Shake"
 label_settings = ExtResource("9_gjmye")
 
-[node name="CheckButton" type="CheckButton" parent="TabsContainer/Gameplay/OptionsContainer/OptionCameraShake" unique_id=1435236203]
+[node name="CheckButton" type="CheckButton" parent="TabsContainer/Gameplay/ScrollContainer/OptionsContainer/OptionCameraShake" unique_id=1435236203]
 layout_mode = 2
 script = ExtResource("10_muvh2")
 setting_key = "camera_shake"
@@ -196,7 +202,7 @@ visible = false
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="OptionsContainer" type="VBoxContainer" parent="TabsContainer/Video" unique_id=517212257]
+[node name="ScrollContainer" type="ScrollContainer" parent="TabsContainer/Video" unique_id=1193056748]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -204,16 +210,20 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="lorem ipsum" type="HBoxContainer" parent="TabsContainer/Video/OptionsContainer" unique_id=1102374291]
+[node name="OptionsContainer" type="VBoxContainer" parent="TabsContainer/Video/ScrollContainer" unique_id=517212257]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="lorem ipsum" type="HBoxContainer" parent="TabsContainer/Video/ScrollContainer/OptionsContainer" unique_id=1102374291]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="TabsContainer/Video/OptionsContainer/lorem ipsum" unique_id=2070991208]
+[node name="Label" type="Label" parent="TabsContainer/Video/ScrollContainer/OptionsContainer/lorem ipsum" unique_id=2070991208]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "lorem ipsum"
 label_settings = ExtResource("9_gjmye")
 
-[node name="CheckButton" type="CheckButton" parent="TabsContainer/Video/OptionsContainer/lorem ipsum" unique_id=581891719]
+[node name="CheckButton" type="CheckButton" parent="TabsContainer/Video/ScrollContainer/OptionsContainer/lorem ipsum" unique_id=581891719]
 layout_mode = 2
 
 [node name="Audio" type="Control" parent="TabsContainer" unique_id=390435501]
@@ -221,7 +231,7 @@ visible = false
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="OptionsContainer" type="VBoxContainer" parent="TabsContainer/Audio" unique_id=921295538]
+[node name="ScrollContainer" type="ScrollContainer" parent="TabsContainer/Audio" unique_id=972849162]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -229,42 +239,190 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="lorem ipsum" type="HBoxContainer" parent="TabsContainer/Audio/OptionsContainer" unique_id=1440279358]
+[node name="OptionsContainer" type="VBoxContainer" parent="TabsContainer/Audio/ScrollContainer" unique_id=921295538]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="lorem ipsum" type="HBoxContainer" parent="TabsContainer/Audio/ScrollContainer/OptionsContainer" unique_id=1440279358]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="TabsContainer/Audio/OptionsContainer/lorem ipsum" unique_id=2132732415]
+[node name="Label" type="Label" parent="TabsContainer/Audio/ScrollContainer/OptionsContainer/lorem ipsum" unique_id=2132732415]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "lorem ipsum"
 label_settings = ExtResource("9_gjmye")
 
-[node name="CheckButton" type="CheckButton" parent="TabsContainer/Audio/OptionsContainer/lorem ipsum" unique_id=478585720]
+[node name="CheckButton" type="CheckButton" parent="TabsContainer/Audio/ScrollContainer/OptionsContainer/lorem ipsum" unique_id=478585720]
 layout_mode = 2
 
 [node name="Controls" type="Control" parent="TabsContainer" unique_id=402162721]
-visible = false
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="OptionsContainer" type="VBoxContainer" parent="TabsContainer/Controls" unique_id=1491984417]
+[node name="ScrollContainer" type="ScrollContainer" parent="TabsContainer/Controls" unique_id=1879695052]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+horizontal_scroll_mode = 0
 
-[node name="lorem ipsum" type="HBoxContainer" parent="TabsContainer/Controls/OptionsContainer" unique_id=19513926]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="TabsContainer/Controls/OptionsContainer/lorem ipsum" unique_id=2116640576]
+[node name="OptionsContainer" type="VBoxContainer" parent="TabsContainer/Controls/ScrollContainer" unique_id=1491984417]
 layout_mode = 2
 size_flags_horizontal = 3
-text = "lorem ipsum"
+
+[node name="OptionMoveLeft" type="HBoxContainer" parent="TabsContainer/Controls/ScrollContainer/OptionsContainer" unique_id=19513926]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="TabsContainer/Controls/ScrollContainer/OptionsContainer/OptionMoveLeft" unique_id=2116640576]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Move Left"
 label_settings = ExtResource("9_gjmye")
 
-[node name="CheckButton" type="CheckButton" parent="TabsContainer/Controls/OptionsContainer/lorem ipsum" unique_id=1077108578]
+[node name="Button" type="Button" parent="TabsContainer/Controls/ScrollContainer/OptionsContainer/OptionMoveLeft" unique_id=1341031752]
+custom_minimum_size = Vector2(80, 0)
 layout_mode = 2
+theme_override_fonts/font = ExtResource("5_yxgvl")
+theme_override_font_sizes/font_size = 16
+toggle_mode = true
+text = "listening..."
+script = ExtResource("11_yxgvl")
+action_name = "player_left"
+
+[node name="OptionMoveRight" type="HBoxContainer" parent="TabsContainer/Controls/ScrollContainer/OptionsContainer" unique_id=78869843]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="TabsContainer/Controls/ScrollContainer/OptionsContainer/OptionMoveRight" unique_id=965940568]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Move Right"
+label_settings = ExtResource("9_gjmye")
+
+[node name="Button" type="Button" parent="TabsContainer/Controls/ScrollContainer/OptionsContainer/OptionMoveRight" unique_id=690410537]
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("5_yxgvl")
+theme_override_font_sizes/font_size = 16
+toggle_mode = true
+text = "listening..."
+script = ExtResource("11_yxgvl")
+action_name = "player_right"
+
+[node name="OptionJump" type="HBoxContainer" parent="TabsContainer/Controls/ScrollContainer/OptionsContainer" unique_id=1940373574]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="TabsContainer/Controls/ScrollContainer/OptionsContainer/OptionJump" unique_id=936572199]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Jump"
+label_settings = ExtResource("9_gjmye")
+
+[node name="Button" type="Button" parent="TabsContainer/Controls/ScrollContainer/OptionsContainer/OptionJump" unique_id=1057119542]
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("5_yxgvl")
+theme_override_font_sizes/font_size = 16
+toggle_mode = true
+text = "listening..."
+script = ExtResource("11_yxgvl")
+action_name = "player_jump"
+
+[node name="OptionSprint" type="HBoxContainer" parent="TabsContainer/Controls/ScrollContainer/OptionsContainer" unique_id=899748984]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="TabsContainer/Controls/ScrollContainer/OptionsContainer/OptionSprint" unique_id=1115567588]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Sprint"
+label_settings = ExtResource("9_gjmye")
+
+[node name="Button" type="Button" parent="TabsContainer/Controls/ScrollContainer/OptionsContainer/OptionSprint" unique_id=1765539801]
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("5_yxgvl")
+theme_override_font_sizes/font_size = 16
+toggle_mode = true
+text = "listening..."
+script = ExtResource("11_yxgvl")
+action_name = "player_sprint"
+
+[node name="OptionFacingLock" type="HBoxContainer" parent="TabsContainer/Controls/ScrollContainer/OptionsContainer" unique_id=292328004]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="TabsContainer/Controls/ScrollContainer/OptionsContainer/OptionFacingLock" unique_id=994374138]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Facing Lock"
+label_settings = ExtResource("9_gjmye")
+
+[node name="Button" type="Button" parent="TabsContainer/Controls/ScrollContainer/OptionsContainer/OptionFacingLock" unique_id=1531866293]
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("5_yxgvl")
+theme_override_font_sizes/font_size = 16
+toggle_mode = true
+text = "listening..."
+script = ExtResource("11_yxgvl")
+action_name = "player_facing_lock"
+
+[node name="OptionInventory" type="HBoxContainer" parent="TabsContainer/Controls/ScrollContainer/OptionsContainer" unique_id=2047751539]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="TabsContainer/Controls/ScrollContainer/OptionsContainer/OptionInventory" unique_id=2115365818]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Inventory"
+label_settings = ExtResource("9_gjmye")
+
+[node name="Button" type="Button" parent="TabsContainer/Controls/ScrollContainer/OptionsContainer/OptionInventory" unique_id=1575245101]
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("5_yxgvl")
+theme_override_font_sizes/font_size = 16
+toggle_mode = true
+text = "listening..."
+script = ExtResource("11_yxgvl")
+action_name = "ui_inventory"
+
+[node name="OptionShoot" type="HBoxContainer" parent="TabsContainer/Controls/ScrollContainer/OptionsContainer" unique_id=1640773243]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="TabsContainer/Controls/ScrollContainer/OptionsContainer/OptionShoot" unique_id=1882016917]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Shoot"
+label_settings = ExtResource("9_gjmye")
+
+[node name="Button" type="Button" parent="TabsContainer/Controls/ScrollContainer/OptionsContainer/OptionShoot" unique_id=1910041406]
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("5_yxgvl")
+theme_override_font_sizes/font_size = 16
+toggle_mode = true
+text = "listening..."
+script = ExtResource("11_yxgvl")
+action_name = "weapon_shoot"
+
+[node name="OptionReload" type="HBoxContainer" parent="TabsContainer/Controls/ScrollContainer/OptionsContainer" unique_id=454216631]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="TabsContainer/Controls/ScrollContainer/OptionsContainer/OptionReload" unique_id=298843145]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Reload"
+label_settings = ExtResource("9_gjmye")
+
+[node name="Button" type="Button" parent="TabsContainer/Controls/ScrollContainer/OptionsContainer/OptionReload" unique_id=525241634]
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("5_yxgvl")
+theme_override_font_sizes/font_size = 16
+toggle_mode = true
+text = "listening..."
+script = ExtResource("11_yxgvl")
+action_name = "weapon_reload"
 
 [node name="BackButton" type="Button" parent="." unique_id=123714607]
 layout_mode = 1

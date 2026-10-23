@@ -11,7 +11,7 @@ func _ready() -> void:
 	# TODO: options saving and loading from file
 	
 	# layer 0: tab type as index
-	# 		0: gameplay, 1: video, 2: audio, 3: controls
+	# 		-> 0: gameplay, 1: video, 2: audio, 3: controls
 	# layer 1: options
 	options = [
 		{
@@ -23,8 +23,17 @@ func _ready() -> void:
 		{
 			"lorem ipsum": false
 		},
+		# keybinds are managed independently
+		# this is for displaying the keybind in options menu
 		{
-			"lorem ipsum": false
+			"player_left": "A",
+			"player_right": "D",
+			"player_jump": "W",
+			"player_sprint": "Shift",
+			"player_facing_lock": "Z",
+			"ui_inventory": "E",
+			"weapon_shoot": "LMB",
+			"weapon_reload": "R"
 		}
 	]
 

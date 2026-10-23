@@ -5,6 +5,7 @@ const LISTENING_TEXT = "listening..."
 
 @export var action_name: String
 
+var om := OptionsManager
 var listening: bool = false
 
 
@@ -63,6 +64,9 @@ func _refresh_text() -> void:
 	else:
 		# only need the name itself
 		text = key.as_text_physical_keycode()
+	
+	# sync options with options manager
+	om.set_option(action_name, text)
 	
 	# revert button to default state after finished listening to input
 	button_pressed = false

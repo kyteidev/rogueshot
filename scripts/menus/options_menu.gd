@@ -13,12 +13,22 @@ var om := OptionsManager
 
 func _ready() -> void:
 	for tab_index in range(tabs.size()):
-		var options_container := tabs[tab_index].get_child(0)
+		# might be a bad practice to use two get_child() lol
+		var options_container := tabs[tab_index].get_child(0).get_child(0)
 		var options := options_container.get_children()
 		for option_index in range(options.size()):
-			var button := options[option_index].get_child(1)
-			button.button_pressed = om.options[tab_index].values()[option_index]
-
+			# get the button/slider or something of the setting
+			# then get value of the setting from options manager
+			var control := options[option_index].get_child(1)
+			var value: Variant = om.options[tab_index].values()[option_index]
+			
+			# each type of value should have one ui element for it
+			match typeof(value):
+				TYPE_BOOL:
+					control.button_pressed = value
+				TYPE_STRING:
+					control.text = value
+			
 
 func _on_tab_pressed() -> void:
 	# get current tab index
