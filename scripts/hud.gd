@@ -82,8 +82,8 @@ func _process(delta: float) -> void:
 	
 	# update equipped weapon display
 	# TODO: when inventory system is done, primary should have index 0
-	primary_weapon.modulate = EQUIPPED_WEAPON_COLOR if weapon.weapon_index == 1 else BASE_WEAPON_COLOR
-	secondary_weapon.modulate = EQUIPPED_WEAPON_COLOR if weapon.weapon_index == 0 else BASE_WEAPON_COLOR
+	primary_weapon.modulate = EQUIPPED_WEAPON_COLOR if weapon.weapon_index == 0 else BASE_WEAPON_COLOR
+	secondary_weapon.modulate = EQUIPPED_WEAPON_COLOR if weapon.weapon_index == 1 else BASE_WEAPON_COLOR
 	
 	# DEBUG SECTION
 	if enemy:
