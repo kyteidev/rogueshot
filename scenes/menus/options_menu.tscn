@@ -1,22 +1,22 @@
 [gd_scene format=3 uid="uid://dwlmlmommt8te"]
 
-[ext_resource type="Texture2D" uid="uid://2u0tpos1jicx" path="res://assets/sprites/background/Layer1.png" id="1_ojvp1"]
-[ext_resource type="Texture2D" uid="uid://b5rmpryo0bohx" path="res://assets/sprites/background/Layer2.png" id="2_da10i"]
-[ext_resource type="Texture2D" uid="uid://d3rebiiaue1hy" path="res://assets/sprites/background/Layer3.png" id="3_jjfif"]
-[ext_resource type="Texture2D" uid="uid://l6gdc1wt1dbf" path="res://assets/sprites/background/Layer4.png" id="4_kffdn"]
-[ext_resource type="FontFile" uid="uid://4jxi61jcsc2c" path="res://assets/fonts/groundhog.ttf" id="6_jjfif"]
-[ext_resource type="Theme" uid="uid://dfg84fv2ux34y" path="res://resources/themes/tab_settings.tres" id="6_kffdn"]
-[ext_resource type="ButtonGroup" uid="uid://cex2h80qiylfv" path="res://resources/groups/settings_tab_group.tres" id="7_kffdn"]
+[ext_resource type="Texture2D" uid="uid://2u0tpos1jicx" path="res://assets/sprites/background/Layer1.png" id="1_erhyl"]
+[ext_resource type="Texture2D" uid="uid://b5rmpryo0bohx" path="res://assets/sprites/background/Layer2.png" id="2_tiokm"]
+[ext_resource type="Texture2D" uid="uid://d3rebiiaue1hy" path="res://assets/sprites/background/Layer3.png" id="3_gjmye"]
+[ext_resource type="Texture2D" uid="uid://l6gdc1wt1dbf" path="res://assets/sprites/background/Layer4.png" id="4_muvh2"]
+[ext_resource type="FontFile" uid="uid://4jxi61jcsc2c" path="res://assets/fonts/groundhog.ttf" id="5_yxgvl"]
+[ext_resource type="Theme" uid="uid://dfg84fv2ux34y" path="res://resources/themes/tab_settings.tres" id="6_frorf"]
+[ext_resource type="ButtonGroup" uid="uid://cex2h80qiylfv" path="res://resources/groups/settings_tab_group.tres" id="7_23plx"]
 
 [sub_resource type="Theme" id="Theme_qnuys"]
-default_font = ExtResource("6_jjfif")
+default_font = ExtResource("5_yxgvl")
 default_font_size = 24
 
 [sub_resource type="LabelSettings" id="LabelSettings_vjox6"]
-font = ExtResource("6_jjfif")
+font = ExtResource("5_yxgvl")
 font_size = 32
 
-[node name="SettingsMenu" type="Control" unique_id=601908048]
+[node name="OptionsMenu" type="Control" unique_id=601908048]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -31,7 +31,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("1_ojvp1")
+texture = ExtResource("1_erhyl")
 
 [node name="BackgroundContainer" type="Control" parent="." unique_id=1562132122]
 layout_mode = 1
@@ -50,7 +50,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("2_da10i")
+texture = ExtResource("2_tiokm")
 
 [node name="Layer2" type="TextureRect" parent="BackgroundContainer" unique_id=1881620624]
 layout_mode = 1
@@ -59,7 +59,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("3_jjfif")
+texture = ExtResource("3_gjmye")
 
 [node name="Layer3" type="TextureRect" parent="BackgroundContainer" unique_id=1006294861]
 layout_mode = 1
@@ -70,7 +70,7 @@ offset_top = 1.0
 offset_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("4_kffdn")
+texture = ExtResource("4_muvh2")
 
 [node name="Shade" type="ColorRect" parent="." unique_id=862984662]
 layout_mode = 1
@@ -109,7 +109,7 @@ offset_top = 20.0
 offset_right = 84.0
 offset_bottom = 77.0
 grow_horizontal = 2
-text = "Settings"
+text = "Options"
 label_settings = SubResource("LabelSettings_vjox6")
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -127,33 +127,33 @@ grow_vertical = 2
 
 [node name="GameplayTab" type="Button" parent="TabsContainer" unique_id=1708401170]
 layout_mode = 2
-theme = ExtResource("6_kffdn")
+theme = ExtResource("6_frorf")
 toggle_mode = true
 button_pressed = true
-button_group = ExtResource("7_kffdn")
+button_group = ExtResource("7_23plx")
 text = "Gameplay"
 alignment = 0
 
 [node name="VideoTab" type="Button" parent="TabsContainer" unique_id=1112779466]
 layout_mode = 2
-theme = ExtResource("6_kffdn")
+theme = ExtResource("6_frorf")
 toggle_mode = true
-button_group = ExtResource("7_kffdn")
+button_group = ExtResource("7_23plx")
 text = "Video"
 alignment = 0
 
 [node name="AudioTab" type="Button" parent="TabsContainer" unique_id=274596145]
 layout_mode = 2
-theme = ExtResource("6_kffdn")
+theme = ExtResource("6_frorf")
 toggle_mode = true
-button_group = ExtResource("7_kffdn")
+button_group = ExtResource("7_23plx")
 text = "Audio"
 alignment = 0
 
 [node name="ControlsTab" type="Button" parent="TabsContainer" unique_id=1249559282]
 layout_mode = 2
-theme = ExtResource("6_kffdn")
+theme = ExtResource("6_frorf")
 toggle_mode = true
-button_group = ExtResource("7_kffdn")
+button_group = ExtResource("7_23plx")
 text = "Controls"
 alignment = 0
