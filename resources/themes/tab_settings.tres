@@ -1,0 +1,7 @@
+[gd_resource type="Theme" format=3 uid="uid://dfg84fv2ux34y"]
+
+[ext_resource type="FontFile" uid="uid://4jxi61jcsc2c" path="res://assets/fonts/groundhog.ttf" id="1_o4r0m"]
+
+[resource]
+default_font = ExtResource("1_o4r0m")
+default_font_size = 32

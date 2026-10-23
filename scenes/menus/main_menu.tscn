@@ -6,7 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://b5rmpryo0bohx" path="res://assets/sprites/background/Layer2.png" id="3_ng0o5"]
 [ext_resource type="Texture2D" uid="uid://d3rebiiaue1hy" path="res://assets/sprites/background/Layer3.png" id="4_8r73w"]
 [ext_resource type="Texture2D" uid="uid://l6gdc1wt1dbf" path="res://assets/sprites/background/Layer4.png" id="5_1hnlc"]
-[ext_resource type="Theme" uid="uid://bni7fdd41lv54" path="res://settings/button_title.tres" id="6_ng0o5"]
+[ext_resource type="Theme" uid="uid://bni7fdd41lv54" path="res://resources/themes/button_title.tres" id="6_ng0o5"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_nxcxh"]
 font = ExtResource("1_xqga4")

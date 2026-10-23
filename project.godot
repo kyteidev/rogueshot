@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="rogueshot"
-run/main_scene="uid://chfpusxyw2q4d"
+run/main_scene="uid://dwlmlmommt8te"
 config/features=PackedStringArray("4.7", "Forward Plus")
 config/icon="res://icon.svg"
 
@@ -46,9 +46,9 @@ folder_colors={
 "res://addons/": "red",
 "res://assets/": "yellow",
 "res://export/": "orange",
+"res://resources/": "green",
 "res://scenes/": "teal",
 "res://scripts/": "blue",
-"res://settings/": "green",
 "res://shaders/": "purple"
 }
 
