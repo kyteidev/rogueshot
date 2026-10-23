@@ -9,11 +9,13 @@ const SHAKE_FADE = 5.0
 var rng := RandomNumberGenerator.new()
 var shake_strength: float = 0.0
 
+var om := OptionsManager
+
 
 func _physics_process(delta: float) -> void:
 	position = position.lerp(player.global_position, delta * SMOOTHNESS)
 	
-	if shake_strength > 0:
+	if om.get_option("camera_shake") and shake_strength > 0:
 		shake_strength = lerp(shake_strength, 0.0, SHAKE_FADE * delta)
 		offset = _get_random_offset()
 

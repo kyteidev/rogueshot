@@ -9,6 +9,7 @@
 [ext_resource type="Theme" uid="uid://dfg84fv2ux34y" path="res://resources/themes/tab_settings.tres" id="6_frorf"]
 [ext_resource type="ButtonGroup" uid="uid://cex2h80qiylfv" path="res://resources/groups/settings_tab_group.tres" id="7_23plx"]
 [ext_resource type="LabelSettings" uid="uid://dg0kb8y76xk08" path="res://resources/themes/label_options.tres" id="9_gjmye"]
+[ext_resource type="Script" uid="uid://d0o72ftsra2lh" path="res://scripts/option_controls/option_checkbutton.gd" id="10_muvh2"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_vjox6"]
 font = ExtResource("5_yxgvl")
@@ -187,6 +188,8 @@ label_settings = ExtResource("9_gjmye")
 
 [node name="CheckButton" type="CheckButton" parent="TabsContainer/Gameplay/OptionsContainer/OptionCameraShake" unique_id=1435236203]
 layout_mode = 2
+script = ExtResource("10_muvh2")
+setting_key = "camera_shake"
 
 [node name="Video" type="Control" parent="TabsContainer" unique_id=72644153]
 visible = false
