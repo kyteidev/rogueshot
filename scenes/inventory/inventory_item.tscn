@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://d6h86jkhfenr" path="res://scripts/inventory/inventory_item.gd" id="1_u6pog"]
 
 [node name="InventoryItem" type="Panel" unique_id=475894686]
+self_modulate = Color(1, 1, 1, 0)
 script = ExtResource("1_u6pog")
 
 [node name="Background" type="ColorRect" parent="." unique_id=444263588]
@@ -12,7 +13,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.3372549, 0.28627452, 0.43529412, 1)
+color = Color(0.34276006, 0.2904, 0.44, 0.78431374)
 
 [node name="Icon" type="TextureRect" parent="." unique_id=585372530]
 layout_mode = 1
