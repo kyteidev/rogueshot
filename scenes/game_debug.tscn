@@ -35,6 +35,7 @@ script = ExtResource("9_7exj4")
 id = &"pistol"
 name = "Pistol"
 icon = ExtResource("10_vhi7h")
+size = Vector2i(3, 2)
 metadata/_custom_type_script = "uid://coqypqa0006b"
 
 [node name="Game Debug" type="Node2D" unique_id=1078131783]
