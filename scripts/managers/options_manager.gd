@@ -1,7 +1,6 @@
 extends Node
 
-
-var camera_shake: bool = true
+var camera_shake := true
 
 var options: Array
 
@@ -9,20 +8,14 @@ var options: Array
 func _ready() -> void:
 	# default options
 	# TODO: options saving and loading from file
-	
+
 	# layer 0: tab type as index
 	# 		-> 0: gameplay, 1: video, 2: audio, 3: controls
 	# layer 1: options
 	options = [
-		{
-			"camera_shake": camera_shake
-		},
-		{
-			"lorem ipsum": false
-		},
-		{
-			"lorem ipsum": false
-		},
+		{ "camera_shake": camera_shake },
+		{ "lorem ipsum": false },
+		{ "lorem ipsum": false },
 		# keybinds are managed independently
 		# this is for displaying the keybind in options menu
 		{
@@ -36,8 +29,8 @@ func _ready() -> void:
 			"weapon_reload": "R",
 			"weapon_cycle": "Q",
 			"weapon_primary": "1",
-			"weapon_secondary": "2"
-		}
+			"weapon_secondary": "2",
+		},
 	]
 
 
@@ -47,7 +40,7 @@ func get_option(option: String) -> Variant:
 		if category.has(option):
 			value = category.get(option)
 	return value
-			
+
 
 func set_option(option: String, value: Variant) -> void:
 	for category: Dictionary in options:

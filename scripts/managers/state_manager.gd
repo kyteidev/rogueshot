@@ -1,26 +1,25 @@
 extends Node
 
-
 # player stats
-var health: float = 100.0
-var max_health: float = 100.0
-var enemy_damage: float = 0.0
+var health := 100.0
+var max_health := 100.0
+var enemy_damage := 0.0
 
-var damage: float = 0.0
+var damage := 0.0
 var ammo: int = 0
 var max_ammo: int = 0
 var mags: int = 0
 
-var reloading: bool = false
+var reloading := false
 
-var lost_health: bool = false
+var lost_health := false
 
-var stamina: float = 100.0
-var stamina_depleted: bool = false
-var used_stamina: bool = false
+var stamina := 100.0
+var stamina_depleted := false
+var used_stamina := false
 
 # input lock
-var input_locks: Dictionary = {}
+var input_locks := { }
 
 
 func set_input_lock(origin: String, enabled: bool) -> void:

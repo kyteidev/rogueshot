@@ -9,11 +9,11 @@ const SLOT_SIZE = 24.0
 var sm := StateManager
 var im := InventoryManager
 
-var occupied_slots: Dictionary = { }
+var occupied_slots := { }
 
-@onready var cursor := crosshair.get_child(0)
-@onready var slots_container := $InventoryContainer/SlotsContainer
-@onready var items_container := $InventoryContainer/ItemsContainer
+@onready var cursor: Node2D = crosshair.get_child(0)
+@onready var slots_container: GridContainer = $InventoryContainer/SlotsContainer
+@onready var items_container: Control = $InventoryContainer/ItemsContainer
 
 
 func _ready() -> void:
@@ -27,6 +27,14 @@ func _ready() -> void:
 		slot.texture = SLOT_TEXTURE
 		slot.custom_minimum_size = Vector2.ONE * SLOT_SIZE
 		slots_container.add_child(slot)
+
+
+func _input(_event: InputEvent) -> void:
+	if (
+		Input.is_action_just_pressed("ui_inventory")
+		or (visible and Input.is_action_just_pressed("ui_cancel"))
+	):
+		toggle_inventory()
 
 
 func toggle_inventory() -> void:
@@ -43,11 +51,3 @@ func toggle_inventory() -> void:
 
 	# lock/unlock input
 	sm.set_input_lock("inventory", visible)
-
-
-func _input(_event: InputEvent) -> void:
-	if (
-		Input.is_action_just_pressed("ui_inventory")
-		or (visible and Input.is_action_just_pressed("ui_cancel"))
-	):
-		toggle_inventory()

@@ -1,6 +1,5 @@
 extends CharacterBody2D
 
-
 const MAX_HEALTH = 100.0
 const DAMAGE_FLASH_DELAY = 0.04
 
@@ -54,90 +53,90 @@ var health: float = MAX_HEALTH:
 	set(value):
 		health = clamp(value, 0.0, MAX_HEALTH)
 		sm.health = health
-		
+
 		if value < prev_health:
 			sm.lost_health = true
 		prev_health = value
 
-var was_airborne: bool = false
-var reached_peak: bool = false
+var was_airborne := false
+var reached_peak := false
 
-var speed: float = 0.0:
+var speed := 0.0:
 	set(value):
 		speed = value
-		
+
 		# dynamically change player animation speed
 		# possibly change to exponential formula?
 		# this linear formula seems to work fine for player,
 		# but not so well for enemy (maybe I'm stupid lmao)
 		var multiplier: float = value / BASE_SPEED
 		anim_sprite.speed_scale = 1.0 * multiplier
-var sprinting: bool = false
+var sprinting := false
 
-var is_dead: bool = false
-var started_death_sequence: bool = false
+var is_dead := false
+var started_death_sequence := false
 
-var regenerating_stamina: bool = true
+var regenerating_stamina := true
 var prev_stamina: float = MAX_STAMINA
 var stamina: float:
 	set(value):
 		stamina = clamp(value, 0.0, MAX_STAMINA)
 		sm.stamina = stamina
-		
+
 		if not regenerating_stamina:
 			stamina_timer.start(STAMINA_RECOVERY_DELAY)
 		else:
 			regenerating_stamina = false
-			
+
 		if value < prev_stamina:
 			sm.used_stamina = true
 		prev_stamina = value
-		
+
 		if stamina == 0:
 			stamina_depleted = true
-var stamina_depleted: bool = false:
+var stamina_depleted := false:
 	set(value):
 		stamina_depleted = value
 		sm.stamina_depleted = value
-		
-var displayed_stamina_loss: float = 100.0
-var stamina_bar_faded: bool = false
-var stamina_bar_fading: bool = false
-var stamina_fade_timer_started: bool = false
+
+var displayed_stamina_loss := 100.0
+var stamina_bar_faded := false
+var stamina_bar_fading := false
+var stamina_fade_timer_started := false
 
 var health_tween: Tween
 var stamina_tween: Tween
 var stamina_fade_tween: Tween
-var stamina_was_depleted: bool = false
+var stamina_was_depleted := false
 
-var flipped: bool = false
-		
-@onready var coyote_timer := $CoyoteTimer
-@onready var jump_buffer_timer := $JumpBufferTimer
+var flipped := false
 
-@onready var death_timer := $DeathTimer
+@onready var coyote_timer: Timer = $CoyoteTimer
+@onready var jump_buffer_timer: Timer = $JumpBufferTimer
 
-@onready var anim_sprite := $AnimSprite
-@onready var stamina_timer := $StaminaTimer
+@onready var death_timer: Timer = $DeathTimer
 
-@onready var weapon := $Weapon
-@onready var collision := $FullCollision
+@onready var anim_sprite: AnimatedSprite2D = $AnimSprite
+@onready var stamina_timer: Timer = $StaminaTimer
 
-@onready var stamina_bar_outline := $StaminaBarOutline
-@onready var stamina_bar := $StaminaBarOutline/StaminaBar
-@onready var stamina_loss_bar := $StaminaBarOutline/StaminaLossBar
-@onready var stamina_bar_timer := $StaminaBarOutline/StaminaBarTimer
-@onready var stamina_bar_fade_timer := $StaminaBarOutline/StaminaBarFadeTimer
+@onready var weapon: Node2D = $Weapon
+@onready var collision: CollisionShape2D = $FullCollision
+
+@onready var stamina_bar_outline: TextureRect = $StaminaBarOutline
+@onready var stamina_bar: TextureProgressBar = $StaminaBarOutline/StaminaBar
+@onready var stamina_loss_bar: TextureProgressBar = $StaminaBarOutline/StaminaLossBar
+@onready var stamina_bar_timer: Timer = $StaminaBarOutline/StaminaBarTimer
+@onready var stamina_bar_fade_timer: Timer = $StaminaBarOutline/StaminaBarFadeTimer
 
 
 func _ready() -> void:
 	# have this in _ready so max stamina only needs to be adjusted here,
 	# otherwise i'd have to change max stamina here and in state manager
 	stamina = MAX_STAMINA
-	
+
 	death_timer.wait_time = DEATH_TRANS_DELAY
 	collision.disabled = false
-	
+
 	# sync values with state manager
 	sm.health = health
 	sm.max_health = MAX_HEALTH
@@ -147,61 +146,63 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	var input_locked: bool = sm.is_input_locked()
 	var was_on_floor: bool = is_on_floor()
-	
+
 	# get direction of player
 	# right: 1, left: -1, neutral (not moving): 0
 	var direction: float = 0.0 if input_locked else Input.get_axis("player_left", "player_right")
-	
+
 	# flip direction if needed
 	var mouse_pos: Vector2 = get_global_mouse_position()
 	var cursor_direction: Vector2 = mouse_pos - global_position
-		
+
 	# force turn if keybind held down when moving
 	if Input.is_action_pressed("player_facing_lock") and direction != 0.0:
 		flipped = direction < 0.0
 	elif not Input.is_action_pressed("player_facing_lock"):
 		flipped = cursor_direction.x < 0
-	
+
 	if not input_locked:
 		anim_sprite.flip_h = flipped
 	var same_direction: bool = (direction == -1 and flipped) or (direction == 1 and not flipped)
-	
+
 	# apply no aim multiplier if needed
 	if not same_direction:
 		weapon.spread_multiplier *= weapon.NO_AIM_SPREAD_MULTIPLIER
-	
+
 	# gravity and jump stretch
 	if not is_on_floor():
 		velocity.y += _get_custom_gravity(velocity) * delta
 		was_airborne = true
-		
+
 		if not reached_peak and velocity.y >= 0:
 			reached_peak = true
 			anim_sprite.scale = Vector2(1.0, 1.0)
-	
+
 	if is_dead:
 		if not is_on_floor():
 			move_and_slide()
 		elif not started_death_sequence:
 			started_death_sequence = true
-			
+
 			# make player red when dead
 			anim_sprite.play("death")
 			weapon.fade_weapon()
 			collision.disabled = true
-			
+
 			# fade stamina bar
 			var stamina_hide_fade_tween := create_tween()
-			stamina_hide_fade_tween.tween_property(stamina_bar_outline, "modulate", Color("ffffff00"), 0.25)\
+			stamina_hide_fade_tween.tween_property(stamina_bar_outline, "modulate", Color(
+				"ffffff00"
+			), 0.25) \
 					.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
-			
+
 			anim_sprite.animation_finished.connect(death_timer.start)
 		return
-		
+
 	# player jump system
 	if not input_locked and Input.is_action_just_pressed("player_jump"):
 		jump_buffer_timer.start(JUMP_BUFFER_TIME)
-		
+
 	if Input.is_action_just_released("player_jump") and velocity.y < JUMP_VELOCITY_CUT:
 		velocity.y = JUMP_VELOCITY_CUT
 
@@ -212,46 +213,48 @@ func _physics_process(delta: float) -> void:
 		velocity.y = JUMP_VELOCITY
 		jump_buffer_timer.stop()
 		coyote_timer.stop()
-		
+
 		# jump stretch
 		anim_sprite.scale = Vector2(1 - STRETCH, 1 + STRETCH)
 		reached_peak = false
-	
+
 	# reduce y velocity if player hits ceiling
 	if is_on_ceiling():
 		velocity.y *= 0.5
-	
+
 	# sprint system
 	speed = BASE_SPEED
 	if is_on_floor():
 		var enough_stamina: bool = stamina > 0.0 and not stamina_depleted
 		if Input.is_action_pressed("player_sprint") and enough_stamina and same_direction:
 			sprinting = true
-			
+
 			# cancel reload if sprinting
 			if sm.reloading:
 				crosshair.cancel_reload()
 		else:
 			sprinting = false
-	
+
 	if sprinting:
 		speed *= SPRINT_MULTIPLIER
-			
+
 		# don't deplete stamina if not moving
 		if direction != 0.0:
 			stamina -= SPRINT_STAMINA_RATE * delta
-			
+
 	# recover stamina when not sprinting
 	if stamina_timer.is_stopped():
 		regenerating_stamina = true
-		stamina += STAMINA_RECOVERY_RATE * delta * (STAMINA_SLOW_RECOVERY_MULTIPLIER if stamina_depleted else 1.0)
-		
+		stamina += STAMINA_RECOVERY_RATE * delta * (
+			STAMINA_SLOW_RECOVERY_MULTIPLIER if stamina_depleted else 1.0
+		)
+
 		if stamina == MAX_STAMINA:
 			stamina_depleted = false
-	
+
 	# apply weapon speed multiplier
 	speed *= weapon.speed_multiplier
-	
+
 	# plays correct animation
 	if is_on_floor():
 		if direction == 0:
@@ -260,56 +263,58 @@ func _physics_process(delta: float) -> void:
 			anim_sprite.animation = "run"
 	else:
 		anim_sprite.animation = "jump"
-	
+
 	if flipped:
 		anim_sprite.play_backwards()
 	else:
 		anim_sprite.play()
-	
+
 	# calculate x velocity
 	var accel: float
 	if direction == 0: # apply friction when not moving
 		accel = GROUND_FRICTION if is_on_floor() else AIR_FRICTION
 	else:
 		accel = GROUND_ACCEL if is_on_floor() else AIR_ACCEL
-		
+
 		# makes turns faster
 		if velocity.x != 0 and sign(velocity.x) != sign(direction):
 			accel *= TURN_MULTIPLIER
 	velocity.x = move_toward(velocity.x, direction * speed, accel * delta)
-	
+
 	# wallbounce
-	if is_on_wall() and not is_on_floor() and Input.is_action_just_pressed("player_jump") and stamina > 0.0 and not stamina_depleted:
+	if (
+		is_on_wall() and not is_on_floor() and Input.is_action_just_pressed("player_jump")
+		and stamina > 0.0 and not stamina_depleted
+	):
 		var wall_normal: float = get_wall_normal().x
 		if wall_normal > 0:
 			anim_sprite.flip_h = false
 		elif wall_normal < 0:
 			anim_sprite.flip_h = true
-		
+
 		velocity.x += WALLBOUNCE_VELOCITY * wall_normal
 		velocity.y = JUMP_VELOCITY
-		
+
 		stamina -= WALLBOUNCE_STAMINA_RATE
-		
+
 		coyote_timer.stop()
 		jump_buffer_timer.stop()
-		
+
 		# jump stretch
 		anim_sprite.scale = Vector2(1 - STRETCH, 1 + STRETCH)
 		reached_peak = false
-	
+
 	# smoothly revert back from jump stretch scale to normal scale
 	anim_sprite.scale = anim_sprite.scale.lerp(Vector2(1.0, 1.0), 10.0 * delta)
 
 	move_and_slide()
-	
+
 	# coyote time management
 	if was_on_floor and not is_on_floor() and velocity.y >= 0:
 		coyote_timer.start(COYOTE_TIME)
-		
+
 	# stamina
 	_update_stamina_bar(delta)
-	
 
 
 func take_damage(damage: float, _global_position: Vector2) -> void:
@@ -317,11 +322,32 @@ func take_damage(damage: float, _global_position: Vector2) -> void:
 	var tween := create_tween()
 	tween.tween_property(anim_sprite, "modulate", Color("ff0000"), DAMAGE_FLASH_DELAY)
 	tween.tween_property(anim_sprite, "modulate", Color("ffffff"), DAMAGE_FLASH_DELAY)
-	
+
 	if not is_dead:
 		health -= damage
 		if health <= 0:
 			is_dead = true
+
+
+func _start_stamina_flash() -> void:
+	if stamina_tween:
+		stamina_tween.kill()
+
+	stamina_tween = create_tween().set_loops()
+	stamina_tween.tween_property(
+		stamina_bar,
+		"tint_progress",
+		STAMINA_FLASH_COLOR,
+		STAMINA_FLASH_DELAY,
+	)
+	stamina_tween.tween_property(stamina_bar, "tint_progress", STAMINA_COLOR, STAMINA_FLASH_DELAY)
+
+
+func _stop_stamina_flash() -> void:
+	if stamina_tween:
+		stamina_tween.kill()
+
+	create_tween().tween_property(stamina_bar, "tint_progress", STAMINA_COLOR, STAMINA_FLASH_DELAY)
 
 
 func _get_custom_gravity(vel: Vector2) -> float:
@@ -344,17 +370,21 @@ func _update_stamina_bar(delta: float) -> void:
 			if not stamina_fade_timer_started:
 				stamina_bar_fade_timer.start(STAMINA_BAR_FADE_DELAY)
 				stamina_fade_timer_started = true
-		 
-		if not stamina_bar_fading and stamina_fade_timer_started and stamina_bar_fade_timer.is_stopped():
+
+		if (
+			not stamina_bar_fading and stamina_fade_timer_started
+			and stamina_bar_fade_timer.is_stopped()
+		):
 			stamina_bar_fading = true
-			
+
 			stamina_fade_tween = create_tween()
-			stamina_fade_tween.tween_property(stamina_bar_outline, "modulate", Color("ffffff00"), 0.5)\
+			stamina_fade_tween \
+					.tween_property(stamina_bar_outline, "modulate", Color("ffffff00"), 0.5) \
 					.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 	else:
 		if stamina_fade_tween:
 			stamina_fade_tween.kill()
-			
+
 		stamina_bar_faded = false
 		stamina_bar_fading = false
 		stamina_fade_timer_started = false
@@ -362,42 +392,26 @@ func _update_stamina_bar(delta: float) -> void:
 
 	# update stamina info
 	stamina_bar.value = sm.stamina
-	
+
 	# flash stamina bar if completely depleted
 	if sm.stamina_depleted and not stamina_was_depleted:
-		start_stamina_flash()
+		_start_stamina_flash()
 	elif not sm.stamina_depleted and stamina_was_depleted:
-		stop_stamina_flash()
+		_stop_stamina_flash()
 	stamina_was_depleted = sm.stamina_depleted
-	
+
 	# delay the stamina loss bar
 	if sm.used_stamina:
 		sm.used_stamina = false
 		stamina_bar_timer.start(STAMINA_BAR_DELAY)
-	
+
 	if sm.stamina >= displayed_stamina_loss:
 		displayed_stamina_loss = sm.stamina
 	elif stamina_bar_timer.is_stopped():
 		displayed_stamina_loss = lerpf(displayed_stamina_loss, sm.stamina, 1.0 - exp(-10.0 * delta))
-		
+
 		# snap to value if close enough
 		if absf(displayed_stamina_loss - sm.stamina) < 0.1:
 			displayed_stamina_loss = sm.stamina
-	
+
 	stamina_loss_bar.value = displayed_stamina_loss
-
-
-func start_stamina_flash() -> void:
-	if stamina_tween:
-		stamina_tween.kill()
-	
-	stamina_tween = create_tween().set_loops()
-	stamina_tween.tween_property(stamina_bar, "tint_progress", STAMINA_FLASH_COLOR, STAMINA_FLASH_DELAY)
-	stamina_tween.tween_property(stamina_bar, "tint_progress", STAMINA_COLOR, STAMINA_FLASH_DELAY)
-	
-
-func stop_stamina_flash() -> void:
-	if stamina_tween:
-		stamina_tween.kill()
-	
-	create_tween().tween_property(stamina_bar, "tint_progress", STAMINA_COLOR, STAMINA_FLASH_DELAY)
