@@ -42,6 +42,9 @@ func _start_listening() -> void:
 
 
 func _refresh_text() -> void:
+	# revert button to default state after finished listening to input
+	button_pressed = false
+	
 	# TODO: multi keybind support
 	# make sure action actually has a keybind set
 	var events: Array[InputEvent] = InputMap.action_get_events(action_name)
@@ -67,6 +70,3 @@ func _refresh_text() -> void:
 	
 	# sync options with options manager
 	om.set_option(action_name, text)
-	
-	# revert button to default state after finished listening to input
-	button_pressed = false
