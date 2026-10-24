@@ -24,7 +24,7 @@ func _input(event: InputEvent) -> void:
 	if mouse_hovered and event is InputEventMouseButton and event.button_index == 1:
 		if event.is_pressed():
 			if not saved_vars:
-				prev_position = im.pos_to_slot(global_position)
+				prev_position = im.pos_to_slot(position)
 				saved_vars = true
 			mouse_dragging = true
 			mouse_offset = get_global_mouse_position() - global_position
@@ -37,7 +37,8 @@ func _input(event: InputEvent) -> void:
 			# snap to slot
 			# converting to slot and back to pos coords automatically snaps to grid
 			var center_position: Vector2 = position + Vector2.ONE * im.SLOT_SIZE / 2
-			var slot: Vector2 = im.pos_to_slot(center_position)
+			var slot: Vector2i = im.pos_to_slot(center_position)
+
 			var new_position: Vector2 = im.slot_to_pos(slot)
 
 			# update inventory
