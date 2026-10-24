@@ -167,7 +167,6 @@ offset_right = 576.0
 offset_bottom = 280.0
 
 [node name="Gameplay" type="Control" parent="TabsContainer" unique_id=199546014]
-visible = false
 layout_mode = 2
 size_flags_vertical = 3
 
@@ -256,6 +255,7 @@ label_settings = ExtResource("9_gjmye")
 layout_mode = 2
 
 [node name="Controls" type="Control" parent="TabsContainer" unique_id=402162721]
+visible = false
 layout_mode = 2
 size_flags_vertical = 3
 
