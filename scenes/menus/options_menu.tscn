@@ -403,7 +403,7 @@ theme_override_font_sizes/font_size = 16
 toggle_mode = true
 text = "listening..."
 script = ExtResource("11_yxgvl")
-action_name = "weapon_shoot"
+action_name = "player_shoot"
 
 [node name="OptionReload" type="HBoxContainer" parent="TabsContainer/Controls/ScrollContainer/OptionsContainer" unique_id=454216631]
 layout_mode = 2
