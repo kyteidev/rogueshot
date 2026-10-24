@@ -151,11 +151,12 @@ func _physics_process(delta: float) -> void:
 	var direction: Vector2 = mouse_pos - global_position
 	var flipped: bool = direction.x < 0
 
-	current_weapon.flip_v = flipped
-	weapon_muzzle.position.y = -weapon_muzzle_orig_pos.y if flipped \
-			else weapon_muzzle_orig_pos.y
-	weapon_ejection.position.y = -weapon_ejection_orig_pos.y if flipped \
-			else weapon_ejection_orig_pos.y
+	if not input_locked:
+		current_weapon.flip_v = flipped
+		weapon_muzzle.position.y = -weapon_muzzle_orig_pos.y if flipped \
+				else weapon_muzzle_orig_pos.y
+		weapon_ejection.position.y = -weapon_ejection_orig_pos.y if flipped \
+				else weapon_ejection_orig_pos.y
 
 	# recoil and kick recovery and apply kick
 	current_spread = move_toward(current_spread, 0.0, spread_recovery * delta)
