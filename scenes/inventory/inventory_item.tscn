@@ -17,3 +17,6 @@ layout_mode = 0
 offset_right = 24.0
 offset_bottom = 24.0
 texture = ExtResource("1_5agom")
+
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]

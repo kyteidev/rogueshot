@@ -1,6 +1,6 @@
 extends Node
 
-
+const SLOT_SIZE = 24
 const TOTAL_SLOTS = 44
 const TOTAL_COLUMNS = 11
 @warning_ignore("integer_division")
