@@ -32,8 +32,11 @@ func _ready() -> void:
 			"player_sprint": "Shift",
 			"player_facing_lock": "Z",
 			"ui_inventory": "E",
-			"weapon_shoot": "LMB",
-			"weapon_reload": "R"
+			"player_shoot": "LMB",
+			"weapon_reload": "R",
+			"weapon_cycle": "Q",
+			"weapon_primary": "1",
+			"weapon_secondary": "2"
 		}
 	]
 

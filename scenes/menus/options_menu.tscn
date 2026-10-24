@@ -424,6 +424,63 @@ text = "listening..."
 script = ExtResource("11_yxgvl")
 action_name = "weapon_reload"
 
+[node name="OptionCycleWeapon" type="HBoxContainer" parent="TabsContainer/Controls/ScrollContainer/OptionsContainer" unique_id=790672807]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="TabsContainer/Controls/ScrollContainer/OptionsContainer/OptionCycleWeapon" unique_id=500382791]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Cycle Weapon"
+label_settings = ExtResource("9_gjmye")
+
+[node name="Button" type="Button" parent="TabsContainer/Controls/ScrollContainer/OptionsContainer/OptionCycleWeapon" unique_id=48949097]
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("5_yxgvl")
+theme_override_font_sizes/font_size = 16
+toggle_mode = true
+text = "listening..."
+script = ExtResource("11_yxgvl")
+action_name = "weapon_cycle"
+
+[node name="OptionPrimary" type="HBoxContainer" parent="TabsContainer/Controls/ScrollContainer/OptionsContainer" unique_id=922520382]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="TabsContainer/Controls/ScrollContainer/OptionsContainer/OptionPrimary" unique_id=1735145210]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Primary Weapon"
+label_settings = ExtResource("9_gjmye")
+
+[node name="Button" type="Button" parent="TabsContainer/Controls/ScrollContainer/OptionsContainer/OptionPrimary" unique_id=1703000180]
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("5_yxgvl")
+theme_override_font_sizes/font_size = 16
+toggle_mode = true
+text = "listening..."
+script = ExtResource("11_yxgvl")
+action_name = "weapon_primary"
+
+[node name="OptionSecondary" type="HBoxContainer" parent="TabsContainer/Controls/ScrollContainer/OptionsContainer" unique_id=1606488768]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="TabsContainer/Controls/ScrollContainer/OptionsContainer/OptionSecondary" unique_id=2126754090]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Secondary Weapon"
+label_settings = ExtResource("9_gjmye")
+
+[node name="Button" type="Button" parent="TabsContainer/Controls/ScrollContainer/OptionsContainer/OptionSecondary" unique_id=352221212]
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("5_yxgvl")
+theme_override_font_sizes/font_size = 16
+toggle_mode = true
+text = "listening..."
+script = ExtResource("11_yxgvl")
+action_name = "weapon_secondary"
+
 [node name="BackButton" type="Button" parent="." unique_id=123714607]
 layout_mode = 1
 anchors_preset = 3
