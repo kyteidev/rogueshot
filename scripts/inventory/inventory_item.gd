@@ -9,7 +9,7 @@ var mouse_hovered: bool
 var mouse_dragging: bool
 
 var saved_vars := false
-var prev_position: Vector2
+var prev_slot: Vector2
 
 @onready var icon: TextureRect = $Icon
 
@@ -24,7 +24,7 @@ func _input(event: InputEvent) -> void:
 	if mouse_hovered and event is InputEventMouseButton and event.button_index == 1:
 		if event.is_pressed():
 			if not saved_vars:
-				prev_position = im.pos_to_slot(position)
+				prev_slot = im.pos_to_slot(position)
 				saved_vars = true
 			mouse_dragging = true
 			mouse_offset = get_global_mouse_position() - global_position
@@ -45,7 +45,7 @@ func _input(event: InputEvent) -> void:
 			if im.place_item(data, slot):
 				position = new_position
 			else:
-				position = im.slot_to_pos(prev_position)
+				position = im.slot_to_pos(prev_slot)
 
 
 func setup(item_data: InventoryItemData) -> void:
