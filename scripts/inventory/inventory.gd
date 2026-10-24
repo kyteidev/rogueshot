@@ -1,15 +1,15 @@
 extends CanvasLayer
 
+const ITEM_SCENE = preload("res://scenes/inventory/inventory_item.tscn")
 const SLOT_TEXTURE = preload("res://assets/sprites/ui/inventory/inventory-slot.png")
 
 const SLOT_SIZE = 24.0
 
 @export var crosshair: CanvasLayer
+@export var starting_items: Array[InventoryItemData]
 
 var sm := StateManager
 var im := InventoryManager
-
-var occupied_slots := { }
 
 @onready var cursor: Node2D = crosshair.get_child(0)
 @onready var slots_container: GridContainer = $InventoryContainer/SlotsContainer
@@ -27,6 +27,13 @@ func _ready() -> void:
 		slot.texture = SLOT_TEXTURE
 		slot.custom_minimum_size = Vector2.ONE * SLOT_SIZE
 		slots_container.add_child(slot)
+
+	# connect signals
+	im.new_item_placed.connect(_new_item_placed)
+
+	# place starting items
+	for item in starting_items:
+		im.add_item(item)
 
 
 func _input(_event: InputEvent) -> void:
@@ -51,3 +58,10 @@ func toggle_inventory() -> void:
 
 	# lock/unlock input
 	sm.set_input_lock("inventory", visible)
+
+
+func _new_item_placed(item_data: InventoryItemData) -> void:
+	var item := ITEM_SCENE.instantiate() as InventoryItem
+	items_container.add_child(item)
+
+	item.setup(item_data)
