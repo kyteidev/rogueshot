@@ -174,59 +174,7 @@ func _physics_process(delta: float) -> void:
 
 	# weapon firing
 	if not input_locked and Input.is_action_pressed("player_shoot"):
-		if can_fire and ammo > 0:
-			# spawn bullet
-			var bullet_instance: CharacterBody2D = BULLET.instantiate()
-			bullet_instance.type = bullet_instance.Types.FRIENDLY
-
-			# apply spread
-			spread_multiplier *= ((100 - player.stamina) / 100) * MAX_STAMINA_SPREAD_MULTIPLIER
-			var spread_angle: float = deg_to_rad(randf_range(-current_spread, current_spread)) \
-					* spread_multiplier
-
-			bullet_instance.global_position = weapon_muzzle.global_position
-			bullet_instance.rotation = global_rotation + spread_angle
-			bullet_instance.scale = Vector2(BULLET_SCALE, BULLET_SCALE)
-
-			bullet_instance.origin_pos = weapon_muzzle.global_position
-			bullet_instance.add_collision_exception_with(player)
-
-			get_tree().root.add_child(bullet_instance)
-
-			# muzzle flash
-			muzzle_flash.fire(weapon_muzzle.global_position, global_rotation)
-
-			# muzzle sparks
-			var spark_instance: CPUParticles2D = SPARK_PARTICLES.instantiate()
-			spark_instance.position = muzzle_flash.position
-			add_child(spark_instance)
-
-			# smoke
-			heat = min(heat + heat_per_shot, MAX_HEAT)
-			smoke.global_position = weapon_muzzle.global_position
-
-			# deduct ammo
-			ammo -= 1
-
-			# cap spread and kick
-			current_spread = min(current_spread + spread_per_shot, max_spread)
-			kick_offset = min(kick_offset + kick, kick * 2.0)
-
-			# eject casing
-			var casing_instance: RigidBody2D = CASING.instantiate()
-			get_tree().root.add_child(casing_instance)
-
-			casing_instance.global_position = weapon_ejection.global_position
-
-			casing_instance.add_collision_exception_with(player)
-			casing_instance.eject(global_rotation)
-
-			# deduct stamina
-			player.stamina -= player.SHOOT_STAMINA_RATE
-
-			# shake camera
-			var camera: Camera2D = get_node("../../Camera")
-			camera.shake_strength = camera_shake
+		_fire_weapon()
 
 		# firing speed timeout
 		if fire_rate == 0.0 and can_fire:
@@ -277,6 +225,62 @@ func reload_weapon() -> void:
 func _finish_reload() -> void:
 	ammo = max_ammo
 	mags -= 1
+
+
+func _fire_weapon() -> void:
+	if can_fire and ammo > 0:
+		# spawn bullet
+		var bullet_instance: CharacterBody2D = BULLET.instantiate()
+		bullet_instance.type = bullet_instance.Types.FRIENDLY
+
+		# apply spread
+		spread_multiplier *= ((100 - player.stamina) / 100) * MAX_STAMINA_SPREAD_MULTIPLIER
+		var spread_angle: float = deg_to_rad(randf_range(-current_spread, current_spread)) \
+				* spread_multiplier
+
+		bullet_instance.global_position = weapon_muzzle.global_position
+		bullet_instance.rotation = global_rotation + spread_angle
+		bullet_instance.scale = Vector2(BULLET_SCALE, BULLET_SCALE)
+
+		bullet_instance.origin_pos = weapon_muzzle.global_position
+		bullet_instance.add_collision_exception_with(player)
+
+		get_tree().root.add_child(bullet_instance)
+
+		# muzzle flash
+		muzzle_flash.fire(weapon_muzzle.global_position, global_rotation)
+
+		# muzzle sparks
+		var spark_instance: CPUParticles2D = SPARK_PARTICLES.instantiate()
+		spark_instance.position = muzzle_flash.position
+		add_child(spark_instance)
+
+		# smoke
+		heat = min(heat + heat_per_shot, MAX_HEAT)
+		smoke.global_position = weapon_muzzle.global_position
+
+		# deduct ammo
+		ammo -= 1
+
+		# cap spread and kick
+		current_spread = min(current_spread + spread_per_shot, max_spread)
+		kick_offset = min(kick_offset + kick, kick * 2.0)
+
+		# eject casing
+		var casing_instance: RigidBody2D = CASING.instantiate()
+		get_tree().root.add_child(casing_instance)
+
+		casing_instance.global_position = weapon_ejection.global_position
+
+		casing_instance.add_collision_exception_with(player)
+		casing_instance.eject(global_rotation)
+
+		# deduct stamina
+		player.stamina -= player.SHOOT_STAMINA_RATE
+
+		# shake camera
+		var camera: Camera2D = get_node("../../Camera")
+		camera.shake_strength = camera_shake
 
 
 func _equip_weapon(index: int) -> void:
