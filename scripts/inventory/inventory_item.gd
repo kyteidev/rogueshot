@@ -20,37 +20,56 @@ func _process(_delta: float) -> void:
 
 
 func _input(event: InputEvent) -> void:
-	# ignore if isn't left mouse button
-	if mouse_hovered and event is InputEventMouseButton and event.button_index == 1:
-		if event.is_pressed():
-			if not saved_vars:
-				prev_slot = im.pos_to_slot(position)
-				saved_vars = true
-			mouse_dragging = true
-			mouse_offset = get_global_mouse_position() - global_position
+	if mouse_hovered:
+		# ignore if isn't left mouse button
+		if event is InputEventMouseButton and event.button_index == 1:
+			if event.is_pressed():
+				if not saved_vars:
+					prev_slot = im.pos_to_slot(position)
+					saved_vars = true
+				mouse_dragging = true
+				mouse_offset = get_global_mouse_position() - global_position
 
-			move_to_front()
-		elif event.is_released():
-			mouse_dragging = false
-			saved_vars = false
+				move_to_front()
+			elif event.is_released():
+				mouse_dragging = false
+				saved_vars = false
 
-			# snap to slot
-			# converting to slot and back to pos coords automatically snaps to grid
-			var center_position: Vector2 = position + Vector2.ONE * im.SLOT_SIZE / 2
-			var slot: Vector2i = im.pos_to_slot(center_position)
+				# snap to slot
+				# converting to slot and back to pos coords automatically snaps to grid
+				var center_position: Vector2 = position + Vector2.ONE * im.SLOT_SIZE / 2
+				var slot: Vector2i = im.pos_to_slot(center_position)
 
-			var new_position: Vector2 = im.slot_to_pos(slot)
+				var new_position: Vector2 = im.slot_to_pos(slot)
 
-			# update inventory
-			if im.place_item(data, slot):
-				position = new_position
-			else:
-				position = im.slot_to_pos(prev_slot)
+				# update inventory
+				if im.place_item(data, slot):
+					position = new_position
+				else:
+					position = im.slot_to_pos(prev_slot)
+
+		# check if item rotation key pressed
+		if Input.is_action_just_pressed("ui_rotate_item"):
+			var old_size: Vector2 = im.slot_to_pos(data.size)
+			data.rotated = not data.rotated
+
+			custom_minimum_size = im.slot_to_pos(data.size)
+			size = custom_minimum_size
+
+			# icon size gets changed when setting InventoryItem size,
+			# set icon size to value before rotation so it rotates properly
+			icon.size = old_size
+			icon.pivot_offset = old_size / 2
+			icon.position = (size - old_size) / 2
+			icon.rotation = PI / 2 if data.rotated else 0.0
+
+			mouse_offset = size / 2
 
 
 func setup(item_data: InventoryItemData) -> void:
 	data = item_data
 	custom_minimum_size = item_data.size * im.SLOT_SIZE
+	size = custom_minimum_size
 	icon.texture = item_data.icon
 	position = im.slot_to_pos(item_data.slot)
 
