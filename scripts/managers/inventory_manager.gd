@@ -48,8 +48,8 @@ func pos_to_slot(pos: Vector2) -> Vector2:
 	return floor(pos / SLOT_SIZE)
 
 
-func slot_to_pos(pos: Vector2) -> Vector2:
-	return pos * SLOT_SIZE
+func slot_to_pos(slot: Vector2) -> Vector2:
+	return slot * SLOT_SIZE
 
 
 func _in_bounds(slot: Vector2i, size: Vector2i) -> bool:
