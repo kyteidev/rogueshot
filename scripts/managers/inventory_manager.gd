@@ -55,7 +55,7 @@ func slot_to_pos(pos: Vector2) -> Vector2:
 func _in_bounds(slot: Vector2i, size: Vector2i) -> bool:
 	# check if in bounds of inventory
 	return (
-		slot >= Vector2i(0, 0) and slot.x + size.x <= TOTAL_COLUMNS
+		slot.x >= 0 and slot.y >= 0 and slot.x + size.x <= TOTAL_COLUMNS
 		and slot.y + size.y <= TOTAL_ROWS
 	)
 
