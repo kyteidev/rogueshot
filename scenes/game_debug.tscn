@@ -14,6 +14,13 @@
 [ext_resource type="Texture2D" uid="uid://cws70ra7slkq6" path="res://assets/sprites/weapons/pistol.png" id="10_vhi7h"]
 [ext_resource type="Script" uid="uid://cbpmhk61evki6" path="res://scripts/inventory/inventory_item_data.gd" id="11_ga63x"]
 
+[sub_resource type="Resource" id="Resource_4gq7n"]
+script = ExtResource("9_7exj4")
+id = &"item"
+name = "item"
+icon = ExtResource("10_vhi7h")
+metadata/_custom_type_script = "uid://coqypqa0006b"
+
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_hpfpv"]
 texture = ExtResource("2_17cyv")
 1:0/0 = 0
@@ -28,7 +35,7 @@ texture = ExtResource("2_17cyv")
 0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 
 [sub_resource type="TileSet" id="TileSet_nxcxh"]
-physics_layer_0/collision_layer = 1
+physics_layer_0/collision_layer = 33
 sources/0 = SubResource("TileSetAtlasSource_hpfpv")
 
 [sub_resource type="Resource" id="Resource_7exj4"]
@@ -46,6 +53,7 @@ metadata/_custom_type_script = "uid://cbpmhk61evki6"
 [node name="Player" parent="." unique_id=73622017 node_paths=PackedStringArray("transition", "crosshair") instance=ExtResource("1_6rfd2")]
 transition = NodePath("../TransitionCircle")
 crosshair = NodePath("../CrosshairCanvas")
+item = SubResource("Resource_4gq7n")
 
 [node name="Enemy" parent="." unique_id=136999672 instance=ExtResource("3_ex044")]
 position = Vector2(204, -22)

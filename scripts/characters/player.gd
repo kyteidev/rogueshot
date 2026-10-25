@@ -45,6 +45,7 @@ const DEATH_TRANS_DELAY = 1.0
 
 @export var transition: CanvasLayer
 @export var crosshair: CanvasLayer
+@export var item: ItemData
 
 var sm := StateManager
 
@@ -141,6 +142,18 @@ func _ready() -> void:
 	sm.health = health
 	sm.max_health = MAX_HEALTH
 	sm.stamina = stamina
+
+	# TEMPORARY
+	_spawn.call_deferred()
+
+
+# temporary, only for testing item pickup
+func _spawn() -> void:
+	var item_scene := preload("res://scenes/item.tscn")
+	var inst := item_scene.instantiate()
+	get_tree().current_scene.add_child(inst)
+	inst.global_position = global_position + Vector2(10.0, -10.0)
+	inst.setup(item)
 
 
 func _physics_process(delta: float) -> void:

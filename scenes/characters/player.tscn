@@ -153,6 +153,7 @@ radius = 5.0
 height = 14.0
 
 [node name="Player" type="CharacterBody2D" unique_id=73622017 groups=["living", "player"]]
+z_index = 1
 collision_layer = 5
 script = ExtResource("1_g2els")
 
