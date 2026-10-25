@@ -11,6 +11,7 @@ const FADE_DURATION = 0.1
 @export var enemy: CharacterBody2D
 
 var sm := StateManager
+var om := OptionsManager
 
 var displayed_health_loss := 100.0
 
@@ -30,6 +31,8 @@ var health_tween: Tween
 @onready var equipped_weapons_container: MarginContainer = $EquippedWeaponsContainer
 @onready var primary_weapon: TextureRect = $EquippedWeaponsContainer/EquippedContainer/Primary
 @onready var secondary_weapon: TextureRect = $EquippedWeaponsContainer/EquippedContainer/Secondary
+@onready var primary_weapon_keybind: Label = $EquippedWeaponsContainer/EquippedContainer/Primary/KeybindLabel
+@onready var secondary_weapon_keybind: Label = $EquippedWeaponsContainer/EquippedContainer/Secondary/KeybindLabel
 
 @onready var weapon: Node2D = player.get_node("./Weapon")
 
@@ -98,11 +101,14 @@ func _process(delta: float) -> void:
 	health_loss_bar.value = displayed_health_loss
 
 	# update equipped weapon display
-	# TODO: when inventory system is done, primary should have index 0
 	primary_weapon.modulate = EQUIPPED_WEAPON_COLOR if weapon.weapon_index == 0 \
 			else BASE_WEAPON_COLOR
 	secondary_weapon.modulate = EQUIPPED_WEAPON_COLOR if weapon.weapon_index == 1 \
 			else BASE_WEAPON_COLOR
+
+	# update keybind
+	primary_weapon_keybind.text = om.get_option("weapon_primary")
+	secondary_weapon_keybind.text = om.get_option("weapon_secondary")
 
 	# DEBUG SECTION
 	if enemy:
