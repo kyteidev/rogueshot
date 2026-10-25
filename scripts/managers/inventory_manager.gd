@@ -40,7 +40,7 @@ func add_item(item: InventoryItemData) -> bool:
 			if place_item(item, possible_slot):
 				new_item_placed.emit(item)
 				return true
-	# if no valid spots found, return false
+
 	return false
 
 
