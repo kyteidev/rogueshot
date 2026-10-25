@@ -53,10 +53,8 @@ func toggle_inventory() -> void:
 	if cursor.position != get_viewport().get_mouse_position():
 		get_viewport().warp_mouse(cursor.position)
 
-	# cancel reload
 	crosshair.cancel_reload()
 
-	# lock/unlock input
 	sm.set_input_lock("inventory", visible)
 
 
