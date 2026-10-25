@@ -386,6 +386,25 @@ text = "listening..."
 script = ExtResource("11_yxgvl")
 action_name = "ui_inventory"
 
+[node name="OptionRotateItem" type="HBoxContainer" parent="TabsContainer/Controls/ScrollContainer/OptionsContainer" unique_id=1049142886]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="TabsContainer/Controls/ScrollContainer/OptionsContainer/OptionRotateItem" unique_id=844987449]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Rotate Item"
+label_settings = ExtResource("9_gjmye")
+
+[node name="Button" type="Button" parent="TabsContainer/Controls/ScrollContainer/OptionsContainer/OptionRotateItem" unique_id=928153615]
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("5_yxgvl")
+theme_override_font_sizes/font_size = 16
+toggle_mode = true
+text = "listening..."
+script = ExtResource("11_yxgvl")
+action_name = "ui_rotate_item"
+
 [node name="OptionShoot" type="HBoxContainer" parent="TabsContainer/Controls/ScrollContainer/OptionsContainer" unique_id=1640773243]
 layout_mode = 2
 
