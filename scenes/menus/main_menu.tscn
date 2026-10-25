@@ -148,7 +148,7 @@ offset_top = -20.0
 offset_right = 195.0
 offset_bottom = -1.0
 grow_vertical = 0
-text = "v. 0.1.0-dev.2 (itch.io)"
+text = "v. 0.1.0-dev.3 (itch.io)"
 label_settings = SubResource("LabelSettings_4iqke")
 
 [connection signal="pressed" from="ButtonsContainer/PlayButton" to="." method="_on_play_button_pressed"]
