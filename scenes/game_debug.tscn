@@ -12,6 +12,7 @@
 [ext_resource type="Script" uid="uid://coqypqa0006b" path="res://scripts/inventory/item_data.gd" id="9_7exj4"]
 [ext_resource type="PackedScene" uid="uid://b7bcawpls2ixa" path="res://scenes/transitions/transition_circle.tscn" id="9_bdsyy"]
 [ext_resource type="Texture2D" uid="uid://cws70ra7slkq6" path="res://assets/sprites/weapons/pistol.png" id="10_vhi7h"]
+[ext_resource type="Script" uid="uid://cbpmhk61evki6" path="res://scripts/inventory/inventory_item_data.gd" id="11_ga63x"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_hpfpv"]
 texture = ExtResource("2_17cyv")
@@ -30,13 +31,13 @@ texture = ExtResource("2_17cyv")
 physics_layer_0/collision_layer = 1
 sources/0 = SubResource("TileSetAtlasSource_hpfpv")
 
-[sub_resource type="Resource" id="Resource_el5y6"]
-script = ExtResource("9_7exj4")
-id = &"pistol"
-name = "Pistol"
-icon = ExtResource("10_vhi7h")
+[sub_resource type="Resource" id="Resource_7exj4"]
+script = ExtResource("11_ga63x")
 size = Vector2i(3, 2)
-metadata/_custom_type_script = "uid://coqypqa0006b"
+id = &"pistol"
+name = "pistol"
+icon = ExtResource("10_vhi7h")
+metadata/_custom_type_script = "uid://cbpmhk61evki6"
 
 [node name="Game Debug" type="Node2D" unique_id=1078131783]
 
@@ -70,7 +71,7 @@ visible = false
 
 [node name="Inventory" parent="." unique_id=1946403224 node_paths=PackedStringArray("crosshair") instance=ExtResource("7_ylwvt")]
 crosshair = NodePath("../CrosshairCanvas")
-starting_items = Array[ExtResource("9_7exj4")]([SubResource("Resource_el5y6")])
+starting_items = Array[ExtResource("9_7exj4")]([SubResource("Resource_7exj4")])
 
 [node name="PauseManu" parent="." unique_id=1248834952 node_paths=PackedStringArray("crosshair", "inventory") instance=ExtResource("5_d1y6d")]
 visible = false
