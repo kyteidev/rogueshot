@@ -3,6 +3,11 @@ This is a 2D platformer shooter game developed using Godot 4.7 and GDScript. Sti
 
 Still working on the story :P (I'm getting the main mechanics done though)
 
+### WHY DID I MAKE THIS?
+Why not?
+
+Seriously though, I just like game dev and I like making games in Godot :D
+
 ### STATE OF DEVELOPMENT
 Currently shooting, movement, stamina, inventory (partially) and enemies (partially) is finished.
 There is a dev room where you can try out the movement and shooting mechanics.
