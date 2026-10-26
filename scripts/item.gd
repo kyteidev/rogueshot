@@ -1,13 +1,14 @@
 extends RigidBody2D
 
 const COLLISION_SIMPLIFICATION = 1.0
-
 const SCALE = 0.75
+
+const OUTLINE_WIDTH = 1.0
+
+var data: ItemData
 
 @onready var sprite: Sprite2D = $Sprite2D
 @onready var collision: CollisionPolygon2D = $CollisionPolygon2D
-
-var data: ItemData
 
 
 func setup(item_data: ItemData) -> void:
@@ -36,3 +37,11 @@ func setup(item_data: ItemData) -> void:
 	for index in hull.size():
 		hull[index] = (hull[index] - offset) * SCALE
 	collision.polygon = hull
+
+
+func show_outline() -> void:
+	sprite.material.set("shader_parameter/width", OUTLINE_WIDTH)
+
+
+func hide_outline() -> void:
+	sprite.material.set("shader_parameter/width", 0.0)

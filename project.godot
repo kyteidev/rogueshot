@@ -38,7 +38,7 @@ version_control/autoload_on_startup=true
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/GDQuest_GDScript_formatter/plugin.cfg", "res://addons/godot_super-wakatime/plugin.cfg", "res://addons/kanban_tasks/plugin.cfg")
+enabled=PackedStringArray("res://addons/GDQuest_GDScript_formatter/plugin.cfg", "res://addons/godot_super-wakatime/plugin.cfg")
 
 [file_customization]
 
@@ -130,6 +130,7 @@ ui_rotate_item={
 2d_physics/layer_4="Enemy"
 2d_physics/layer_5="Visual"
 2d_physics/layer_6="World"
+2d_physics/layer_7="Items"
 
 [physics]
 

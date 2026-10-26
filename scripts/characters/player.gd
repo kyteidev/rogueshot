@@ -147,15 +147,6 @@ func _ready() -> void:
 	_spawn.call_deferred()
 
 
-# temporary, only for testing item pickup
-func _spawn() -> void:
-	var item_scene := preload("res://scenes/item.tscn")
-	var inst := item_scene.instantiate()
-	get_tree().current_scene.add_child(inst)
-	inst.global_position = global_position + Vector2(10.0, -10.0)
-	inst.setup(item)
-
-
 func _physics_process(delta: float) -> void:
 	var input_locked: bool = sm.is_input_locked()
 	var was_on_floor: bool = is_on_floor()
@@ -342,6 +333,15 @@ func take_damage(damage: float, _global_position: Vector2) -> void:
 			is_dead = true
 
 
+# temporary, only for testing item pickup
+func _spawn() -> void:
+	var item_scene := preload("res://scenes/item.tscn")
+	var inst := item_scene.instantiate()
+	get_tree().current_scene.add_child(inst)
+	inst.global_position = global_position + Vector2(50.0, -10.0)
+	inst.setup(item)
+
+
 func _start_stamina_flash() -> void:
 	if stamina_tween:
 		stamina_tween.kill()
@@ -428,3 +428,13 @@ func _update_stamina_bar(delta: float) -> void:
 			displayed_stamina_loss = sm.stamina
 
 	stamina_loss_bar.value = displayed_stamina_loss
+
+
+func _on_item_pickup_area_body_entered(body: Node2D) -> void:
+	if body.has_method("show_outline"):
+		body.show_outline()
+
+
+func _on_item_pickup_area_body_exited(body: Node2D) -> void:
+	if body.has_method("hide_outline"):
+		body.hide_outline()

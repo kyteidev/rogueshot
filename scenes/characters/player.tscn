@@ -152,6 +152,9 @@ animations = [{
 radius = 5.0
 height = 14.0
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_atpat"]
+radius = 20.0
+
 [node name="Player" type="CharacterBody2D" unique_id=73622017 groups=["living", "player"]]
 z_index = 1
 collision_layer = 5
@@ -166,6 +169,13 @@ autoplay = "idle"
 [node name="FullCollision" type="CollisionShape2D" parent="." unique_id=1475566916]
 position = Vector2(0, -7)
 shape = SubResource("CapsuleShape2D_nxcxh")
+
+[node name="ItemPickupArea" type="Area2D" parent="." unique_id=2114867734]
+collision_mask = 64
+
+[node name="ItemPickupCollision" type="CollisionShape2D" parent="ItemPickupArea" unique_id=1608933929]
+position = Vector2(0, -7)
+shape = SubResource("CircleShape2D_atpat")
 
 [node name="CoyoteTimer" type="Timer" parent="." unique_id=2118204060]
 one_shot = true
@@ -228,4 +238,6 @@ one_shot = true
 [node name="StaminaBarFadeTimer" type="Timer" parent="StaminaBarOutline" unique_id=194992971]
 one_shot = true
 
+[connection signal="body_entered" from="ItemPickupArea" to="." method="_on_item_pickup_area_body_entered"]
+[connection signal="body_exited" from="ItemPickupArea" to="." method="_on_item_pickup_area_body_exited"]
 [connection signal="timeout" from="DeathTimer" to="." method="_on_death_timer_timeout"]

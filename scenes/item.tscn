@@ -1,9 +1,19 @@
 [gd_scene format=3 uid="uid://pxajff0fw7pp"]
 
 [ext_resource type="Script" uid="uid://cdu5ru0y4i8fa" path="res://scripts/item.gd" id="1_4gq7n"]
+[ext_resource type="Shader" uid="uid://cwwhpbudgp8ie" path="res://shaders/outline.gdshader" id="2_s8enn"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_atpat"]
+shader = ExtResource("2_s8enn")
+shader_parameter/color = Color(0.98039216, 1, 0.7607843, 1)
+shader_parameter/width = 0.0
+shader_parameter/pattern = 0
+shader_parameter/inside = false
+shader_parameter/add_margins = true
+shader_parameter/number_of_images = Vector2(1, 1)
 
 [node name="Item" type="RigidBody2D" unique_id=1037843708]
-collision_layer = 16
+collision_layer = 80
 collision_mask = 32
 angular_damp = 10.0
 script = ExtResource("1_4gq7n")
@@ -11,3 +21,4 @@ script = ExtResource("1_4gq7n")
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="." unique_id=1366070942]
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=838582193]
+material = SubResource("ShaderMaterial_atpat")
