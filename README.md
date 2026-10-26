@@ -14,7 +14,7 @@ To see full list of finished features, see FEATURES.md
 - Groundhog font by ChevyRay - https://chevyray.itch.io/pixel-font-groundhog
 - Cyberpunk Tileset - 16X16 by MORDA - https://morda-studios.itch.io/cyberpunk-tileset-16x16?download
 - Simple circle transition shader by agurkas - https://godotshaders.com/shader/simple-circle-transition-2/ - has been modified
-- 2D outline shader by Julian-Vos - https://godotengine.org/asset-library/asset/2829
+- 2D outline shader by Julian-Vos - https://godotengine.org/asset-library/asset/2829 - MIT license found in shaders/outline.gdshader
 
 ### CREDITS
 - Celeste for inspiring me to add the wallbounce mechanic
