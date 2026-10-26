@@ -28,3 +28,7 @@ LIST OF FINISHED FEATURES (updated Oct. 20 2026):
 	- Equipped weapon display
 - Build 3 (0.1.0-dev.3)
 	- Partial damage system
+	- Weapon muzzle flash, sparks, bullet impact particles
+	- "Facing lock" system
+	- Enemy status text
+	- Options menu (not many settings exist yet though)
