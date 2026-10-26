@@ -129,6 +129,8 @@ var flipped := false
 @onready var stamina_bar_timer: Timer = $StaminaBarOutline/StaminaBarTimer
 @onready var stamina_bar_fade_timer: Timer = $StaminaBarOutline/StaminaBarFadeTimer
 
+@onready var hud: CanvasLayer = get_node("../HUD")
+
 
 func _ready() -> void:
 	# have this in _ready so max stamina only needs to be adjusted here,
@@ -433,8 +435,10 @@ func _update_stamina_bar(delta: float) -> void:
 func _on_item_pickup_area_body_entered(body: Node2D) -> void:
 	if body.has_method("show_outline"):
 		body.show_outline()
+		hud.update_hint_label(true, "player_interact", "pick up item")
 
 
 func _on_item_pickup_area_body_exited(body: Node2D) -> void:
 	if body.has_method("hide_outline"):
 		body.hide_outline()
+		hud.update_hint_label(false)
