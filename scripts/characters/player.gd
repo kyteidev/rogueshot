@@ -462,12 +462,11 @@ func _on_item_pickup_area_body_entered(body: Node2D) -> void:
 
 # DON'T TOUCH THIS EITHER
 func _on_item_pickup_area_body_exited(body: Node2D) -> void:
-	if body.has_method("hide_outline"):
-		var index: int = items_in_range.find(body)
-		var popped_body: Node2D = items_in_range.pop_at(index)
-		popped_body.hide_outline()
+	var index: int = items_in_range.find(body)
+	var popped_body: Node2D = items_in_range.pop_at(index)
+	popped_body.hide_outline()
 
-		if items_in_range.size() == 0:
-			hud.update_hint_label(false)
-		else:
-			items_in_range[0].show_outline()
+	if items_in_range.size() == 0:
+		hud.update_hint_label(false)
+	else:
+		items_in_range[0].show_outline()
