@@ -79,7 +79,7 @@ visible = false
 
 [node name="Inventory" parent="." unique_id=1946403224 node_paths=PackedStringArray("crosshair") instance=ExtResource("7_ylwvt")]
 crosshair = NodePath("../CrosshairCanvas")
-starting_items = Array[ExtResource("9_7exj4")]([SubResource("Resource_7exj4")])
+starting_items = Array[ExtResource("11_ga63x")]([SubResource("Resource_7exj4")])
 
 [node name="PauseManu" parent="." unique_id=1248834952 node_paths=PackedStringArray("crosshair", "inventory") instance=ExtResource("5_d1y6d")]
 visible = false

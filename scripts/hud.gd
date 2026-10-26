@@ -34,6 +34,8 @@ var health_tween: Tween
 @onready var primary_weapon_keybind: Label = $EquippedWeaponsContainer/EquippedContainer/Primary/KeybindLabel
 @onready var secondary_weapon_keybind: Label = $EquippedWeaponsContainer/EquippedContainer/Secondary/KeybindLabel
 
+@onready var action_hint_label: Label = $ActionHint
+
 @onready var weapon: Node2D = player.get_node("./Weapon")
 
 # DEBUG
@@ -113,6 +115,15 @@ func _process(delta: float) -> void:
 	# DEBUG SECTION
 	if enemy:
 		debug_enemy_state_label.text = "ENEMY: %s" % enemy.State.keys()[enemy.state]
+
+
+func update_hint_label(shown: bool, keybind_name: String = "", hint_text: String = "") -> void:
+	action_hint_label.visible = shown
+	if not shown:
+		return
+
+	var keybind: String = om.get_option(keybind_name)
+	action_hint_label.text = "[%s] %s" % [keybind, hint_text]
 
 
 func _fade_in(node: Variant, self_modulate := false) -> void:

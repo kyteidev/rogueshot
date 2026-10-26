@@ -4,16 +4,18 @@ This is a 2D platformer shooter game developed using Godot 4.7 and GDScript. Sti
 Still working on the story :P (I'm getting the main mechanics done though)
 
 ### STATE OF DEVELOPMENT
-Currently shooting, movement, stamina, and enemies (partially) is finished. There is a dev room where you can try out the movement and shooting mechanics.
-
-Next major feature is the inventory system.
+Currently shooting, movement, stamina, inventory (partially) and enemies (partially) is finished.
+There is a dev room where you can try out the movement and shooting mechanics.
 
 To see full list of finished features, see FEATURES.md
+
+NOTE: FEATURES.md only lists the features that are finished. To see the full changelog, see CHANGELOG.md
 
 ### THIRD PARTY ASSETS
 - Groundhog font by ChevyRay - https://chevyray.itch.io/pixel-font-groundhog
 - Cyberpunk Tileset - 16X16 by MORDA - https://morda-studios.itch.io/cyberpunk-tileset-16x16?download
 - Simple circle transition shader by agurkas - https://godotshaders.com/shader/simple-circle-transition-2/ - has been modified
+- 2D outline shader by Julian-Vos - https://godotengine.org/asset-library/asset/2829 - MIT license found in shaders/outline.gdshader
 
 ### CREDITS
 - Celeste for inspiring me to add the wallbounce mechanic
