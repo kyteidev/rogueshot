@@ -112,6 +112,9 @@ var stamina_was_depleted := false
 
 var flipped := false
 
+var closest_item: Node2D
+var items_in_range: Array[Node2D]
+
 @onready var coyote_timer: Timer = $CoyoteTimer
 @onready var jump_buffer_timer: Timer = $JumpBufferTimer
 
@@ -343,6 +346,11 @@ func _spawn() -> void:
 	inst.global_position = global_position + Vector2(50.0, -10.0)
 	inst.setup(item)
 
+	var inst2 := item_scene.instantiate()
+	get_tree().current_scene.add_child(inst2)
+	inst2.global_position = global_position + Vector2(80.0, -10.0)
+	inst2.setup(item)
+
 
 func _start_stamina_flash() -> void:
 	if stamina_tween:
@@ -432,13 +440,34 @@ func _update_stamina_bar(delta: float) -> void:
 	stamina_loss_bar.value = displayed_stamina_loss
 
 
+# I just undid something and this works now???
+# DO NOT TOUCH THIS I HAVE NO IDEA WHY THIS WORKS
+# I'M TOO TIRED TO FIGURE OUT THE LOGIC RIGHT NOW
 func _on_item_pickup_area_body_entered(body: Node2D) -> void:
-	if body.has_method("show_outline"):
-		body.show_outline()
-		hud.update_hint_label(true, "player_interact", "pick up item")
+	items_in_range.append(body)
+
+	if not closest_item:
+		closest_item = body
+	else:
+		var old_dist: float = (global_position - closest_item.global_position).length()
+		var new_dist: float = (global_position - body.global_position).length()
+
+		if new_dist > old_dist:
+			closest_item.hide_outline()
+			closest_item = body
+
+	closest_item.show_outline()
+	hud.update_hint_label(true, "player_interact", "pick up item")
 
 
+# DON'T TOUCH THIS EITHER
 func _on_item_pickup_area_body_exited(body: Node2D) -> void:
 	if body.has_method("hide_outline"):
-		body.hide_outline()
-		hud.update_hint_label(false)
+		var index: int = items_in_range.find(body)
+		var popped_body: Node2D = items_in_range.pop_at(index)
+		popped_body.hide_outline()
+
+		if items_in_range.size() == 0:
+			hud.update_hint_label(false)
+		else:
+			items_in_range[0].show_outline()
