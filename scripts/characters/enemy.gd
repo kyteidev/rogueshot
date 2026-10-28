@@ -91,6 +91,10 @@ const MAX_AMMO = 30
 const HEADSHOT_MULTIPLIER = 2.0
 const PARTIAL_DMG_MULTIPLIER = 0.5
 
+const DROP_RAND_ROT = 0.6
+
+@export var weapon_data: ItemData
+
 var state := State.PATROL
 var target: CharacterBody2D = null
 var died := false
@@ -122,6 +126,7 @@ var status_icons := [
 ]
 
 var sm := StateManager
+var im := InventoryManager
 
 @onready var anim: AnimatedSprite2D = $AnimSprite
 
@@ -504,6 +509,15 @@ func _state_dead(delta: float) -> void:
 		if not died:
 			died = true
 			anim.play("death")
+
+			# hide weapon and drop a weapon item instead
+			weapon.visible = false
+
+			var inst := im.ITEM_SCENE.instantiate()
+			get_tree().current_scene.add_child(inst)
+			inst.global_position = weapon.global_position
+			inst.global_rotation += randf_range(-DROP_RAND_ROT, DROP_RAND_ROT)
+			inst.setup(weapon_data)
 		elif not anim.is_playing():
 			var tween := create_tween()
 			tween.tween_property(self, "modulate", Color("ffffff00"), 0.5)

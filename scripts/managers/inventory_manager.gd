@@ -8,6 +8,8 @@ const TOTAL_COLUMNS = 11
 @warning_ignore("integer_division")
 const TOTAL_ROWS = TOTAL_SLOTS / TOTAL_COLUMNS
 
+const ITEM_SCENE = preload("res://scenes/item.tscn")
+
 var inventory := { }
 
 
