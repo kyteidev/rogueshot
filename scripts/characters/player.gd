@@ -48,6 +48,7 @@ const DEATH_TRANS_DELAY = 1.0
 @export var temp_item: ItemData
 
 var sm := StateManager
+var im := InventoryManager
 
 var prev_health: float = MAX_HEALTH
 var health: float = MAX_HEALTH:
@@ -113,6 +114,7 @@ var stamina_was_depleted := false
 var flipped := false
 
 var items_in_range: Array[Node2D]
+var closest_item: Node2D
 
 @onready var coyote_timer: Timer = $CoyoteTimer
 @onready var jump_buffer_timer: Timer = $JumpBufferTimer
@@ -326,6 +328,7 @@ func _physics_process(delta: float) -> void:
 
 	# item stuff
 	_highlight_items()
+	_item_pickup()
 
 
 func take_damage(damage: float, _global_position: Vector2) -> void:
@@ -442,14 +445,22 @@ func _update_stamina_bar(delta: float) -> void:
 	stamina_loss_bar.value = displayed_stamina_loss
 
 
+func _item_pickup() -> void:
+	if items_in_range.size() == 0 or not Input.is_action_just_pressed("player_interact"):
+		return
+
+	im.add_item(closest_item.data)
+	closest_item.queue_free()
+
+
 # YAY THIS WORKS NOW :D
 # there's probably a more efficient method but I'm too lazy to fix that rn
 func _highlight_items() -> void:
 	if items_in_range.size() == 0:
 		hud.update_hint_label(false)
+		closest_item = null
 		return
 
-	var closest_item: Node2D
 	var closest_distance: float
 
 	# get closest item and highlight it

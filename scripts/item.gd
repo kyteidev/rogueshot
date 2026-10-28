@@ -12,7 +12,7 @@ var data: ItemData
 
 
 func setup(item_data: ItemData) -> void:
-	data = item_data
+	data = item_data.duplicate(true)
 	sprite.texture = item_data.icon
 	sprite.scale = Vector2.ONE * SCALE
 

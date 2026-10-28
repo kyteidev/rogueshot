@@ -2,7 +2,7 @@ class_name InventoryItem
 extends Panel
 
 var im := InventoryManager
-var data: InventoryItemData
+var data: ItemData
 
 var mouse_offset: Vector2
 var mouse_hovered: bool
@@ -66,7 +66,7 @@ func _input(event: InputEvent) -> void:
 			mouse_offset = size / 2
 
 
-func setup(item_data: InventoryItemData) -> void:
+func setup(item_data: ItemData) -> void:
 	data = item_data.duplicate(true)
 	custom_minimum_size = data.size * im.SLOT_SIZE
 	size = custom_minimum_size

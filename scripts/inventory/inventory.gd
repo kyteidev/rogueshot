@@ -6,7 +6,7 @@ const SLOT_TEXTURE = preload("res://assets/sprites/ui/inventory/inventory-slot.p
 const SLOT_SIZE = 24.0
 
 @export var crosshair: CanvasLayer
-@export var starting_items: Array[InventoryItemData]
+@export var starting_items: Array[ItemData]
 
 var sm := StateManager
 var im := InventoryManager
@@ -58,7 +58,7 @@ func toggle_inventory() -> void:
 	sm.set_input_lock("inventory", visible)
 
 
-func _new_item_placed(item_data: InventoryItemData) -> void:
+func _new_item_placed(item_data: ItemData) -> void:
 	var item := ITEM_SCENE.instantiate() as InventoryItem
 	items_container.add_child(item)
 
