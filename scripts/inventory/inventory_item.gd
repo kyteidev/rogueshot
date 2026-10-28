@@ -67,11 +67,11 @@ func _input(event: InputEvent) -> void:
 
 
 func setup(item_data: InventoryItemData) -> void:
-	data = item_data
-	custom_minimum_size = item_data.size * im.SLOT_SIZE
+	data = item_data.duplicate(true)
+	custom_minimum_size = data.size * im.SLOT_SIZE
 	size = custom_minimum_size
-	icon.texture = item_data.icon
-	position = im.slot_to_pos(item_data.slot)
+	icon.texture = data.icon
+	position = im.slot_to_pos(data.slot)
 
 
 func _on_mouse_entered() -> void:
