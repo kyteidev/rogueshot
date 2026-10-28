@@ -45,7 +45,7 @@ const DEATH_TRANS_DELAY = 1.0
 
 @export var transition: CanvasLayer
 @export var crosshair: CanvasLayer
-@export var item: ItemData
+@export var temp_item: ItemData
 
 var sm := StateManager
 
@@ -112,7 +112,6 @@ var stamina_was_depleted := false
 
 var flipped := false
 
-var closest_item: Node2D
 var items_in_range: Array[Node2D]
 
 @onready var coyote_timer: Timer = $CoyoteTimer
@@ -325,6 +324,9 @@ func _physics_process(delta: float) -> void:
 	# stamina
 	_update_stamina_bar(delta)
 
+	# item stuff
+	_highlight_items()
+
 
 func take_damage(damage: float, _global_position: Vector2) -> void:
 	# flash red when taking damage
@@ -344,12 +346,12 @@ func _spawn() -> void:
 	var inst := item_scene.instantiate()
 	get_tree().current_scene.add_child(inst)
 	inst.global_position = global_position + Vector2(50.0, -10.0)
-	inst.setup(item)
+	inst.setup(temp_item)
 
 	var inst2 := item_scene.instantiate()
 	get_tree().current_scene.add_child(inst2)
 	inst2.global_position = global_position + Vector2(80.0, -10.0)
-	inst2.setup(item)
+	inst2.setup(temp_item)
 
 
 func _start_stamina_flash() -> void:
@@ -440,33 +442,32 @@ func _update_stamina_bar(delta: float) -> void:
 	stamina_loss_bar.value = displayed_stamina_loss
 
 
-# I just undid something and this works now???
-# DO NOT TOUCH THIS I HAVE NO IDEA WHY THIS WORKS
-# I'M TOO TIRED TO FIGURE OUT THE LOGIC RIGHT NOW
-func _on_item_pickup_area_body_entered(body: Node2D) -> void:
-	items_in_range.append(body)
+# YAY THIS WORKS NOW :D
+# there's probably a more efficient method but I'm too lazy to fix that rn
+func _highlight_items() -> void:
+	if items_in_range.size() == 0:
+		hud.update_hint_label(false)
+		return
 
-	if not closest_item:
-		closest_item = body
-	else:
-		var old_dist: float = (global_position - closest_item.global_position).length()
-		var new_dist: float = (global_position - body.global_position).length()
+	var closest_item: Node2D
+	var closest_distance: float
 
-		if new_dist > old_dist:
-			closest_item.hide_outline()
-			closest_item = body
-
+	# get closest item and highlight it
+	for item: Node2D in items_in_range:
+		var distance: float = global_position.distance_to(item.global_position)
+		if not closest_distance or distance < closest_distance:
+			closest_item = item
+			closest_distance = distance
+		item.hide_outline()
 	closest_item.show_outline()
 	hud.update_hint_label(true, "player_interact", "pick up item")
 
 
-# DON'T TOUCH THIS EITHER
+func _on_item_pickup_area_body_entered(body: Node2D) -> void:
+	items_in_range.append(body)
+
+
 func _on_item_pickup_area_body_exited(body: Node2D) -> void:
 	var index: int = items_in_range.find(body)
 	var popped_body: Node2D = items_in_range.pop_at(index)
 	popped_body.hide_outline()
-
-	if items_in_range.size() == 0:
-		hud.update_hint_label(false)
-	else:
-		items_in_range[0].show_outline()

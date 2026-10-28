@@ -16,8 +16,8 @@
 
 [sub_resource type="Resource" id="Resource_4gq7n"]
 script = ExtResource("9_7exj4")
-id = &"item"
-name = "item"
+id = &"pistol"
+name = "pistol"
 icon = ExtResource("10_vhi7h")
 metadata/_custom_type_script = "uid://coqypqa0006b"
 
@@ -53,7 +53,7 @@ metadata/_custom_type_script = "uid://cbpmhk61evki6"
 [node name="Player" parent="." unique_id=73622017 node_paths=PackedStringArray("transition", "crosshair") instance=ExtResource("1_6rfd2")]
 transition = NodePath("../TransitionCircle")
 crosshair = NodePath("../CrosshairCanvas")
-item = SubResource("Resource_4gq7n")
+temp_item = SubResource("Resource_4gq7n")
 
 [node name="Enemy" parent="." unique_id=136999672 instance=ExtResource("3_ex044")]
 position = Vector2(204, -22)
