@@ -9,7 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://byg2oli55neme" path="res://scenes/weapons/crosshair.tscn" id="4_8285f"]
 [ext_resource type="PackedScene" uid="uid://bojjbmn2cos6p" path="res://scenes/menus/pause_menu.tscn" id="5_d1y6d"]
 [ext_resource type="PackedScene" uid="uid://bv8l68anm4bn0" path="res://scenes/inventory/inventory.tscn" id="7_ylwvt"]
-[ext_resource type="Script" uid="uid://coqypqa0006b" path="res://scripts/inventory/item_data.gd" id="9_7exj4"]
+[ext_resource type="Script" uid="uid://coqypqa0006b" path="res://scripts/items/item_data.gd" id="9_7exj4"]
 [ext_resource type="PackedScene" uid="uid://b7bcawpls2ixa" path="res://scenes/transitions/transition_circle.tscn" id="9_bdsyy"]
 [ext_resource type="Texture2D" uid="uid://cws70ra7slkq6" path="res://assets/sprites/weapons/pistol.png" id="10_vhi7h"]
 
@@ -18,6 +18,7 @@ script = ExtResource("9_7exj4")
 id = &"pistol"
 name = "pistol"
 icon = ExtResource("10_vhi7h")
+scale = 0.75
 size = Vector2i(3, 2)
 metadata/_custom_type_script = "uid://coqypqa0006b"
 
@@ -43,6 +44,7 @@ script = ExtResource("9_7exj4")
 id = &"pistol"
 name = "pistol"
 icon = ExtResource("10_vhi7h")
+scale = 0.75
 size = Vector2i(3, 2)
 metadata/_custom_type_script = "uid://coqypqa0006b"
 
@@ -79,7 +81,7 @@ visible = false
 
 [node name="Inventory" parent="." unique_id=1946403224 node_paths=PackedStringArray("crosshair") instance=ExtResource("7_ylwvt")]
 crosshair = NodePath("../CrosshairCanvas")
-starting_items = Array[Object]([SubResource("Resource_vhi7h")])
+starting_items = Array[ExtResource("9_7exj4")]([SubResource("Resource_vhi7h")])
 
 [node name="PauseManu" parent="." unique_id=1248834952 node_paths=PackedStringArray("crosshair", "inventory") instance=ExtResource("5_d1y6d")]
 visible = false
