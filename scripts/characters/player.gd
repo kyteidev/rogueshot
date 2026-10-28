@@ -465,11 +465,16 @@ func _highlight_items() -> void:
 
 	# get closest item and highlight it
 	for item: Node2D in items_in_range:
+		item.hide_outline()
+
+		var facing := -1.0 if flipped else 1.0
+		if (item.global_position.x - global_position.x) * facing < 0.0:
+			continue
+
 		var distance: float = global_position.distance_to(item.global_position)
-		if not closest_distance or distance < closest_distance:
+		if not closest_distance or abs(distance) < closest_distance:
 			closest_item = item
 			closest_distance = distance
-		item.hide_outline()
 	closest_item.show_outline()
 	hud.update_hint_label(true, "player_interact", "pick up item")
 
