@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://bgre28m4eudus"]
+
+[ext_resource type="Script" uid="uid://emewgbknheyh" path="res://scripts/context_menu.gd" id="1_cq42l"]
+
+[node name="ContextMenu" type="Control" unique_id=1117877697]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_cq42l")
