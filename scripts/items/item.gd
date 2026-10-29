@@ -1,7 +1,6 @@
 extends RigidBody2D
 
 const COLLISION_SIMPLIFICATION = 1.0
-const SCALE = 0.75
 
 const OUTLINE_WIDTH = 1.0
 
@@ -12,9 +11,9 @@ var data: ItemData
 
 
 func setup(item_data: ItemData) -> void:
-	data = item_data
-	sprite.texture = item_data.icon
-	sprite.scale = Vector2.ONE * SCALE
+	data = item_data.duplicate(true)
+	sprite.texture = data.icon
+	sprite.scale = Vector2.ONE * data.scale
 
 	# update collision polygon
 	var image: Image = sprite.texture.get_image()
@@ -35,7 +34,7 @@ func setup(item_data: ItemData) -> void:
 	# since image is centered, apply offset to collision
 	var offset: Vector2 = image.get_size() / 2.0
 	for index in hull.size():
-		hull[index] = (hull[index] - offset) * SCALE
+		hull[index] = (hull[index] - offset) * data.scale
 	collision.polygon = hull
 
 

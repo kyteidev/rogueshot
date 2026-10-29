@@ -1,7 +1,8 @@
 [gd_scene format=3 uid="uid://bv8l68anm4bn0"]
 
-[ext_resource type="Script" uid="uid://dpg4bey3oklf6" path="res://scripts/inventory/inventory.gd" id="1_4mxsq"]
+[ext_resource type="Script" uid="uid://dpg4bey3oklf6" path="res://scripts/items/inventory/inventory.gd" id="1_4mxsq"]
 [ext_resource type="Texture2D" uid="uid://bqpmoqx5btq2n" path="res://assets/sprites/ui/inventory/inventory.png" id="2_waxho"]
+[ext_resource type="PackedScene" uid="uid://bgre28m4eudus" path="res://scenes/context_menu/context_menu.tscn" id="3_el5y6"]
 
 [node name="Inventory" type="CanvasLayer" unique_id=1946403224]
 script = ExtResource("1_4mxsq")
@@ -54,3 +55,5 @@ offset_left = 320.0
 offset_top = 60.0
 offset_right = 584.0
 offset_bottom = 280.0
+
+[node name="ContextMenu" parent="." unique_id=1117877697 instance=ExtResource("3_el5y6")]

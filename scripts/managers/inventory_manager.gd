@@ -1,6 +1,6 @@
 extends Node
 
-signal new_item_placed(item: InventoryItemData)
+signal new_item_placed(item: ItemData)
 
 const SLOT_SIZE = 24
 const TOTAL_SLOTS = 44
@@ -8,11 +8,13 @@ const TOTAL_COLUMNS = 11
 @warning_ignore("integer_division")
 const TOTAL_ROWS = TOTAL_SLOTS / TOTAL_COLUMNS
 
+const ITEM_SCENE = preload("res://scenes/item.tscn")
+
 var inventory := { }
 
 
 # for placing items in inventory: when final position is known
-func place_item(item: InventoryItemData, slot: Vector2i) -> bool:
+func place_item(item: ItemData, slot: Vector2i) -> bool:
 	if not _can_place(item, slot):
 		return false
 
@@ -31,7 +33,7 @@ func place_item(item: InventoryItemData, slot: Vector2i) -> bool:
 
 
 # for placing items when final position has to be determined
-func add_item(item: InventoryItemData) -> bool:
+func add_item(item: ItemData) -> bool:
 	# find a free slot
 	for x in TOTAL_COLUMNS:
 		for y in TOTAL_ROWS:
@@ -60,14 +62,14 @@ func _in_bounds(slot: Vector2i, size: Vector2i) -> bool:
 	)
 
 
-func _can_place(item: InventoryItemData, slot: Vector2i) -> bool:
+func _can_place(item: ItemData, slot: Vector2i) -> bool:
 	if not _in_bounds(slot, item.size):
 		return false
 
 	# check if every slot the item occupies is free
 	for x in item.size.x:
 		for y in item.size.y:
-			var occupant: InventoryItemData = inventory.get(slot + Vector2i(x, y))
+			var occupant: ItemData = inventory.get(slot + Vector2i(x, y))
 			if occupant != null and occupant != item:
 				return false
 

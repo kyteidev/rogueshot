@@ -2,11 +2,21 @@
 
 [ext_resource type="Script" uid="uid://bpqxislc5uiqk" path="res://scripts/characters/enemy.gd" id="1_4ra3w"]
 [ext_resource type="Texture2D" uid="uid://bxil48e432vuf" path="res://assets/sprites/characters/enemy1.png" id="1_md0e3"]
+[ext_resource type="Script" uid="uid://coqypqa0006b" path="res://scripts/items/item_data.gd" id="3_0ag5d"]
 [ext_resource type="Texture2D" uid="uid://b01e1rwshiegl" path="res://assets/sprites/weapons/rifle.png" id="3_f2e6v"]
 [ext_resource type="Texture2D" uid="uid://sxdj3w7nress" path="res://assets/sprites/icons/question mark.png" id="4_21x0f"]
 [ext_resource type="Script" uid="uid://dtictyumsb7ps" path="res://scripts/characters/enemy_status_icon.gd" id="5_jgk6k"]
 [ext_resource type="FontFile" uid="uid://4jxi61jcsc2c" path="res://assets/fonts/groundhog.ttf" id="6_3k4es"]
 [ext_resource type="Script" uid="uid://1w732e3gs1gb" path="res://scripts/characters/enemy_status_label.gd" id="7_x5khh"]
+
+[sub_resource type="Resource" id="Resource_x5khh"]
+script = ExtResource("3_0ag5d")
+id = &"rifle1"
+name = "Rifle1"
+icon = ExtResource("3_f2e6v")
+scale = 0.55
+size = Vector2i(5, 2)
+metadata/_custom_type_script = "uid://coqypqa0006b"
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_md484"]
 atlas = ExtResource("1_md0e3")
@@ -155,6 +165,7 @@ outline_color = Color(0.08235294, 0.039215688, 0.20392157, 1)
 
 [node name="Enemy" type="CharacterBody2D" unique_id=73622017 groups=["enemy", "living"]]
 script = ExtResource("1_4ra3w")
+weapon_data = SubResource("Resource_x5khh")
 
 [node name="AnimSprite" type="AnimatedSprite2D" parent="." unique_id=1345892962]
 position = Vector2(0, -8)

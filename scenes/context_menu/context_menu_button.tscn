@@ -1,0 +1,22 @@
+[gd_scene format=3 uid="uid://2qv340jvk1co"]
+
+[ext_resource type="FontFile" uid="uid://4jxi61jcsc2c" path="res://assets/fonts/groundhog.ttf" id="1_2iqij"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vjox6"]
+bg_color = Color(0.3372549, 0.28627452, 0.43137255, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ghw5k"]
+bg_color = Color(0.20392157, 0.16078432, 0.27058825, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k3mor"]
+bg_color = Color(0.5568628, 0.44705883, 0.6039216, 1)
+
+[node name="ContextMenuButton" type="Button" unique_id=139826522]
+offset_right = 45.0
+offset_bottom = 15.0
+theme_override_fonts/font = ExtResource("1_2iqij")
+theme_override_font_sizes/font_size = 12
+theme_override_styles/normal = SubResource("StyleBoxFlat_vjox6")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_ghw5k")
+theme_override_styles/hover = SubResource("StyleBoxFlat_k3mor")
+text = "Text"
