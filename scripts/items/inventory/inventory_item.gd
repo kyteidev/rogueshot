@@ -1,6 +1,8 @@
 class_name InventoryItem
 extends Panel
 
+const DROP_OFFSET = 10.0
+
 var im := ItemManager
 var data: ItemData
 
@@ -51,6 +53,10 @@ func _input(event: InputEvent) -> void:
 					var spawn_pos: Vector2 = get_tree() \
 							.get_first_node_in_group("unique_player") \
 							.global_position
+					spawn_pos += Vector2(
+						randf_range(-DROP_OFFSET * 1.5, DROP_OFFSET * 1.5),
+						randf_range(-DROP_OFFSET / 2, -DROP_OFFSET),
+					)
 					im.spawn_item(data, spawn_pos)
 					queue_free()
 
