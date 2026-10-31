@@ -45,7 +45,6 @@ const DEATH_TRANS_DELAY = 1.0
 
 @export var transition: CanvasLayer
 @export var crosshair: CanvasLayer
-@export var temp_item: ItemData
 
 var sm := StateManager
 var im := ItemManager
@@ -148,9 +147,6 @@ func _ready() -> void:
 	sm.health = health
 	sm.max_health = MAX_HEALTH
 	sm.stamina = stamina
-
-	# TEMPORARY
-	_spawn.call_deferred()
 
 
 func _physics_process(delta: float) -> void:
@@ -341,20 +337,6 @@ func take_damage(damage: float, _global_position: Vector2) -> void:
 		health -= damage
 		if health <= 0:
 			is_dead = true
-
-
-# temporary, only for testing item pickup
-func _spawn() -> void:
-	var item_scene := preload("res://scenes/item.tscn")
-	var inst := item_scene.instantiate()
-	get_tree().current_scene.add_child(inst)
-	inst.global_position = global_position + Vector2(50.0, -10.0)
-	inst.setup(temp_item)
-
-	var inst2 := item_scene.instantiate()
-	get_tree().current_scene.add_child(inst2)
-	inst2.global_position = global_position + Vector2(80.0, -10.0)
-	inst2.setup(temp_item)
 
 
 func _start_stamina_flash() -> void:
