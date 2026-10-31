@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://dpg4bey3oklf6" path="res://scripts/items/inventory/inventory.gd" id="1_4mxsq"]
 [ext_resource type="Texture2D" uid="uid://bqpmoqx5btq2n" path="res://assets/sprites/ui/inventory/inventory.png" id="2_waxho"]
 [ext_resource type="PackedScene" uid="uid://bgre28m4eudus" path="res://scenes/context_menu/context_menu.tscn" id="3_el5y6"]
+[ext_resource type="Script" uid="uid://dn1rkoh0f3xdn" path="res://scripts/items/inventory/equipment_container.gd" id="3_tvok8"]
 
 [node name="Inventory" type="CanvasLayer" unique_id=1946403224]
 script = ExtResource("1_4mxsq")
@@ -55,5 +56,81 @@ offset_left = 320.0
 offset_top = 60.0
 offset_right = 584.0
 offset_bottom = 280.0
+
+[node name="EquipmentContainer" type="Control" parent="InventoryContainer" unique_id=872702172]
+anchors_preset = 0
+offset_left = 56.0
+offset_top = 32.0
+offset_right = 248.0
+offset_bottom = 328.0
+script = ExtResource("3_tvok8")
+
+[node name="Primary" type="ColorRect" parent="InventoryContainer/EquipmentContainer" unique_id=1273757903]
+layout_mode = 0
+offset_top = 28.0
+offset_right = 120.0
+offset_bottom = 76.0
+color = Color(1, 1, 1, 0.21568628)
+
+[node name="Secondary" type="ColorRect" parent="InventoryContainer/EquipmentContainer" unique_id=1291984124]
+layout_mode = 0
+offset_top = 100.0
+offset_right = 96.0
+offset_bottom = 148.0
+color = Color(1, 1, 1, 0.21568628)
+
+[node name="Helmet" type="ColorRect" parent="InventoryContainer/EquipmentContainer" unique_id=863718339]
+layout_mode = 0
+offset_left = 144.0
+offset_top = 28.0
+offset_right = 192.0
+offset_bottom = 76.0
+color = Color(1, 1, 1, 0.21568628)
+
+[node name="Armor" type="ColorRect" parent="InventoryContainer/EquipmentContainer" unique_id=1006811096]
+layout_mode = 0
+offset_left = 120.0
+offset_top = 100.0
+offset_right = 192.0
+offset_bottom = 172.0
+color = Color(1, 1, 1, 0.21568628)
+
+[node name="Backpack" type="ColorRect" parent="InventoryContainer/EquipmentContainer" unique_id=1542877149]
+layout_mode = 0
+offset_left = 120.0
+offset_top = 196.0
+offset_right = 192.0
+offset_bottom = 292.0
+color = Color(1, 1, 1, 0.21568628)
+
+[node name="Knife" type="ColorRect" parent="InventoryContainer/EquipmentContainer" unique_id=227850414]
+layout_mode = 0
+offset_top = 172.0
+offset_right = 48.0
+offset_bottom = 196.0
+color = Color(1, 1, 1, 0.21568628)
+
+[node name="Grenade1" type="ColorRect" parent="InventoryContainer/EquipmentContainer" unique_id=323340982]
+layout_mode = 0
+offset_left = 48.0
+offset_top = 172.0
+offset_right = 72.0
+offset_bottom = 196.0
+color = Color(1, 1, 1, 0.21568628)
+
+[node name="Grenade2" type="ColorRect" parent="InventoryContainer/EquipmentContainer" unique_id=1799758037]
+layout_mode = 0
+offset_left = 72.0
+offset_top = 172.0
+offset_right = 96.0
+offset_bottom = 196.0
+color = Color(1, 1, 1, 0.21568628)
+
+[node name="Goggles" type="ColorRect" parent="InventoryContainer/EquipmentContainer" unique_id=1910008580]
+layout_mode = 0
+offset_top = 196.0
+offset_right = 48.0
+offset_bottom = 220.0
+color = Color(1, 1, 1, 0.21568628)
 
 [node name="ContextMenu" parent="." unique_id=1117877697 instance=ExtResource("3_el5y6")]

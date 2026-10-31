@@ -8,7 +8,10 @@ var data: ItemData
 
 var mouse_offset: Vector2
 var mouse_hovered: bool
-var mouse_dragging: bool
+var mouse_dragging: bool:
+	set(value):
+		mouse_dragging = value
+		im.dragging_item = value
 
 var saved_vars := false
 var prev_slot: Vector2

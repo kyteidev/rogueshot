@@ -11,6 +11,9 @@ const TOTAL_ROWS = TOTAL_SLOTS / TOTAL_COLUMNS
 const ITEM_SCENE = preload("res://scenes/item.tscn")
 
 var inventory := { }
+var equipment_bounds := { }
+
+var dragging_item := false
 
 
 # for placing items in inventory: when final position is known
