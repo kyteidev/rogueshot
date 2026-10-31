@@ -475,8 +475,9 @@ func _highlight_items() -> void:
 		if not closest_distance or abs(distance) < closest_distance:
 			closest_item = item
 			closest_distance = distance
-	closest_item.show_outline()
-	hud.update_hint_label(true, "player_interact", "pick up item")
+	if closest_item:
+		closest_item.show_outline()
+		hud.update_hint_label(true, "player_interact", "pick up item")
 
 
 func _on_item_pickup_area_body_entered(body: Node2D) -> void:
