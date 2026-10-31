@@ -431,8 +431,9 @@ func _item_pickup() -> void:
 	if items_in_range.size() == 0 or not Input.is_action_just_pressed("player_interact"):
 		return
 
-	im.add_item(closest_item.data)
-	closest_item.queue_free()
+	if closest_item:
+		im.add_item(closest_item.data)
+		closest_item.queue_free()
 
 
 # YAY THIS WORKS NOW :D
