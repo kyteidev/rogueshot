@@ -1,7 +1,7 @@
 class_name InventoryItem
 extends Panel
 
-var im := InventoryManager
+var im := ItemManager
 var data: ItemData
 
 var mouse_offset: Vector2

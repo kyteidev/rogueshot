@@ -48,7 +48,7 @@ const DEATH_TRANS_DELAY = 1.0
 @export var temp_item: ItemData
 
 var sm := StateManager
-var im := InventoryManager
+var im := ItemManager
 
 var prev_health: float = MAX_HEALTH
 var health: float = MAX_HEALTH:

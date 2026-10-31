@@ -126,7 +126,7 @@ var status_icons := [
 ]
 
 var sm := StateManager
-var im := InventoryManager
+var im := ItemManager
 
 @onready var anim: AnimatedSprite2D = $AnimSprite
 

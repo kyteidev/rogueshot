@@ -9,7 +9,7 @@ const SLOT_SIZE = 24.0
 @export var starting_items: Array[ItemData]
 
 var sm := StateManager
-var im := InventoryManager
+var im := ItemManager
 
 @onready var cursor: Node2D = crosshair.get_child(0)
 @onready var slots_container: GridContainer = $InventoryContainer/SlotsContainer
