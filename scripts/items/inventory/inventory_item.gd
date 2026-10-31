@@ -64,7 +64,7 @@ func _input(event: InputEvent) -> void:
 					queue_free()
 
 		# check if item rotation key pressed
-		if Input.is_action_just_pressed("ui_rotate_item"):
+		if mouse_dragging and Input.is_action_just_pressed("ui_rotate_item"):
 			var old_size: Vector2 = im.slot_to_pos(data.size)
 			data.rotated = not data.rotated
 
