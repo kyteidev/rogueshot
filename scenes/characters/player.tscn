@@ -155,7 +155,7 @@ height = 14.0
 [sub_resource type="CircleShape2D" id="CircleShape2D_atpat"]
 radius = 20.0
 
-[node name="Player" type="CharacterBody2D" unique_id=73622017 groups=["living", "player"]]
+[node name="Player" type="CharacterBody2D" unique_id=73622017 groups=["living", "player", "unique_player"]]
 z_index = 1
 collision_layer = 5
 script = ExtResource("1_g2els")

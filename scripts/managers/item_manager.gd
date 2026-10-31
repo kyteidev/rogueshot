@@ -46,6 +46,19 @@ func add_item(item: ItemData) -> bool:
 	return false
 
 
+func remove_item(item: ItemData) -> void:
+	for x in item.size.x:
+		for y in item.size.y:
+			inventory.erase(Vector2i(x, y) + item.slot)
+
+
+func spawn_item(item_data: ItemData, position: Vector2) -> void:
+	var inst := ITEM_SCENE.instantiate()
+	get_tree().current_scene.add_child(inst)
+	inst.global_position = position
+	inst.setup(item_data)
+
+
 func pos_to_slot(pos: Vector2) -> Vector2:
 	return floor(pos / SLOT_SIZE)
 

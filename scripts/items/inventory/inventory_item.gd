@@ -46,7 +46,13 @@ func _input(event: InputEvent) -> void:
 				if im.place_item(data, slot):
 					position = new_position
 				else:
-					position = im.slot_to_pos(prev_slot)
+					# drop item
+					im.remove_item(data)
+					var spawn_pos: Vector2 = get_tree() \
+							.get_first_node_in_group("unique_player") \
+							.global_position
+					im.spawn_item(data, spawn_pos)
+					queue_free()
 
 		# check if item rotation key pressed
 		if Input.is_action_just_pressed("ui_rotate_item"):

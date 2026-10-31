@@ -58,6 +58,7 @@ player=""
 enemy=""
 projectile=""
 living=""
+unique_player="a group unique to playable player, used when path to player in node tree is not known"
 
 [input]
 
