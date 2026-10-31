@@ -475,7 +475,7 @@ func _highlight_items() -> void:
 		if not closest_distance or abs(distance) < closest_distance:
 			closest_item = item
 			closest_distance = distance
-	if closest_item:
+	if closest_item and closest_item in items_in_range:
 		closest_item.show_outline()
 		hud.update_hint_label(true, "player_interact", "pick up item")
 
