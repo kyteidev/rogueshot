@@ -28,9 +28,7 @@ func place_item(item: ItemData, slot: Vector2i) -> bool:
 		return false
 
 	# clear item's old slots
-	for x in item.size.x:
-		for y in item.size.y:
-			inventory.erase(Vector2i(x, y) + item.slot)
+	_clear_item(item)
 
 	# update item's slot data and replace slots with item
 	item.slot = slot
@@ -44,21 +42,20 @@ func place_item(item: ItemData, slot: Vector2i) -> bool:
 # for placing items when final position has to be determined
 func add_item(item: ItemData) -> bool:
 	# find a free slot
+	var new_item: ItemData = item.duplicate()
 	for x in TOTAL_COLUMNS:
 		for y in TOTAL_ROWS:
 			var possible_slot := Vector2i(x, y)
 			# add item and return status
-			if place_item(item, possible_slot):
-				new_item_placed.emit(item)
+			if place_item(new_item, possible_slot):
+				new_item_placed.emit(new_item)
 				return true
 
 	return false
 
 
 func remove_item(item: ItemData) -> void:
-	for x in item.size.x:
-		for y in item.size.y:
-			inventory.erase(Vector2i(x, y) + item.slot)
+	_clear_item(item)
 
 	var inventory_items_container: Control = get_tree().get_first_node_in_group(
 		"unique_inventory_items"
@@ -113,5 +110,10 @@ func _can_place(item: ItemData, slot: Vector2i) -> bool:
 			var occupant: ItemData = inventory.get(slot + Vector2i(x, y))
 			if occupant != null and occupant != item:
 				return false
-
 	return true
+
+
+func _clear_item(item: ItemData) -> void:
+	for key: Vector2i in inventory.keys():
+		if inventory[key] == item:
+			inventory.erase(key)

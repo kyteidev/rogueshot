@@ -79,7 +79,7 @@ func _input(event: InputEvent) -> void:
 
 
 func setup(item_data: ItemData) -> void:
-	data = item_data.duplicate(true)
+	data = item_data
 	custom_minimum_size = data.size * im.SLOT_SIZE
 	size = custom_minimum_size
 	icon.texture = data.icon

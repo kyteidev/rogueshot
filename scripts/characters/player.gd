@@ -434,6 +434,7 @@ func _item_pickup() -> void:
 	if closest_item:
 		im.add_item(closest_item.data)
 		closest_item.queue_free()
+		closest_item = null
 
 
 # YAY THIS WORKS NOW :D
