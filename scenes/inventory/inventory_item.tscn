@@ -4,6 +4,7 @@
 
 [node name="InventoryItem" type="Panel" unique_id=475894686]
 self_modulate = Color(1, 1, 1, 0)
+z_index = 999
 script = ExtResource("1_u6pog")
 
 [node name="Background" type="ColorRect" parent="." unique_id=444263588]

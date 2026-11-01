@@ -14,6 +14,7 @@ var mouse_dragging := false:
 
 var saved_vars := false
 var prev_slot: Vector2
+var prev_pos: Vector2
 
 @onready var icon: TextureRect = $Icon
 @onready var bg: ColorRect = $Background
@@ -73,9 +74,30 @@ func _input(event: InputEvent) -> void:
 				# update inventory
 				if im.place_item(data, slot):
 					position = new_position
+
+					if data in im.equipped_items.values():
+						im.unequip_item(im.equipped_items.find_key(data))
 				else:
 					if im.in_bounds(slot, data.size):
-						position = im.slot_to_pos(prev_slot)
+						if data in im.equipped_items.values():
+							global_position = prev_pos
+						else:
+							position = im.slot_to_pos(prev_slot)
+					elif im.hovered_equipment != "":
+						im.remove_item(data, false)
+
+						var equipment_data: Dictionary = im.equipment_bounds[im.hovered_equipment]
+						var equipment_slot_pos: Vector2 = equipment_data["pos"]
+						var equipment_slot_size: Vector2 = equipment_data["size"]
+						global_position.x = equipment_slot_pos.x + (equipment_slot_size.x - size.x) / 2
+						global_position.y = equipment_slot_pos.y
+
+						bg.modulate.a = 0.0
+
+						im.equip_item(im.hovered_equipment, data)
+
+						prev_pos = global_position
+						print(prev_slot)
 					else:
 						im.drop_item(data)
 

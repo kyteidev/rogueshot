@@ -68,71 +68,71 @@ mouse_filter = 2
 script = ExtResource("3_tvok8")
 
 [node name="Primary" type="ColorRect" parent="InventoryContainer/EquipmentContainer" unique_id=1273757903]
+modulate = Color(1, 1, 1, 0.21568628)
 layout_mode = 0
 offset_top = 28.0
 offset_right = 120.0
 offset_bottom = 76.0
-color = Color(1, 1, 1, 0.21568628)
 
 [node name="Secondary" type="ColorRect" parent="InventoryContainer/EquipmentContainer" unique_id=1291984124]
+modulate = Color(1, 1, 1, 0.21568628)
 layout_mode = 0
 offset_top = 100.0
 offset_right = 96.0
-offset_bottom = 148.0
-color = Color(1, 1, 1, 0.21568628)
+offset_bottom = 148.1
 
 [node name="Helmet" type="ColorRect" parent="InventoryContainer/EquipmentContainer" unique_id=863718339]
+modulate = Color(1, 1, 1, 0.21568628)
 layout_mode = 0
 offset_left = 144.0
 offset_top = 28.0
 offset_right = 192.0
 offset_bottom = 76.0
-color = Color(1, 1, 1, 0.21568628)
 
 [node name="Armor" type="ColorRect" parent="InventoryContainer/EquipmentContainer" unique_id=1006811096]
+modulate = Color(1, 1, 1, 0.21568628)
 layout_mode = 0
 offset_left = 120.0
 offset_top = 100.0
 offset_right = 192.0
 offset_bottom = 172.0
-color = Color(1, 1, 1, 0.21568628)
 
 [node name="Backpack" type="ColorRect" parent="InventoryContainer/EquipmentContainer" unique_id=1542877149]
+modulate = Color(1, 1, 1, 0.21568628)
 layout_mode = 0
 offset_left = 120.0
 offset_top = 196.0
 offset_right = 192.0
 offset_bottom = 292.0
-color = Color(1, 1, 1, 0.21568628)
 
 [node name="Knife" type="ColorRect" parent="InventoryContainer/EquipmentContainer" unique_id=227850414]
+modulate = Color(1, 1, 1, 0.21568628)
 layout_mode = 0
 offset_top = 172.0
 offset_right = 48.0
 offset_bottom = 196.0
-color = Color(1, 1, 1, 0.21568628)
 
 [node name="Grenade1" type="ColorRect" parent="InventoryContainer/EquipmentContainer" unique_id=323340982]
+modulate = Color(1, 1, 1, 0.21568628)
 layout_mode = 0
 offset_left = 48.0
 offset_top = 172.0
 offset_right = 72.0
 offset_bottom = 196.0
-color = Color(1, 1, 1, 0.21568628)
 
 [node name="Grenade2" type="ColorRect" parent="InventoryContainer/EquipmentContainer" unique_id=1799758037]
+modulate = Color(1, 1, 1, 0.21568628)
 layout_mode = 0
 offset_left = 72.0
 offset_top = 172.0
 offset_right = 96.0
 offset_bottom = 196.0
-color = Color(1, 1, 1, 0.21568628)
 
 [node name="Goggles" type="ColorRect" parent="InventoryContainer/EquipmentContainer" unique_id=1910008580]
+modulate = Color(1, 1, 1, 0.21568628)
 layout_mode = 0
 offset_top = 196.0
 offset_right = 48.0
 offset_bottom = 220.0
-color = Color(1, 1, 1, 0.21568628)
 
 [node name="ContextMenu" parent="." unique_id=1117877697 instance=ExtResource("3_el5y6")]

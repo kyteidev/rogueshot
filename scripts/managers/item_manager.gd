@@ -14,6 +14,7 @@ const DROP_RAND_ROT = 0.6
 const ITEM_SCENE = preload("res://scenes/item.tscn")
 
 var inventory := { }
+var equipped_items := { }
 var equipment_bounds := { }
 
 var hovered_item: ItemData
@@ -21,6 +22,7 @@ var context_menu_item: ItemData
 var context_menu_open := false
 
 var dragging_item := false
+var hovered_equipment := ""
 
 
 # for placing items in inventory: when final position is known
@@ -55,15 +57,16 @@ func add_item(item: ItemData) -> bool:
 	return false
 
 
-func remove_item(item: ItemData) -> void:
+func remove_item(item: ItemData, destroy_item := true) -> void:
 	_clear_item(item)
 
 	var inventory_items_container: Control = get_tree().get_first_node_in_group(
 		"unique_inventory_items"
 	)
-	for child in inventory_items_container.get_children():
-		if child.data == item:
-			child.queue_free()
+	if destroy_item:
+		for child in inventory_items_container.get_children():
+			if child.data == item:
+				child.queue_free()
 
 
 func spawn_item(item_data: ItemData, position: Vector2) -> void:
@@ -89,6 +92,18 @@ func drop_item(item_data: ItemData, from_player := true, pos := Vector2.ZERO) ->
 	else:
 		spawn_pos = pos
 	spawn_item(item_data, spawn_pos)
+
+
+func equip_item(equipment_slot: String, item: ItemData) -> bool:
+	if equipment_slot in equipped_items:
+		return false
+
+	equipped_items[equipment_slot] = item
+	return true
+
+
+func unequip_item(equipment_slot: String) -> void:
+	equipped_items.erase(equipment_slot)
 
 
 func pos_to_slot(pos: Vector2) -> Vector2:

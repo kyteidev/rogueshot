@@ -22,15 +22,28 @@ func _ready() -> void:
 			im.equipment_bounds[child.name] = { "pos": child.global_position, "size": child.size }
 
 			var orig_alpha: float = child.modulate.a
+			print(orig_alpha)
 			child.modulate.a = 0.0
 
 			child.mouse_entered.connect(
 				func() -> void:
-					if im.dragging_item and im.hovered_item.type == SLOT_TYPES[child.name]:
-						child.modulate.a = orig_alpha,
+					if (
+						im.dragging_item and im.hovered_item
+						and im.hovered_item.type == SLOT_TYPES[child.name]
+					):
+						child.modulate = Color(1.0, 1.0, 1.0, orig_alpha)
+						im.hovered_equipment = child.name,
 			)
 			child.mouse_exited.connect(
 				func() -> void:
 					if im.dragging_item:
-						child.modulate.a = 0.0,
+						child.modulate = Color(1.0, 1.0, 1.0, 0.0)
+						im.hovered_equipment = "",
 			)
+
+
+func _process(_delta: float) -> void:
+	if not im.dragging_item:
+		for child in get_children():
+			if child.name in im.equipped_items.keys():
+				child.modulate = Color("342945")
