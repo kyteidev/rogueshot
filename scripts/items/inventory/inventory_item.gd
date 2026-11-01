@@ -35,7 +35,8 @@ func _process(_delta: float) -> void:
 				im.context_menu_item = data
 		else:
 			mouse_hovered = false
-			im.hovered_item = null
+			if im.hovered_item == data:
+				im.hovered_item = null
 
 	if mouse_dragging:
 		global_position = get_global_mouse_position() - mouse_offset
@@ -84,6 +85,9 @@ func _input(event: InputEvent) -> void:
 						else:
 							position = im.slot_to_pos(prev_slot)
 					elif im.hovered_equipment != "":
+						var old_slot: String = im.equipped_items.find_key(data)
+						if old_slot != null:
+							im.unequip_item(old_slot)
 						im.remove_item(data, false)
 
 						var equipment_data: Dictionary = im.equipment_bounds[im.hovered_equipment]
