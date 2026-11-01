@@ -177,9 +177,13 @@ func _input(_event: InputEvent) -> void:
 	if Input.is_action_just_pressed("weapon_primary"):
 		if im.equipped_weapons[0] and weapon_index != 0:
 			_equip_weapon(0)
+		else:
+			_equip_weapon(-1)
 	elif Input.is_action_just_pressed("weapon_secondary"):
 		if im.equipped_weapons[1] and weapon_index != 1:
 			_equip_weapon(1)
+		else:
+			_equip_weapon(-1)
 
 
 func fade_weapon() -> void:
