@@ -17,6 +17,7 @@ enum ItemType {
 @export var id: StringName
 @export var name := ""
 @export var type := ItemType.DEFAULT
+@export var type_data: ItemTypeData # type specific data
 @export var icon: Texture2D
 @export var max_stack: int = 1
 @export var count: int = 1

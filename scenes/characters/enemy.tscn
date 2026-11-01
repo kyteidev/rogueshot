@@ -5,15 +5,22 @@
 [ext_resource type="Script" uid="uid://coqypqa0006b" path="res://scripts/items/item_data.gd" id="3_0ag5d"]
 [ext_resource type="Texture2D" uid="uid://b01e1rwshiegl" path="res://assets/sprites/weapons/rifle.png" id="3_f2e6v"]
 [ext_resource type="Texture2D" uid="uid://sxdj3w7nress" path="res://assets/sprites/icons/question mark.png" id="4_21x0f"]
+[ext_resource type="Script" uid="uid://fn8hix2hcrvm" path="res://scenes/weapons/weapon_data.gd" id="4_f0ik5"]
 [ext_resource type="Script" uid="uid://dtictyumsb7ps" path="res://scripts/characters/enemy_status_icon.gd" id="5_jgk6k"]
 [ext_resource type="FontFile" uid="uid://4jxi61jcsc2c" path="res://assets/fonts/groundhog.ttf" id="6_3k4es"]
 [ext_resource type="Script" uid="uid://1w732e3gs1gb" path="res://scripts/characters/enemy_status_label.gd" id="7_x5khh"]
+
+[sub_resource type="Resource" id="Resource_ge4p5"]
+script = ExtResource("4_f0ik5")
+weapon_name = "rifle1"
+metadata/_custom_type_script = "uid://fn8hix2hcrvm"
 
 [sub_resource type="Resource" id="Resource_x5khh"]
 script = ExtResource("3_0ag5d")
 id = &"rifle1"
 name = "Rifle1"
 type = 1
+type_data = SubResource("Resource_ge4p5")
 icon = ExtResource("3_f2e6v")
 scale = 0.55
 size = Vector2i(5, 2)

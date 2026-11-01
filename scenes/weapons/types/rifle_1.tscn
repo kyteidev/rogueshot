@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://bpjm35k12y14k"]
+
+[ext_resource type="Texture2D" uid="uid://b01e1rwshiegl" path="res://assets/sprites/weapons/rifle.png" id="1_ge4p5"]
+
+[node name="Rifle1" type="Sprite2D" unique_id=78556742]
+scale = Vector2(0.6, 0.6)
+texture = ExtResource("1_ge4p5")
+offset = Vector2(3, 0)
+
+[node name="Muzzle" type="Marker2D" parent="." unique_id=1898682715]
+position = Vector2(16, -0.5)
+
+[node name="Ejection" type="Marker2D" parent="." unique_id=746312298]
+position = Vector2(1.5, -0.5)

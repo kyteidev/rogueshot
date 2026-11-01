@@ -19,10 +19,9 @@ const MAX_HEAT = 1.0
 const SMOKE_BASE_ALPHA = 0.8
 
 var sm := StateManager
+var im := ItemManager
 
-var weapons: Array = []
-var equipped_weapons: Array[Sprite2D] = []
-var weapon_index: int = 0
+var weapon_index: int = -1
 var current_weapon: Sprite2D = null
 var weapon_name := ""
 var weapon_muzzle: Marker2D = null
@@ -65,7 +64,7 @@ var camera_shake := 0.0
 var heat_per_shot := 0.0
 var cooling_rate := 0.0
 
-var speed_multiplier := 0.0
+var speed_multiplier := 1.0
 
 var spread_multiplier := 1.0
 
@@ -76,55 +75,16 @@ var heat := 0.0
 var can_fire := true
 
 @onready var timer: Timer = $Timer
+@onready var weapon_node: Node2D = $Weapon
 
 @onready var player: CharacterBody2D = get_parent()
 @onready var crosshair: CanvasLayer = player.crosshair
-
-# weapon stats and state, have them here and dont move these up!!!
-const WEAPON_STATS = {
-	"pistol": {
-		"damage": 25,
-		"fire_rate": 0.0,
-		"mag_size": 13,
-		"total_mags": 5,
-		"kick": 5.0,
-		"kick_recovery": 60.0,
-		"spread": 3.0,
-		"max_spread": 8.0,
-		"spread_recovery": 8.0,
-		"reload_time": 0.9,
-		"camera_shake": 1.0,
-		"heat": 0.18,
-		"cooling_rate": 1.04,
-		"speed_multiplier": 1.0,
-	},
-	"rifle1": {
-		"damage": 15,
-		"fire_rate": 0.1,
-		"mag_size": 30,
-		"total_mags": 4,
-		"kick": 3.0,
-		"kick_recovery": 40.0,
-		"spread": 1.2,
-		"max_spread": 7.0,
-		"spread_recovery": 5.0,
-		"reload_time": 2.6,
-		"camera_shake": 0.5,
-		"heat": 0.22,
-		"cooling_rate": 0.87,
-		"speed_multiplier": 0.9,
-	},
-}
 
 # format: weapon_name: { ammo, mags }
 var weapon_state: Dictionary = { }
 
 
 func _ready() -> void:
-	weapons = get_children()
-	weapons.pop_front() # first element is the timer
-	_equip_weapon(0)
-
 	# instantiate muzzle flash and smoke particles
 	muzzle_flash = MUZZLE_FLASH.instantiate()
 	add_child(muzzle_flash)
@@ -134,7 +94,10 @@ func _ready() -> void:
 
 
 func _physics_process(delta: float) -> void:
-	if player.is_dead:
+	if (
+		player.is_dead or (not im.equipped_weapons[0] and not im.equipped_weapons[1])
+		or weapon_index == -1
+	):
 		return
 
 	var input_locked: bool = sm.is_input_locked()
@@ -201,14 +164,16 @@ func _input(_event: InputEvent) -> void:
 
 	# weapon switching
 	if Input.is_action_just_pressed("weapon_cycle"):
-		var next_index: int = (weapon_index + 1) % weapons.size()
+		var next_index: int = (weapon_index + 1) % 2
 		_equip_weapon(next_index)
 
 	# manually select primary/secondary weapon
 	if Input.is_action_just_pressed("weapon_primary"):
-		_equip_weapon(0)
+		if im.equipped_weapons[0]:
+			_equip_weapon(0)
 	elif Input.is_action_just_pressed("weapon_secondary"):
-		_equip_weapon(1)
+		if im.equipped_weapons[1]:
+			_equip_weapon(1)
 
 
 func fade_weapon() -> void:
@@ -297,7 +262,13 @@ func _equip_weapon(index: int) -> void:
 
 	# get weapon stuff
 	weapon_index = index
-	current_weapon = weapons[index]
+
+	var weapon_scene: PackedScene = im.equipped_weapons[index].type_data.weapon_scene
+	current_weapon = weapon_scene.instantiate()
+	for child in weapon_node.get_children():
+		child.queue_free()
+	weapon_node.add_child(current_weapon)
+
 	weapon_name = current_weapon.name.to_lower()
 	weapon_muzzle = current_weapon.get_node("./Muzzle")
 	weapon_muzzle_orig_pos = weapon_muzzle.position
@@ -305,7 +276,7 @@ func _equip_weapon(index: int) -> void:
 	weapon_ejection_orig_pos = weapon_ejection.position
 
 	# set weapon stats
-	var stats: Dictionary = WEAPON_STATS[weapon_name]
+	var stats: WeaponData = im.equipped_weapons[index].type_data
 	base_damage = stats.damage
 	fire_rate = stats.fire_rate
 	max_ammo = stats.mag_size
@@ -337,9 +308,5 @@ func _equip_weapon(index: int) -> void:
 	ammo = weapon_state[weapon_name].ammo
 	mags = weapon_state[weapon_name].mags
 	can_fire = true
-
-	# only show active weapon
-	for i in range(weapons.size()):
-		weapons[i].visible = true if i == weapon_index else false
 
 	crosshair.cancel_reload()

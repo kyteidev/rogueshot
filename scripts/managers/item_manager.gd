@@ -17,6 +17,8 @@ var inventory := { }
 var equipped_items := { }
 var equipment_bounds := { }
 
+var equipped_weapons := [null, null]
+
 var hovered_item: ItemData
 var context_menu_item: ItemData
 var context_menu_open := false
@@ -99,11 +101,22 @@ func equip_item(equipment_slot: String, item: ItemData) -> bool:
 		return false
 
 	equipped_items[equipment_slot] = item
+
+	if equipment_slot == "Primary":
+		equipped_weapons[0] = item
+	elif equipment_slot == "Secondary":
+		equipped_weapons[1] = item
+
 	return true
 
 
 func unequip_item(equipment_slot: String) -> void:
 	equipped_items.erase(equipment_slot)
+
+	if equipment_slot == "Primary":
+		equipped_weapons[0] = null
+	elif equipment_slot == "Secondary":
+		equipped_weapons[1] = null
 
 
 func pos_to_slot(pos: Vector2) -> Vector2:

@@ -1,0 +1,2 @@
+class_name ItemTypeData
+extends Resource
