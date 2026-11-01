@@ -36,18 +36,18 @@ func _input(event: InputEvent) -> void:
 
 
 func _load_buttons() -> void:
-	var button: Button = button_scene.instantiate()
-
 	# load buttons for each menu type
 	if menu_type != MenuTypes.DEFAULT:
+		var special_button: Button = button_scene.instantiate()
 		match menu_type:
 			MenuTypes.EQUIPPABLE:
-				button.text = "Equip"
+				special_button.text = "Equip"
 			MenuTypes.UNLOADABLE:
-				button.text = "Unload"
-		add_child(button)
+				special_button.text = "Unload"
+		add_child(special_button)
 
 	# all menu types have these buttons
+	var button: Button = button_scene.instantiate()
 	button.text = "Drop"
 	add_child(button)
 
