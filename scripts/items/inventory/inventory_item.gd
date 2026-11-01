@@ -5,8 +5,9 @@ var im := ItemManager
 var data: ItemData
 
 var mouse_offset: Vector2
-var mouse_hovered: bool
-var mouse_dragging: bool:
+var mouse_has_entered := false
+var mouse_hovered := false
+var mouse_dragging := false:
 	set(value):
 		mouse_dragging = value
 		im.dragging_item = value
@@ -19,6 +20,22 @@ var prev_slot: Vector2
 
 
 func _process(_delta: float) -> void:
+	# check mouse hover
+	if mouse_has_entered:
+		var mouse_pos: Vector2 = get_global_mouse_position()
+		if (
+			mouse_pos.x >= global_position.x and mouse_pos.y >= global_position.y
+			and mouse_pos.x <= global_position.x + size.x
+			and mouse_pos.y <= global_position.y + size.y
+		):
+			mouse_hovered = true
+			im.hovered_item = data
+			if not im.context_menu_open:
+				im.context_menu_item = data
+		else:
+			mouse_hovered = false
+			im.hovered_item = null
+
 	if mouse_dragging:
 		global_position = get_global_mouse_position() - mouse_offset
 
@@ -89,12 +106,4 @@ func setup(item_data: ItemData) -> void:
 
 
 func _on_mouse_entered() -> void:
-	mouse_hovered = true
-	im.hovered_item = data
-	if not im.context_menu_open:
-		im.context_menu_item = data
-
-
-func _on_mouse_exited() -> void:
-	mouse_hovered = false
-	im.hovered_item = null
+	mouse_has_entered = true

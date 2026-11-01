@@ -1,9 +1,22 @@
 class_name ItemData
 extends Resource
 
+enum ItemType {
+	DEFAULT,
+	PRIMARY_WEAPON,
+	SECONDARY_WEAPON,
+	HELMET,
+	ARMOR,
+	BACKPACK,
+	MELEE,
+	GRENADE,
+	GOGGLES,
+}
+
 # basic info
 @export var id: StringName
 @export var name := ""
+@export var type := ItemType.DEFAULT
 @export var icon: Texture2D
 @export var max_stack: int = 1
 @export var count: int = 1

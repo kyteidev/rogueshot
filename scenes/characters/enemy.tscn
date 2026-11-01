@@ -13,6 +13,7 @@
 script = ExtResource("3_0ag5d")
 id = &"rifle1"
 name = "Rifle1"
+type = 1
 icon = ExtResource("3_f2e6v")
 scale = 0.55
 size = Vector2i(5, 2)

@@ -34,6 +34,7 @@ sources/0 = SubResource("TileSetAtlasSource_hpfpv")
 script = ExtResource("9_7exj4")
 id = &"pistol"
 name = "pistol"
+type = 2
 icon = ExtResource("10_vhi7h")
 scale = 0.75
 size = Vector2i(3, 2)

@@ -56,6 +56,7 @@ offset_left = 320.0
 offset_top = 60.0
 offset_right = 584.0
 offset_bottom = 280.0
+mouse_filter = 2
 
 [node name="EquipmentContainer" type="Control" parent="InventoryContainer" unique_id=872702172]
 anchors_preset = 0
@@ -63,6 +64,7 @@ offset_left = 56.0
 offset_top = 32.0
 offset_right = 248.0
 offset_bottom = 328.0
+mouse_filter = 2
 script = ExtResource("3_tvok8")
 
 [node name="Primary" type="ColorRect" parent="InventoryContainer/EquipmentContainer" unique_id=1273757903]
