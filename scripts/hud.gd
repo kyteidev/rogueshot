@@ -117,6 +117,9 @@ func _process(delta: float) -> void:
 	secondary_weapon.visible = true if im.equipped_weapons[1] else false
 	secondary_weapon_outline.visible = true if im.equipped_weapons[1] else false
 
+	# hide ammo and mag label if no weapons equipped
+	ammo_mag_container.visible = im.equipped_weapons[0] != null or im.equipped_weapons[1] != null
+
 	# update keybind
 	primary_weapon_keybind.text = om.get_option("weapon_primary")
 	secondary_weapon_keybind.text = om.get_option("weapon_secondary")
