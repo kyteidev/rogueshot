@@ -102,6 +102,9 @@ func _input(event: InputEvent) -> void:
 
 						prev_pos = global_position
 					else:
+						var equipped_slot: Variant = im.equipped_items.find_key(data)
+						if equipped_slot:
+							im.unequip_item(equipped_slot)
 						im.drop_item(data)
 
 		# check if item rotation key pressed
