@@ -175,10 +175,10 @@ func _input(_event: InputEvent) -> void:
 
 	# manually select primary/secondary weapon
 	if Input.is_action_just_pressed("weapon_primary"):
-		if im.equipped_weapons[0]:
+		if im.equipped_weapons[0] and weapon_index != 0:
 			_equip_weapon(0)
 	elif Input.is_action_just_pressed("weapon_secondary"):
-		if im.equipped_weapons[1]:
+		if im.equipped_weapons[1] and weapon_index != 1:
 			_equip_weapon(1)
 
 
