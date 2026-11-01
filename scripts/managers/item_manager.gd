@@ -9,6 +9,7 @@ const TOTAL_COLUMNS = 11
 const TOTAL_ROWS = TOTAL_SLOTS / TOTAL_COLUMNS
 
 const DROP_OFFSET = 10.0
+const DROP_RAND_ROT = 0.6
 
 const ITEM_SCENE = preload("res://scenes/item.tscn")
 
@@ -69,18 +70,24 @@ func spawn_item(item_data: ItemData, position: Vector2) -> void:
 	var inst := ITEM_SCENE.instantiate()
 	get_tree().current_scene.add_child(inst)
 	inst.global_position = position
+	inst.global_rotation += randf_range(-DROP_RAND_ROT, DROP_RAND_ROT)
 	inst.setup(item_data)
 
 
-func drop_item(item_data: ItemData) -> void:
-	remove_item(item_data)
-	var spawn_pos: Vector2 = get_tree() \
-			.get_first_node_in_group("unique_player") \
-			.global_position
-	spawn_pos += Vector2(
-		randf_range(-DROP_OFFSET * 1.5, DROP_OFFSET * 1.5),
-		randf_range(-DROP_OFFSET / 2, -DROP_OFFSET),
-	)
+func drop_item(item_data: ItemData, from_player := true, pos := Vector2.ZERO) -> void:
+	var spawn_pos: Vector2
+
+	if from_player:
+		remove_item(item_data)
+		spawn_pos = get_tree() \
+				.get_first_node_in_group("unique_player") \
+				.global_position
+		spawn_pos += Vector2(
+			randf_range(-DROP_OFFSET * 1.5, DROP_OFFSET * 1.5),
+			randf_range(-DROP_OFFSET / 2, -DROP_OFFSET),
+		)
+	else:
+		spawn_pos = pos
 	spawn_item(item_data, spawn_pos)
 
 
