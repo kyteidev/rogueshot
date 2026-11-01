@@ -92,6 +92,12 @@ func _ready() -> void:
 	smoke = SMOKE_PARTICLES.instantiate()
 	add_child(smoke)
 
+	# weapon unequipping
+	im.weapon_unequipped.connect(
+		func() -> void:
+			_equip_weapon(-1),
+	)
+
 
 func _physics_process(delta: float) -> void:
 	if (
@@ -262,11 +268,17 @@ func _equip_weapon(index: int) -> void:
 
 	# get weapon stuff
 	weapon_index = index
+	for child in weapon_node.get_children():
+		child.queue_free()
+
+	crosshair.cancel_reload()
+	speed_multiplier = 1.0
+
+	if weapon_index == -1:
+		return
 
 	var weapon_scene: PackedScene = im.equipped_weapons[index].type_data.weapon_scene
 	current_weapon = weapon_scene.instantiate()
-	for child in weapon_node.get_children():
-		child.queue_free()
 	weapon_node.add_child(current_weapon)
 
 	weapon_name = current_weapon.name.to_lower()
@@ -308,5 +320,3 @@ func _equip_weapon(index: int) -> void:
 	ammo = weapon_state[weapon_name].ammo
 	mags = weapon_state[weapon_name].mags
 	can_fire = true
-
-	crosshair.cancel_reload()

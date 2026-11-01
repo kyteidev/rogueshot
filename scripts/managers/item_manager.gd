@@ -1,6 +1,7 @@
 extends Node
 
 signal new_item_placed(item: ItemData)
+signal weapon_unequipped
 
 const SLOT_SIZE = 24
 const TOTAL_SLOTS = 44
@@ -115,8 +116,10 @@ func unequip_item(equipment_slot: String) -> void:
 
 	if equipment_slot == "Primary":
 		equipped_weapons[0] = null
+		weapon_unequipped.emit()
 	elif equipment_slot == "Secondary":
 		equipped_weapons[1] = null
+		weapon_unequipped.emit()
 
 
 func pos_to_slot(pos: Vector2) -> Vector2:
