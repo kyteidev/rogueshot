@@ -85,6 +85,9 @@ func _input(event: InputEvent) -> void:
 						else:
 							position = im.slot_to_pos(prev_slot)
 					elif im.hovered_equipment != "":
+						if data.rotated:
+							_rotate()
+
 						var old_slot: Variant = im.equipped_items.find_key(data)
 						if old_slot != null:
 							im.unequip_item(old_slot)
@@ -109,20 +112,7 @@ func _input(event: InputEvent) -> void:
 
 		# check if item rotation key pressed
 		if mouse_dragging and Input.is_action_just_pressed("ui_rotate_item"):
-			var old_size: Vector2 = im.slot_to_pos(data.size)
-			data.rotated = not data.rotated
-
-			custom_minimum_size = im.slot_to_pos(data.size)
-			size = custom_minimum_size
-
-			# icon size gets changed when setting InventoryItem size,
-			# set icon size to value before rotation so it rotates properly
-			icon.size = old_size
-			icon.pivot_offset = old_size / 2
-			icon.position = (size - old_size) / 2
-			icon.rotation = PI / 2 if data.rotated else 0.0
-
-			mouse_offset = size / 2
+			_rotate()
 
 
 func setup(item_data: ItemData) -> void:
@@ -131,6 +121,23 @@ func setup(item_data: ItemData) -> void:
 	size = custom_minimum_size
 	icon.texture = data.icon
 	position = im.slot_to_pos(data.slot)
+
+
+func _rotate() -> void:
+	var old_size: Vector2 = im.slot_to_pos(data.size)
+	data.rotated = not data.rotated
+
+	custom_minimum_size = im.slot_to_pos(data.size)
+	size = custom_minimum_size
+
+	# icon size gets changed when setting InventoryItem size,
+	# set icon size to value before rotation so it rotates properly
+	icon.size = old_size
+	icon.pivot_offset = old_size / 2
+	icon.position = (size - old_size) / 2
+	icon.rotation = PI / 2 if data.rotated else 0.0
+
+	mouse_offset = size / 2
 
 
 func _on_mouse_entered() -> void:
