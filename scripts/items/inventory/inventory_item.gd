@@ -1,8 +1,6 @@
 class_name InventoryItem
 extends Panel
 
-const DROP_OFFSET = 10.0
-
 var im := ItemManager
 var data: ItemData
 
@@ -23,6 +21,13 @@ var prev_slot: Vector2
 func _process(_delta: float) -> void:
 	if mouse_dragging:
 		global_position = get_global_mouse_position() - mouse_offset
+
+	if not im.context_menu_open:
+		bg.modulate = (
+			Color(1.5, 1.5, 1.5, 0.784)
+			if im.hovered_item == data
+			else Color(1.0, 1.0, 1.0)
+		)
 
 
 func _input(event: InputEvent) -> void:
@@ -53,16 +58,7 @@ func _input(event: InputEvent) -> void:
 					position = new_position
 				else:
 					# drop item
-					im.remove_item(data)
-					var spawn_pos: Vector2 = get_tree() \
-							.get_first_node_in_group("unique_player") \
-							.global_position
-					spawn_pos += Vector2(
-						randf_range(-DROP_OFFSET * 1.5, DROP_OFFSET * 1.5),
-						randf_range(-DROP_OFFSET / 2, -DROP_OFFSET),
-					)
-					im.spawn_item(data, spawn_pos)
-					queue_free()
+					im.drop_item(data)
 
 		# check if item rotation key pressed
 		if mouse_dragging and Input.is_action_just_pressed("ui_rotate_item"):
@@ -92,11 +88,11 @@ func setup(item_data: ItemData) -> void:
 
 func _on_mouse_entered() -> void:
 	mouse_hovered = true
-
-	bg.modulate = Color(1.5, 1.5, 1.5, 0.784)
+	im.hovered_item = data
+	if not im.context_menu_open:
+		im.context_menu_item = data
 
 
 func _on_mouse_exited() -> void:
 	mouse_hovered = false
-
-	bg.modulate = Color(1.0, 1.0, 1.0)
+	im.hovered_item = null

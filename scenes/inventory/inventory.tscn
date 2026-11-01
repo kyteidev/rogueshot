@@ -50,7 +50,7 @@ theme_override_constants/h_separation = 0
 theme_override_constants/v_separation = 0
 columns = 4
 
-[node name="ItemsContainer" type="Control" parent="InventoryContainer" unique_id=1544943345]
+[node name="ItemsContainer" type="Control" parent="InventoryContainer" unique_id=1544943345 groups=["unique_inventory_items"]]
 anchors_preset = 0
 offset_left = 320.0
 offset_top = 60.0
