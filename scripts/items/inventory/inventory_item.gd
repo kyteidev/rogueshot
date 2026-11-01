@@ -85,7 +85,7 @@ func _input(event: InputEvent) -> void:
 						else:
 							position = im.slot_to_pos(prev_slot)
 					elif im.hovered_equipment != "":
-						var old_slot: String = im.equipped_items.find_key(data)
+						var old_slot: Variant = im.equipped_items.find_key(data)
 						if old_slot != null:
 							im.unequip_item(old_slot)
 						im.remove_item(data, false)
@@ -101,7 +101,6 @@ func _input(event: InputEvent) -> void:
 						im.equip_item(im.hovered_equipment, data)
 
 						prev_pos = global_position
-						print(prev_slot)
 					else:
 						im.drop_item(data)
 

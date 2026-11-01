@@ -12,6 +12,10 @@ const SLOT_TYPES := {
 	"Goggles": ItemData.ItemType.GOGGLES,
 }
 
+const EMPTY_COLOR = Color("ffffff00")
+const HOVERED_COLOR = Color("ffffff37")
+const EQUIPPED_COLOR = Color("342945")
+
 var im := ItemManager
 
 
@@ -20,30 +24,33 @@ func _ready() -> void:
 	if im.equipment_bounds.is_empty():
 		for child in get_children():
 			im.equipment_bounds[child.name] = { "pos": child.global_position, "size": child.size }
-
-			var orig_alpha: float = child.modulate.a
-			print(orig_alpha)
 			child.modulate.a = 0.0
 
-			child.mouse_entered.connect(
-				func() -> void:
-					if (
-						im.dragging_item and im.hovered_item
-						and im.hovered_item.type == SLOT_TYPES[child.name]
-					):
-						child.modulate = Color(1.0, 1.0, 1.0, orig_alpha)
-						im.hovered_equipment = child.name,
-			)
-			child.mouse_exited.connect(
-				func() -> void:
-					if im.dragging_item:
-						child.modulate = Color(1.0, 1.0, 1.0, 0.0)
-						im.hovered_equipment = "",
-			)
 
-
+# this code is so fucking bad and unreadble
+# future me: dont touch this pls <3
 func _process(_delta: float) -> void:
-	if not im.dragging_item:
-		for child in get_children():
-			if child.name in im.equipped_items.keys():
-				child.modulate = Color("342945")
+	var mouse_pos: Vector2 = get_global_mouse_position()
+	var hovered := ""
+
+	for child in get_children():
+		var color: Color = (
+			EQUIPPED_COLOR
+			if (child.name in im.equipped_items.keys() and not im.dragging_item)
+			else EMPTY_COLOR
+		)
+		var occupant: ItemData = im.equipped_items.get(child.name)
+		# check if mouse is hovering over equipment slot
+		if im.dragging_item and im.hovered_item:
+			if (
+				mouse_pos.x >= child.global_position.x and mouse_pos.y >= child.global_position.y
+				and mouse_pos.x <= child.global_position.x + child.size.x
+				and mouse_pos.y <= child.global_position.y + child.size.y
+			):
+				if (im.hovered_item.type == SLOT_TYPES[child.name]):
+					if not occupant or occupant == im.hovered_item:
+						color = HOVERED_COLOR
+						hovered = child.name
+
+		child.modulate = color
+	im.hovered_equipment = hovered
