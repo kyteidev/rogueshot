@@ -11,6 +11,7 @@ const FADE_DURATION = 0.1
 @export var enemy: CharacterBody2D
 
 var sm := StateManager
+var im := ItemManager
 var om := OptionsManager
 
 var displayed_health_loss := 100.0
@@ -33,6 +34,8 @@ var health_tween: Tween
 @onready var secondary_weapon: TextureRect = $EquippedWeaponsContainer/EquippedContainer/Secondary
 @onready var primary_weapon_keybind: Label = $EquippedWeaponsContainer/EquippedContainer/Primary/KeybindLabel
 @onready var secondary_weapon_keybind: Label = $EquippedWeaponsContainer/EquippedContainer/Secondary/KeybindLabel
+@onready var primary_weapon_outline: TextureRect = $EquippedWeaponsContainer/EquippedOutlineContainer/Primary
+@onready var secondary_weapon_outline: TextureRect = $EquippedWeaponsContainer/EquippedOutlineContainer/Secondary
 
 @onready var action_hint_label: Label = $ActionHint
 
@@ -107,6 +110,12 @@ func _process(delta: float) -> void:
 			else BASE_WEAPON_COLOR
 	secondary_weapon.modulate = EQUIPPED_WEAPON_COLOR if weapon.weapon_index == 1 \
 			else BASE_WEAPON_COLOR
+
+	primary_weapon.visible = true if im.equipped_weapons[0] else false
+	primary_weapon_outline.visible = true if im.equipped_weapons[0] else false
+
+	secondary_weapon.visible = true if im.equipped_weapons[1] else false
+	secondary_weapon_outline.visible = true if im.equipped_weapons[1] else false
 
 	# update keybind
 	primary_weapon_keybind.text = om.get_option("weapon_primary")

@@ -199,7 +199,7 @@ scale = Vector2(2, 2)
 
 [node name="EquippedContainer" type="VBoxContainer" parent="EquippedWeaponsContainer" unique_id=1303273148]
 layout_mode = 2
-alignment = 1
+alignment = 2
 
 [node name="Primary" type="TextureRect" parent="EquippedWeaponsContainer/EquippedContainer" unique_id=696587501]
 layout_mode = 2
@@ -249,7 +249,7 @@ vertical_alignment = 2
 
 [node name="EquippedOutlineContainer" type="VBoxContainer" parent="EquippedWeaponsContainer" unique_id=734681775]
 layout_mode = 2
-alignment = 1
+alignment = 2
 
 [node name="Primary" type="TextureRect" parent="EquippedWeaponsContainer/EquippedOutlineContainer" unique_id=1786874490]
 layout_mode = 2
