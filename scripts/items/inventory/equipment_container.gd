@@ -34,9 +34,13 @@ func _process(_delta: float) -> void:
 	var hovered := ""
 
 	for child in get_children():
+		# looking at this makes my brain hurt :(
 		var color: Color = (
 			EQUIPPED_COLOR
-			if (child.name in im.equipped_items.keys() and not im.dragging_item)
+			if (
+				child.name in im.equipped_items.keys()
+				and not (im.dragging_item and im.hovered_item == im.equipped_items[child.name])
+			)
 			else EMPTY_COLOR
 		)
 		var occupant: ItemData = im.equipped_items.get(child.name)
