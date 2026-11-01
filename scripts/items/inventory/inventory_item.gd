@@ -57,8 +57,10 @@ func _input(event: InputEvent) -> void:
 				if im.place_item(data, slot):
 					position = new_position
 				else:
-					# drop item
-					im.drop_item(data)
+					if im.in_bounds(slot, data.size):
+						position = im.slot_to_pos(prev_slot)
+					else:
+						im.drop_item(data)
 
 		# check if item rotation key pressed
 		if mouse_dragging and Input.is_action_just_pressed("ui_rotate_item"):

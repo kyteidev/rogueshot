@@ -92,7 +92,7 @@ func slot_to_pos(slot: Vector2) -> Vector2:
 	return slot * SLOT_SIZE
 
 
-func _in_bounds(slot: Vector2i, size: Vector2i) -> bool:
+func in_bounds(slot: Vector2i, size: Vector2i) -> bool:
 	# check if in bounds of inventory
 	return (
 		slot.x >= 0 and slot.y >= 0 and slot.x + size.x <= TOTAL_COLUMNS
@@ -101,7 +101,7 @@ func _in_bounds(slot: Vector2i, size: Vector2i) -> bool:
 
 
 func _can_place(item: ItemData, slot: Vector2i) -> bool:
-	if not _in_bounds(slot, item.size):
+	if not in_bounds(slot, item.size):
 		return false
 
 	# check if every slot the item occupies is free
