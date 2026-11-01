@@ -17,6 +17,7 @@ var saved_vars := false
 var prev_slot: Vector2
 
 @onready var icon: TextureRect = $Icon
+@onready var bg: ColorRect = $Background
 
 
 func _process(_delta: float) -> void:
@@ -92,6 +93,10 @@ func setup(item_data: ItemData) -> void:
 func _on_mouse_entered() -> void:
 	mouse_hovered = true
 
+	bg.modulate = Color(1.5, 1.5, 1.5, 0.784)
+
 
 func _on_mouse_exited() -> void:
 	mouse_hovered = false
+
+	bg.modulate = Color(1.0, 1.0, 1.0)
