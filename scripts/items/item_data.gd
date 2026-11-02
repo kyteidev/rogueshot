@@ -14,6 +14,25 @@ enum ItemType {
 	MAGAZINE,
 }
 
+enum Capability {
+	NONE = 0,
+	EQUIPPABLE = 1 << 0,
+	UNLOADABLE = 1 << 1,
+}
+
+const CAPABILITIES = {
+	ItemType.DEFAULT: Capability.NONE,
+	ItemType.PRIMARY_WEAPON: Capability.EQUIPPABLE | Capability.UNLOADABLE,
+	ItemType.SECONDARY_WEAPON: Capability.EQUIPPABLE | Capability.UNLOADABLE,
+	ItemType.HELMET: Capability.EQUIPPABLE,
+	ItemType.ARMOR: Capability.EQUIPPABLE,
+	ItemType.BACKPACK: Capability.EQUIPPABLE,
+	ItemType.MELEE: Capability.EQUIPPABLE,
+	ItemType.GRENADE: Capability.EQUIPPABLE,
+	ItemType.GOGGLES: Capability.EQUIPPABLE,
+	ItemType.MAGAZINE: Capability.UNLOADABLE,
+}
+
 # basic info
 @export var id: StringName
 @export var name := ""

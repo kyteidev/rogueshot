@@ -1,5 +1,11 @@
 extends Control
 
+enum Action {
+	DROP,
+	EQUIP,
+	UNLOAD,
+}
+
 enum MenuTypes {
 	DEFAULT,
 	EQUIPPABLE,
@@ -30,6 +36,8 @@ func _input(event: InputEvent) -> void:
 			im.context_menu_open = visible
 
 			if visible:
+				var item_type: ItemData.ItemType = im.context_menu_item.type
+				var item_capabilities: int = ItemData.CAPABILITIES[item_type]
 				_load_buttons()
 			else:
 				_unload_buttons()
