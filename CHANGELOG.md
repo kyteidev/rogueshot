@@ -1,4 +1,5 @@
 v0.1.0-dev.4:
+I broke reloading and the cycle weapon keybind when I switched to the inventory based weapons system :( will be fixed next update
 - added pickable items
 - added a context menu for the inventory
 - added ability to drop items from inventory
