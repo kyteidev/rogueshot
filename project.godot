@@ -48,6 +48,7 @@ folder_colors={
 "res://export/": "orange",
 "res://resources/": "green",
 "res://scenes/": "teal",
+"res://screenshots/": "pink",
 "res://scripts/": "blue",
 "res://shaders/": "purple"
 }

@@ -1,4 +1,4 @@
-LIST OF FINISHED FEATURES (updated Oct. 20 2026):
+LIST OF FINISHED FEATURES (updated Nov. 2 2026):
 - Build 1 (0.1.0-dev.1)
 	- Shooting
 		- Ammo
@@ -26,9 +26,14 @@ LIST OF FINISHED FEATURES (updated Oct. 20 2026):
 	- Player health
 	- Death screen (basic)
 	- Equipped weapon display
-- Build 3 (0.1.0-dev.3)
+- Build 3 (0.1.0-dev.3) MIGHT BE INCOMPLETE! WILL CHECK LATER!!!
 	- Partial damage system
 	- Weapon muzzle flash, sparks, bullet impact particles
 	- "Facing lock" system
 	- Enemy status text
 	- Options menu (not many settings exist yet though)
+- Build 4 (0.1.0-dev.4)
+	- Primary and secondary weapon equipping
+	- Item picking and dropping
+	- Enemy item drops
+	- Inventory context menu (basic)

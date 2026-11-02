@@ -16,6 +16,12 @@ To see full list of finished features, see FEATURES.md
 
 NOTE: FEATURES.md only lists the features that are finished. To see the full changelog, see CHANGELOG.md
 
+
+### SCREENSHOTS
+!(In game)[./screenshots/1.png]
+!(Inventory screen)[./screenshots/2.png]
+
+
 ### THIRD PARTY ASSETS
 - Groundhog font by ChevyRay - https://chevyray.itch.io/pixel-font-groundhog
 - Cyberpunk Tileset - 16X16 by MORDA - https://morda-studios.itch.io/cyberpunk-tileset-16x16?download

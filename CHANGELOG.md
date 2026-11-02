@@ -1,3 +1,15 @@
+v0.1.0-dev.4:
+- added pickable items
+- added a context menu for the inventory
+- added ability to drop items from inventory
+- added ability to equip items in inventory (currently primary and secondary weapons)
+- fixed player able to rotate item when hovered but not dragged
+- fixed the buggy inventory item dragging system
+- fixed player able to equip same weapon repeatedly
+- made enemies drop their weapon on death
+- made player inventory reset after death
+
+
 v0.1.0-dev.3:
 - added outline to weapon display
 - added partial damage (crosshair over enemy for full damage)
@@ -18,6 +30,7 @@ v0.1.0-dev.3:
 - tweaked health bar label
 - removed extra keybinds, might be added back later
 
+
 v0.1.0-dev.2:
 - added proper reload
 - added weapon-specific reload times
@@ -34,6 +47,7 @@ v0.1.0-dev.2:
 - added equipped weapon display
 - fixed numerous bugs
 - made player movement better
+
 
 v0.1.0-dev.1:
 - release!
