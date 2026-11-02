@@ -12,7 +12,7 @@
 [ext_resource type="Script" uid="uid://coqypqa0006b" path="res://scripts/items/item_data.gd" id="9_7exj4"]
 [ext_resource type="PackedScene" uid="uid://b7bcawpls2ixa" path="res://scenes/transitions/transition_circle.tscn" id="9_bdsyy"]
 [ext_resource type="Texture2D" uid="uid://cws70ra7slkq6" path="res://assets/sprites/weapons/pistol.png" id="10_vhi7h"]
-[ext_resource type="Script" uid="uid://fn8hix2hcrvm" path="res://scenes/weapons/weapon_data.gd" id="11_ga63x"]
+[ext_resource type="Script" uid="uid://fn8hix2hcrvm" path="res://scripts/weapon/weapon_data.gd" id="11_ga63x"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_hpfpv"]
 texture = ExtResource("2_17cyv")
