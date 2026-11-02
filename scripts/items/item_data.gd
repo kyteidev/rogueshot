@@ -11,6 +11,7 @@ enum ItemType {
 	MELEE,
 	GRENADE,
 	GOGGLES,
+	MAGAZINE,
 }
 
 # basic info
