@@ -18,8 +18,8 @@ NOTE: FEATURES.md only lists the features that are finished. To see the full cha
 
 
 ### SCREENSHOTS
-!(In game)[./screenshots/1.png]
-!(Inventory screen)[./screenshots/2.png]
+![In game](./screenshots/1.png)
+![Inventory screen](./screenshots/2.png)
 
 
 ### THIRD PARTY ASSETS
