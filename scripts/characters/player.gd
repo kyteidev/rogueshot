@@ -189,20 +189,7 @@ func _physics_process(delta: float) -> void:
 			move_and_slide()
 		elif not started_death_sequence:
 			started_death_sequence = true
-
-			# make player red when dead
-			anim_sprite.play("death")
-			weapon.fade_weapon()
-			collision.disabled = true
-
-			# fade stamina bar
-			var stamina_hide_fade_tween := create_tween()
-			stamina_hide_fade_tween.tween_property(stamina_bar_outline, "modulate", Color(
-				"ffffff00"
-			), 0.25) \
-					.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
-
-			anim_sprite.animation_finished.connect(death_timer.start)
+			_player_death()
 		return
 
 	# player jump system
@@ -369,6 +356,22 @@ func _get_custom_gravity(vel: Vector2) -> float:
 func _on_death_timer_timeout() -> void:
 	var scene: PackedScene = preload("res://scenes/menus/death_menu.tscn")
 	transition.start_transition(scene)
+
+
+func _player_death() -> void:
+	# make player red when dead
+	anim_sprite.play("death")
+	weapon.fade_weapon()
+	collision.disabled = true
+
+	im.reset_inventory()
+
+	# fade stamina bar
+	var stamina_hide_fade_tween := create_tween()
+	stamina_hide_fade_tween.tween_property(stamina_bar_outline, "modulate", Color("ffffff00"), 0.25) \
+			.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+
+	anim_sprite.animation_finished.connect(death_timer.start)
 
 
 func _update_stamina_bar(delta: float) -> void:

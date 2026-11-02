@@ -122,6 +122,24 @@ func unequip_item(equipment_slot: String) -> void:
 		weapon_unequipped.emit()
 
 
+func reset_inventory() -> void:
+	inventory = { }
+	equipped_items = { }
+	equipped_weapons = [null, null]
+
+	hovered_item = null
+	context_menu_item = null
+	context_menu_open = false
+	dragging_item = false
+	hovered_equipment = ""
+
+	var inventory_items_container: Control = get_tree().get_first_node_in_group(
+		"unique_inventory_items"
+	)
+	for child in inventory_items_container.get_children():
+		child.queue_free()
+
+
 func pos_to_slot(pos: Vector2) -> Vector2:
 	return floor(pos / SLOT_SIZE)
 
