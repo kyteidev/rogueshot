@@ -37,3 +37,4 @@ LIST OF FINISHED FEATURES (updated Nov. 2 2026):
 	- Item picking and dropping
 	- Enemy item drops
 	- Inventory context menu (basic)
+ 	- RELOADING AND CYCLE WEAPON KEYBIND IS BROKEN (for now)
