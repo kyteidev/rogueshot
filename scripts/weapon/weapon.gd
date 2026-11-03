@@ -170,8 +170,21 @@ func _input(_event: InputEvent) -> void:
 
 	# weapon switching
 	if Input.is_action_just_pressed("weapon_cycle"):
-		var next_index: int = (weapon_index + 1) % 2
-		_equip_weapon(next_index)
+		var next_index: int
+		var equipped := false
+		for i in range(1, im.equipped_weapons.size() + 1):
+			next_index = (weapon_index + i) % 2
+
+			if im.equipped_weapons.get(next_index) != null:
+				if next_index == weapon_index:
+					continue
+
+				equipped = true
+				_equip_weapon(next_index)
+				break
+
+		if not equipped:
+			_equip_weapon(-1)
 
 	# manually select primary/secondary weapon
 	if Input.is_action_just_pressed("weapon_primary"):
