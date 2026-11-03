@@ -1,18 +1,5 @@
 extends Control
 
-enum Action {
-	DROP,
-	EQUIP,
-	UNLOAD,
-}
-
-enum MenuTypes {
-	DEFAULT,
-	EQUIPPABLE,
-	UNLOADABLE,
-}
-
-var menu_type := MenuTypes.DEFAULT
 var menu_size := Vector2.ZERO
 
 var im := ItemManager
@@ -38,7 +25,7 @@ func _input(event: InputEvent) -> void:
 			if visible:
 				var item_type: ItemData.ItemType = im.context_menu_item.type
 				var item_capabilities: int = ItemData.CAPABILITIES[item_type]
-				_load_buttons()
+				_load_buttons(item_capabilities)
 			else:
 				_unload_buttons()
 		# hide if LMB pressed
@@ -56,37 +43,27 @@ func _input(event: InputEvent) -> void:
 				_unload_buttons()
 
 
-func _load_buttons() -> void:
+func _load_buttons(capabilities: int) -> void:
 	# load buttons for each menu type
 	var button_count: int = 0
-	if menu_type != MenuTypes.DEFAULT:
-		var special_button: Button = button_scene.instantiate()
-		match menu_type:
-			MenuTypes.EQUIPPABLE:
-				special_button.text = "Equip"
-			MenuTypes.UNLOADABLE:
-				special_button.text = "Unload"
-		add_child(special_button)
+	for action_name: String in ItemData.Capability:
+		var action: ItemData.Capability = ItemData.Capability[action_name]
+		if (capabilities & action) == 0:
+			continue
+
+		var button: Button = button_scene.instantiate()
+		button.text = action_name.capitalize()
+		add_child(button)
+		button.pressed.connect(
+			func() -> void:
+				_button_functions(button.text),
+		)
+
 		button_count += 1
 
-	# all menu types have these buttons
-	var button: Button = button_scene.instantiate()
-	button.text = "Drop"
-	add_child(button)
-	button_count += 1
-
-	# calculate size of context menu
-	menu_size.x = button.size.x
-	menu_size.y = button.size.y * button_count
-
-	# add functionality to the buttons
-	# loop over contents of get_children
-	# because i might add more context menu buttons in the future
-	for context_button in get_children():
-		context_button.pressed.connect(
-			func() -> void:
-				_button_functions(context_button.text),
-		)
+		# calculate size of context menu
+		menu_size.x = button.size.x
+		menu_size.y = button.size.y * button_count
 
 
 func _unload_buttons() -> void:

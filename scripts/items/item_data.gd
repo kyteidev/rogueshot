@@ -15,22 +15,22 @@ enum ItemType {
 }
 
 enum Capability {
-	NONE = 0,
-	EQUIPPABLE = 1 << 0,
-	UNLOADABLE = 1 << 1,
+	EQUIP = 1 << 0,
+	UNLOAD = 1 << 1,
+	DROP = 1 << 2,
 }
 
 const CAPABILITIES = {
-	ItemType.DEFAULT: Capability.NONE,
-	ItemType.PRIMARY_WEAPON: Capability.EQUIPPABLE | Capability.UNLOADABLE,
-	ItemType.SECONDARY_WEAPON: Capability.EQUIPPABLE | Capability.UNLOADABLE,
-	ItemType.HELMET: Capability.EQUIPPABLE,
-	ItemType.ARMOR: Capability.EQUIPPABLE,
-	ItemType.BACKPACK: Capability.EQUIPPABLE,
-	ItemType.MELEE: Capability.EQUIPPABLE,
-	ItemType.GRENADE: Capability.EQUIPPABLE,
-	ItemType.GOGGLES: Capability.EQUIPPABLE,
-	ItemType.MAGAZINE: Capability.UNLOADABLE,
+	ItemType.DEFAULT: Capability.DROP,
+	ItemType.PRIMARY_WEAPON: Capability.EQUIP | Capability.UNLOAD | Capability.DROP,
+	ItemType.SECONDARY_WEAPON: Capability.EQUIP | Capability.UNLOAD | Capability.DROP,
+	ItemType.HELMET: Capability.EQUIP,
+	ItemType.ARMOR: Capability.EQUIP,
+	ItemType.BACKPACK: Capability.EQUIP,
+	ItemType.MELEE: Capability.EQUIP,
+	ItemType.GRENADE: Capability.EQUIP,
+	ItemType.GOGGLES: Capability.EQUIP,
+	ItemType.MAGAZINE: Capability.UNLOAD,
 }
 
 # basic info
