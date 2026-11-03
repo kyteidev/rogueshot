@@ -71,6 +71,10 @@ func remove_item(item: ItemData, destroy_item := true) -> void:
 			if child.data == item:
 				child.queue_free()
 
+	var equipped_slot: Variant = equipped_items.find_key(item)
+	if equipped_slot:
+		unequip_item(equipped_slot)
+
 
 func spawn_item(item_data: ItemData, position: Vector2) -> void:
 	var inst := ITEM_SCENE.instantiate()
