@@ -30,12 +30,12 @@ func _process(_delta: float) -> void:
 			and mouse_pos.y <= global_position.y + size.y
 		):
 			mouse_hovered = true
-			im.hovered_item = data
+			im.hovered_item = self
 			if not im.context_menu_open:
 				im.context_menu_item = data
 		else:
 			mouse_hovered = false
-			if im.hovered_item == data:
+			if im.hovered_item and im.hovered_item.data == data:
 				im.hovered_item = null
 
 	if mouse_dragging:
@@ -44,7 +44,7 @@ func _process(_delta: float) -> void:
 	if not im.context_menu_open:
 		bg.modulate = (
 			Color(1.5, 1.5, 1.5, 0.784)
-			if im.hovered_item == data
+			if im.hovered_item and im.hovered_item.data == data
 			else Color(1.0, 1.0, 1.0)
 		)
 
@@ -85,25 +85,7 @@ func _input(event: InputEvent) -> void:
 						else:
 							position = im.slot_to_pos(prev_slot)
 					elif im.hovered_equipment != "":
-						if data.rotated:
-							_rotate()
-
-						var old_slot: Variant = im.equipped_items.find_key(data)
-						if old_slot != null:
-							im.unequip_item(old_slot)
-						im.remove_item(data, false)
-
-						var equipment_data: Dictionary = im.equipment_bounds[im.hovered_equipment]
-						var equipment_slot_pos: Vector2 = equipment_data["pos"]
-						var equipment_slot_size: Vector2 = equipment_data["size"]
-						global_position.x = equipment_slot_pos.x + (equipment_slot_size.x - size.x) / 2
-						global_position.y = equipment_slot_pos.y
-
-						bg.modulate.a = 0.0
-
-						im.equip_item(im.hovered_equipment, data)
-
-						prev_pos = global_position
+						equip_item()
 					else:
 						var equipped_slot: Variant = im.equipped_items.find_key(data)
 						if equipped_slot:
@@ -121,6 +103,41 @@ func setup(item_data: ItemData) -> void:
 	size = custom_minimum_size
 	icon.texture = data.icon
 	position = im.slot_to_pos(data.slot)
+
+
+func equip_item() -> void:
+	if data.rotated:
+		_rotate()
+
+	var old_slot: Variant = im.equipped_items.find_key(data)
+	if old_slot != null:
+		im.unequip_item(old_slot)
+	im.remove_item(data, false)
+
+	var correct_equipment_slot: String
+	if not im.hovered_equipment:
+		var equipment_container: Control = get_tree().get_first_node_in_group(
+			"unique_inventory_equipment"
+		)
+		for child in equipment_container.get_children():
+			if (
+				im.hovered_item
+				and im.hovered_item.data.type == equipment_container.SLOT_TYPES[child.name]
+			):
+				correct_equipment_slot = child.name
+	var equipment_slot_data: Dictionary = im.equipment_bounds[
+		im.hovered_equipment if im.hovered_equipment else correct_equipment_slot
+	]
+	var equipment_slot_pos: Vector2 = equipment_slot_data["pos"]
+	var equipment_slot_size: Vector2 = equipment_slot_data["size"]
+	global_position.x = equipment_slot_pos.x + (equipment_slot_size.x - size.x) / 2
+	global_position.y = equipment_slot_pos.y
+
+	bg.modulate.a = 0.0
+
+	im.equip_item(im.hovered_equipment, data)
+
+	prev_pos = global_position
 
 
 func _rotate() -> void:

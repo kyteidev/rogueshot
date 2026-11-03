@@ -39,7 +39,10 @@ func _process(_delta: float) -> void:
 			EQUIPPED_COLOR
 			if (
 				child.name in im.equipped_items.keys()
-				and not (im.dragging_item and im.hovered_item == im.equipped_items[child.name])
+				and not (
+					im.dragging_item and im.hovered_item
+					and im.hovered_item.data == im.equipped_items[child.name]
+				)
 			)
 			else EMPTY_COLOR
 		)
@@ -51,8 +54,8 @@ func _process(_delta: float) -> void:
 				and mouse_pos.x <= child.global_position.x + child.size.x
 				and mouse_pos.y <= child.global_position.y + child.size.y
 			):
-				if (im.hovered_item.type == SLOT_TYPES[child.name]):
-					if not occupant or occupant == im.hovered_item:
+				if (im.hovered_item.data.type == SLOT_TYPES[child.name]):
+					if not occupant or occupant == im.hovered_item.data:
 						color = HOVERED_COLOR
 						hovered = child.name
 

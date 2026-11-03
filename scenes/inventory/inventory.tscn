@@ -58,7 +58,7 @@ offset_right = 584.0
 offset_bottom = 280.0
 mouse_filter = 2
 
-[node name="EquipmentContainer" type="Control" parent="InventoryContainer" unique_id=872702172]
+[node name="EquipmentContainer" type="Control" parent="InventoryContainer" unique_id=872702172 groups=["unique_inventory_equipment"]]
 anchors_preset = 0
 offset_left = 56.0
 offset_top = 32.0

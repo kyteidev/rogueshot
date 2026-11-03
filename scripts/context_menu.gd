@@ -79,7 +79,8 @@ func _unload_buttons() -> void:
 func _button_functions(button_name: String) -> void:
 	match button_name:
 		"Equip":
-			pass
+			if im.hovered_item:
+				im.hovered_item.equip_item()
 		"Unload":
 			pass
 		"Drop":
