@@ -18,10 +18,14 @@ var prev_pos: Vector2
 
 @onready var icon: TextureRect = $Icon
 @onready var bg: ColorRect = $Background
-@onready var item_label: Label = $MarginContainer/Label
+@onready var item_label: Label = $ItemName/Label
+@onready var count_label: Label = $ItemCount/Label
 
 
 func _process(_delta: float) -> void:
+	# update item count label
+	count_label.text = str(data.count) if data.max_stack > 1 else ""
+
 	# check mouse hover
 	if mouse_has_entered:
 		var mouse_pos: Vector2 = get_global_mouse_position()
