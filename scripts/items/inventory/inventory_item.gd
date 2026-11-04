@@ -127,9 +127,9 @@ func equip_item() -> void:
 				and im.hovered_item.data.type == equipment_container.SLOT_TYPES[child.name]
 			):
 				correct_equipment_slot = child.name
-	var equipment_slot_data: Dictionary = im.equipment_bounds[
-		im.hovered_equipment if im.hovered_equipment else correct_equipment_slot
-	]
+	else:
+		correct_equipment_slot = im.hovered_equipment
+	var equipment_slot_data: Dictionary = im.equipment_bounds[correct_equipment_slot]
 	var equipment_slot_pos: Vector2 = equipment_slot_data["pos"]
 	var equipment_slot_size: Vector2 = equipment_slot_data["size"]
 	global_position.x = equipment_slot_pos.x + (equipment_slot_size.x - size.x) / 2
@@ -137,7 +137,7 @@ func equip_item() -> void:
 
 	bg.modulate.a = 0.0
 
-	im.equip_item(im.hovered_equipment, data)
+	im.equip_item(correct_equipment_slot, data)
 
 	prev_pos = global_position
 
