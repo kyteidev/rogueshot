@@ -14,8 +14,8 @@ const DROP_RAND_ROT = 0.6
 
 const ITEM_SCENE = preload("res://scenes/item.tscn")
 
-var inventory := { }
-var equipped_items := { }
+var inventory := { } # { Slot pos: ItemData }
+var equipped_items := { } # { "Equipment slot": ItemData }
 var equipment_bounds := { }
 
 var equipped_weapons := [null, null]

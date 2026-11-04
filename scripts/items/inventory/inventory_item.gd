@@ -18,11 +18,16 @@ var prev_pos: Vector2
 
 @onready var icon: TextureRect = $Icon
 @onready var bg: ColorRect = $Background
+@onready var item_label: Label = $ItemName/Label
+@onready var count_label: Label = $ItemCount/Label
 
 
 func _process(_delta: float) -> void:
+	# update item count label
+	count_label.text = str(data.count) if data.max_stack > 1 else ""
+
 	# check mouse hover
-	if mouse_has_entered:
+	if mouse_has_entered and not im.dragging_item:
 		var mouse_pos: Vector2 = get_global_mouse_position()
 		if (
 			mouse_pos.x >= global_position.x and mouse_pos.y >= global_position.y
@@ -102,6 +107,7 @@ func setup(item_data: ItemData) -> void:
 	custom_minimum_size = data.size * im.SLOT_SIZE
 	size = custom_minimum_size
 	icon.texture = data.icon
+	item_label.text = data.name
 	position = im.slot_to_pos(data.slot)
 
 
@@ -125,9 +131,9 @@ func equip_item() -> void:
 				and im.hovered_item.data.type == equipment_container.SLOT_TYPES[child.name]
 			):
 				correct_equipment_slot = child.name
-	var equipment_slot_data: Dictionary = im.equipment_bounds[
-		im.hovered_equipment if im.hovered_equipment else correct_equipment_slot
-	]
+	else:
+		correct_equipment_slot = im.hovered_equipment
+	var equipment_slot_data: Dictionary = im.equipment_bounds[correct_equipment_slot]
 	var equipment_slot_pos: Vector2 = equipment_slot_data["pos"]
 	var equipment_slot_size: Vector2 = equipment_slot_data["size"]
 	global_position.x = equipment_slot_pos.x + (equipment_slot_size.x - size.x) / 2
@@ -135,9 +141,14 @@ func equip_item() -> void:
 
 	bg.modulate.a = 0.0
 
-	im.equip_item(im.hovered_equipment, data)
+	im.equip_item(correct_equipment_slot, data)
 
 	prev_pos = global_position
+
+
+func unequip_item() -> void:
+	im.remove_item(data)
+	im.add_item(data)
 
 
 func _rotate() -> void:
