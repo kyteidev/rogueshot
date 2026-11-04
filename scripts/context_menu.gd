@@ -52,7 +52,12 @@ func _load_buttons(capabilities: int) -> void:
 			continue
 
 		var button: Button = button_scene.instantiate()
-		button.text = action_name.capitalize()
+		var button_text: String = action_name.capitalize()
+		if button_text == "Equip" and im.context_menu_item in im.equipped_items.values():
+			button_text = "Unequip"
+
+		button.text = button_text
+
 		add_child(button)
 		button.pressed.connect(
 			func() -> void:
@@ -81,6 +86,9 @@ func _button_functions(button_name: String) -> void:
 		"Equip":
 			if im.hovered_item:
 				im.hovered_item.equip_item()
+		"Unequip":
+			if im.hovered_item:
+				im.hovered_item.unequip_item()
 		"Unload":
 			pass
 		"Drop":

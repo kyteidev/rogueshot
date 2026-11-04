@@ -12,7 +12,8 @@ bg_color = Color(0.20392157, 0.16078432, 0.27058825, 1)
 bg_color = Color(0.5568628, 0.44705883, 0.6039216, 1)
 
 [node name="ContextMenuButton" type="Button" unique_id=139826522]
-offset_right = 45.0
+custom_minimum_size = Vector2(50, 15)
+offset_right = 50.0
 offset_bottom = 15.0
 theme_override_fonts/font = ExtResource("1_2iqij")
 theme_override_font_sizes/font_size = 12

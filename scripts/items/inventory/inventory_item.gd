@@ -140,6 +140,11 @@ func equip_item() -> void:
 	prev_pos = global_position
 
 
+func unequip_item() -> void:
+	im.remove_item(data)
+	im.add_item(data)
+
+
 func _rotate() -> void:
 	var old_size: Vector2 = im.slot_to_pos(data.size)
 	data.rotated = not data.rotated
