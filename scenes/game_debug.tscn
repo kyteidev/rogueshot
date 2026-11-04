@@ -39,7 +39,7 @@ metadata/_custom_type_script = "uid://fn8hix2hcrvm"
 [sub_resource type="Resource" id="Resource_vhi7h"]
 script = ExtResource("9_7exj4")
 id = &"pistol"
-name = "pistol"
+name = "Pistol"
 type = 2
 type_data = SubResource("Resource_nqevj")
 icon = ExtResource("10_vhi7h")
