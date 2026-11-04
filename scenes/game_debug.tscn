@@ -13,6 +13,7 @@
 [ext_resource type="PackedScene" uid="uid://b7bcawpls2ixa" path="res://scenes/transitions/transition_circle.tscn" id="9_bdsyy"]
 [ext_resource type="Texture2D" uid="uid://cws70ra7slkq6" path="res://assets/sprites/weapons/pistol.png" id="10_vhi7h"]
 [ext_resource type="Script" uid="uid://fn8hix2hcrvm" path="res://scripts/items/type_data/weapon_data.gd" id="11_ga63x"]
+[ext_resource type="Script" uid="uid://bljf4ckjb0kgb" path="res://scripts/items/type_data/mag_data.gd" id="12_sm6th"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_hpfpv"]
 texture = ExtResource("2_17cyv")
@@ -47,6 +48,19 @@ scale = 0.75
 size = Vector2i(3, 2)
 metadata/_custom_type_script = "uid://coqypqa0006b"
 
+[sub_resource type="Resource" id="Resource_ga63x"]
+script = ExtResource("12_sm6th")
+ammo = 30
+metadata/_custom_type_script = "uid://bljf4ckjb0kgb"
+
+[sub_resource type="Resource" id="Resource_f0ik5"]
+script = ExtResource("9_7exj4")
+id = &"rifle1_mag"
+name = "Mag"
+type_data = SubResource("Resource_ga63x")
+size = Vector2i(1, 2)
+metadata/_custom_type_script = "uid://coqypqa0006b"
+
 [node name="Game Debug" type="Node2D" unique_id=1078131783]
 
 [node name="Background" parent="." unique_id=1305377215 instance=ExtResource("1_hpfpv")]
@@ -79,7 +93,7 @@ visible = false
 
 [node name="Inventory" parent="." unique_id=1946403224 node_paths=PackedStringArray("crosshair") instance=ExtResource("7_ylwvt")]
 crosshair = NodePath("../CrosshairCanvas")
-starting_items = Array[ExtResource("9_7exj4")]([SubResource("Resource_vhi7h")])
+starting_items = Array[ExtResource("9_7exj4")]([SubResource("Resource_vhi7h"), SubResource("Resource_f0ik5")])
 
 [node name="PauseManu" parent="." unique_id=1248834952 node_paths=PackedStringArray("crosshair", "inventory") instance=ExtResource("5_d1y6d")]
 visible = false

@@ -42,11 +42,17 @@ const WEAPON_STATS = {
 	set(value):
 		weapon_name = value
 		_apply_values()
+@export var mag_attached := false
+@export var round_chambered := false
+@export var total_ammo: int:
+	set(value):
+		total_ammo = value
+		# SET AMMO COUNT IN MAG TO BE value - 1 if round_chambered else 0
 
+# WEAPON STATS
 var damage: int
 var fire_rate: float
 var mag_size: int
-var total_mags: int
 var kick: float
 var kick_recovery: float
 var spread: float
@@ -57,7 +63,6 @@ var camera_shake: float
 var heat: float
 var cooling_rate: float
 var speed_multiplier: float
-
 var weapon_scene: PackedScene
 
 
