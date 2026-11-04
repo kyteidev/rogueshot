@@ -27,7 +27,7 @@ func _process(_delta: float) -> void:
 	count_label.text = str(data.count) if data.max_stack > 1 else ""
 
 	# check mouse hover
-	if mouse_has_entered:
+	if mouse_has_entered and not im.dragging_item:
 		var mouse_pos: Vector2 = get_global_mouse_position()
 		if (
 			mouse_pos.x >= global_position.x and mouse_pos.y >= global_position.y
