@@ -6,6 +6,8 @@
 [sub_resource type="LabelSettings" id="LabelSettings_vjox6"]
 font = ExtResource("2_g5m5k")
 font_size = 8
+outline_size = 3
+outline_color = Color(0.08235294, 0.039215688, 0.20392157, 1)
 
 [node name="InventoryItem" type="Panel" unique_id=475894686]
 self_modulate = Color(1, 1, 1, 0)
@@ -36,11 +38,11 @@ layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
-offset_top = -14.0
-offset_right = 41.0
+offset_top = -11.0
+offset_right = 43.0
 grow_vertical = 0
-theme_override_constants/margin_left = 4
-theme_override_constants/margin_bottom = 2
+theme_override_constants/margin_left = 2
+theme_override_constants/margin_bottom = 1
 
 [node name="Label" type="Label" parent="ItemName" unique_id=353429693]
 layout_mode = 2
@@ -54,10 +56,10 @@ anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
 offset_left = -49.0
-offset_bottom = 16.0
+offset_bottom = 11.0
 grow_horizontal = 0
-theme_override_constants/margin_top = 2
-theme_override_constants/margin_right = 4
+theme_override_constants/margin_top = 1
+theme_override_constants/margin_right = 2
 
 [node name="Label" type="Label" parent="ItemCount" unique_id=723257862]
 layout_mode = 2
