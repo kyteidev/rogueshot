@@ -1,6 +1,11 @@
 [gd_scene format=3 uid="uid://bpv2mit2hwr4k"]
 
 [ext_resource type="Script" uid="uid://d6h86jkhfenr" path="res://scripts/items/inventory/inventory_item.gd" id="1_u6pog"]
+[ext_resource type="FontFile" uid="uid://4jxi61jcsc2c" path="res://assets/fonts/groundhog.ttf" id="2_g5m5k"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_vjox6"]
+font = ExtResource("2_g5m5k")
+font_size = 8
 
 [node name="InventoryItem" type="Panel" unique_id=475894686]
 self_modulate = Color(1, 1, 1, 0)
@@ -25,5 +30,22 @@ grow_horizontal = 2
 grow_vertical = 2
 expand_mode = 1
 stretch_mode = 5
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=561694779]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -14.0
+offset_right = 41.0
+grow_vertical = 0
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_bottom = 2
+
+[node name="Label" type="Label" parent="MarginContainer" unique_id=353429693]
+layout_mode = 2
+text = "lorem ipsum"
+label_settings = SubResource("LabelSettings_vjox6")
+vertical_alignment = 2
 
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]

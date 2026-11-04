@@ -18,6 +18,7 @@ var prev_pos: Vector2
 
 @onready var icon: TextureRect = $Icon
 @onready var bg: ColorRect = $Background
+@onready var item_label: Label = $MarginContainer/Label
 
 
 func _process(_delta: float) -> void:
@@ -102,6 +103,7 @@ func setup(item_data: ItemData) -> void:
 	custom_minimum_size = data.size * im.SLOT_SIZE
 	size = custom_minimum_size
 	icon.texture = data.icon
+	item_label.text = data.name
 	position = im.slot_to_pos(data.slot)
 
 
