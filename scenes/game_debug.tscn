@@ -78,6 +78,7 @@ type = 10
 type_data = SubResource("Resource_ai2no")
 icon = ExtResource("13_g363x")
 max_stack = 200
+scale = 0.2
 metadata/_custom_type_script = "uid://coqypqa0006b"
 
 [node name="Game Debug" type="Node2D" unique_id=1078131783]
