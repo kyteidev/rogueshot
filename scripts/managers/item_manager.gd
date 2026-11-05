@@ -21,6 +21,7 @@ var equipment_bounds := { }
 var equipped_weapons := [null, null]
 
 var hovered_item: InventoryItem
+var dragged_item: InventoryItem
 var context_menu_item: ItemData
 var context_menu_open := false
 

@@ -11,10 +11,13 @@ var mouse_dragging := false:
 	set(value):
 		mouse_dragging = value
 		im.dragging_item = value
+		im.dragged_item = self if value else null
 
 var saved_vars := false
 var prev_slot: Vector2
 var prev_pos: Vector2
+
+var drop_target := false
 
 @onready var icon: TextureRect = $Icon
 @onready var bg: ColorRect = $Background
@@ -29,21 +32,21 @@ func _process(_delta: float) -> void:
 	container_label.text = str(data.container_items.size()) if data.container else ""
 
 	# check mouse hover
-	if mouse_has_entered and not im.dragging_item:
-		var mouse_pos: Vector2 = get_global_mouse_position()
-		if (
-			mouse_pos.x >= global_position.x and mouse_pos.y >= global_position.y
-			and mouse_pos.x <= global_position.x + size.x
-			and mouse_pos.y <= global_position.y + size.y
-		):
-			mouse_hovered = true
+	var mouse_pos: Vector2 = get_global_mouse_position()
+	if (
+		mouse_pos.x >= global_position.x and mouse_pos.y >= global_position.y
+		and mouse_pos.x <= global_position.x + size.x and mouse_pos.y <= global_position.y + size.y
+	):
+		mouse_hovered = true
+
+		if not im.dragged_item or im.dragged_item == self:
 			im.hovered_item = self
 			if not im.context_menu_open:
 				im.context_menu_item = data
-		else:
-			mouse_hovered = false
-			if im.hovered_item and im.hovered_item.data == data:
-				im.hovered_item = null
+	else:
+		mouse_hovered = false
+		if im.hovered_item and im.hovered_item.data == data:
+			im.hovered_item = null
 
 	if mouse_dragging:
 		global_position = get_global_mouse_position() - mouse_offset
@@ -51,13 +54,18 @@ func _process(_delta: float) -> void:
 	if not im.context_menu_open:
 		bg.modulate = (
 			Color(1.5, 1.5, 1.5, 0.784)
-			if im.hovered_item and im.hovered_item.data == data
+			if (im.hovered_item and im.hovered_item.data == data)
+			or (
+				mouse_hovered and data.container and im.dragged_item != null
+				and im.dragged_item != self
+				and im.dragged_item.data.type == data.container_item_type
+			)
 			else Color(1.0, 1.0, 1.0)
 		)
 
 
 func _input(event: InputEvent) -> void:
-	if mouse_hovered:
+	if mouse_hovered and (not im.dragged_item or im.dragged_item == self):
 		# ignore if isn't left mouse button
 		if event is InputEventMouseButton and event.button_index == 1:
 			if event.is_pressed():
@@ -168,7 +176,3 @@ func _rotate() -> void:
 	icon.rotation = PI / 2 if data.rotated else 0.0
 
 	mouse_offset = size / 2
-
-
-func _on_mouse_entered() -> void:
-	mouse_has_entered = true

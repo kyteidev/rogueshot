@@ -78,5 +78,3 @@ theme_override_constants/margin_top = 1
 layout_mode = 2
 text = "1"
 label_settings = SubResource("LabelSettings_vjox6")
-
-[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
