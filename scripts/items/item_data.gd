@@ -56,4 +56,5 @@ const CAPABILITIES = {
 # container
 @export var container := false
 @export var container_item_type: ItemType
+@export var container_max_size: int = 0
 @export var container_items: Array[ItemData]
