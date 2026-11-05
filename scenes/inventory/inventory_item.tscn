@@ -67,4 +67,16 @@ text = "1"
 label_settings = SubResource("LabelSettings_vjox6")
 horizontal_alignment = 2
 
+[node name="ContainerCount" type="MarginContainer" parent="." unique_id=167122371]
+layout_mode = 1
+offset_right = 49.0
+offset_bottom = 11.0
+theme_override_constants/margin_left = 2
+theme_override_constants/margin_top = 1
+
+[node name="Label" type="Label" parent="ContainerCount" unique_id=135210087]
+layout_mode = 2
+text = "1"
+label_settings = SubResource("LabelSettings_vjox6")
+
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]

@@ -20,11 +20,13 @@ var prev_pos: Vector2
 @onready var bg: ColorRect = $Background
 @onready var item_label: Label = $ItemName/Label
 @onready var count_label: Label = $ItemCount/Label
+@onready var container_label: Label = $ContainerCount/Label
 
 
 func _process(_delta: float) -> void:
-	# update item count label
+	# update count labels
 	count_label.text = str(data.count) if data.max_stack > 1 else ""
+	container_label.text = str(data.container_items.size()) if data.container else ""
 
 	# check mouse hover
 	if mouse_has_entered and not im.dragging_item:
