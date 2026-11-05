@@ -5,6 +5,7 @@ const WEAPON_STATS = {
 	"pistol": {
 		"scene_path": "res://scenes/weapons/types/pistol.tscn",
 		"damage": 25,
+		"caliber": AmmoData.Caliber.NINE_MM,
 		"fire_rate": 0.0,
 		"mag_size": 13,
 		"total_mags": 5,
@@ -22,6 +23,7 @@ const WEAPON_STATS = {
 	"rifle1": {
 		"scene_path": "res://scenes/weapons/types/rifle_1.tscn",
 		"damage": 15,
+		"caliber": AmmoData.Caliber.FIVE_FIVE_SIX,
 		"fire_rate": 0.1,
 		"mag_size": 30,
 		"total_mags": 4,
@@ -51,6 +53,7 @@ const WEAPON_STATS = {
 
 # WEAPON STATS
 var damage: int
+var caliber: int
 var fire_rate: float
 var mag_size: int
 var kick: float
@@ -74,6 +77,7 @@ func _apply_values() -> void:
 	weapon_scene = load(stats.scene_path)
 
 	damage = stats.damage
+	caliber = stats.caliber
 	fire_rate = stats.fire_rate
 	mag_size = stats.mag_size
 
