@@ -24,13 +24,13 @@ const CAPABILITIES = {
 	ItemType.DEFAULT: Capability.DROP,
 	ItemType.PRIMARY_WEAPON: Capability.EQUIP | Capability.UNLOAD | Capability.DROP,
 	ItemType.SECONDARY_WEAPON: Capability.EQUIP | Capability.UNLOAD | Capability.DROP,
-	ItemType.HELMET: Capability.EQUIP,
-	ItemType.ARMOR: Capability.EQUIP,
-	ItemType.BACKPACK: Capability.EQUIP,
-	ItemType.MELEE: Capability.EQUIP,
-	ItemType.GRENADE: Capability.EQUIP,
-	ItemType.GOGGLES: Capability.EQUIP,
-	ItemType.MAGAZINE: Capability.UNLOAD,
+	ItemType.HELMET: Capability.EQUIP | Capability.DROP,
+	ItemType.ARMOR: Capability.EQUIP | Capability.DROP,
+	ItemType.BACKPACK: Capability.EQUIP | Capability.DROP,
+	ItemType.MELEE: Capability.EQUIP | Capability.DROP,
+	ItemType.GRENADE: Capability.EQUIP | Capability.DROP,
+	ItemType.GOGGLES: Capability.EQUIP | Capability.DROP,
+	ItemType.MAGAZINE: Capability.UNLOAD | Capability.DROP,
 }
 
 # basic info
