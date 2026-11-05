@@ -24,7 +24,9 @@ func _input(event: InputEvent) -> void:
 
 			if visible:
 				var item_type: ItemData.ItemType = im.context_menu_item.type
-				var item_capabilities: int = ItemData.CAPABILITIES[item_type]
+				var item_capabilities: Variant = ItemData.CAPABILITIES.get(item_type)
+				if not item_capabilities:
+					item_capabilities = ItemData.CAPABILITIES.get(ItemData.ItemType.DEFAULT)
 				_load_buttons(item_capabilities)
 			else:
 				_unload_buttons()
