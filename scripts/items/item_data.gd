@@ -12,6 +12,7 @@ enum ItemType {
 	GRENADE,
 	GOGGLES,
 	MAGAZINE,
+	AMMO,
 }
 
 enum Capability {
@@ -51,3 +52,7 @@ const CAPABILITIES = {
 		return Vector2i(size.y, size.x) if rotated else size
 @export var slot := Vector2i(-1, -1)
 @export var rotated := false
+
+# container
+@export var container := false
+@export var container_item_type: ItemType
