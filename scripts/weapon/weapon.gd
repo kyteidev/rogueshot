@@ -331,9 +331,9 @@ func _equip_weapon(index: int) -> void:
 
 	# save weapon state if not saved previously
 	if not weapon_state.has(weapon_name):
-		weapon_state[weapon_name] = { "ammo": stats.mag_size, "mags": stats.total_mags }
+		weapon_state[weapon_name] = { "ammo": stats.mag_size }
 
 	# restore saved state
 	ammo = weapon_state[weapon_name].ammo
-	mags = weapon_state[weapon_name].mags
+	#mags = weapon_state[weapon_name].mags
 	can_fire = true
