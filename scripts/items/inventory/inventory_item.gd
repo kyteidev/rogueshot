@@ -47,7 +47,10 @@ func _process(_delta: float) -> void:
 				# also update ammo count
 				data.type_data.total_ammo = ammo
 		elif data.container_max_size > 1:
-			container_text = str(data.container_items.size())
+			var count: int = 0
+			for item in data.container_items:
+				count += item.count
+			container_text = str(count)
 	container_label.text = container_text
 
 	# check mouse hover
