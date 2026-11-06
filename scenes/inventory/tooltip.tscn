@@ -1,0 +1,37 @@
+[gd_scene format=3 uid="uid://cgauox53l6t2p"]
+
+[ext_resource type="Script" uid="uid://4dl8r15cxdfb" path="res://scripts/tooltip.gd" id="1_38lrx"]
+[ext_resource type="FontFile" uid="uid://4jxi61jcsc2c" path="res://assets/fonts/groundhog.ttf" id="1_58k1f"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_nxcxh"]
+font = ExtResource("1_58k1f")
+
+[sub_resource type="LabelSettings" id="LabelSettings_58k1f"]
+font = ExtResource("1_58k1f")
+font_size = 10
+
+[node name="Tooltip" type="ColorRect" unique_id=2076730323]
+z_index = 999
+custom_minimum_size = Vector2(150, 50)
+color = Color(0.34064347, 0.28918967, 0.43917835, 1)
+script = ExtResource("1_38lrx")
+
+[node name="NameLabel" type="Label" parent="." unique_id=738117499]
+layout_mode = 1
+offset_left = 8.0
+offset_top = 4.0
+offset_right = 200.0
+offset_bottom = 23.0
+text = "Lorem ipsum"
+label_settings = SubResource("LabelSettings_nxcxh")
+vertical_alignment = 1
+
+[node name="TypeLabel" type="Label" parent="." unique_id=162812277]
+layout_mode = 1
+offset_left = 8.0
+offset_top = 20.0
+offset_right = 200.0
+offset_bottom = 39.0
+text = "Lorem ipsum"
+label_settings = SubResource("LabelSettings_58k1f")
+vertical_alignment = 1

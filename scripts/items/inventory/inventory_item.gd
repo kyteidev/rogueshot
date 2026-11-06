@@ -21,15 +21,21 @@ var saved_vars := false
 var prev_slot: Vector2
 var prev_pos: Vector2
 
+var prev_hovered_item: InventoryItem
+
 var drop_target := false
 
 var exists := true
+
+@onready var inventory: CanvasLayer = get_node("../../../")
+@onready var tooltip: ColorRect = inventory.get_node("./Tooltip")
 
 @onready var icon: TextureRect = $Icon
 @onready var bg: ColorRect = $Background
 @onready var item_label: Label = $ItemName/Label
 @onready var count_label: Label = $ItemCount/Label
 @onready var container_label: Label = $ContainerCount/Label
+@onready var tooltip_timer: Timer = $Timer
 
 
 func _process(_delta: float) -> void:
@@ -70,10 +76,20 @@ func _process(_delta: float) -> void:
 			im.hovered_item = self
 			if not im.context_menu_open:
 				im.context_menu_item = self
+
+		# tooltip timer stuff idk
+		if tooltip_timer.time_left == 0.0:
+			tooltip_timer.start()
 	else:
 		mouse_hovered = false
 		if im.hovered_item and im.hovered_item.data == data:
 			im.hovered_item = null
+
+		tooltip_timer.stop()
+		if im.hovered_item != prev_hovered_item:
+			tooltip.hide_tooltip()
+
+			prev_hovered_item = im.hovered_item
 
 	if mouse_dragging:
 		global_position = get_global_mouse_position() - mouse_offset
@@ -253,3 +269,13 @@ func _check_compatibility() -> bool:
 			if im.dragged_item.data.type_data.type != data.type_data.caliber:
 				return false
 	return true
+
+
+func _on_tooltip_timer_timeout() -> void:
+	if tooltip.visible:
+		return
+
+	var mouse_pos: Vector2 = get_global_mouse_position()
+	tooltip.global_position = mouse_pos
+	tooltip.move_to_front()
+	tooltip.show_tooltip(data)

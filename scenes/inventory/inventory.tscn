@@ -4,6 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://bqpmoqx5btq2n" path="res://assets/sprites/ui/inventory/inventory.png" id="2_waxho"]
 [ext_resource type="PackedScene" uid="uid://bgre28m4eudus" path="res://scenes/context_menu/context_menu.tscn" id="3_el5y6"]
 [ext_resource type="Script" uid="uid://dn1rkoh0f3xdn" path="res://scripts/items/inventory/equipment_container.gd" id="3_tvok8"]
+[ext_resource type="PackedScene" uid="uid://cgauox53l6t2p" path="res://scenes/inventory/tooltip.tscn" id="5_bxceu"]
 
 [node name="Inventory" type="CanvasLayer" unique_id=1946403224]
 script = ExtResource("1_4mxsq")
@@ -136,3 +137,6 @@ offset_right = 48.0
 offset_bottom = 220.0
 
 [node name="ContextMenu" parent="." unique_id=1117877697 instance=ExtResource("3_el5y6")]
+
+[node name="Tooltip" parent="." unique_id=2076730323 instance=ExtResource("5_bxceu")]
+visible = false
