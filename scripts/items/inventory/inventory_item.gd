@@ -100,7 +100,14 @@ func _input(event: InputEvent) -> void:
 				im.dragged_item and im.dragged_item != self
 				and im.dragged_item.data.type == data.container_item_type
 			):
-				data.container_items.append(im.dragged_item.data)
+				var present := false
+				for item in data.container_items:
+					if item.type == im.dragged_item.data.type:
+						item.count += im.dragged_item.data.count
+						present = true
+
+				if not present:
+					data.container_items.append(im.dragged_item.data)
 				im.remove_item(im.dragged_item.data)
 
 			# item drag and drop handling
