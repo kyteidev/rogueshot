@@ -39,6 +39,7 @@ var ammo: int = 0:
 	set(value):
 		ammo = value
 		sm.ammo = value
+		im.equipped_weapons[index].type_data = 0
 var max_ammo: int = 0:
 	set(value):
 		max_ammo = value
@@ -331,7 +332,7 @@ func _equip_weapon(index: int) -> void:
 
 	# save weapon state if not saved previously
 	if not weapon_state.has(weapon_name):
-		weapon_state[weapon_name] = { "ammo": stats.mag_size }
+		weapon_state[weapon_name] = { "ammo": stats.total_ammo }
 
 	# restore saved state
 	ammo = weapon_state[weapon_name].ammo
