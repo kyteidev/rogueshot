@@ -50,7 +50,7 @@ func _process(_delta: float) -> void:
 		if not im.dragged_item or im.dragged_item == self:
 			im.hovered_item = self
 			if not im.context_menu_open:
-				im.context_menu_item = data
+				im.context_menu_item = self
 	else:
 		mouse_hovered = false
 		if im.hovered_item and im.hovered_item.data == data:
@@ -73,8 +73,6 @@ func _process(_delta: float) -> void:
 
 
 func _input(event: InputEvent) -> void:
-	if mouse_hovered and event is InputEventMouseButton and event.button_index == 1:
-		print(mouse_hovered, im.dragged_item)
 	if mouse_hovered:
 		# ignore if isn't left mouse button
 		if event is InputEventMouseButton and event.button_index == 1:
@@ -182,6 +180,13 @@ func equip_item() -> void:
 func unequip_item() -> void:
 	im.remove_item(data)
 	im.add_item(data)
+
+
+func unload_items() -> void:
+	print("helo")
+	for item in data.container_items:
+		im.add_item(item)
+	data.container_items.clear()
 
 
 func _rotate() -> void:
