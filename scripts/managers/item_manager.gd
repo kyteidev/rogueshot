@@ -18,7 +18,7 @@ var inventory := { } # { Slot pos: ItemData }
 var equipped_items := { } # { "Equipment slot": ItemData }
 var equipment_bounds := { }
 
-var equipped_weapons := [null, null]
+var equipped_weapons: Array[ItemData] = [null, null]
 
 var hovered_item: InventoryItem
 var dragged_item: InventoryItem

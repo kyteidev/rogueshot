@@ -39,7 +39,14 @@ var ammo: int = 0:
 	set(value):
 		ammo = value
 		sm.ammo = value
-		im.equipped_weapons[index].type_data = 0
+
+		var weapon: ItemData = im.equipped_weapons[weapon_index]
+		if (
+			weapon_index != -1 and weapon.container_items.size() > 0
+			and weapon.container_items[0].container_items.size() > 0
+		):
+			# weapon -> mag -> ammo
+			weapon.container_items[0].container_items[0].count = value
 var max_ammo: int = 0:
 	set(value):
 		max_ammo = value
