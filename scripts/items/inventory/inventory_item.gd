@@ -87,6 +87,7 @@ func _process(_delta: float) -> void:
 				and im.dragged_item != self
 				and im.dragged_item.data.type == data.container_item_type
 			)
+			and _check_compatibility()
 			else Color(1.0, 1.0, 1.0)
 		)
 
@@ -100,6 +101,10 @@ func _input(event: InputEvent) -> void:
 				im.dragged_item and im.dragged_item != self
 				and im.dragged_item.data.type == data.container_item_type
 			):
+				# weapon compatibility check for magazines
+				if not _check_compatibility():
+					return
+
 				var present := false
 				for item in data.container_items:
 					if item.type == im.dragged_item.data.type:
@@ -234,3 +239,13 @@ func _rotate() -> void:
 	icon.rotation = PI / 2 if data.rotated else 0.0
 
 	mouse_offset = size / 2
+
+
+func _check_compatibility() -> bool:
+	var type: ItemData.ItemType = im.dragged_item.data.type
+
+	match type:
+		ItemData.ItemType.MAGAZINE:
+			if im.dragged_item.data.type_data.compatible != data.type_data.weapon:
+				return false
+	return true
