@@ -242,10 +242,14 @@ func _rotate() -> void:
 
 
 func _check_compatibility() -> bool:
-	var type: ItemData.ItemType = im.dragged_item.data.type
+	var item_type: ItemData.ItemType = im.dragged_item.data.type
+	var types := ItemData.ItemType
 
-	match type:
-		ItemData.ItemType.MAGAZINE:
+	match item_type:
+		types.MAGAZINE:
 			if im.dragged_item.data.type_data.compatible != data.type_data.weapon:
+				return false
+		types.AMMO:
+			if im.dragged_item.data.type_data.type != data.type_data.caliber:
 				return false
 	return true
