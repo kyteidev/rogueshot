@@ -33,11 +33,18 @@ var drop_target := false
 func _process(_delta: float) -> void:
 	# update count labels
 	count_label.text = str(data.count) if data.max_stack > 1 else ""
-	container_label.text = (
-		str(data.container_items.size())
-		if (data.container and data.container_max_size > 1)
-		else ""
-	)
+
+	var container_text := ""
+	if data.container:
+		if (
+			data.type == ItemData.ItemType.PRIMARY_WEAPON
+			or data.type == ItemData.ItemType.SECONDARY_WEAPON
+		):
+			if data.container_items.size() > 0:
+				container_text = str(data.container_items[0].container_items.size())
+		elif data.container_max_size > 1:
+			container_text = str(data.container_items.size())
+	container_label.text = container_text
 
 	# check mouse hover
 	var mouse_pos: Vector2 = get_global_mouse_position()
