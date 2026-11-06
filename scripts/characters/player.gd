@@ -192,6 +192,14 @@ func _physics_process(delta: float) -> void:
 			_player_death()
 		return
 
+	# kill player if falling out of bounds
+	if velocity.y > 5000.0:
+		if not started_death_sequence:
+			started_death_sequence = true
+
+			im.reset_inventory()
+			death_timer.start()
+
 	# player jump system
 	if not input_locked and Input.is_action_just_pressed("player_jump"):
 		jump_buffer_timer.start(JUMP_BUFFER_TIME)

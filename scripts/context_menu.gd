@@ -23,7 +23,7 @@ func _input(event: InputEvent) -> void:
 			im.context_menu_open = visible
 
 			if visible:
-				var item_type: ItemData.ItemType = im.context_menu_item.type
+				var item_type: ItemData.ItemType = im.context_menu_item.data.type
 				var item_capabilities: Variant = ItemData.CAPABILITIES.get(item_type)
 				if not item_capabilities:
 					item_capabilities = ItemData.CAPABILITIES.get(ItemData.ItemType.DEFAULT)
@@ -84,17 +84,21 @@ func _unload_buttons() -> void:
 
 
 func _button_functions(button_name: String) -> void:
+	if not im.context_menu_item:
+		return
+
 	match button_name:
+		# idk why i have a separate context_menu_item :sob:
+		# this works so im not gonna touch this
+		# hovered_item is InventoryItem and context_menu_item is ItemData
 		"Equip":
-			if im.hovered_item:
-				im.hovered_item.equip_item()
+			im.context_menu_item.equip_item()
 		"Unequip":
-			if im.hovered_item:
-				im.hovered_item.unequip_item()
+			im.context_menu_item.unequip_item()
 		"Unload":
-			pass
+			im.context_menu_item.unload_items()
 		"Drop":
-			im.drop_item(im.context_menu_item)
+			im.drop_item(im.context_menu_item.data)
 
 	# hide context menu after action is done
 	visible = false
