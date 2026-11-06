@@ -42,15 +42,15 @@ func _process(_delta: float) -> void:
 			data.type == ItemData.ItemType.PRIMARY_WEAPON
 			or data.type == ItemData.ItemType.SECONDARY_WEAPON
 		):
-			if (
-				data.container_items.size() > 0
-				and data.container_items[0].container_items.size() > 0
-			):
-				var ammo: int = data.container_items[0].container_items[0].count
-				container_text = str(ammo)
+			if (data.container_items.size() > 0):
+				if data.container_items[0].container_items.size() == 0:
+					container_text = "0"
+				else:
+					var ammo: int = data.container_items[0].container_items[0].count
+					container_text = str(ammo)
 
-				# also update ammo count
-				data.type_data.total_ammo = ammo
+					# also update ammo count
+					data.type_data.total_ammo = ammo
 		elif data.container_max_size > 1:
 			var count: int = 0
 			for item in data.container_items:
