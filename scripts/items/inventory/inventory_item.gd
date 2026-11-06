@@ -28,7 +28,7 @@ var drop_target := false
 var exists := true
 
 @onready var inventory: CanvasLayer = get_node("../../../")
-@onready var tooltip: ColorRect = inventory.get_node("./Tooltip")
+@onready var tooltip: PanelContainer = inventory.get_node("./Tooltip")
 
 @onready var icon: TextureRect = $Icon
 @onready var bg: ColorRect = $Background

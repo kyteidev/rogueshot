@@ -1,7 +1,7 @@
-extends ColorRect
+extends PanelContainer
 
-@onready var name_label: Label = $NameLabel
-@onready var type_label: Label = $TypeLabel
+@onready var name_label: Label = $MarginContainer/VBoxContainer/NameLabel
+@onready var type_label: Label = $MarginContainer/VBoxContainer/TypeLabel
 
 
 func _ready() -> void:

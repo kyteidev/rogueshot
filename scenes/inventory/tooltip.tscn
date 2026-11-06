@@ -3,6 +3,9 @@
 [ext_resource type="Script" uid="uid://4dl8r15cxdfb" path="res://scripts/tooltip.gd" id="1_38lrx"]
 [ext_resource type="FontFile" uid="uid://4jxi61jcsc2c" path="res://assets/fonts/groundhog.ttf" id="1_58k1f"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_do3ue"]
+bg_color = Color(0.3372549, 0.28627452, 0.43137255, 1)
+
 [sub_resource type="LabelSettings" id="LabelSettings_nxcxh"]
 font = ExtResource("1_58k1f")
 
@@ -10,28 +13,32 @@ font = ExtResource("1_58k1f")
 font = ExtResource("1_58k1f")
 font_size = 10
 
-[node name="Tooltip" type="ColorRect" unique_id=2076730323]
+[node name="Tooltip" type="PanelContainer" unique_id=22460497]
 z_index = 999
-custom_minimum_size = Vector2(150, 50)
-color = Color(0.34064347, 0.28918967, 0.43917835, 1)
+offset_right = 84.0
+offset_bottom = 19.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_do3ue")
 script = ExtResource("1_38lrx")
 
-[node name="NameLabel" type="Label" parent="." unique_id=738117499]
-layout_mode = 1
-offset_left = 8.0
-offset_top = 4.0
-offset_right = 200.0
-offset_bottom = 23.0
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=678586762]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=1517695078]
+layout_mode = 2
+
+[node name="NameLabel" type="Label" parent="MarginContainer/VBoxContainer" unique_id=738117499]
+layout_mode = 2
 text = "Lorem ipsum"
 label_settings = SubResource("LabelSettings_nxcxh")
 vertical_alignment = 1
 
-[node name="TypeLabel" type="Label" parent="." unique_id=162812277]
-layout_mode = 1
-offset_left = 8.0
-offset_top = 20.0
-offset_right = 200.0
-offset_bottom = 39.0
+[node name="TypeLabel" type="Label" parent="MarginContainer/VBoxContainer" unique_id=162812277]
+layout_mode = 2
 text = "Lorem ipsum"
 label_settings = SubResource("LabelSettings_58k1f")
 vertical_alignment = 1
