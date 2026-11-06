@@ -60,7 +60,7 @@ metadata/_custom_type_script = "uid://bljf4ckjb0kgb"
 [sub_resource type="Resource" id="Resource_f0ik5"]
 script = ExtResource("9_7exj4")
 id = &"rifle1_mag"
-name = "Mag"
+name = "Mag."
 type = 9
 type_data = SubResource("Resource_ga63x")
 size = Vector2i(1, 2)
