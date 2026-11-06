@@ -45,9 +45,9 @@ const WEAPON_STATS = {
 	},
 }
 
-@export var weapon_name: String:
+@export var weapon: Weapon:
 	set(value):
-		weapon_name = value
+		weapon = value
 		_apply_values()
 @export var mag_attached := false
 @export var round_chambered := false
@@ -75,10 +75,10 @@ var weapon_scene: PackedScene
 
 
 func _apply_values() -> void:
-	if not weapon_name in WEAPON_STATS:
+	if not weapon in WEAPON_STATS:
 		return
 
-	var stats: Dictionary = WEAPON_STATS[weapon_name]
+	var stats: Dictionary = WEAPON_STATS[weapon]
 	weapon_scene = load(stats.scene_path)
 
 	damage = stats.damage
