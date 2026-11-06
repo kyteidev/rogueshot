@@ -1,8 +1,13 @@
 class_name WeaponData
 extends ItemTypeData
 
+enum Weapon {
+	PISTOL,
+	RIFLE1,
+}
+
 const WEAPON_STATS = {
-	"pistol": {
+	Weapon.PISTOL: {
 		"scene_path": "res://scenes/weapons/types/pistol.tscn",
 		"damage": 25,
 		"caliber": AmmoData.Caliber.NINE_MM,
@@ -20,7 +25,7 @@ const WEAPON_STATS = {
 		"cooling_rate": 1.04,
 		"speed_multiplier": 1.0,
 	},
-	"rifle1": {
+	Weapon.RIFLE1: {
 		"scene_path": "res://scenes/weapons/types/rifle_1.tscn",
 		"damage": 15,
 		"caliber": AmmoData.Caliber.FIVE_FIVE_SIX,
