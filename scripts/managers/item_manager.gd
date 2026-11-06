@@ -70,6 +70,7 @@ func remove_item(item: ItemData, destroy_item := true) -> void:
 	if destroy_item:
 		for child in inventory_items_container.get_children():
 			if child.data == item:
+				child.exists = false
 				child.queue_free()
 
 	var equipped_slot: Variant = equipped_items.find_key(item)

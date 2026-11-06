@@ -23,6 +23,8 @@ var prev_pos: Vector2
 
 var drop_target := false
 
+var exists := true
+
 @onready var icon: TextureRect = $Icon
 @onready var bg: ColorRect = $Background
 @onready var item_label: Label = $ItemName/Label
@@ -137,10 +139,14 @@ func _input(event: InputEvent) -> void:
 						elif im.hovered_equipment != "":
 							equip_item()
 						else:
-							var equipped_slot: Variant = im.equipped_items.find_key(data)
-							if equipped_slot:
-								im.unequip_item(equipped_slot)
-							im.drop_item(data)
+							await get_tree().process_frame
+
+							if exists:
+								var equipped_slot: Variant = im.equipped_items.find_key(data)
+								if equipped_slot:
+									im.unequip_item(equipped_slot)
+
+								im.drop_item(data)
 
 		# check if item rotation key pressed
 		if (
