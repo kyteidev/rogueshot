@@ -42,3 +42,10 @@ layout_mode = 2
 text = "Lorem ipsum"
 label_settings = SubResource("LabelSettings_58k1f")
 vertical_alignment = 1
+
+[node name="ExtraLabel" type="Label" parent="MarginContainer/VBoxContainer" unique_id=90118524]
+visible = false
+layout_mode = 2
+text = "Lorem ipsum"
+label_settings = SubResource("LabelSettings_58k1f")
+vertical_alignment = 1

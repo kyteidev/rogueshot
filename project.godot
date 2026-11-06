@@ -20,6 +20,7 @@ config/icon="res://icon.svg"
 StateManager="*uid://du86n6i4ajifw"
 ItemManager="*uid://dcqr5ywk7hfig"
 OptionsManager="*uid://0ip3hxuyg8uv"
+Helper="*uid://rdj4susapbwt"
 
 [debug]
 
