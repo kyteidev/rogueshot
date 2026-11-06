@@ -11,7 +11,11 @@ var mouse_dragging := false:
 	set(value):
 		mouse_dragging = value
 		im.dragging_item = value
-		im.dragged_item = self if value else null
+
+		var update := (func() -> void:
+			im.dragged_item = self if value else null
+		)
+		update.call_deferred()
 
 var saved_vars := false
 var prev_slot: Vector2
@@ -29,9 +33,11 @@ var drop_target := false
 func _process(_delta: float) -> void:
 	# update count labels
 	count_label.text = str(data.count) if data.max_stack > 1 else ""
-	container_label.text = str(data.container_items.size()) if (
-		data.container and data.container_max_size > 1
-	) else ""
+	container_label.text = (
+		str(data.container_items.size())
+		if (data.container and data.container_max_size > 1)
+		else ""
+	)
 
 	# check mouse hover
 	var mouse_pos: Vector2 = get_global_mouse_position()
@@ -67,50 +73,65 @@ func _process(_delta: float) -> void:
 
 
 func _input(event: InputEvent) -> void:
-	if mouse_hovered and (not im.dragged_item or im.dragged_item == self):
+	if mouse_hovered and event is InputEventMouseButton and event.button_index == 1:
+		print(mouse_hovered, im.dragged_item)
+	if mouse_hovered:
 		# ignore if isn't left mouse button
 		if event is InputEventMouseButton and event.button_index == 1:
-			if event.is_pressed():
-				if not saved_vars:
-					prev_slot = im.pos_to_slot(position)
-					saved_vars = true
-				mouse_dragging = true
-				mouse_offset = get_global_mouse_position() - global_position
+			# dragging item to container logic
+			if (
+				im.dragged_item and im.dragged_item != self
+				and im.dragged_item.data.type == data.container_item_type
+			):
+				data.container_items.append(im.dragged_item.data)
+				im.remove_item(im.dragged_item.data)
 
-				move_to_front()
-			elif event.is_released():
-				mouse_dragging = false
-				saved_vars = false
+			# item drag and drop handling
+			elif not im.dragged_item or im.dragged_item == self:
+				if event.is_pressed():
+					if not saved_vars:
+						prev_slot = im.pos_to_slot(position)
+						saved_vars = true
+					mouse_dragging = true
+					mouse_offset = get_global_mouse_position() - global_position
 
-				# snap to slot
-				# converting to slot and back to pos coords automatically snaps to grid
-				var center_position: Vector2 = position + Vector2.ONE * im.SLOT_SIZE / 2
-				var slot: Vector2i = im.pos_to_slot(center_position)
+					move_to_front()
+				elif event.is_released():
+					mouse_dragging = false
+					saved_vars = false
 
-				var new_position: Vector2 = im.slot_to_pos(slot)
+					# snap to slot
+					# converting to slot and back to pos coords automatically snaps to grid
+					var center_position: Vector2 = position + Vector2.ONE * im.SLOT_SIZE / 2
+					var slot: Vector2i = im.pos_to_slot(center_position)
 
-				# update inventory
-				if im.place_item(data, slot):
-					position = new_position
+					var new_position: Vector2 = im.slot_to_pos(slot)
 
-					if data in im.equipped_items.values():
-						im.unequip_item(im.equipped_items.find_key(data))
-				else:
-					if im.in_bounds(slot, data.size):
+					# update inventory
+					if im.place_item(data, slot):
+						position = new_position
+
 						if data in im.equipped_items.values():
-							global_position = prev_pos
-						else:
-							position = im.slot_to_pos(prev_slot)
-					elif im.hovered_equipment != "":
-						equip_item()
+							im.unequip_item(im.equipped_items.find_key(data))
 					else:
-						var equipped_slot: Variant = im.equipped_items.find_key(data)
-						if equipped_slot:
-							im.unequip_item(equipped_slot)
-						im.drop_item(data)
+						if im.in_bounds(slot, data.size):
+							if data in im.equipped_items.values():
+								global_position = prev_pos
+							else:
+								position = im.slot_to_pos(prev_slot)
+						elif im.hovered_equipment != "":
+							equip_item()
+						else:
+							var equipped_slot: Variant = im.equipped_items.find_key(data)
+							if equipped_slot:
+								im.unequip_item(equipped_slot)
+							im.drop_item(data)
 
 		# check if item rotation key pressed
-		if mouse_dragging and Input.is_action_just_pressed("ui_rotate_item"):
+		if (
+			mouse_dragging and im.dragged_item == self
+			and Input.is_action_just_pressed("ui_rotate_item")
+		):
 			_rotate()
 
 
