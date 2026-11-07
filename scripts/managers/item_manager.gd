@@ -45,7 +45,6 @@ func place_item(item: ItemData, slot: Vector2i) -> bool:
 			inventory[Vector2i(x, y) + slot] = item
 
 	inventory_items.append(item)
-	print(inventory_items)
 	return true
 
 
