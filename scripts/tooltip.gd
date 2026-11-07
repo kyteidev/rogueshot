@@ -20,9 +20,7 @@ func show_tooltip(data: ItemData) -> void:
 
 	extra_label.visible = true
 	var type_data: ItemTypeData = data.type_data
-	if type_data is WeaponData:
-		extra_label.text = "Caliber: %s" % str(Helper.caliber_string[type_data.caliber])
-	elif type_data is MagData:
+	if type_data is WeaponData or type_data is MagData:
 		extra_label.text = "Caliber: %s" % str(Helper.caliber_string[type_data.caliber])
 	else:
 		extra_label.visible = false
