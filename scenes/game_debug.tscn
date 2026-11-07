@@ -37,6 +37,7 @@ sources/0 = SubResource("TileSetAtlasSource_hpfpv")
 
 [sub_resource type="Resource" id="Resource_nqevj"]
 script = ExtResource("11_ga63x")
+weapon = 1
 metadata/_custom_type_script = "uid://fn8hix2hcrvm"
 
 [sub_resource type="Resource" id="Resource_vhi7h"]

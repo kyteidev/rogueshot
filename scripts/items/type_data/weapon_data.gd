@@ -2,6 +2,7 @@ class_name WeaponData
 extends ItemTypeData
 
 enum Weapon {
+	NONE,
 	PISTOL,
 	RIFLE1,
 }
