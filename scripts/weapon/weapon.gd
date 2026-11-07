@@ -106,6 +106,10 @@ func _ready() -> void:
 			_equip_weapon(-1),
 	)
 
+	# update data if e.g. mag is loaded or unloaded
+	im.item_loaded.connect(_set_ammo_mag_data.call_deferred)
+	im.item_unloaded.connect(_set_ammo_mag_data.call_deferred)
+
 
 func _physics_process(delta: float) -> void:
 	if (
@@ -338,15 +342,26 @@ func _equip_weapon(index: int) -> void:
 
 	speed_multiplier = stats.speed_multiplier
 
-	# save weapon state if not saved previously
+	can_fire = true
+
+	_set_ammo_mag_data()
+
+
+func _set_ammo_mag_data() -> void:
+	var weapon: ItemData = im.equipped_weapons[sm.weapon_index]
+	if not weapon:
+		return
+
+	var stats: WeaponData = weapon.type_data
+
+	# save weapon state
 	var mag_count: int = 0
 	for item in im.inventory_items:
 		if item.type == ItemData.ItemType.MAGAZINE and stats.weapon == item.type_data.compatible:
 			mag_count += 1
-	if not weapon_state.has(weapon_name):
-		weapon_state[weapon_name] = { "ammo": stats.total_ammo, "mags": mag_count }
+
+	weapon_state[weapon_name] = { "ammo": stats.total_ammo, "mags": mag_count }
 
 	# restore saved state
 	ammo = weapon_state[weapon_name].ammo
 	mags = weapon_state[weapon_name].mags
-	can_fire = true

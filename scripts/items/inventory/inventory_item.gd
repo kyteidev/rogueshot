@@ -109,7 +109,7 @@ func _process(_delta: float) -> void:
 
 
 func _input(event: InputEvent) -> void:
-	if mouse_hovered:
+	if mouse_hovered and not im.context_menu_open:
 		# ignore if isn't left mouse button
 		if event is InputEventMouseButton and event.button_index == 1:
 			# dragging item to container logic
@@ -130,6 +130,8 @@ func _input(event: InputEvent) -> void:
 				if not present:
 					data.container_items.append(im.dragged_item.data)
 				im.remove_item(im.dragged_item.data)
+
+				im.item_loaded.emit()
 
 			# item drag and drop handling
 			elif not im.dragged_item or im.dragged_item == self:

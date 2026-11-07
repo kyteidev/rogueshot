@@ -2,6 +2,10 @@ extends Node
 
 signal new_item_placed(item: ItemData)
 signal weapon_unequipped
+@warning_ignore("unused_signal") # used in other places
+signal item_loaded
+@warning_ignore("unused_signal") # used in other places
+signal item_unloaded
 
 const SLOT_SIZE = 24
 const TOTAL_SLOTS = 44

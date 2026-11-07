@@ -4,5 +4,6 @@
 
 [node name="ContextMenu" type="VBoxContainer" unique_id=613244392]
 z_index = 999
+mouse_filter = 0
 theme_override_constants/separation = 0
 script = ExtResource("1_cq42l")
