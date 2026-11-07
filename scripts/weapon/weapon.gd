@@ -293,6 +293,7 @@ func _equip_weapon(index: int) -> void:
 
 	# get weapon stuff
 	weapon_index = index
+	sm.weapon_index = index
 	for child in weapon_node.get_children():
 		child.queue_free()
 
