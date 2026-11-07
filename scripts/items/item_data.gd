@@ -36,7 +36,12 @@ const CAPABILITIES = {
 
 # basic info
 @export var id: StringName
-@export var name := ""
+@export var name := "":
+	set(value):
+		name = value
+		if tooltip_name == "":
+			tooltip_name = value
+@export var tooltip_name := ""
 @export var type := ItemType.DEFAULT
 @export var type_data: ItemTypeData # type specific data
 @export var icon: Texture2D

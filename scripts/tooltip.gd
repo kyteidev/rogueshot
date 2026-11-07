@@ -10,7 +10,7 @@ func _ready() -> void:
 
 
 func show_tooltip(data: ItemData) -> void:
-	name_label.text = data.name
+	name_label.text = data.tooltip_name
 	type_label.text = str(ItemData.ItemType.keys()[data.type]).replace("_", " ").capitalize()
 
 	visible = true
