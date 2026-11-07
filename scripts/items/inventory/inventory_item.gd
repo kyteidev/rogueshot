@@ -234,7 +234,6 @@ func unequip_item() -> void:
 
 
 func unload_items() -> void:
-	print("helo")
 	for item in data.container_items:
 		im.add_item(item)
 	data.container_items.clear()

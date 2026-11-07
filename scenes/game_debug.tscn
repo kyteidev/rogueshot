@@ -56,6 +56,7 @@ metadata/_custom_type_script = "uid://coqypqa0006b"
 
 [sub_resource type="Resource" id="Resource_g363x"]
 script = ExtResource("12_sm6th")
+caliber = 1
 compatible = 1
 metadata/_custom_type_script = "uid://bljf4ckjb0kgb"
 
@@ -68,18 +69,21 @@ type = 9
 type_data = SubResource("Resource_g363x")
 icon = ExtResource("12_e8gd3")
 size = Vector2i(1, 2)
+container = true
 container_item_type = 10
 container_max_size = 13
 metadata/_custom_type_script = "uid://coqypqa0006b"
 
 [sub_resource type="Resource" id="Resource_ai2no"]
 script = ExtResource("14_ai2no")
+type = 1
 metadata/_custom_type_script = "uid://dsupdcfcpbi3s"
 
 [sub_resource type="Resource" id="Resource_sm6th"]
 script = ExtResource("9_7exj4")
 id = &"ammo_9x19"
 name = "9x19"
+tooltip_name = "9x19 Ammo"
 type = 10
 type_data = SubResource("Resource_ai2no")
 icon = ExtResource("13_g363x")
