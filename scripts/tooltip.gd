@@ -15,11 +15,14 @@ func show_tooltip(data: ItemData) -> void:
 
 	visible = true
 
-	extra_label.visible = true
+	# keep extra_label.visible = true in if statements
+	# otherwise tooltip panel will resize as though extra_label is visible
 	var type_data: ItemTypeData = data.type_data
 	if type_data is WeaponData:
+		extra_label.visible = true
 		extra_label.text = "Caliber: %s" % str(Helper.caliber_string[type_data.caliber])
 	elif type_data is MagData:
+		extra_label.visible = true
 		extra_label.text = "Caliber: %s" % str(Helper.caliber_string[type_data.caliber])
 	else:
 		extra_label.visible = false
