@@ -31,7 +31,7 @@ const WEAPON_STATS = {
 		"damage": 15,
 		"caliber": AmmoData.Caliber.FIVE_FIVE_SIX,
 		"fire_rate": 0.1,
-		"mag_size": 30,
+		"mag_size": 25,
 		"total_mags": 4,
 		"kick": 3.0,
 		"kick_recovery": 40.0,
