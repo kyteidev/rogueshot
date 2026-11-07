@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bcsuqxrinkvnt"
-path="res://.godot/imported/pistol-outline.png-4a7f8562c0775431a3227ad1378ff837.ctex"
+uid="uid://b5j8pc2iu75c4"
+path="res://.godot/imported/rifle1_mag.png-67e1784b31b1b6b6c4946e19e41ecb4f.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sprites/weapons/outline/pistol-outline.png"
-dest_files=["res://.godot/imported/pistol-outline.png-4a7f8562c0775431a3227ad1378ff837.ctex"]
+source_file="res://assets/sprites/weapons/guns/rifle1/rifle1_mag.png"
+dest_files=["res://.godot/imported/rifle1_mag.png-67e1784b31b1b6b6c4946e19e41ecb4f.ctex"]
 
 [params]
 
