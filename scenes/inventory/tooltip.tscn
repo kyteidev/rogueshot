@@ -11,7 +11,7 @@ font = ExtResource("1_58k1f")
 
 [sub_resource type="LabelSettings" id="LabelSettings_58k1f"]
 font = ExtResource("1_58k1f")
-font_size = 10
+font_size = 8
 
 [node name="Tooltip" type="PanelContainer" unique_id=22460497]
 z_index = 999
