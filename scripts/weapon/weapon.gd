@@ -340,7 +340,6 @@ func _equip_weapon(index: int) -> void:
 	# save weapon state if not saved previously
 	var mag_count: int = 0
 	for item in im.inventory_items:
-		print(stats.weapon, item.type_data.compatible)
 		if stats.weapon == item.type_data.compatible:
 			mag_count += 1
 	if not weapon_state.has(weapon_name):
