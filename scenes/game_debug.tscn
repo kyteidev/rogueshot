@@ -60,7 +60,7 @@ caliber = 1
 compatible = 1
 metadata/_custom_type_script = "uid://bljf4ckjb0kgb"
 
-[sub_resource type="Resource" id="Resource_x8tfv"]
+[sub_resource type="Resource" id="Resource_e8gd3"]
 script = ExtResource("9_7exj4")
 id = &"pistol1_mag"
 name = "Mag."
@@ -90,6 +90,20 @@ icon = ExtResource("13_g363x")
 max_stack = 200
 count = 5
 scale = 0.2
+metadata/_custom_type_script = "uid://coqypqa0006b"
+
+[sub_resource type="Resource" id="Resource_ydft7"]
+script = ExtResource("9_7exj4")
+id = &"pistol1_mag"
+name = "Mag."
+tooltip_name = "Pistol1 Magazine"
+type = 9
+type_data = SubResource("Resource_g363x")
+icon = ExtResource("12_e8gd3")
+size = Vector2i(1, 2)
+container = true
+container_item_type = 10
+container_max_size = 13
 metadata/_custom_type_script = "uid://coqypqa0006b"
 
 [node name="Game Debug" type="Node2D" unique_id=1078131783]
@@ -125,7 +139,7 @@ visible = false
 [node name="Inventory" parent="." unique_id=1946403224 node_paths=PackedStringArray("crosshair") instance=ExtResource("7_ylwvt")]
 visible = false
 crosshair = NodePath("../CrosshairCanvas")
-starting_items = Array[ExtResource("9_7exj4")]([SubResource("Resource_vhi7h"), SubResource("Resource_x8tfv"), SubResource("Resource_sm6th")])
+starting_items = Array[ExtResource("9_7exj4")]([SubResource("Resource_vhi7h"), SubResource("Resource_e8gd3"), SubResource("Resource_sm6th"), SubResource("Resource_ydft7")])
 
 [node name="PauseManu" parent="." unique_id=1248834952 node_paths=PackedStringArray("crosshair", "inventory") instance=ExtResource("5_d1y6d")]
 visible = false

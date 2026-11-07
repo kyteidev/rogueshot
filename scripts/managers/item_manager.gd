@@ -15,6 +15,7 @@ const DROP_RAND_ROT = 0.6
 const ITEM_SCENE = preload("res://scenes/item.tscn")
 
 var inventory := { } # { Slot pos: ItemData }
+var inventory_items: Array[ItemData] = [] # just an array of items in inventory
 var equipped_items := { } # { "Equipment slot": ItemData }
 var equipment_bounds := { }
 
@@ -43,6 +44,8 @@ func place_item(item: ItemData, slot: Vector2i) -> bool:
 		for y in item.size.y:
 			inventory[Vector2i(x, y) + slot] = item
 
+	inventory_items.append(item)
+	print(inventory_items)
 	return true
 
 
@@ -179,3 +182,7 @@ func _clear_item(item: ItemData) -> void:
 	for key: Vector2i in inventory.keys():
 		if inventory[key] == item:
 			inventory.erase(key)
+
+	var index: int = inventory_items.find(item)
+	if index != -1:
+		inventory_items.pop_at(index)

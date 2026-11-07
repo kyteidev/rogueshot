@@ -338,10 +338,15 @@ func _equip_weapon(index: int) -> void:
 	speed_multiplier = stats.speed_multiplier
 
 	# save weapon state if not saved previously
+	var mag_count: int = 0
+	for item in im.inventory_items:
+		print(stats.weapon, item.type_data.compatible)
+		if stats.weapon == item.type_data.compatible:
+			mag_count += 1
 	if not weapon_state.has(weapon_name):
-		weapon_state[weapon_name] = { "ammo": stats.total_ammo }
+		weapon_state[weapon_name] = { "ammo": stats.total_ammo, "mags": mag_count }
 
 	# restore saved state
 	ammo = weapon_state[weapon_name].ammo
-	#mags = weapon_state[weapon_name].mags
+	mags = weapon_state[weapon_name].mags
 	can_fire = true
