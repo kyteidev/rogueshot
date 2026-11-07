@@ -114,7 +114,7 @@ func _input(event: InputEvent) -> void:
 		if event is InputEventMouseButton and event.button_index == 1:
 			# dragging item to container logic
 			if (
-				im.dragged_item and im.dragged_item != self
+				data.container and im.dragged_item and im.dragged_item != self
 				and im.dragged_item.data.type == data.container_item_type
 			):
 				# weapon compatibility check for magazines
