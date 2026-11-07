@@ -3,16 +3,18 @@
 [ext_resource type="Script" uid="uid://bpqxislc5uiqk" path="res://scripts/characters/enemy.gd" id="1_4ra3w"]
 [ext_resource type="Texture2D" uid="uid://bxil48e432vuf" path="res://assets/sprites/characters/enemy1.png" id="1_md0e3"]
 [ext_resource type="Script" uid="uid://coqypqa0006b" path="res://scripts/items/item_data.gd" id="3_0ag5d"]
-[ext_resource type="Texture2D" uid="uid://b01e1rwshiegl" path="res://assets/sprites/weapons/rifle.png" id="3_f2e6v"]
 [ext_resource type="Texture2D" uid="uid://sxdj3w7nress" path="res://assets/sprites/icons/question mark.png" id="4_21x0f"]
 [ext_resource type="Script" uid="uid://fn8hix2hcrvm" path="res://scripts/items/type_data/weapon_data.gd" id="4_f0ik5"]
+[ext_resource type="Texture2D" uid="uid://c4114geuy27sw" path="res://assets/sprites/weapons/guns/rifle1/rifle.png" id="5_f0ik5"]
 [ext_resource type="Script" uid="uid://dtictyumsb7ps" path="res://scripts/characters/enemy_status_icon.gd" id="5_jgk6k"]
 [ext_resource type="FontFile" uid="uid://4jxi61jcsc2c" path="res://assets/fonts/groundhog.ttf" id="6_3k4es"]
 [ext_resource type="Script" uid="uid://1w732e3gs1gb" path="res://scripts/characters/enemy_status_label.gd" id="7_x5khh"]
 
+[sub_resource type="Resource" id="Resource_rc7n0"]
+metadata/__load_path__ = "res://assets/sprites/weapons/rifle.png"
+
 [sub_resource type="Resource" id="Resource_ge4p5"]
 script = ExtResource("4_f0ik5")
-weapon_name = "rifle1"
 metadata/_custom_type_script = "uid://fn8hix2hcrvm"
 
 [sub_resource type="Resource" id="Resource_x5khh"]
@@ -21,7 +23,7 @@ id = &"rifle1"
 name = "Rifle"
 type = 1
 type_data = SubResource("Resource_ge4p5")
-icon = ExtResource("3_f2e6v")
+icon = SubResource("Resource_rc7n0")
 scale = 0.55
 size = Vector2i(5, 2)
 metadata/_custom_type_script = "uid://coqypqa0006b"
@@ -191,7 +193,7 @@ rotation = 0.2617994
 
 [node name="Rifle1" type="Sprite2D" parent="Weapon" unique_id=455243674]
 scale = Vector2(0.6000001, 0.6000001)
-texture = ExtResource("3_f2e6v")
+texture = ExtResource("5_f0ik5")
 offset = Vector2(3, 0)
 
 [node name="Muzzle" type="Marker2D" parent="Weapon/Rifle1" unique_id=554835805]

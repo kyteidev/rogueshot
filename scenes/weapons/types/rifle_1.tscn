@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://bpjm35k12y14k"]
 
-[ext_resource type="Texture2D" uid="uid://b01e1rwshiegl" path="res://assets/sprites/weapons/rifle.png" id="1_ge4p5"]
+[ext_resource type="Texture2D" uid="uid://c4114geuy27sw" path="res://assets/sprites/weapons/guns/rifle1/rifle.png" id="1_ge4p5"]
 
 [node name="Rifle1" type="Sprite2D" unique_id=78556742]
 scale = Vector2(0.6, 0.6)

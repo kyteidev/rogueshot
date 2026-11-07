@@ -11,8 +11,9 @@
 [ext_resource type="PackedScene" uid="uid://bv8l68anm4bn0" path="res://scenes/inventory/inventory.tscn" id="7_ylwvt"]
 [ext_resource type="Script" uid="uid://coqypqa0006b" path="res://scripts/items/item_data.gd" id="9_7exj4"]
 [ext_resource type="PackedScene" uid="uid://b7bcawpls2ixa" path="res://scenes/transitions/transition_circle.tscn" id="9_bdsyy"]
-[ext_resource type="Texture2D" uid="uid://cws70ra7slkq6" path="res://assets/sprites/weapons/pistol.png" id="10_vhi7h"]
+[ext_resource type="Texture2D" uid="uid://l03bvdf7cx6g" path="res://assets/sprites/weapons/guns/pistol1/pistol.png" id="10_e8gd3"]
 [ext_resource type="Script" uid="uid://fn8hix2hcrvm" path="res://scripts/items/type_data/weapon_data.gd" id="11_ga63x"]
+[ext_resource type="Texture2D" uid="uid://dry375adwg3wr" path="res://assets/sprites/weapons/guns/rifle1/rifle1_mag.png" id="12_e8gd3"]
 [ext_resource type="Script" uid="uid://bljf4ckjb0kgb" path="res://scripts/items/type_data/mag_data.gd" id="12_sm6th"]
 [ext_resource type="Texture2D" uid="uid://dfmvm3hb6slg" path="res://assets/sprites/weapons/bullet.png" id="13_g363x"]
 [ext_resource type="Script" uid="uid://dsupdcfcpbi3s" path="res://scripts/items/type_data/ammo_data.gd" id="14_ai2no"]
@@ -44,7 +45,7 @@ id = &"pistol"
 name = "Pistol"
 type = 2
 type_data = SubResource("Resource_nqevj")
-icon = ExtResource("10_vhi7h")
+icon = ExtResource("10_e8gd3")
 scale = 0.75
 size = Vector2i(3, 2)
 container = true
@@ -65,6 +66,7 @@ name = "Mag."
 tooltip_name = "Rifle1 Magazine"
 type = 9
 type_data = SubResource("Resource_ga63x")
+icon = ExtResource("12_e8gd3")
 size = Vector2i(1, 2)
 container = true
 container_item_type = 10
