@@ -71,7 +71,7 @@ icon = ExtResource("12_e8gd3")
 size = Vector2i(1, 2)
 container = true
 container_item_type = 10
-container_max_size = 30
+container_max_size = 25
 metadata/_custom_type_script = "uid://coqypqa0006b"
 
 [sub_resource type="Resource" id="Resource_ai2no"]
