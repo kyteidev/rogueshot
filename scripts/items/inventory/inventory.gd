@@ -34,7 +34,7 @@ func _ready() -> void:
 
 	# place starting items
 	for item in starting_items:
-		im.add_item(item)
+		im.add_item(item.duplicate(true))
 
 
 func _input(_event: InputEvent) -> void:
