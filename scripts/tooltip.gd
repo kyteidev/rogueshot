@@ -12,7 +12,7 @@ func _ready() -> void:
 
 
 func show_tooltip(data: ItemData) -> void:
-	if im.context_menu_open:
+	if im.context_menu_open or im.dragging_item:
 		return
 
 	name_label.text = data.tooltip_name

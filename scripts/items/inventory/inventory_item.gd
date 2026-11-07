@@ -139,8 +139,9 @@ func _input(event: InputEvent) -> void:
 						saved_vars = true
 					mouse_dragging = true
 					mouse_offset = get_global_mouse_position() - global_position
-
 					move_to_front()
+
+					tooltip.hide_tooltip()
 				elif event.is_released():
 					mouse_dragging = false
 					saved_vars = false
