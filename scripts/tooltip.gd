@@ -1,5 +1,7 @@
 extends PanelContainer
 
+var im := ItemManager
+
 @onready var name_label: Label = $MarginContainer/VBoxContainer/NameLabel
 @onready var type_label: Label = $MarginContainer/VBoxContainer/TypeLabel
 @onready var extra_label: Label = $MarginContainer/VBoxContainer/ExtraLabel
@@ -10,6 +12,9 @@ func _ready() -> void:
 
 
 func show_tooltip(data: ItemData) -> void:
+	if im.context_menu_open:
+		return
+
 	name_label.text = data.tooltip_name
 	type_label.text = str(ItemData.ItemType.keys()[data.type]).replace("_", " ").capitalize()
 
@@ -30,3 +35,4 @@ func show_tooltip(data: ItemData) -> void:
 
 func hide_tooltip() -> void:
 	visible = false
+	extra_label.visible = false

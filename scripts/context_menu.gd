@@ -8,6 +8,8 @@ var im := ItemManager
 	"res://scenes/context_menu/context_menu_button.tscn"
 )
 
+@onready var tooltip: PanelContainer = get_node("../Tooltip")
+
 
 func _ready() -> void:
 	visible = false
@@ -28,6 +30,8 @@ func _input(event: InputEvent) -> void:
 				if not item_capabilities:
 					item_capabilities = ItemData.CAPABILITIES.get(ItemData.ItemType.DEFAULT)
 				_load_buttons(item_capabilities)
+
+				tooltip.hide_tooltip()
 			else:
 				_unload_buttons()
 		# hide if LMB pressed
