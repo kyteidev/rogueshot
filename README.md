@@ -29,7 +29,7 @@ CONTROLS:
 - Left mouse button: shoot
 - Z: facing lock (player direction follows movement instead of cursor)
 - R: reload (currently broken)
-- Q: cycle weapon (crashes game, use dedicated keybinds instead)
+- Q: cycle weapon
   - 1: Equip Primary
   - 2: Equip Secondary
 - E: open inventory

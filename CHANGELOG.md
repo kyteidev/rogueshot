@@ -1,3 +1,18 @@
+v0.1.0-dev.5:
+Reloading is still broken :(
+- added item equipping using context menus
+- added item name, count, container items count labels to inventory items
+- added 9x19 bullet, pistol magazine, rifle magazine items
+- added wall to make it harder for player to fall out of map
+- added container items (items that can hold other items, like guns can hold magazines, etc.)
+- added tooltips
+- fixed weapon cycling keybind
+- fixed equipped item having stale state when dropped directly from equipment slot
+- fixed items being incorrectly highlighted when dragging other items
+- fixed player falling forever when falling out of map
+- made ammo and magazine counter on HUD reflect inventory
+
+
 v0.1.0-dev.4:
 I broke reloading and the cycle weapon keybind when I switched to the inventory based weapons system :( will be fixed next update
 - added pickable items
