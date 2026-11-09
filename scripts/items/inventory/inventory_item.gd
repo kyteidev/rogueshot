@@ -126,8 +126,8 @@ func _input(event: InputEvent) -> void:
 				for item in data.container_items:
 					if item.type == im.dragged_item.data.type:
 						var count: int = 0
-						for _item in data.container_items:
-							count += _item.count
+						for item2 in data.container_items:
+							count += item2.count
 
 						if count + im.dragged_item.data.count > data.container_max_size:
 							im.dragged_item.data.count -= data.container_max_size - count
@@ -140,8 +140,8 @@ func _input(event: InputEvent) -> void:
 				if not present:
 					var item_data: ItemData = im.dragged_item.data
 					var count: int = 0
-					for _item in data.container_items:
-						count += _item.count
+					for item2 in data.container_items:
+						count += item2.count
 
 					if count + item_data.count > data.container_max_size:
 						item_data.count -= data.container_max_size
