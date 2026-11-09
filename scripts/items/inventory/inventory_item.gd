@@ -122,14 +122,36 @@ func _input(event: InputEvent) -> void:
 					return
 
 				var present := false
+				var overflow := false
 				for item in data.container_items:
 					if item.type == im.dragged_item.data.type:
-						item.count += im.dragged_item.data.count
+						var count: int = 0
+						for _item in data.container_items:
+							count += _item.count
+
+						if count + im.dragged_item.data.count > data.container_max_size:
+							im.dragged_item.data.count -= data.container_max_size - count
+							item.count += data.container_max_size - count
+							overflow = true
+						else:
+							item.count += im.dragged_item.data.count
 						present = true
 
 				if not present:
-					data.container_items.append(im.dragged_item.data)
-				im.remove_item(im.dragged_item.data)
+					var item_data: ItemData = im.dragged_item.data
+					var count: int = 0
+					for _item in data.container_items:
+						count += _item.count
+
+					if count + item_data.count > data.container_max_size:
+						item_data.count -= data.container_max_size
+						item_data = im.dragged_item.data.duplicate(true)
+						item_data.count = data.container_max_size
+						overflow = true
+					data.container_items.append(item_data)
+
+				if not overflow:
+					im.remove_item(im.dragged_item.data)
 
 				im.item_loaded.emit()
 
