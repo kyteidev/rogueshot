@@ -83,7 +83,6 @@ func _process(_delta: float) -> void:
 			tooltip_timer.start()
 	else:
 		mouse_hovered = false
-		mouse_dragging = false
 
 		if im.hovered_item and im.hovered_item.data == data:
 			im.hovered_item = null
@@ -94,7 +93,7 @@ func _process(_delta: float) -> void:
 
 			prev_hovered_item = im.hovered_item
 
-	if mouse_dragging:
+	if mouse_hovered and mouse_dragging:
 		pos_set = false
 		global_position = get_global_mouse_position() - mouse_offset
 	elif not pos_set:
