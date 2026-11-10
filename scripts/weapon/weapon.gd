@@ -47,6 +47,8 @@ var ammo: int = 0:
 		):
 			# weapon -> mag -> ammo
 			weapon.container_items[0].container_items[0].count = value
+			if value == 0:
+				weapon.container_items[0].container_items.clear()
 var max_ammo: int = 0:
 	set(value):
 		max_ammo = value
@@ -218,14 +220,41 @@ func fade_weapon() -> void:
 
 
 func reload_weapon() -> void:
-	if mags > 0 and ammo != max_ammo:
+	if mags > 0:
 		crosshair.start_reload()
 		crosshair.tween.finished.connect(_finish_reload)
 
 
 func _finish_reload() -> void:
-	ammo = max_ammo
-	mags -= 1
+	var weapon: ItemData = im.equipped_weapons[weapon_index]
+	var stats: WeaponData = weapon.type_data
+
+	var fullest_mag: ItemData
+	var mag_size: int = 0
+	for item in im.inventory_items:
+		if item.type == ItemData.ItemType.MAGAZINE and stats.weapon == item.type_data.compatible:
+			if item.container_items.size() > 0 and item.container_items[0].count > mag_size:
+				fullest_mag = item
+				mag_size = item.container_items[0].count
+
+	var mag_items: Array[ItemData] = weapon.container_items[0].container_items
+	var fullest_mag_items: Array[ItemData] = fullest_mag.container_items
+	if mag_items.size() > 0:
+		var current_ammo: int = mag_items[0].count
+		var most_ammo: int = fullest_mag.container_items[0].count
+
+		mag_items[0].count = most_ammo
+		fullest_mag_items[0].count = current_ammo
+
+		ammo = most_ammo
+	else:
+		weapon_state[weapon_name]["mags"] -= 1
+		mags = weapon_state[weapon_name].mags
+
+		weapon.container_items[0].container_items = fullest_mag_items.duplicate(true)
+		fullest_mag.container_items.clear()
+
+		ammo = weapon.container_items[0].container_items[0].count
 
 
 func _fire_weapon() -> void:
@@ -358,7 +387,8 @@ func _set_ammo_mag_data() -> void:
 	var mag_count: int = 0
 	for item in im.inventory_items:
 		if item.type == ItemData.ItemType.MAGAZINE and stats.weapon == item.type_data.compatible:
-			mag_count += 1
+			if item.container_items.size() > 0:
+				mag_count += 1
 
 	weapon_state[weapon_name] = { "ammo": stats.total_ammo, "mags": mag_count }
 
