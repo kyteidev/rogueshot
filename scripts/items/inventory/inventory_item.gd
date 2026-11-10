@@ -26,6 +26,7 @@ var prev_hovered_item: InventoryItem
 var drop_target := false
 
 var exists := true
+var pos_set := false
 
 @onready var inventory: CanvasLayer = get_node("../../../")
 @onready var tooltip: PanelContainer = inventory.get_node("./Tooltip")
@@ -82,6 +83,8 @@ func _process(_delta: float) -> void:
 			tooltip_timer.start()
 	else:
 		mouse_hovered = false
+		mouse_dragging = false
+
 		if im.hovered_item and im.hovered_item.data == data:
 			im.hovered_item = null
 
@@ -92,7 +95,11 @@ func _process(_delta: float) -> void:
 			prev_hovered_item = im.hovered_item
 
 	if mouse_dragging:
+		pos_set = false
 		global_position = get_global_mouse_position() - mouse_offset
+	elif not pos_set:
+		_release_item()
+		pos_set = true
 
 	if not im.context_menu_open:
 		bg.modulate = (
@@ -167,39 +174,7 @@ func _input(event: InputEvent) -> void:
 
 					tooltip.hide_tooltip()
 				elif event.is_released():
-					mouse_dragging = false
-					saved_vars = false
-
-					# snap to slot
-					# converting to slot and back to pos coords automatically snaps to grid
-					var center_position: Vector2 = position + Vector2.ONE * im.SLOT_SIZE / 2
-					var slot: Vector2i = im.pos_to_slot(center_position)
-
-					var new_position: Vector2 = im.slot_to_pos(slot)
-
-					# update inventory
-					if im.place_item(data, slot):
-						position = new_position
-
-						if data in im.equipped_items.values():
-							im.unequip_item(im.equipped_items.find_key(data))
-					else:
-						if im.in_bounds(slot, data.size):
-							if data in im.equipped_items.values():
-								global_position = prev_pos
-							else:
-								position = im.slot_to_pos(prev_slot)
-						elif im.hovered_equipment != "":
-							equip_item()
-						else:
-							await get_tree().process_frame
-
-							if exists:
-								var equipped_slot: Variant = im.equipped_items.find_key(data)
-								if equipped_slot:
-									im.unequip_item(equipped_slot)
-
-								im.drop_item(data)
+					_release_item()
 
 		# check if item rotation key pressed
 		if (
@@ -293,6 +268,42 @@ func _check_compatibility() -> bool:
 			if im.dragged_item.data.type_data.type != data.type_data.caliber:
 				return false
 	return true
+
+
+func _release_item() -> void:
+	mouse_dragging = false
+	saved_vars = false
+
+	# snap to slot
+	# converting to slot and back to pos coords automatically snaps to grid
+	var center_position: Vector2 = position + Vector2.ONE * im.SLOT_SIZE / 2
+	var slot: Vector2i = im.pos_to_slot(center_position)
+
+	var new_position: Vector2 = im.slot_to_pos(slot)
+
+	# update inventory
+	if im.place_item(data, slot):
+		position = new_position
+
+		if data in im.equipped_items.values():
+			im.unequip_item(im.equipped_items.find_key(data))
+	else:
+		if im.in_bounds(slot, data.size):
+			if data in im.equipped_items.values():
+				global_position = prev_pos
+			else:
+				position = im.slot_to_pos(prev_slot)
+		elif im.hovered_equipment != "":
+			equip_item()
+		else:
+			await get_tree().process_frame
+
+			if exists:
+				var equipped_slot: Variant = im.equipped_items.find_key(data)
+				if equipped_slot:
+					im.unequip_item(equipped_slot)
+
+				im.drop_item(data)
 
 
 func _on_tooltip_timer_timeout() -> void:
