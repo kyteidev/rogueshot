@@ -238,6 +238,15 @@ func unload_items() -> void:
 	data.container_items.clear()
 
 
+func split_stack() -> void:
+	var new_item_data: ItemData = data.duplicate(true)
+	@warning_ignore("integer_division")
+	new_item_data.count = floori(new_item_data.count / 2)
+	data.count -= new_item_data.count
+
+	im.add_item(new_item_data)
+
+
 func _rotate() -> void:
 	var old_size: Vector2 = im.slot_to_pos(data.size)
 	data.rotated = not data.rotated

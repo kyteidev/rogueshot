@@ -105,6 +105,8 @@ func _button_functions(button_name: String) -> void:
 		"Unload":
 			im.item_unloaded.emit()
 			im.context_menu_item.unload_items()
+		"Split":
+			im.context_menu_item.split_stack()
 		"Drop":
 			im.drop_item(im.context_menu_item.data)
 
