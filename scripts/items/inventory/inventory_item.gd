@@ -290,6 +290,7 @@ func _rotate() -> void:
 
 
 func _load_item(loaded_item: InventoryItem) -> void:
+	print(loaded_item)
 	var present := false
 	var overflow := false
 	for item in data.container_items:
@@ -339,7 +340,10 @@ func _check_compatibility() -> bool:
 	return true
 
 
+# when releasing item from drag
 func _release_item() -> void:
+	await get_tree().process_frame
+
 	mouse_dragging = false
 	saved_vars = false
 
