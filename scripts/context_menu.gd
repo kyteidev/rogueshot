@@ -20,7 +20,7 @@ func _input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.is_pressed():
 		# toggle visibility if RMB pressed
 		if event.button_index == 2:
-			if not im.hovered_item:
+			if not im.hovered_item or im.context_menu_item.overlay.visible:
 				return
 
 			global_position = get_global_mouse_position()

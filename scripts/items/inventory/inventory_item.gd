@@ -38,8 +38,21 @@ var pos_set := false
 @onready var container_label: Label = $ContainerCount/Label
 @onready var tooltip_timer: Timer = $Timer
 
+@onready var load_timer: Timer = $LoadTimer
+@onready var load_bar: TextureProgressBar = $LoadProgress
+@onready var overlay: ColorRect = $Overlay
+
 
 func _process(_delta: float) -> void:
+	if overlay.visible:
+		tooltip_timer.stop()
+		mouse_hovered = false
+
+		if im.hovered_item and im.hovered_item.data == data:
+			im.hovered_item = null
+
+		return
+
 	# update count labels
 	count_label.text = str(data.count) if data.max_stack > 1 else ""
 
@@ -115,6 +128,9 @@ func _process(_delta: float) -> void:
 
 
 func _input(event: InputEvent) -> void:
+	if overlay.visible:
+		return
+
 	if mouse_hovered and not im.context_menu_open:
 		# ignore if isn't left mouse button
 		if event is InputEventMouseButton and event.button_index == 1:
@@ -127,39 +143,22 @@ func _input(event: InputEvent) -> void:
 				if not _check_compatibility():
 					return
 
-				var present := false
-				var overflow := false
-				for item in data.container_items:
-					if item.type == im.dragged_item.data.type:
-						var count: int = 0
-						for item2 in data.container_items:
-							count += item2.count
+				var loaded_item: InventoryItem = im.dragged_item
 
-						if count + im.dragged_item.data.count > data.container_max_size:
-							im.dragged_item.data.count -= data.container_max_size - count
-							item.count += data.container_max_size - count
-							overflow = true
-						else:
-							item.count += im.dragged_item.data.count
-						present = true
+				if load_timer.wait_time != 0.001:
+					var load_time: float = data.container_load_time * loaded_item.data.count
+					load_bar.max_value = load_time
+					load_timer.start(load_time)
 
-				if not present:
-					var item_data: ItemData = im.dragged_item.data
-					var count: int = 0
-					for item2 in data.container_items:
-						count += item2.count
+					loaded_item.overlay.visible = true
 
-					if count + item_data.count > data.container_max_size:
-						item_data.count -= data.container_max_size
-						item_data = im.dragged_item.data.duplicate(true)
-						item_data.count = data.container_max_size
-						overflow = true
-					data.container_items.append(item_data)
-
-				if not overflow:
-					im.remove_item(im.dragged_item.data)
-
-				im.item_loaded.emit()
+					load_timer.timeout.connect(
+						func() -> void:
+							_load_item(loaded_item)
+							loaded_item.overlay.visible = false,
+					)
+				else:
+					_load_item(loaded_item)
 
 			# item drag and drop handling
 			elif not im.dragged_item or im.dragged_item == self:
@@ -190,6 +189,8 @@ func setup(item_data: ItemData) -> void:
 	icon.texture = data.icon
 	item_label.text = data.name
 	position = im.slot_to_pos(data.slot)
+
+	load_timer.wait_time = data.container_load_time if data.container_load_time != 0.0 else 0.001
 
 
 func equip_item() -> void:
@@ -265,6 +266,42 @@ func _rotate() -> void:
 	icon.rotation = PI / 2 if data.rotated else 0.0
 
 	mouse_offset = size / 2
+
+
+func _load_item(loaded_item: InventoryItem) -> void:
+	var present := false
+	var overflow := false
+	for item in data.container_items:
+		if item.type == loaded_item.data.type:
+			var count: int = 0
+			for item2 in data.container_items:
+				count += item2.count
+
+			if count + loaded_item.data.count > data.container_max_size:
+				loaded_item.data.count -= data.container_max_size - count
+				item.count += data.container_max_size - count
+				overflow = true
+			else:
+				item.count += loaded_item.data.count
+			present = true
+
+	if not present:
+		var item_data: ItemData = loaded_item.data
+		var count: int = 0
+		for item2 in data.container_items:
+			count += item2.count
+
+		if count + item_data.count > data.container_max_size:
+			item_data.count -= data.container_max_size
+			item_data = loaded_item.data.duplicate(true)
+			item_data.count = data.container_max_size
+			overflow = true
+		data.container_items.append(item_data)
+
+	if not overflow:
+		im.remove_item(loaded_item.data)
+
+	im.item_loaded.emit()
 
 
 func _check_compatibility() -> bool:
