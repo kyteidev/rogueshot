@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://di4vpy8p25vvs"]
+
+[ext_resource type="Script" uid="uid://coqypqa0006b" path="res://scripts/items/item_data.gd" id="1_keh84"]
+[ext_resource type="Texture2D" uid="uid://l03bvdf7cx6g" path="res://assets/sprites/weapons/guns/pistol1/pistol.png" id="2_pjlyg"]
+[ext_resource type="Script" uid="uid://fn8hix2hcrvm" path="res://scripts/items/type_data/weapon_data.gd" id="3_mrdfy"]
+
+[sub_resource type="Resource" id="Resource_nqevj"]
+script = ExtResource("3_mrdfy")
+weapon = 1
+metadata/_custom_type_script = "uid://fn8hix2hcrvm"
+
+[resource]
+script = ExtResource("1_keh84")
+id = &"pistol1"
+name = "Pistol"
+type = 2
+type_data = SubResource("Resource_nqevj")
+icon = ExtResource("2_pjlyg")
+scale = 0.75
+size = Vector2i(3, 2)
+container = true
+container_load_time = 0.9
+container_item_type = 9
+container_max_size = 1
+metadata/_custom_type_script = "uid://coqypqa0006b"

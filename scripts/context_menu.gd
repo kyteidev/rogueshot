@@ -20,6 +20,9 @@ func _input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.is_pressed():
 		# toggle visibility if RMB pressed
 		if event.button_index == 2:
+			if not im.hovered_item or im.context_menu_item.overlay.visible:
+				return
+
 			global_position = get_global_mouse_position()
 			visible = not visible
 			im.context_menu_open = visible
@@ -102,6 +105,8 @@ func _button_functions(button_name: String) -> void:
 		"Unload":
 			im.item_unloaded.emit()
 			im.context_menu_item.unload_items()
+		"Split":
+			im.context_menu_item.split_stack()
 		"Drop":
 			im.drop_item(im.context_menu_item.data)
 

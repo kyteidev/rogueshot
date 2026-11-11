@@ -18,7 +18,8 @@ enum ItemType {
 enum Capability {
 	EQUIP = 1 << 0,
 	UNLOAD = 1 << 1,
-	DROP = 1 << 2,
+	SPLIT = 1 << 2,
+	DROP = 1 << 3,
 }
 
 const CAPABILITIES = {
@@ -32,6 +33,7 @@ const CAPABILITIES = {
 	ItemType.GRENADE: Capability.EQUIP | Capability.DROP,
 	ItemType.GOGGLES: Capability.EQUIP | Capability.DROP,
 	ItemType.MAGAZINE: Capability.UNLOAD | Capability.DROP,
+	ItemType.AMMO: Capability.SPLIT | Capability.DROP,
 }
 
 # basic info
@@ -60,6 +62,7 @@ const CAPABILITIES = {
 
 # container
 @export var container := false
+@export var container_load_time := 0.0
 @export var container_item_type: ItemType
 @export var container_max_size: int = 0
 @export var container_items: Array[ItemData]

@@ -26,6 +26,7 @@ var prev_hovered_item: InventoryItem
 var drop_target := false
 
 var exists := true
+var pos_set := false
 
 @onready var inventory: CanvasLayer = get_node("../../../")
 @onready var tooltip: PanelContainer = inventory.get_node("./Tooltip")
@@ -37,8 +38,22 @@ var exists := true
 @onready var container_label: Label = $ContainerCount/Label
 @onready var tooltip_timer: Timer = $Timer
 
+@onready var load_timer: Timer = $LoadTimer
+@onready var load_bar: TextureProgressBar = $LoadProgress
+@onready var unload_timer: Timer = $UnloadTimer
+@onready var overlay: ColorRect = $Overlay
+
 
 func _process(_delta: float) -> void:
+	if overlay.visible:
+		tooltip_timer.stop()
+		mouse_hovered = false
+
+		if im.hovered_item and im.hovered_item.data == data:
+			im.hovered_item = null
+
+		return
+
 	# update count labels
 	count_label.text = str(data.count) if data.max_stack > 1 else ""
 
@@ -82,6 +97,7 @@ func _process(_delta: float) -> void:
 			tooltip_timer.start()
 	else:
 		mouse_hovered = false
+
 		if im.hovered_item and im.hovered_item.data == data:
 			im.hovered_item = null
 
@@ -91,8 +107,12 @@ func _process(_delta: float) -> void:
 
 			prev_hovered_item = im.hovered_item
 
-	if mouse_dragging:
+	if mouse_hovered and mouse_dragging:
+		pos_set = false
 		global_position = get_global_mouse_position() - mouse_offset
+	elif not pos_set:
+		_release_item()
+		pos_set = true
 
 	if not im.context_menu_open:
 		bg.modulate = (
@@ -109,6 +129,9 @@ func _process(_delta: float) -> void:
 
 
 func _input(event: InputEvent) -> void:
+	if overlay.visible:
+		return
+
 	if mouse_hovered and not im.context_menu_open:
 		# ignore if isn't left mouse button
 		if event is InputEventMouseButton and event.button_index == 1:
@@ -121,17 +144,30 @@ func _input(event: InputEvent) -> void:
 				if not _check_compatibility():
 					return
 
-				var present := false
-				for item in data.container_items:
-					if item.type == im.dragged_item.data.type:
-						item.count += im.dragged_item.data.count
-						present = true
+				var loaded_item: InventoryItem = im.dragged_item
 
-				if not present:
-					data.container_items.append(im.dragged_item.data)
-				im.remove_item(im.dragged_item.data)
+				if load_timer.wait_time != 0.001:
+					var item_count: int = 0
+					for item in data.container_items:
+						item_count += item.count
+					var available_space: int = data.container_max_size - item_count
 
-				im.item_loaded.emit()
+					var load_time: float = data.container_load_time * min(
+						loaded_item.data.count,
+						available_space,
+					)
+					load_bar.max_value = load_time
+					load_timer.start(load_time)
+
+					loaded_item.overlay.visible = true
+
+					load_timer.timeout.connect(
+						func() -> void:
+							_load_item(loaded_item)
+							loaded_item.overlay.visible = false,
+					)
+				else:
+					_load_item(loaded_item)
 
 			# item drag and drop handling
 			elif not im.dragged_item or im.dragged_item == self:
@@ -145,39 +181,7 @@ func _input(event: InputEvent) -> void:
 
 					tooltip.hide_tooltip()
 				elif event.is_released():
-					mouse_dragging = false
-					saved_vars = false
-
-					# snap to slot
-					# converting to slot and back to pos coords automatically snaps to grid
-					var center_position: Vector2 = position + Vector2.ONE * im.SLOT_SIZE / 2
-					var slot: Vector2i = im.pos_to_slot(center_position)
-
-					var new_position: Vector2 = im.slot_to_pos(slot)
-
-					# update inventory
-					if im.place_item(data, slot):
-						position = new_position
-
-						if data in im.equipped_items.values():
-							im.unequip_item(im.equipped_items.find_key(data))
-					else:
-						if im.in_bounds(slot, data.size):
-							if data in im.equipped_items.values():
-								global_position = prev_pos
-							else:
-								position = im.slot_to_pos(prev_slot)
-						elif im.hovered_equipment != "":
-							equip_item()
-						else:
-							await get_tree().process_frame
-
-							if exists:
-								var equipped_slot: Variant = im.equipped_items.find_key(data)
-								if equipped_slot:
-									im.unequip_item(equipped_slot)
-
-								im.drop_item(data)
+					_release_item()
 
 		# check if item rotation key pressed
 		if (
@@ -194,6 +198,9 @@ func setup(item_data: ItemData) -> void:
 	icon.texture = data.icon
 	item_label.text = data.name
 	position = im.slot_to_pos(data.slot)
+
+	load_timer.wait_time = data.container_load_time if data.container_load_time != 0.0 else 0.001
+	unload_timer.wait_time = data.container_load_time if data.container_load_time != 0.0 else 0.001
 
 
 func equip_item() -> void:
@@ -237,9 +244,32 @@ func unequip_item() -> void:
 
 
 func unload_items() -> void:
-	for item in data.container_items:
-		im.add_item(item)
-	data.container_items.clear()
+	var unload_item: ItemData = data.container_items[-1]
+	if unload_timer.wait_time != 0.001:
+		var unload_time: float = data.container_load_time * unload_item.count
+		load_bar.max_value = unload_time
+		unload_timer.start(unload_time)
+
+		unload_timer.timeout.connect(
+			func() -> void:
+				im.add_item(unload_item)
+				data.container_items.pop_back(),
+		)
+	else:
+		im.add_item(unload_item)
+		data.container_items.pop_back()
+
+
+func split_stack() -> void:
+	if data.count <= 1:
+		return
+
+	var new_item_data: ItemData = data.duplicate(true)
+	@warning_ignore("integer_division")
+	new_item_data.count = floori(new_item_data.count / 2)
+	data.count -= new_item_data.count
+
+	im.add_item(new_item_data)
 
 
 func _rotate() -> void:
@@ -259,6 +289,42 @@ func _rotate() -> void:
 	mouse_offset = size / 2
 
 
+func _load_item(loaded_item: InventoryItem) -> void:
+	var present := false
+	var overflow := false
+	for item in data.container_items:
+		if item.type == loaded_item.data.type:
+			var count: int = 0
+			for item2 in data.container_items:
+				count += item2.count
+
+			if count + loaded_item.data.count > data.container_max_size:
+				loaded_item.data.count -= data.container_max_size - count
+				item.count += data.container_max_size - count
+				overflow = true
+			else:
+				item.count += loaded_item.data.count
+			present = true
+
+	if not present:
+		var item_data: ItemData = loaded_item.data
+		var count: int = 0
+		for item2 in data.container_items:
+			count += item2.count
+
+		if count + item_data.count > data.container_max_size:
+			item_data.count -= data.container_max_size
+			item_data = loaded_item.data.duplicate(true)
+			item_data.count = data.container_max_size
+			overflow = true
+		data.container_items.append(item_data)
+
+	if not overflow:
+		im.remove_item(loaded_item.data)
+
+	im.item_loaded.emit()
+
+
 func _check_compatibility() -> bool:
 	var item_type: ItemData.ItemType = im.dragged_item.data.type
 	var types := ItemData.ItemType
@@ -271,6 +337,42 @@ func _check_compatibility() -> bool:
 			if im.dragged_item.data.type_data.type != data.type_data.caliber:
 				return false
 	return true
+
+
+func _release_item() -> void:
+	mouse_dragging = false
+	saved_vars = false
+
+	# snap to slot
+	# converting to slot and back to pos coords automatically snaps to grid
+	var center_position: Vector2 = position + Vector2.ONE * im.SLOT_SIZE / 2
+	var slot: Vector2i = im.pos_to_slot(center_position)
+
+	var new_position: Vector2 = im.slot_to_pos(slot)
+
+	# update inventory
+	if im.place_item(data, slot):
+		position = new_position
+
+		if data in im.equipped_items.values():
+			im.unequip_item(im.equipped_items.find_key(data))
+	else:
+		if im.in_bounds(slot, data.size):
+			if data in im.equipped_items.values():
+				global_position = prev_pos
+			else:
+				position = im.slot_to_pos(prev_slot)
+		elif im.hovered_equipment != "":
+			equip_item()
+		else:
+			await get_tree().process_frame
+
+			if exists:
+				var equipped_slot: Variant = im.equipped_items.find_key(data)
+				if equipped_slot:
+					im.unequip_item(equipped_slot)
+
+				im.drop_item(data)
 
 
 func _on_tooltip_timer_timeout() -> void:

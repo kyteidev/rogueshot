@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://clbie6ews1yvb"]
+
+[ext_resource type="Script" uid="uid://coqypqa0006b" path="res://scripts/items/item_data.gd" id="1_vexds"]
+[ext_resource type="Texture2D" uid="uid://dfmvm3hb6slg" path="res://assets/sprites/weapons/bullet.png" id="2_bkgh7"]
+[ext_resource type="Script" uid="uid://dsupdcfcpbi3s" path="res://scripts/items/type_data/ammo_data.gd" id="3_v70ix"]
+
+[sub_resource type="Resource" id="Resource_ai2no"]
+script = ExtResource("3_v70ix")
+type = 2
+metadata/_custom_type_script = "uid://dsupdcfcpbi3s"
+
+[resource]
+script = ExtResource("1_vexds")
+id = &"ammo_556"
+name = "556"
+tooltip_name = "556 Ammo"
+type = 10
+type_data = SubResource("Resource_ai2no")
+icon = ExtResource("2_bkgh7")
+max_stack = 150
+count = 30
+scale = 0.2
+metadata/_custom_type_script = "uid://coqypqa0006b"
