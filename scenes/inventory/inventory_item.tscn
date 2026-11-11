@@ -124,3 +124,5 @@ unique_name_in_owner = true
 one_shot = true
 
 [connection signal="timeout" from="Timer" to="." method="_on_tooltip_timer_timeout"]
+[connection signal="timeout" from="LoadTimer" to="." method="_on_load_timer_timeout"]
+[connection signal="timeout" from="UnloadTimer" to="." method="_on_unload_timer_timeout"]
