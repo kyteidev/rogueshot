@@ -6,7 +6,7 @@
 
 [sub_resource type="Resource" id="Resource_ga63x"]
 script = ExtResource("3_so68f")
-caliber = 1
+caliber = 2
 compatible = 2
 metadata/_custom_type_script = "uid://bljf4ckjb0kgb"
 

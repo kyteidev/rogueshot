@@ -14,6 +14,8 @@
 [ext_resource type="Resource" uid="uid://di4vpy8p25vvs" path="res://resources/items/weapons/pistol1/pistol1.tres" id="10_sm6th"]
 [ext_resource type="Resource" uid="uid://crapc7quksn6b" path="res://resources/items/weapons/pistol1/pistol1_mag.tres" id="12_ai2no"]
 [ext_resource type="Resource" uid="uid://c0f4a84fr3w0v" path="res://resources/items/ammo/9x19.tres" id="12_g363x"]
+[ext_resource type="Resource" uid="uid://ciuaxrrej43ip" path="res://resources/items/weapons/rifle1/rifle1_mag.tres" id="13_g363x"]
+[ext_resource type="Resource" uid="uid://clbie6ews1yvb" path="res://resources/items/ammo/556.tres" id="14_ai2no"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_hpfpv"]
 texture = ExtResource("2_17cyv")
@@ -65,7 +67,7 @@ visible = false
 [node name="Inventory" parent="." unique_id=1946403224 node_paths=PackedStringArray("crosshair") instance=ExtResource("7_ylwvt")]
 visible = false
 crosshair = NodePath("../CrosshairCanvas")
-starting_items = Array[ExtResource("9_7exj4")]([ExtResource("10_sm6th"), ExtResource("12_ai2no"), ExtResource("12_g363x"), ExtResource("12_ai2no"), null])
+starting_items = Array[ExtResource("9_7exj4")]([ExtResource("10_sm6th"), ExtResource("12_ai2no"), ExtResource("12_g363x"), ExtResource("12_ai2no"), ExtResource("13_g363x"), ExtResource("14_ai2no")])
 
 [node name="PauseManu" parent="." unique_id=1248834952 node_paths=PackedStringArray("crosshair", "inventory") instance=ExtResource("5_d1y6d")]
 visible = false
