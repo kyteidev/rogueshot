@@ -244,6 +244,9 @@ func unequip_item() -> void:
 
 
 func unload_items() -> void:
+	if data.container_items.size() == 0:
+		return
+
 	var unload_item: ItemData = data.container_items[-1]
 	if unload_timer.wait_time != 0.001:
 		var unload_time: float = data.container_load_time * unload_item.count
