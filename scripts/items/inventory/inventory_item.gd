@@ -28,6 +28,9 @@ var drop_target := false
 var exists := true
 var pos_set := false
 
+var load_item: InventoryItem
+var unload_item: ItemData
+
 @onready var inventory: CanvasLayer = get_node("../../../")
 @onready var tooltip: PanelContainer = inventory.get_node("./Tooltip")
 
@@ -119,11 +122,15 @@ func _process(_delta: float) -> void:
 			Color(1.5, 1.5, 1.5, 0.784)
 			if (im.hovered_item and im.hovered_item.data == data)
 			or (
-				mouse_hovered and data.container and im.dragged_item != null
-				and im.dragged_item != self
-				and im.dragged_item.data.type == data.container_item_type
+				mouse_hovered and im.dragged_item != null and im.dragged_item != self
+				and (
+					(
+						data.container and im.dragged_item.data.type == data.container_item_type
+						and _check_compatibility()
+					)
+					or im.dragged_item.data.id == data.id
+				)
 			)
-			and _check_compatibility()
 			else Color(1.0, 1.0, 1.0)
 		)
 
@@ -159,15 +166,22 @@ func _input(event: InputEvent) -> void:
 					load_bar.max_value = load_time
 					load_timer.start(load_time)
 
+					load_item = loaded_item
 					loaded_item.overlay.visible = true
-
-					load_timer.timeout.connect(
-						func() -> void:
-							_load_item(loaded_item)
-							loaded_item.overlay.visible = false,
-					)
 				else:
 					_load_item(loaded_item)
+
+			# stacking items logic
+			elif (
+				im.dragged_item and im.dragged_item != self and data.id == im.dragged_item.data.id
+			):
+				var new_count: int = data.count + im.dragged_item.data.count
+				if new_count > data.max_stack:
+					im.dragged_item.data.count = new_count - data.max_stack
+					data.count = data.max_stack
+				else:
+					data.count = new_count
+					im.remove_item(im.dragged_item.data)
 
 			# item drag and drop handling
 			elif not im.dragged_item or im.dragged_item == self:
@@ -247,17 +261,11 @@ func unload_items() -> void:
 	if data.container_items.size() == 0:
 		return
 
-	var unload_item: ItemData = data.container_items[-1]
+	unload_item = data.container_items[-1]
 	if unload_timer.wait_time != 0.001:
 		var unload_time: float = data.container_load_time * unload_item.count
 		load_bar.max_value = unload_time
 		unload_timer.start(unload_time)
-
-		unload_timer.timeout.connect(
-			func() -> void:
-				im.add_item(unload_item)
-				data.container_items.pop_back(),
-		)
 	else:
 		im.add_item(unload_item)
 		data.container_items.pop_back()
@@ -293,7 +301,6 @@ func _rotate() -> void:
 
 
 func _load_item(loaded_item: InventoryItem) -> void:
-	print(loaded_item)
 	var present := false
 	var overflow := false
 	for item in data.container_items:
@@ -329,6 +336,7 @@ func _load_item(loaded_item: InventoryItem) -> void:
 	im.item_loaded.emit()
 
 
+# for checking compatibility when dragging to container item
 func _check_compatibility() -> bool:
 	var item_type: ItemData.ItemType = im.dragged_item.data.type
 	var types := ItemData.ItemType
@@ -390,3 +398,13 @@ func _on_tooltip_timer_timeout() -> void:
 	tooltip.global_position = mouse_pos
 	tooltip.move_to_front()
 	tooltip.show_tooltip(data)
+
+
+func _on_load_timer_timeout() -> void:
+	_load_item(load_item)
+	load_item.overlay.visible = false
+
+
+func _on_unload_timer_timeout() -> void:
+	im.add_item(unload_item)
+	data.container_items.pop_back()
