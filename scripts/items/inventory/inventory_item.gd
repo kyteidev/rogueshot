@@ -239,6 +239,9 @@ func unload_items() -> void:
 
 
 func split_stack() -> void:
+	if data.count <= 1:
+		return
+
 	var new_item_data: ItemData = data.duplicate(true)
 	@warning_ignore("integer_division")
 	new_item_data.count = floori(new_item_data.count / 2)
