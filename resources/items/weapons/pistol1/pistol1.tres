@@ -19,6 +19,7 @@ icon = ExtResource("2_pjlyg")
 scale = 0.75
 size = Vector2i(3, 2)
 container = true
+container_load_time = 0.9
 container_item_type = 9
 container_max_size = 1
 metadata/_custom_type_script = "uid://coqypqa0006b"
