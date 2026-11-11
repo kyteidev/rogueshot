@@ -40,6 +40,7 @@ var pos_set := false
 
 @onready var load_timer: Timer = $LoadTimer
 @onready var load_bar: TextureProgressBar = $LoadProgress
+@onready var unload_timer: Timer = $UnloadTimer
 @onready var overlay: ColorRect = $Overlay
 
 
@@ -191,6 +192,7 @@ func setup(item_data: ItemData) -> void:
 	position = im.slot_to_pos(data.slot)
 
 	load_timer.wait_time = data.container_load_time if data.container_load_time != 0.0 else 0.001
+	unload_timer.wait_time = data.container_load_time if data.container_load_time != 0.0 else 0.001
 
 
 func equip_item() -> void:
@@ -234,9 +236,20 @@ func unequip_item() -> void:
 
 
 func unload_items() -> void:
-	for item in data.container_items:
-		im.add_item(item)
-	data.container_items.clear()
+	var unload_item: ItemData = data.container_items[-1]
+	if unload_timer.wait_time != 0.001:
+		var unload_time: float = data.container_load_time * unload_item.count
+		load_bar.max_value = unload_time
+		unload_timer.start(unload_time)
+
+		unload_timer.timeout.connect(
+			func() -> void:
+				im.add_item(unload_item)
+				data.container_items.pop_back(),
+		)
+	else:
+		im.add_item(unload_item)
+		data.container_items.pop_back()
 
 
 func split_stack() -> void:

@@ -119,4 +119,8 @@ wait_time = 0.5
 unique_name_in_owner = true
 one_shot = true
 
+[node name="UnloadTimer" type="Timer" parent="." unique_id=690584078]
+unique_name_in_owner = true
+one_shot = true
+
 [connection signal="timeout" from="Timer" to="." method="_on_tooltip_timer_timeout"]
