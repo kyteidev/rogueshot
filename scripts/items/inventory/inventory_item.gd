@@ -147,7 +147,15 @@ func _input(event: InputEvent) -> void:
 				var loaded_item: InventoryItem = im.dragged_item
 
 				if load_timer.wait_time != 0.001:
-					var load_time: float = data.container_load_time * loaded_item.data.count
+					var item_count: int = 0
+					for item in data.container_items:
+						item_count += item.count
+					var available_space: int = data.container_max_size - item_count
+
+					var load_time: float = data.container_load_time * min(
+						loaded_item.data.count,
+						available_space,
+					)
 					load_bar.max_value = load_time
 					load_timer.start(load_time)
 
