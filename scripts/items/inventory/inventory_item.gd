@@ -107,7 +107,7 @@ func _process(_delta: float) -> void:
 
 			prev_hovered_item = im.hovered_item
 
-	if mouse_hovered and mouse_dragging:
+	if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) and mouse_dragging:
 		pos_set = false
 		global_position = get_global_mouse_position() - mouse_offset
 	elif not pos_set:
