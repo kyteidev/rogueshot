@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://c0f4a84fr3w0v"]
+
+[ext_resource type="Script" uid="uid://coqypqa0006b" path="res://scripts/items/item_data.gd" id="1_m0lvf"]
+[ext_resource type="Texture2D" uid="uid://dfmvm3hb6slg" path="res://assets/sprites/weapons/bullet.png" id="2_6rmmr"]
+[ext_resource type="Script" uid="uid://dsupdcfcpbi3s" path="res://scripts/items/type_data/ammo_data.gd" id="3_gwm7o"]
+
+[sub_resource type="Resource" id="Resource_ai2no"]
+script = ExtResource("3_gwm7o")
+type = 1
+metadata/_custom_type_script = "uid://dsupdcfcpbi3s"
+
+[resource]
+script = ExtResource("1_m0lvf")
+id = &"ammo_9x19"
+name = "9x19"
+tooltip_name = "9x19 Ammo"
+type = 10
+type_data = SubResource("Resource_ai2no")
+icon = ExtResource("2_6rmmr")
+max_stack = 200
+count = 20
+scale = 0.2
+metadata/_custom_type_script = "uid://coqypqa0006b"
