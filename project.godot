@@ -63,6 +63,7 @@ living=""
 unique_player="a group unique to playable player, used when path to player in node tree is not known"
 unique_inventory_items=""
 unique_inventory_equipment=""
+unique_inventory=""
 
 [input]
 

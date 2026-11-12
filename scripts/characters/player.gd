@@ -439,7 +439,10 @@ func _update_stamina_bar(delta: float) -> void:
 
 
 func _item_pickup() -> void:
-	if items_in_range.size() == 0 or not Input.is_action_just_pressed("player_interact"):
+	if (
+		sm.is_input_locked() or items_in_range.size() == 0
+		or not Input.is_action_just_pressed("player_interact")
+	):
 		return
 
 	if closest_item:
