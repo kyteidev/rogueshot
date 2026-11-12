@@ -5,6 +5,7 @@ var im := ItemManager
 @onready var name_label: Label = $MarginContainer/VBoxContainer/NameLabel
 @onready var type_label: Label = $MarginContainer/VBoxContainer/TypeLabel
 @onready var extra_label: Label = $MarginContainer/VBoxContainer/ExtraLabel
+@onready var description_label: Label = $MarginContainer/VBoxContainer/DescriptionLabel
 
 
 func _ready() -> void:
@@ -17,6 +18,7 @@ func show_tooltip(data: ItemData) -> void:
 
 	name_label.text = data.tooltip_name
 	type_label.text = str(ItemData.ItemType.keys()[data.type]).replace("_", " ").capitalize()
+	description_label.text = data.description
 
 	extra_label.visible = true
 	var type_data: ItemTypeData = data.type_data

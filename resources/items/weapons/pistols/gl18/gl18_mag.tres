@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://crapc7quksn6b"]
+
+[ext_resource type="Script" uid="uid://coqypqa0006b" path="res://scripts/items/item_data.gd" id="1_3lrnk"]
+[ext_resource type="Texture2D" uid="uid://vul4ecutbnlt" path="res://assets/sprites/weapons/guns/pistols/gl18/gl18_mag.png" id="2_3lrnk"]
+[ext_resource type="Script" uid="uid://bljf4ckjb0kgb" path="res://scripts/items/type_data/mag_data.gd" id="3_72p8v"]
+
+[sub_resource type="Resource" id="Resource_g363x"]
+script = ExtResource("3_72p8v")
+caliber = 1
+compatible = 1
+metadata/_custom_type_script = "uid://bljf4ckjb0kgb"
+
+[resource]
+script = ExtResource("1_3lrnk")
+id = &"gl18_mag"
+name = "Mag."
+tooltip_name = "GL18 Magazine"
+description = "This magazine is designed to balance size and portability. It holds a sufficient amount of ammunition while being easy to carry."
+type = 9
+type_data = SubResource("Resource_g363x")
+icon = ExtResource("2_3lrnk")
+scale = 0.85
+container = true
+container_load_time = 0.32
+container_item_type = 10
+container_max_size = 13
+metadata/_custom_type_script = "uid://coqypqa0006b"

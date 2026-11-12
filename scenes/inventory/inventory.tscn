@@ -6,7 +6,7 @@
 [ext_resource type="Script" uid="uid://dn1rkoh0f3xdn" path="res://scripts/items/inventory/equipment_container.gd" id="3_tvok8"]
 [ext_resource type="PackedScene" uid="uid://cgauox53l6t2p" path="res://scenes/inventory/tooltip.tscn" id="5_bxceu"]
 
-[node name="Inventory" type="CanvasLayer" unique_id=1946403224]
+[node name="Inventory" type="CanvasLayer" unique_id=1946403224 groups=["unique_inventory"]]
 script = ExtResource("1_4mxsq")
 
 [node name="Background" type="ColorRect" parent="." unique_id=285942961]

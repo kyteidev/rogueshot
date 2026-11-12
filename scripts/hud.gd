@@ -16,6 +16,8 @@ var om := OptionsManager
 
 var displayed_health_loss := 100.0
 
+var action_hint_visible := false
+
 var health_tween: Tween
 
 @onready var ammo_mag_container: HBoxContainer = $AmmoMagContainer
@@ -126,13 +128,18 @@ func _process(delta: float) -> void:
 	primary_weapon_keybind.text = om.get_option("weapon_primary")
 	secondary_weapon_keybind.text = om.get_option("weapon_secondary")
 
+	# hide action hint label if in inventory
+	action_hint_label.visible = action_hint_visible if not get_tree() \
+			.get_first_node_in_group("unique_inventory") \
+			.visible else false
+
 	# DEBUG SECTION
 	if enemy:
 		debug_enemy_state_label.text = "ENEMY: %s" % enemy.State.keys()[enemy.state]
 
 
 func update_hint_label(shown: bool, keybind_name: String = "", hint_text: String = "") -> void:
-	action_hint_label.visible = shown
+	action_hint_visible = shown
 	if not shown:
 		return
 

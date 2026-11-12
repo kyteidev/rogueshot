@@ -3,12 +3,12 @@ extends ItemTypeData
 
 enum Weapon {
 	NONE,
-	PISTOL,
-	RIFLE1,
+	GL18,
+	OZ2,
 }
 
 const WEAPON_STATS = {
-	Weapon.PISTOL: {
+	Weapon.GL18: {
 		"scene_path": "res://scenes/weapons/types/pistol.tscn",
 		"damage": 25,
 		"caliber": AmmoData.Caliber.NINE_MM,
@@ -26,7 +26,7 @@ const WEAPON_STATS = {
 		"cooling_rate": 1.04,
 		"speed_multiplier": 1.0,
 	},
-	Weapon.RIFLE1: {
+	Weapon.OZ2: {
 		"scene_path": "res://scenes/weapons/types/rifle_1.tscn",
 		"damage": 15,
 		"caliber": AmmoData.Caliber.FIVE_FIVE_SIX,
@@ -50,6 +50,7 @@ const WEAPON_STATS = {
 	set(value):
 		weapon = value
 		_apply_values()
+@export var loaded_icon: Texture2D
 @export var mag_attached := false
 @export var round_chambered := false
 @export var total_ammo: int:

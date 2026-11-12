@@ -11,12 +11,12 @@
 [ext_resource type="PackedScene" uid="uid://bv8l68anm4bn0" path="res://scenes/inventory/inventory.tscn" id="7_ylwvt"]
 [ext_resource type="Script" uid="uid://coqypqa0006b" path="res://scripts/items/item_data.gd" id="9_7exj4"]
 [ext_resource type="PackedScene" uid="uid://b7bcawpls2ixa" path="res://scenes/transitions/transition_circle.tscn" id="9_bdsyy"]
-[ext_resource type="Resource" uid="uid://di4vpy8p25vvs" path="res://resources/items/weapons/pistol1/pistol1.tres" id="10_sm6th"]
-[ext_resource type="Resource" uid="uid://crapc7quksn6b" path="res://resources/items/weapons/pistol1/pistol1_mag.tres" id="12_ai2no"]
+[ext_resource type="Resource" uid="uid://di4vpy8p25vvs" path="res://resources/items/weapons/pistols/gl18/gl18.tres" id="10_sm6th"]
+[ext_resource type="Resource" uid="uid://crapc7quksn6b" path="res://resources/items/weapons/pistols/gl18/gl18_mag.tres" id="12_ai2no"]
 [ext_resource type="Resource" uid="uid://c0f4a84fr3w0v" path="res://resources/items/ammo/9x19.tres" id="12_g363x"]
-[ext_resource type="Resource" uid="uid://ciuaxrrej43ip" path="res://resources/items/weapons/rifle1/rifle1_mag.tres" id="13_g363x"]
+[ext_resource type="Resource" uid="uid://ciuaxrrej43ip" path="res://resources/items/weapons/rifles/oz-2/oz2_mag.tres" id="13_g363x"]
 [ext_resource type="Resource" uid="uid://clbie6ews1yvb" path="res://resources/items/ammo/556.tres" id="14_ai2no"]
-[ext_resource type="Resource" uid="uid://dnsl2swq8owc7" path="res://resources/items/weapons/rifle1/rifle1.tres" id="15_e8gd3"]
+[ext_resource type="Resource" uid="uid://dnsl2swq8owc7" path="res://resources/items/weapons/rifles/oz-2/oz2.tres" id="15_e8gd3"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_hpfpv"]
 texture = ExtResource("2_17cyv")

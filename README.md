@@ -43,6 +43,7 @@ CONTROLS:
 
 ### THIRD PARTY ASSETS
 - Groundhog font by ChevyRay - https://chevyray.itch.io/pixel-font-groundhog
+- Tiny5 Mono font by Gissio - https://gissio.itch.io/tiny5mono
 - Cyberpunk Tileset - 16X16 by MORDA - https://morda-studios.itch.io/cyberpunk-tileset-16x16?download
 - Simple circle transition shader by agurkas - https://godotshaders.com/shader/simple-circle-transition-2/ - has been modified
 - 2D outline shader by Julian-Vos - https://godotengine.org/asset-library/asset/2829 - MIT license found in shaders/outline.gdshader
