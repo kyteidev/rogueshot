@@ -12,7 +12,7 @@ metadata/_custom_type_script = "uid://dsupdcfcpbi3s"
 [resource]
 script = ExtResource("1_vexds")
 id = &"ammo_556"
-name = "556"
+name = "5.56"
 tooltip_name = "556 Ammo"
 description = "This caliber is the gold standard of the special forces. It is best suited for penetrating medium armor."
 type = 10
