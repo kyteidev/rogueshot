@@ -401,8 +401,9 @@ func _on_tooltip_timer_timeout() -> void:
 
 
 func _on_load_timer_timeout() -> void:
-	_load_item(load_item)
-	load_item.overlay.visible = false
+	if load_item:
+		_load_item(load_item)
+		load_item.overlay.visible = false
 
 
 func _on_unload_timer_timeout() -> void:
