@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://c7tan25e3y804"
-path="res://.godot/imported/rifle_bare.png-bb25e5224f3e0ce4b750e650c6dbc20b.ctex"
+path="res://.godot/imported/oz2_bare.png-b18446d2cb1f12e2b45f49734938e768.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sprites/weapons/guns/rifle1/rifle_bare.png"
-dest_files=["res://.godot/imported/rifle_bare.png-bb25e5224f3e0ce4b750e650c6dbc20b.ctex"]
+source_file="res://assets/sprites/weapons/guns/rifles/oz2/oz2_bare.png"
+dest_files=["res://.godot/imported/oz2_bare.png-b18446d2cb1f12e2b45f49734938e768.ctex"]
 
 [params]
 

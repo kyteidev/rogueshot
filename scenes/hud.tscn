@@ -10,8 +10,8 @@
 [ext_resource type="Texture2D" uid="uid://birxq4q0v4dpe" path="res://assets/sprites/weapons/base/rifle1-base.png" id="6_5pdws"]
 [ext_resource type="Texture2D" uid="uid://cw7lkbujj1r54" path="res://assets/sprites/icons/heart.png" id="6_mphia"]
 [ext_resource type="Texture2D" uid="uid://d0ibfba4ttyrc" path="res://assets/sprites/weapons/base/pistol-base.png" id="7_hd3ao"]
-[ext_resource type="Texture2D" uid="uid://borcg0o7hn0qo" path="res://assets/sprites/weapons/guns/rifle1/rifle1-outline.png" id="11_apjy4"]
-[ext_resource type="Texture2D" uid="uid://7mo7g8smj1w" path="res://assets/sprites/weapons/guns/pistol1/pistol-outline.png" id="12_5n1hp"]
+[ext_resource type="Texture2D" uid="uid://borcg0o7hn0qo" path="res://assets/sprites/weapons/guns/rifles/oz2/oz2-outline.png" id="11_apjy4"]
+[ext_resource type="Texture2D" uid="uid://7mo7g8smj1w" path="res://assets/sprites/weapons/guns/pistols/gl18/gl18-outline.png" id="12_5n1hp"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_apjy4"]
 font = ExtResource("5_047uy")

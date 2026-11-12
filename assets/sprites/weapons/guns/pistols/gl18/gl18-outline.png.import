@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c4114geuy27sw"
-path="res://.godot/imported/rifle_loaded.png-3dbf7f94e10171f6d639687ab8960187.ctex"
+uid="uid://7mo7g8smj1w"
+path="res://.godot/imported/gl18-outline.png-abba0a7a7bcb8c985375d9bdfd7ceb96.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sprites/weapons/guns/rifle1/rifle_loaded.png"
-dest_files=["res://.godot/imported/rifle_loaded.png-3dbf7f94e10171f6d639687ab8960187.ctex"]
+source_file="res://assets/sprites/weapons/guns/pistols/gl18/gl18-outline.png"
+dest_files=["res://.godot/imported/gl18-outline.png-abba0a7a7bcb8c985375d9bdfd7ceb96.ctex"]
 
 [params]
 
