@@ -15,6 +15,7 @@ metadata/_custom_type_script = "uid://fn8hix2hcrvm"
 script = ExtResource("1_7w85i")
 id = &"gl18"
 name = "GL18"
+description = "Manufactured by General Firearms, this pistol is a top choice for special forces operators. It is believed to bring good luck."
 type = 2
 type_data = SubResource("Resource_nqevj")
 icon = ExtResource("2_7w85i")

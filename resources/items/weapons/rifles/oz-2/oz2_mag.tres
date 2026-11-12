@@ -1,23 +1,24 @@
 [gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://ciuaxrrej43ip"]
 
-[ext_resource type="Script" uid="uid://coqypqa0006b" path="res://scripts/items/item_data.gd" id="1_di4ic"]
-[ext_resource type="Texture2D" uid="uid://dry375adwg3wr" path="res://assets/sprites/weapons/guns/rifles/oz2/oz2_mag.png" id="2_h3fs5"]
-[ext_resource type="Script" uid="uid://bljf4ckjb0kgb" path="res://scripts/items/type_data/mag_data.gd" id="3_myqo3"]
+[ext_resource type="Script" uid="uid://coqypqa0006b" path="res://scripts/items/item_data.gd" id="1_xxi80"]
+[ext_resource type="Texture2D" uid="uid://dry375adwg3wr" path="res://assets/sprites/weapons/guns/rifles/oz2/oz2_mag.png" id="2_e8yo2"]
+[ext_resource type="Script" uid="uid://bljf4ckjb0kgb" path="res://scripts/items/type_data/mag_data.gd" id="3_0rf6w"]
 
 [sub_resource type="Resource" id="Resource_ga63x"]
-script = ExtResource("3_myqo3")
+script = ExtResource("3_0rf6w")
 caliber = 2
 compatible = 2
 metadata/_custom_type_script = "uid://bljf4ckjb0kgb"
 
 [resource]
-script = ExtResource("1_di4ic")
+script = ExtResource("1_xxi80")
 id = &"oz2_mag"
 name = "Mag."
 tooltip_name = "OZ-2 Magazine"
+description = "This magazine holds a sufficient amount of ammunition while being relatively low-profile."
 type = 9
 type_data = SubResource("Resource_ga63x")
-icon = ExtResource("2_h3fs5")
+icon = ExtResource("2_e8yo2")
 scale = 0.75
 size = Vector2i(1, 2)
 container = true

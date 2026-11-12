@@ -44,6 +44,7 @@ const CAPABILITIES = {
 		if tooltip_name == "":
 			tooltip_name = value
 @export var tooltip_name := ""
+@export_multiline var description: String
 @export var type := ItemType.DEFAULT
 @export var type_data: ItemTypeData # type specific data
 @export var icon: Texture2D
