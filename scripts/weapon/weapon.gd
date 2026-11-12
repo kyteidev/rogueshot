@@ -230,31 +230,41 @@ func _finish_reload() -> void:
 	var stats: WeaponData = weapon.type_data
 
 	var fullest_mag: ItemData
-	var mag_size: int = 0
+	var fullest_mag_size: int = 0
 	for item in im.inventory_items:
 		if item.type == ItemData.ItemType.MAGAZINE and stats.weapon == item.type_data.compatible:
-			if item.container_items.size() > 0 and item.container_items[0].count > mag_size:
+			if item.container_items.size() > 0 and item.container_items[0].count > fullest_mag_size:
 				fullest_mag = item
-				mag_size = item.container_items[0].count
+				fullest_mag_size = item.container_items[0].count
 
-	var mag_items: Array[ItemData] = weapon.container_items[0].container_items
-	var fullest_mag_items: Array[ItemData] = fullest_mag.container_items
-	if mag_items.size() > 0:
-		var current_ammo: int = mag_items[0].count
-		var most_ammo: int = fullest_mag.container_items[0].count
+	if weapon.container_items.size() > 0:
+		# if a magazine is loaded already
+		var mag_items: Array[ItemData] = weapon.container_items[0].container_items
+		var fullest_mag_items: Array[ItemData] = fullest_mag.container_items
+		if mag_items.size() > 0:
+			var current_ammo: int = mag_items[0].count
+			var most_ammo: int = fullest_mag.container_items[0].count
 
-		mag_items[0].count = most_ammo
-		fullest_mag_items[0].count = current_ammo
+			mag_items[0].count = most_ammo
+			fullest_mag_items[0].count = current_ammo
 
-		ammo = most_ammo
+			ammo = most_ammo
+		else:
+			weapon_state[weapon_name]["mags"] -= 1
+			mags = weapon_state[weapon_name].mags
+
+			weapon.container_items[0].container_items = fullest_mag_items.duplicate(true)
+			fullest_mag.container_items.clear()
+
+			ammo = weapon.container_items[0].container_items[0].count
 	else:
-		weapon_state[weapon_name]["mags"] -= 1
-		mags = weapon_state[weapon_name].mags
-
-		weapon.container_items[0].container_items = fullest_mag_items.duplicate(true)
-		fullest_mag.container_items.clear()
+		# load new magazine
+		weapon.container_items.append(fullest_mag.duplicate(true))
+		im.remove_item(fullest_mag)
+		im.item_loaded.emit()
 
 		ammo = weapon.container_items[0].container_items[0].count
+		weapon.type_data.total_ammo = ammo
 
 
 func _fire_weapon() -> void:
