@@ -195,7 +195,9 @@ func _input(event: InputEvent) -> void:
 
 					tooltip.hide_tooltip()
 				elif event.is_released():
-					_release_item()
+					if not pos_set:
+						_release_item()
+						pos_set = true
 
 		# check if item rotation key pressed
 		if (
@@ -353,8 +355,6 @@ func _check_compatibility() -> bool:
 
 # when releasing item from drag
 func _release_item() -> void:
-	await get_tree().process_frame
-
 	mouse_dragging = false
 	saved_vars = false
 
