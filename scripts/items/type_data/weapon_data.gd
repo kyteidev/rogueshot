@@ -50,6 +50,7 @@ const WEAPON_STATS = {
 	set(value):
 		weapon = value
 		_apply_values()
+@export var loaded_icon: Texture2D
 @export var mag_attached := false
 @export var round_chambered := false
 @export var total_ammo: int:

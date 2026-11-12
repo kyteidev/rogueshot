@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://bxil48e432vuf" path="res://assets/sprites/characters/enemy1.png" id="1_md0e3"]
 [ext_resource type="Resource" uid="uid://dnsl2swq8owc7" path="res://resources/items/weapons/rifle1/rifle1.tres" id="2_0ag5d"]
 [ext_resource type="Texture2D" uid="uid://sxdj3w7nress" path="res://assets/sprites/icons/question mark.png" id="4_21x0f"]
-[ext_resource type="Texture2D" uid="uid://c4114geuy27sw" path="res://assets/sprites/weapons/guns/rifle1/rifle.png" id="5_f0ik5"]
+[ext_resource type="Texture2D" uid="uid://c4114geuy27sw" path="res://assets/sprites/weapons/guns/rifle1/rifle_loaded.png" id="5_f0ik5"]
 [ext_resource type="Script" uid="uid://dtictyumsb7ps" path="res://scripts/characters/enemy_status_icon.gd" id="5_jgk6k"]
 [ext_resource type="FontFile" uid="uid://4jxi61jcsc2c" path="res://assets/fonts/groundhog.ttf" id="6_3k4es"]
 [ext_resource type="Script" uid="uid://1w732e3gs1gb" path="res://scripts/characters/enemy_status_label.gd" id="7_x5khh"]

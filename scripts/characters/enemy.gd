@@ -161,6 +161,8 @@ func _ready() -> void:
 	smoke = SMOKE_PARTICLES.instantiate()
 	weapon.add_child(smoke)
 
+	weapon_data.type_data.mag_attached = true
+
 
 func _process(_delta: float) -> void:
 	# flip weapon if necessary

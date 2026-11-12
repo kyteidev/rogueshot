@@ -82,6 +82,9 @@ func _process(_delta: float) -> void:
 			container_text = str(count)
 	container_label.text = container_text
 
+	# item type specific logic
+	_item_type_logic()
+
 	# check mouse hover
 	var mouse_pos: Vector2 = get_global_mouse_position()
 	if (
@@ -398,6 +401,20 @@ func _on_tooltip_timer_timeout() -> void:
 	tooltip.global_position = mouse_pos
 	tooltip.move_to_front()
 	tooltip.show_tooltip(data)
+
+
+func _item_type_logic() -> void:
+	var types := ItemData.ItemType
+	match data.type:
+		types.PRIMARY_WEAPON, types.SECONDARY_WEAPON:
+			data.type_data.mag_attached = data.container_items.size() > 0
+			icon.texture = (
+				data.icon
+				if not data.type_data.mag_attached
+				else data \
+						.type_data \
+						.loaded_icon
+			)
 
 
 func _on_load_timer_timeout() -> void:
