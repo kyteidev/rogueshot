@@ -255,8 +255,8 @@ func equip_item() -> void:
 
 
 func unequip_item() -> void:
-	im.remove_item(data)
-	im.add_item(data)
+	if im.add_item(data):
+		im.remove_item(data)
 
 
 func unload_items() -> void:
