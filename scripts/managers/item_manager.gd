@@ -5,7 +5,7 @@ signal weapon_unequipped
 @warning_ignore("unused_signal") # used in other places
 signal item_loaded
 @warning_ignore("unused_signal") # used in other places
-signal item_unloaded
+signal item_unloaded(item: ItemData)
 
 const SLOT_SIZE = 24
 const TOTAL_SLOTS = 44
@@ -33,6 +33,10 @@ var context_menu_open := false
 var dragging_item := false
 var hovered_equipment := ""
 
+var checking_stack := false
+
+var sm := StateManager
+
 
 # for placing items in inventory: when final position is known
 func place_item(item: ItemData, slot: Vector2i) -> bool:
@@ -49,13 +53,14 @@ func place_item(item: ItemData, slot: Vector2i) -> bool:
 			inventory[Vector2i(x, y) + slot] = item
 
 	inventory_items.append(item)
+	sm.update_inventory_weight()
 	return true
 
 
 # for placing items when final position has to be determined
-func add_item(item: ItemData) -> bool:
+func add_item(item: ItemData, duplicate_item := true) -> bool:
 	# find a free slot
-	var new_item: ItemData = item.duplicate()
+	var new_item: ItemData = item.duplicate() if duplicate_item else item
 	for x in TOTAL_COLUMNS:
 		for y in TOTAL_ROWS:
 			var possible_slot := Vector2i(x, y)
@@ -189,3 +194,4 @@ func _clear_item(item: ItemData) -> void:
 	var index: int = inventory_items.find(item)
 	if index != -1:
 		inventory_items.pop_at(index)
+		sm.update_inventory_weight()

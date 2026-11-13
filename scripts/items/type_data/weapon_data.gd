@@ -9,7 +9,7 @@ enum Weapon {
 
 const WEAPON_STATS = {
 	Weapon.GL18: {
-		"scene_path": "res://scenes/weapons/types/pistol.tscn",
+		"scene_path": "res://scenes/weapons/types/pistols/gl18.tscn",
 		"damage": 25,
 		"caliber": AmmoData.Caliber.NINE_MM,
 		"fire_rate": 0.0,
@@ -27,7 +27,7 @@ const WEAPON_STATS = {
 		"speed_multiplier": 1.0,
 	},
 	Weapon.OZ2: {
-		"scene_path": "res://scenes/weapons/types/rifle_1.tscn",
+		"scene_path": "res://scenes/weapons/types/rifles/oz2.tscn",
 		"damage": 15,
 		"caliber": AmmoData.Caliber.FIVE_FIVE_SIX,
 		"fire_rate": 0.1,

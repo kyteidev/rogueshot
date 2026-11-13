@@ -50,6 +50,7 @@ const CAPABILITIES = {
 @export var icon: Texture2D
 @export var max_stack: int = 1
 @export var count: int = 1
+@export var weight := 0.0
 
 # world
 @export var scale := 1.0
@@ -67,3 +68,4 @@ const CAPABILITIES = {
 @export var container_item_type: ItemType
 @export var container_max_size: int = 0
 @export var container_items: Array[ItemData]
+@export var container_weight := 0.0

@@ -19,6 +19,9 @@ var stamina := 100.0
 var stamina_depleted := false
 var used_stamina := false
 
+var inventory_weight := 0.0
+var max_weight := 25.0
+
 # input lock
 var input_locks := { }
 
@@ -32,3 +35,9 @@ func set_input_lock(origin: String, enabled: bool) -> void:
 
 func is_input_locked() -> bool:
 	return not input_locks.is_empty()
+
+
+func update_inventory_weight() -> void:
+	inventory_weight = 0.0
+	for item in ItemManager.inventory_items:
+		inventory_weight += (item.weight * item.count + item.container_weight)

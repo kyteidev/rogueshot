@@ -19,6 +19,7 @@ description = "This magazine holds a sufficient amount of ammunition while being
 type = 9
 type_data = SubResource("Resource_ga63x")
 icon = ExtResource("2_e8yo2")
+weight = 0.16
 scale = 0.75
 size = Vector2i(1, 2)
 container = true
