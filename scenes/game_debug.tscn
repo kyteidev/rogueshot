@@ -5,7 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://hop8m0c1ubuo" path="res://assets/sprites/environment/world-tileset.png" id="2_17cyv"]
 [ext_resource type="Script" uid="uid://ffbt8aq075s4" path="res://scripts/camera.gd" id="3_2wr2m"]
 [ext_resource type="PackedScene" uid="uid://c7lkx746oul73" path="res://scenes/characters/enemy.tscn" id="3_ex044"]
-[ext_resource type="PackedScene" uid="uid://c6evxkovosp2y" path="res://scenes/hud.tscn" id="4_1s6p4"]
+[ext_resource type="PackedScene" uid="uid://c6evxkovosp2y" path="res://scenes/hud/hud.tscn" id="4_1s6p4"]
 [ext_resource type="PackedScene" uid="uid://byg2oli55neme" path="res://scenes/weapons/crosshair.tscn" id="4_8285f"]
 [ext_resource type="PackedScene" uid="uid://bojjbmn2cos6p" path="res://scenes/menus/pause_menu.tscn" id="5_d1y6d"]
 [ext_resource type="PackedScene" uid="uid://bv8l68anm4bn0" path="res://scenes/inventory/inventory.tscn" id="7_ylwvt"]
@@ -17,6 +17,7 @@
 [ext_resource type="Resource" uid="uid://ciuaxrrej43ip" path="res://resources/items/weapons/rifles/oz-2/oz2_mag.tres" id="13_g363x"]
 [ext_resource type="Resource" uid="uid://clbie6ews1yvb" path="res://resources/items/ammo/556.tres" id="14_ai2no"]
 [ext_resource type="Resource" uid="uid://dnsl2swq8owc7" path="res://resources/items/weapons/rifles/oz-2/oz2.tres" id="15_e8gd3"]
+[ext_resource type="Texture2D" uid="uid://7mo7g8smj1w" path="res://assets/sprites/weapons/guns/pistols/gl18/gl18-outline.png" id="16_ydft7"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_hpfpv"]
 texture = ExtResource("2_17cyv")
@@ -34,6 +35,14 @@ texture = ExtResource("2_17cyv")
 [sub_resource type="TileSet" id="TileSet_nxcxh"]
 physics_layer_0/collision_layer = 33
 sources/0 = SubResource("TileSetAtlasSource_hpfpv")
+
+[sub_resource type="Resource" id="Resource_vh4er"]
+script = ExtResource("9_7exj4")
+id = &"y"
+name = "e"
+icon = ExtResource("16_ydft7")
+weight = 30.0
+metadata/_custom_type_script = "uid://coqypqa0006b"
 
 [node name="Game Debug" type="Node2D" unique_id=1078131783]
 
@@ -68,7 +77,7 @@ visible = false
 [node name="Inventory" parent="." unique_id=1946403224 node_paths=PackedStringArray("crosshair") instance=ExtResource("7_ylwvt")]
 visible = false
 crosshair = NodePath("../CrosshairCanvas")
-starting_items = Array[ExtResource("9_7exj4")]([ExtResource("10_sm6th"), ExtResource("12_ai2no"), ExtResource("12_g363x"), ExtResource("12_ai2no"), ExtResource("13_g363x"), ExtResource("14_ai2no"), ExtResource("15_e8gd3")])
+starting_items = Array[ExtResource("9_7exj4")]([ExtResource("10_sm6th"), ExtResource("12_ai2no"), ExtResource("12_g363x"), ExtResource("12_ai2no"), ExtResource("13_g363x"), ExtResource("14_ai2no"), ExtResource("15_e8gd3"), SubResource("Resource_vh4er")])
 
 [node name="PauseManu" parent="." unique_id=1248834952 node_paths=PackedStringArray("crosshair", "inventory") instance=ExtResource("5_d1y6d")]
 visible = false

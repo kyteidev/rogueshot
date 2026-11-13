@@ -5,6 +5,7 @@ const DAMAGE_FLASH_DELAY = 0.04
 
 const BASE_SPEED = 80.0
 const SPRINT_MULTIPLIER = 1.5
+const OVERWEIGHT_MULTIPLIER = 0.5
 
 const MAX_STAMINA = 100.0
 const STAMINA_RECOVERY_DELAY = 1.5
@@ -115,6 +116,9 @@ var flipped := false
 var items_in_range: Array[Node2D]
 var closest_item: Node2D
 
+# status effects
+var overweight := false
+
 @onready var coyote_timer: Timer = $CoyoteTimer
 @onready var jump_buffer_timer: Timer = $JumpBufferTimer
 
@@ -147,6 +151,16 @@ func _ready() -> void:
 	sm.health = health
 	sm.max_health = MAX_HEALTH
 	sm.stamina = stamina
+
+
+func _process(_delta: float) -> void:
+	if sm.inventory_weight > sm.max_weight:
+		if sm.PlayerStatus.OVERWEIGHT not in sm.active_statuses:
+			sm.active_statuses.append(sm.PlayerStatus.OVERWEIGHT)
+			overweight = true
+	else:
+		sm.active_statuses.erase(sm.PlayerStatus.OVERWEIGHT)
+		overweight = false
 
 
 func _physics_process(delta: float) -> void:
@@ -227,7 +241,10 @@ func _physics_process(delta: float) -> void:
 	speed = BASE_SPEED
 	if is_on_floor():
 		var enough_stamina: bool = stamina > 0.0 and not stamina_depleted
-		if Input.is_action_pressed("player_sprint") and enough_stamina and same_direction:
+		if (
+			Input.is_action_pressed("player_sprint")
+			and enough_stamina and same_direction and not overweight
+		):
 			sprinting = true
 
 			# cancel reload if sprinting
@@ -253,8 +270,9 @@ func _physics_process(delta: float) -> void:
 		if stamina == MAX_STAMINA:
 			stamina_depleted = false
 
-	# apply weapon speed multiplier
+	# apply other speed multipliers
 	speed *= weapon.speed_multiplier
+	speed *= OVERWEIGHT_MULTIPLIER if overweight else 1.0
 
 	# plays correct animation
 	if is_on_floor():

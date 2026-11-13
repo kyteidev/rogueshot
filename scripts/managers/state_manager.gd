@@ -1,5 +1,9 @@
 extends Node
 
+enum PlayerStatus {
+	OVERWEIGHT,
+}
+
 # player stats
 var health := 100.0
 var max_health := 100.0
@@ -21,6 +25,8 @@ var used_stamina := false
 
 var inventory_weight := 0.0
 var max_weight := 25.0
+
+var active_statuses: Array[PlayerStatus] = []
 
 # input lock
 var input_locks := { }
