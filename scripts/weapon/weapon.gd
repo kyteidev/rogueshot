@@ -18,6 +18,9 @@ const SMOKE_FADE_SPEED = 6.0
 const MAX_HEAT = 1.0
 const SMOKE_BASE_ALPHA = 0.8
 
+const MAG_FADE_DURATION = 0.3
+const MAG_MOVE_AMOUNT = 5.0
+
 var sm := StateManager
 var im := ItemManager
 
@@ -83,6 +86,7 @@ var smoke: CPUParticles2D
 var heat := 0.0
 
 var can_fire := true
+var reloading := false
 
 @onready var timer: Timer = $Timer
 @onready var weapon_node: Node2D = $Weapon
@@ -228,9 +232,41 @@ func fade_weapon() -> void:
 
 
 func reload_weapon() -> void:
-	if mags > 0:
+	if mags > 0 and not reloading:
+		reloading = true
+
+		var sprite: Sprite2D = weapon_node.get_child(0)
+		var mag: Sprite2D = sprite.get_node("./Magazine")
+		sprite.texture = sprite.base_texture
+		mag.visible = true
+
+		var mag_orig_pos: Vector2 = mag.position
+
 		crosshair.start_reload()
 		crosshair.tween.finished.connect(_finish_reload)
+
+		var weapon: ItemData = im.equipped_weapons[weapon_index]
+		if not weapon.type_data.mag_attached:
+			mag.modulate.a = 0.0
+
+		var start_tween := create_tween()
+		start_tween.set_parallel(true)
+
+		start_tween \
+				.tween_property(mag, "position:y", mag_orig_pos.y + MAG_MOVE_AMOUNT, MAG_FADE_DURATION) \
+				.set_trans(Tween.TRANS_QUAD) \
+				.set_ease(Tween.EASE_IN)
+		start_tween.tween_property(mag, "modulate:a", 0.0, MAG_FADE_DURATION)
+
+		get_tree().create_timer(reload_time - MAG_FADE_DURATION).timeout.connect(
+			func() -> void:
+				var end_tween := create_tween()
+				end_tween.set_parallel(true)
+
+				end_tween.tween_property(mag, "position:y", mag_orig_pos.y, MAG_FADE_DURATION) \
+						.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+				end_tween.tween_property(mag, "modulate:a", 1.0, MAG_FADE_DURATION),
+		)
 
 
 func _finish_reload() -> void:
@@ -273,6 +309,13 @@ func _finish_reload() -> void:
 
 		ammo = weapon.container_items[0].container_items[0].count
 		weapon.type_data.total_ammo = ammo
+
+	reloading = false
+
+	var sprite: Sprite2D = weapon_node.get_child(0)
+	var mag: Sprite2D = sprite.get_node("./Magazine")
+	sprite.texture = sprite.loaded_texture
+	mag.visible = false
 
 
 func _fire_weapon() -> void:
