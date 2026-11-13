@@ -10,6 +10,20 @@ var data: ItemData
 @onready var collision: CollisionPolygon2D = $CollisionPolygon2D
 
 
+func _process(_delta: float) -> void:
+	var types := ItemData.ItemType
+	match data.type:
+		types.PRIMARY_WEAPON, types.SECONDARY_WEAPON:
+			data.type_data.mag_attached = data.container_items.size() > 0
+			sprite.texture = (
+				data.icon
+				if not data.type_data.mag_attached
+				else data \
+						.type_data \
+						.loaded_icon
+			)
+
+
 func setup(item_data: ItemData) -> void:
 	data = item_data.duplicate(true)
 	sprite.texture = data.icon
