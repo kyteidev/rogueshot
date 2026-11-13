@@ -19,6 +19,7 @@ description = "Specifically designed for special forces, this assault rifle is l
 type = 1
 type_data = SubResource("Resource_ge4p5")
 icon = ExtResource("2_8xnib")
+weight = 2.9
 scale = 0.55
 size = Vector2i(5, 2)
 container = true

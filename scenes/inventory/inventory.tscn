@@ -4,7 +4,11 @@
 [ext_resource type="Texture2D" uid="uid://bqpmoqx5btq2n" path="res://assets/sprites/ui/inventory/inventory.png" id="2_waxho"]
 [ext_resource type="PackedScene" uid="uid://bgre28m4eudus" path="res://scenes/context_menu/context_menu.tscn" id="3_el5y6"]
 [ext_resource type="Script" uid="uid://dn1rkoh0f3xdn" path="res://scripts/items/inventory/equipment_container.gd" id="3_tvok8"]
+[ext_resource type="FontFile" uid="uid://4jxi61jcsc2c" path="res://assets/fonts/groundhog.ttf" id="4_v8e04"]
 [ext_resource type="PackedScene" uid="uid://cgauox53l6t2p" path="res://scenes/inventory/tooltip.tscn" id="5_bxceu"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_vjox6"]
+font = ExtResource("4_v8e04")
 
 [node name="Inventory" type="CanvasLayer" unique_id=1946403224 groups=["unique_inventory"]]
 script = ExtResource("1_4mxsq")
@@ -135,6 +139,15 @@ layout_mode = 0
 offset_top = 196.0
 offset_right = 48.0
 offset_bottom = 220.0
+
+[node name="WeightLabel" type="Label" parent="InventoryContainer" unique_id=1795682310]
+layout_mode = 0
+offset_left = 440.0
+offset_top = 36.0
+offset_right = 518.0
+offset_bottom = 55.0
+text = "[0.0/25.0kg]"
+label_settings = SubResource("LabelSettings_vjox6")
 
 [node name="ContextMenu" parent="." unique_id=1117877697 instance=ExtResource("3_el5y6")]
 

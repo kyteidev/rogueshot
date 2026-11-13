@@ -16,6 +16,8 @@ var im := ItemManager
 @onready var items_container: Control = $InventoryContainer/ItemsContainer
 @onready var context_menu: Control = $ContextMenu
 
+@onready var weight_label: Label = $InventoryContainer/WeightLabel
+
 
 func _ready() -> void:
 	visible = false
@@ -35,6 +37,19 @@ func _ready() -> void:
 	# place starting items
 	for item in starting_items:
 		im.add_item(item.duplicate(true))
+
+
+func _process(_delta: float) -> void:
+	weight_label.text = "[%s/%skg]" % [sm.inventory_weight, sm.max_weight]
+	var weight_percent: float = sm.inventory_weight / sm.max_weight
+	var weight_label_color: Color
+	if weight_percent >= 1.0:
+		weight_label_color = Color("#ff2e8a")
+	elif weight_percent >= 0.5:
+		weight_label_color = Color("#ffb49e")
+	else:
+		weight_label_color = Color("#3cffae")
+	weight_label.modulate = weight_label_color
 
 
 func _input(_event: InputEvent) -> void:

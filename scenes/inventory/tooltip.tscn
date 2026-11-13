@@ -45,9 +45,10 @@ text = "Lorem ipsum"
 label_settings = SubResource("LabelSettings_nxcxh")
 vertical_alignment = 1
 
-[node name="TypeLabel" type="Label" parent="MarginContainer/VBoxContainer" unique_id=162812277]
+[node name="StatLabel" type="Label" parent="MarginContainer/VBoxContainer" unique_id=162812277]
 layout_mode = 2
-text = "Lorem ipsum"
+text = "Lorem ipsum
+Lorem ipsum"
 label_settings = SubResource("LabelSettings_58k1f")
 vertical_alignment = 1
 

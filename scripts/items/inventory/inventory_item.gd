@@ -2,6 +2,7 @@ class_name InventoryItem
 extends Panel
 
 var im := ItemManager
+var sm := StateManager
 var data: ItemData
 
 var mouse_offset: Vector2
@@ -185,6 +186,7 @@ func _input(event: InputEvent) -> void:
 				else:
 					data.count = new_count
 					im.remove_item(im.dragged_item.data)
+				sm.update_inventory_weight()
 
 			# item drag and drop handling
 			elif not im.dragged_item or im.dragged_item == self:
@@ -275,6 +277,10 @@ func unload_items() -> void:
 		im.add_item(unload_item)
 		data.container_items.pop_back()
 
+	# inventory weight is updated when unloaded item is added
+	# no need to call the update function again
+	data.container_weight -= (unload_item.weight * unload_item.count + unload_item.container_weight)
+
 
 func split_stack() -> void:
 	if data.count <= 1:
@@ -286,6 +292,7 @@ func split_stack() -> void:
 	data.count -= new_item_data.count
 
 	im.add_item(new_item_data)
+	sm.update_inventory_weight()
 
 
 func _rotate() -> void:
@@ -306,6 +313,7 @@ func _rotate() -> void:
 
 
 func _load_item(loaded_item: InventoryItem) -> void:
+	var item_data: ItemData = loaded_item.data
 	var present := false
 	var overflow := false
 	for item in data.container_items:
@@ -323,7 +331,6 @@ func _load_item(loaded_item: InventoryItem) -> void:
 			present = true
 
 	if not present:
-		var item_data: ItemData = loaded_item.data
 		var count: int = 0
 		for item2 in data.container_items:
 			count += item2.count
@@ -336,9 +343,13 @@ func _load_item(loaded_item: InventoryItem) -> void:
 		data.container_items.append(item_data)
 
 	if not overflow:
-		im.remove_item(loaded_item.data)
+		im.remove_item(item_data)
 
 	im.item_loaded.emit()
+
+	# update weight
+	data.container_weight += (item_data.weight * item_data.count + item_data.container_weight)
+	sm.update_inventory_weight()
 
 
 # for checking compatibility when dragging to container item

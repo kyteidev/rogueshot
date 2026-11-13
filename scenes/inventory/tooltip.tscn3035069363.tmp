@@ -1,0 +1,68 @@
+[gd_scene format=3 uid="uid://cgauox53l6t2p"]
+
+[ext_resource type="Script" uid="uid://4dl8r15cxdfb" path="res://scripts/tooltip.gd" id="1_38lrx"]
+[ext_resource type="FontFile" uid="uid://4jxi61jcsc2c" path="res://assets/fonts/groundhog.ttf" id="1_58k1f"]
+[ext_resource type="FontFile" uid="uid://c4222bnvnxtc8" path="res://assets/fonts/Tiny5Mono-Regular.ttf" id="3_f30e7"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_do3ue"]
+bg_color = Color(0.3372549, 0.28627452, 0.43137255, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_nxcxh"]
+font = ExtResource("1_58k1f")
+
+[sub_resource type="LabelSettings" id="LabelSettings_58k1f"]
+font = ExtResource("1_58k1f")
+font_size = 8
+
+[sub_resource type="LabelSettings" id="LabelSettings_38lrx"]
+line_spacing = -2.0
+font = ExtResource("3_f30e7")
+font_size = 6
+font_color = Color(0.744375, 0.7125, 0.75, 1)
+
+[node name="Tooltip" type="PanelContainer" unique_id=22460497]
+z_index = 999
+custom_minimum_size = Vector2(120, 0)
+offset_right = 84.0
+offset_bottom = 19.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_do3ue")
+script = ExtResource("1_38lrx")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=678586762]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=1517695078]
+layout_mode = 2
+
+[node name="NameLabel" type="Label" parent="MarginContainer/VBoxContainer" unique_id=738117499]
+layout_mode = 2
+text = "Lorem ipsum"
+label_settings = SubResource("LabelSettings_nxcxh")
+vertical_alignment = 1
+
+[node name="StatLabel" type="Label" parent="MarginContainer/VBoxContainer" unique_id=162812277]
+layout_mode = 2
+text = "Lorem ipsum
+Lorem ipsum"
+label_settings = SubResource("LabelSettings_58k1f")
+vertical_alignment = 1
+
+[node name="ExtraLabel" type="Label" parent="MarginContainer/VBoxContainer" unique_id=90118524]
+visible = false
+layout_mode = 2
+text = "Lorem ipsum"
+label_settings = SubResource("LabelSettings_58k1f")
+vertical_alignment = 1
+
+[node name="DescriptionLabel" type="Label" parent="MarginContainer/VBoxContainer" unique_id=2130028152]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In pellentesque fringilla ante id hendrerit. Duis ornare ex vitae tortor dapibus, eget mollis dui lobortis. Nullam consequat ornare nunc ut efficitur. "
+label_settings = SubResource("LabelSettings_38lrx")
+vertical_alignment = 1
+autowrap_mode = 3

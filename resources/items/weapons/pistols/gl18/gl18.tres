@@ -19,6 +19,7 @@ description = "Manufactured by General Firearms, this pistol is a top choice for
 type = 2
 type_data = SubResource("Resource_nqevj")
 icon = ExtResource("2_7w85i")
+weight = 0.72
 scale = 0.75
 size = Vector2i(3, 2)
 container = true

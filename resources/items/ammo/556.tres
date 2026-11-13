@@ -20,5 +20,6 @@ type_data = SubResource("Resource_ai2no")
 icon = ExtResource("2_bkgh7")
 max_stack = 150
 count = 30
+weight = 0.11
 scale = 0.2
 metadata/_custom_type_script = "uid://coqypqa0006b"

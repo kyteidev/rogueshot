@@ -19,6 +19,7 @@ description = "This magazine is designed to balance size and portability. It hol
 type = 9
 type_data = SubResource("Resource_g363x")
 icon = ExtResource("2_3lrnk")
+weight = 0.1
 scale = 0.85
 container = true
 container_load_time = 0.32

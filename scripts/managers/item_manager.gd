@@ -33,6 +33,8 @@ var context_menu_open := false
 var dragging_item := false
 var hovered_equipment := ""
 
+var sm := StateManager
+
 
 # for placing items in inventory: when final position is known
 func place_item(item: ItemData, slot: Vector2i) -> bool:
@@ -49,6 +51,7 @@ func place_item(item: ItemData, slot: Vector2i) -> bool:
 			inventory[Vector2i(x, y) + slot] = item
 
 	inventory_items.append(item)
+	sm.update_inventory_weight()
 	return true
 
 
@@ -189,3 +192,4 @@ func _clear_item(item: ItemData) -> void:
 	var index: int = inventory_items.find(item)
 	if index != -1:
 		inventory_items.pop_at(index)
+		sm.update_inventory_weight()
