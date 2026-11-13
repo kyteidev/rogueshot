@@ -403,6 +403,10 @@ func _stack_items(item: ItemData) -> void:
 	if new_count > data.max_stack:
 		item.count = new_count - data.max_stack
 		data.count = data.max_stack
+
+		# for checking if item fits in inventory after unloading from container
+		if not im.place_item(item, item.slot):
+			im.drop_item(item)
 	else:
 		data.count = new_count
 		im.remove_item(item)
