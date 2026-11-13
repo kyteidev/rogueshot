@@ -289,6 +289,7 @@ alignment = 2
 script = ExtResource("13_558d4")
 
 [node name="DebugEnemyStateLabel" type="Label" parent="." unique_id=707954335]
+visible = false
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
