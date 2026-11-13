@@ -113,6 +113,14 @@ func _ready() -> void:
 	im.item_unloaded.connect(_set_ammo_mag_data.call_deferred.unbind(1))
 
 
+func _process(_delta: float) -> void:
+	if weapon_index != -1:
+		if im.equipped_weapons[weapon_index].type_data.mag_attached:
+			current_weapon.texture = current_weapon.loaded_texture
+		else:
+			current_weapon.texture = current_weapon.base_texture
+
+
 func _physics_process(delta: float) -> void:
 	if (
 		player.is_dead or (not im.equipped_weapons[0] and not im.equipped_weapons[1])
