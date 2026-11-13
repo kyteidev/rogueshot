@@ -110,7 +110,7 @@ func _ready() -> void:
 
 	# update data if e.g. mag is loaded or unloaded
 	im.item_loaded.connect(_set_ammo_mag_data.call_deferred)
-	im.item_unloaded.connect(_set_ammo_mag_data.call_deferred)
+	im.item_unloaded.connect(_set_ammo_mag_data.call_deferred.unbind(1))
 
 
 func _physics_process(delta: float) -> void:

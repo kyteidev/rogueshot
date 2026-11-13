@@ -179,14 +179,7 @@ func _input(event: InputEvent) -> void:
 			elif (
 				im.dragged_item and im.dragged_item != self and data.id == im.dragged_item.data.id
 			):
-				var new_count: int = data.count + im.dragged_item.data.count
-				if new_count > data.max_stack:
-					im.dragged_item.data.count = new_count - data.max_stack
-					data.count = data.max_stack
-				else:
-					data.count = new_count
-					im.remove_item(im.dragged_item.data)
-				sm.update_inventory_weight()
+				_stack_items(im.dragged_item.data)
 
 			# item drag and drop handling
 			elif not im.dragged_item or im.dragged_item == self:
@@ -222,6 +215,8 @@ func setup(item_data: ItemData) -> void:
 
 	load_timer.wait_time = data.container_load_time if data.container_load_time != 0.0 else 0.001
 	unload_timer.wait_time = data.container_load_time if data.container_load_time != 0.0 else 0.001
+
+	im.item_unloaded.connect(_check_stack)
 
 
 func equip_item() -> void:
@@ -274,8 +269,7 @@ func unload_items() -> void:
 		load_bar.max_value = unload_time
 		unload_timer.start(unload_time)
 	else:
-		im.add_item(unload_item)
-		data.container_items.pop_back()
+		_finish_unload()
 
 	# inventory weight is updated when unloaded item is added
 	# no need to call the update function again
@@ -404,6 +398,26 @@ func _release_item() -> void:
 				im.drop_item(data)
 
 
+func _stack_items(item: ItemData) -> void:
+	var new_count: int = data.count + item.count
+	if new_count > data.max_stack:
+		item.count = new_count - data.max_stack
+		data.count = data.max_stack
+	else:
+		data.count = new_count
+		im.remove_item(item)
+	sm.update_inventory_weight()
+
+
+func _check_stack(item: ItemData) -> void:
+	if item.id != data.id:
+		return
+
+	if im.checking_stack:
+		im.checking_stack = false
+		_stack_items(item)
+
+
 func _on_tooltip_timer_timeout() -> void:
 	if tooltip.visible:
 		return
@@ -428,6 +442,14 @@ func _item_type_logic() -> void:
 			)
 
 
+func _finish_unload() -> void:
+	im.add_item(unload_item, false)
+	data.container_items.pop_back()
+
+	im.checking_stack = true
+	im.item_unloaded.emit(unload_item)
+
+
 func _on_load_timer_timeout() -> void:
 	if load_item:
 		_load_item(load_item)
@@ -435,5 +457,4 @@ func _on_load_timer_timeout() -> void:
 
 
 func _on_unload_timer_timeout() -> void:
-	im.add_item(unload_item)
-	data.container_items.pop_back()
+	_finish_unload()

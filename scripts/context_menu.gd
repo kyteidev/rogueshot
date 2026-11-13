@@ -103,7 +103,6 @@ func _button_functions(button_name: String) -> void:
 		"Unequip":
 			im.context_menu_item.unequip_item()
 		"Unload":
-			im.item_unloaded.emit()
 			im.context_menu_item.unload_items()
 		"Split":
 			im.context_menu_item.split_stack()
