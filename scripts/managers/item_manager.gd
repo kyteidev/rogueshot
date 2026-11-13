@@ -58,9 +58,9 @@ func place_item(item: ItemData, slot: Vector2i) -> bool:
 
 
 # for placing items when final position has to be determined
-func add_item(item: ItemData, duplicate := true) -> bool:
+func add_item(item: ItemData, duplicate_item := true) -> bool:
 	# find a free slot
-	var new_item: ItemData = item.duplicate() if duplicate else item
+	var new_item: ItemData = item.duplicate() if duplicate_item else item
 	for x in TOTAL_COLUMNS:
 		for y in TOTAL_ROWS:
 			var possible_slot := Vector2i(x, y)
