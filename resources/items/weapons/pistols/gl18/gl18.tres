@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://di4vpy8p25vvs"]
 
 [ext_resource type="Script" uid="uid://coqypqa0006b" path="res://scripts/items/item_data.gd" id="1_7w85i"]
-[ext_resource type="Texture2D" uid="uid://7oku3sbs81nx" path="res://assets/sprites/weapons/guns/pistols/gl18/gl18_bare.png" id="2_7w85i"]
+[ext_resource type="Texture2D" uid="uid://7oku3sbs81nx" path="res://assets/sprites/weapons/guns/pistols/gl18/gl18_base.png" id="2_7w85i"]
 [ext_resource type="Texture2D" uid="uid://l03bvdf7cx6g" path="res://assets/sprites/weapons/guns/pistols/gl18/gl18_loaded.png" id="3_svse4"]
 [ext_resource type="Script" uid="uid://fn8hix2hcrvm" path="res://scripts/items/type_data/weapon_data.gd" id="4_xb7fl"]
 
