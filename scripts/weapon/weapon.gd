@@ -241,11 +241,17 @@ func reload_weapon() -> void:
 	if mags > 0 and not reloading:
 		reloading = true
 
+		var weapon: ItemData = im.equipped_weapons[weapon_index]
+		var real_reload_time: float = reload_time
+		if not weapon.type_data.mag_attached:
+			real_reload_time /= 2
+
+		crosshair.reload_time = real_reload_time
 		crosshair.start_reload()
 		crosshair.tween.finished.connect(_finish_reload)
 
 		unload_mag_anim()
-		get_tree().create_timer(reload_time - MAG_FADE_DURATION).timeout.connect(load_mag_anim)
+		get_tree().create_timer(real_reload_time - MAG_FADE_DURATION).timeout.connect(load_mag_anim)
 
 
 func load_mag_anim() -> void:
