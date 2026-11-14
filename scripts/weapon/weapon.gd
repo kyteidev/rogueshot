@@ -19,7 +19,7 @@ const MAX_HEAT = 1.0
 const SMOKE_BASE_ALPHA = 0.8
 
 const MAG_FADE_DURATION = 0.3
-const MAG_MOVE_AMOUNT = 5.0
+const MAG_MOVE_AMOUNT = 3.0
 
 var sm := StateManager
 var im := ItemManager
@@ -344,7 +344,7 @@ func _finish_reload() -> void:
 	sprite.texture = sprite.loaded_texture
 
 	var mag_tween := create_tween()
-	mag_tween.tween_property(mag, "modulate:a", 0.0, MAG_FADE_DURATION) \
+	mag_tween.tween_property(mag, "modulate:a", 0.0, 0.1) \
 			.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 	mag_tween.finished.connect(
 		func() -> void:
