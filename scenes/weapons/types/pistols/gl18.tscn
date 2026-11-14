@@ -7,7 +7,7 @@
 
 [node name="GL18" type="Sprite2D" unique_id=1917170692]
 scale = Vector2(0.75, 0.75)
-texture = ExtResource("1_2ewsy")
+texture = ExtResource("3_gxtgi")
 offset = Vector2(3, 0)
 script = ExtResource("2_gnmk6")
 base_texture = ExtResource("3_gxtgi")
