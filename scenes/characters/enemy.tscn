@@ -165,6 +165,7 @@ animation = &"death"
 autoplay = "idle"
 
 [node name="FullCollision" type="CollisionShape2D" parent="." unique_id=1475566916]
+visible = false
 position = Vector2(0, -7)
 shape = SubResource("CapsuleShape2D_nxcxh")
 
@@ -184,6 +185,7 @@ position = Vector2(16, -0.5)
 position = Vector2(1.6098762, -0.431365)
 
 [node name="WeaponLOSRay" type="RayCast2D" parent="Weapon" unique_id=2114914832]
+visible = false
 position = Vector2(-1.17657635e-08, -4.391046e-08)
 scale = Vector2(1.0000002, 1.0000002)
 target_position = Vector2(200, 0)
@@ -195,22 +197,27 @@ one_shot = true
 one_shot = true
 
 [node name="WallRay" type="RayCast2D" parent="." unique_id=254261750]
+visible = false
 position = Vector2(0, -1)
 target_position = Vector2(7, 0)
 
 [node name="HighWallRay" type="RayCast2D" parent="." unique_id=1211221419]
+visible = false
 position = Vector2(0, -24)
 target_position = Vector2(7, 0)
 
 [node name="LedgeRay" type="RayCast2D" parent="." unique_id=2076729340]
+visible = false
 position = Vector2(7, 0)
 target_position = Vector2(0, 4)
 
 [node name="LOSRay" type="RayCast2D" parent="." unique_id=1916510562]
+visible = false
 position = Vector2(0, -12)
 target_position = Vector2(200, 0)
 
 [node name="CloseRangeArea" type="Area2D" parent="." unique_id=273323011]
+visible = false
 collision_mask = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="CloseRangeArea" unique_id=2052857948]
@@ -218,6 +225,7 @@ position = Vector2(0, -7)
 shape = SubResource("RectangleShape2D_nxcxh")
 
 [node name="BulletHearingArea" type="Area2D" parent="." unique_id=1294586907]
+visible = false
 collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="BulletHearingArea" unique_id=522205884]
@@ -225,6 +233,7 @@ rotation = 1.5707964
 shape = SubResource("CapsuleShape2D_4iqke")
 
 [node name="DetectionArea" type="Area2D" parent="." unique_id=1094551148]
+visible = false
 position = Vector2(0, -12)
 collision_mask = 4
 
@@ -232,28 +241,45 @@ collision_mask = 4
 shape = SubResource("RectangleShape2D_3k4es")
 
 [node name="AggroArea" type="Area2D" parent="." unique_id=919520652]
+visible = false
 position = Vector2(0, -12)
 collision_mask = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AggroArea" unique_id=968259423]
 shape = SubResource("RectangleShape2D_jgk6k")
 
-[node name="StatusIcon" type="Sprite2D" parent="." unique_id=901298442]
+[node name="StatusContainer" type="VBoxContainer" parent="." unique_id=1287868963]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -19.0
+offset_top = -40.0
+offset_right = 21.0
+offset_bottom = -15.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 0
+alignment = 2
+
+[node name="StatusIcon" type="TextureRect" parent="StatusContainer" unique_id=1054136745]
+unique_name_in_owner = true
 z_index = 1
-position = Vector2(1, -16)
-scale = Vector2(0.5, 0.5)
+custom_maximum_size = Vector2(8, 8)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
 texture = ExtResource("4_21x0f")
-offset = Vector2(0, -8)
+stretch_mode = 4
 script = ExtResource("5_jgk6k")
 
-[node name="FadeTimer" type="Timer" parent="StatusIcon" unique_id=69940822]
+[node name="FadeTimer" type="Timer" parent="StatusContainer/StatusIcon" unique_id=69940822]
 one_shot = true
 
-[node name="StatusLabel" type="Label" parent="." unique_id=388896039]
-offset_left = -21.5
-offset_top = -23.0
-offset_right = 23.5
-offset_bottom = -13.0
+[node name="StatusLabel" type="Label" parent="StatusContainer" unique_id=388896039]
+unique_name_in_owner = true
+layout_mode = 2
 text = "hello world"
 label_settings = SubResource("LabelSettings_x5khh")
 horizontal_alignment = 1
@@ -269,4 +295,4 @@ one_shot = true
 [connection signal="body_exited" from="DetectionArea" to="." method="_on_detection_area_body_exited"]
 [connection signal="body_entered" from="AggroArea" to="." method="_on_aggro_area_body_entered"]
 [connection signal="body_exited" from="AggroArea" to="." method="_on_aggro_area_body_exited"]
-[connection signal="timeout" from="StatusIcon/FadeTimer" to="StatusIcon" method="_on_fade_timer_timeout"]
+[connection signal="timeout" from="StatusContainer/StatusIcon/FadeTimer" to="StatusContainer/StatusIcon" method="_on_fade_timer_timeout"]

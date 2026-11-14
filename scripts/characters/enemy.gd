@@ -25,7 +25,7 @@ const MUZZLE_FLASH = preload("res://scenes/weapons/muzzle_flash.tscn")
 const SMOKE_PARTICLES = preload("res://scenes/particles/muzzle_smoke.tscn")
 const SPARK_PARTICLES = preload("res://scenes/particles/muzzle_sparks.tscn")
 
-const STATUS_LABEL_CENTER_X = -22.5
+const STATUS_CONTAINER_CENTER_X = -20.0
 
 const HEAD_POS_X = -6.0
 const HEAD_POS_Y = -7.0
@@ -135,8 +135,10 @@ var im := ItemManager
 @onready var weapon_los_ray: RayCast2D = $Weapon/WeaponLOSRay
 @onready var weapon_shoot_timer: Timer = $Weapon/WeaponShootTimer
 @onready var weapon_reload_timer: Timer = $Weapon/WeaponReloadTimer
-@onready var status_icon: Sprite2D = $StatusIcon
-@onready var status_label: Label = $StatusLabel
+
+@onready var status_container: VBoxContainer = $StatusContainer
+@onready var status_icon: TextureRect = %StatusIcon
+@onready var status_label: Label = %StatusLabel
 
 @onready var wall_ray: RayCast2D = $WallRay
 @onready var high_wall_ray: RayCast2D = $HighWallRay
@@ -599,16 +601,14 @@ func _point_toward(point_direction: int) -> void:
 	wall_ray.target_position = abs(wall_ray.target_position)
 	high_wall_ray.target_position = abs(high_wall_ray.target_position)
 	ledge_ray.position.x = abs(ledge_ray.position.x)
-	status_icon.position.x = abs(status_icon.position.x)
-	status_label.position.x = STATUS_LABEL_CENTER_X + 1.0
+	status_container.position.x = STATUS_CONTAINER_CENTER_X + 1.0
 
 	if point_direction < 0:
 		anim.flip_h = not anim.flip_h
 		wall_ray.target_position *= -1
 		high_wall_ray.target_position *= -1
 		ledge_ray.position.x *= -1
-		status_icon.position.x *= -1
-		status_label.position.x = STATUS_LABEL_CENTER_X - 1.0
+		status_container.position.x = STATUS_CONTAINER_CENTER_X - 1.0
 
 
 func _on_detection_area_body_entered(body: Node2D) -> void:

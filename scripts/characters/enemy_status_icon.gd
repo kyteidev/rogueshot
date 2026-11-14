@@ -1,4 +1,4 @@
-extends Sprite2D
+extends TextureRect
 
 const STRETCH = 0.2
 const FADE_DURATION = 0.3
@@ -12,7 +12,7 @@ var can_fade := false
 @onready var original_scale: Vector2 = scale
 
 @onready var fade_timer: Timer = $FadeTimer
-@onready var enemy: CharacterBody2D = get_parent()
+@onready var enemy: CharacterBody2D = get_node("../../")
 
 
 func _ready() -> void:
