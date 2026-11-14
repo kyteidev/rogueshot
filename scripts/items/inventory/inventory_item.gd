@@ -177,7 +177,7 @@ func _input(event: InputEvent) -> void:
 					loaded_item.overlay.visible = true
 
 					# mags always have load time
-					if im.weapon_index != -1:
+					if im.weapon_index != -1 and loaded_item.data.type == ItemData.ItemType.MAGAZINE:
 						im.mag_loaded.emit()
 				else:
 					_load_item(loaded_item)
