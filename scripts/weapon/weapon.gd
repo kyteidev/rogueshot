@@ -265,7 +265,8 @@ func load_mag_anim() -> void:
 
 	end_tween.tween_property(mag, "position:y", mag_orig_pos.y, MAG_FADE_DURATION) \
 			.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
-	end_tween.tween_property(mag, "modulate:a", 1.0, MAG_FADE_DURATION)
+	end_tween.tween_property(mag, "modulate:a", 1.0, MAG_FADE_DURATION) \
+			.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 
 
 func _unload_mag_anim() -> void:
@@ -279,7 +280,8 @@ func _unload_mag_anim() -> void:
 			.tween_property(mag, "position:y", mag_orig_pos.y + MAG_MOVE_AMOUNT, MAG_FADE_DURATION) \
 			.set_trans(Tween.TRANS_QUAD) \
 			.set_ease(Tween.EASE_IN)
-	start_tween.tween_property(mag, "modulate:a", 0.0, MAG_FADE_DURATION)
+	start_tween.tween_property(mag, "modulate:a", 0.0, MAG_FADE_DURATION) \
+			.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
 
 
 func _finish_reload() -> void:
@@ -328,7 +330,15 @@ func _finish_reload() -> void:
 	var sprite: Sprite2D = weapon_node.get_child(0)
 	var mag: Sprite2D = sprite.get_node("./Magazine")
 	sprite.texture = sprite.loaded_texture
-	mag.visible = false
+
+	var mag_tween := create_tween()
+	mag_tween.tween_property(mag, "modulate:a", 0.0, MAG_FADE_DURATION) \
+			.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+	mag_tween.finished.connect(
+		func() -> void:
+			mag.visible = false
+			mag.modulate.a = 1.0,
+	)
 
 
 func _fire_weapon() -> void:
@@ -432,7 +442,7 @@ func _equip_weapon(index: int) -> void:
 	weapon_ejection_orig_pos = weapon_ejection.position
 
 	sprite = weapon_node.get_child(0)
-	mag = sprite.get_node("Magazine")
+	mag = sprite.get_node("./Magazine")
 	mag_orig_pos = mag.position
 
 	# set weapon stats

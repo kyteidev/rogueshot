@@ -2,11 +2,11 @@
 
 [ext_resource type="Script" uid="uid://wriiopds5fel" path="res://scripts/weapon/weapon.gd" id="1_uxn4k"]
 
-[node name="Weapon" type="Node2D" unique_id=1767955034 groups=["player"]]
+[node name="Weapon" type="Node2D" unique_id=1767955034 groups=["player", "unique_weapon"]]
 z_index = 1
 script = ExtResource("1_uxn4k")
 
-[node name="Timer" type="Timer" parent="." unique_id=873251949 groups=["unique_weapon"]]
+[node name="Timer" type="Timer" parent="." unique_id=873251949]
 one_shot = true
 
 [node name="Weapon" type="Node2D" parent="." unique_id=1714535286]

@@ -21,6 +21,5 @@ position = Vector2(1.3333334, -2.6666667)
 
 [node name="Magazine" type="Sprite2D" parent="." unique_id=333377160]
 visible = false
-z_index = -1
 position = Vector2(-1.5, 1.5)
 texture = ExtResource("4_e2wjv")
