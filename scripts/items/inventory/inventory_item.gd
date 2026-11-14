@@ -32,6 +32,8 @@ var pos_set := false
 var load_item: InventoryItem
 var unload_item: ItemData
 
+var container_full := false
+
 @onready var inventory: CanvasLayer = get_node("../../../")
 @onready var tooltip: PanelContainer = inventory.get_node("./Tooltip")
 
@@ -134,6 +136,7 @@ func _process(_delta: float) -> void:
 					or im.dragged_item.data.id == data.id
 				)
 			)
+			and not container_full
 		):
 			bg.modulate = Color(1.5, 1.5, 1.5, 0.784)
 			im.hovering_valid_container = true
@@ -154,16 +157,22 @@ func _input(event: InputEvent) -> void:
 				data.container and im.dragged_item and im.dragged_item != self
 				and im.dragged_item.data.type == data.container_item_type
 			):
+				var item_count: int = 0
+				for item in data.container_items:
+					item_count += item.count
+
 				# weapon compatibility check for magazines
 				if not _check_compatibility():
 					return
 
+				if item_count == data.container_max_size:
+					container_full = true
+					return
+				container_full = false
+
 				var loaded_item: InventoryItem = im.dragged_item
 
 				if load_timer.wait_time != 0.001:
-					var item_count: int = 0
-					for item in data.container_items:
-						item_count += item.count
 					var available_space: int = data.container_max_size - item_count
 
 					var load_time: float = data.container_load_time * min(
