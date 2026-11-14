@@ -24,6 +24,7 @@ var equipped_items := { } # { "Equipment slot": ItemData }
 var equipment_bounds := { }
 
 var equipped_weapons: Array[ItemData] = [null, null]
+var weapon_index: int = -1
 
 var hovered_item: InventoryItem
 var dragged_item: InventoryItem

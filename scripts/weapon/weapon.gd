@@ -24,13 +24,18 @@ const MAG_MOVE_AMOUNT = 5.0
 var sm := StateManager
 var im := ItemManager
 
-var weapon_index: int = -1
+var weapon_index: int = -1:
+	set(value):
+		weapon_index = value
+		im.weapon_index = value
 var current_weapon: Sprite2D = null
 var weapon_name := ""
 var weapon_muzzle: Marker2D = null
 var weapon_muzzle_orig_pos := Vector2(0.0, 0.0)
 var weapon_ejection: Marker2D = null
 var weapon_ejection_orig_pos := Vector2(0.0, 0.0)
+
+var mag_orig_pos := Vector2(0.0, 0.0)
 
 var base_damage: int = 0:
 	set(value):
@@ -240,8 +245,6 @@ func reload_weapon() -> void:
 		sprite.texture = sprite.base_texture
 		mag.visible = true
 
-		var mag_orig_pos: Vector2 = mag.position
-
 		crosshair.start_reload()
 		crosshair.tween.finished.connect(_finish_reload)
 
@@ -249,24 +252,34 @@ func reload_weapon() -> void:
 		if not weapon.type_data.mag_attached:
 			mag.modulate.a = 0.0
 
-		var start_tween := create_tween()
-		start_tween.set_parallel(true)
+		_unload_mag_anim()
+		get_tree().create_timer(reload_time - MAG_FADE_DURATION).timeout.connect(load_mag_anim)
 
-		start_tween \
-				.tween_property(mag, "position:y", mag_orig_pos.y + MAG_MOVE_AMOUNT, MAG_FADE_DURATION) \
-				.set_trans(Tween.TRANS_QUAD) \
-				.set_ease(Tween.EASE_IN)
-		start_tween.tween_property(mag, "modulate:a", 0.0, MAG_FADE_DURATION)
 
-		get_tree().create_timer(reload_time - MAG_FADE_DURATION).timeout.connect(
-			func() -> void:
-				var end_tween := create_tween()
-				end_tween.set_parallel(true)
+func load_mag_anim() -> void:
+	var sprite: Sprite2D = weapon_node.get_child(0)
+	var mag: Sprite2D = sprite.get_node("./Magazine")
 
-				end_tween.tween_property(mag, "position:y", mag_orig_pos.y, MAG_FADE_DURATION) \
-						.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
-				end_tween.tween_property(mag, "modulate:a", 1.0, MAG_FADE_DURATION),
-		)
+	var end_tween := create_tween()
+	end_tween.set_parallel(true)
+
+	end_tween.tween_property(mag, "position:y", mag_orig_pos.y, MAG_FADE_DURATION) \
+			.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	end_tween.tween_property(mag, "modulate:a", 1.0, MAG_FADE_DURATION)
+
+
+func _unload_mag_anim() -> void:
+	var sprite: Sprite2D = weapon_node.get_child(0)
+	var mag: Sprite2D = sprite.get_node("./Magazine")
+
+	var start_tween := create_tween()
+	start_tween.set_parallel(true)
+
+	start_tween \
+			.tween_property(mag, "position:y", mag_orig_pos.y + MAG_MOVE_AMOUNT, MAG_FADE_DURATION) \
+			.set_trans(Tween.TRANS_QUAD) \
+			.set_ease(Tween.EASE_IN)
+	start_tween.tween_property(mag, "modulate:a", 0.0, MAG_FADE_DURATION)
 
 
 func _finish_reload() -> void:
@@ -376,12 +389,23 @@ func _fire_weapon() -> void:
 
 func _equip_weapon(index: int) -> void:
 	# reset and save weapon stats before switching
+	var sprite: Sprite2D
+	var mag: Sprite2D
+
+	if weapon_index != -1:
+		sprite = weapon_node.get_child(0)
+		mag = sprite.get_node("Magazine")
+
 	if current_weapon != null:
 		current_weapon.flip_v = false
 		current_weapon.position = weapon_rest_pos
 		weapon_muzzle.position = weapon_muzzle_orig_pos
 		weapon_ejection.position = weapon_ejection_orig_pos
 		weapon_state[weapon_name] = { "ammo": ammo, "mags": mags }
+
+		if weapon_index != -1:
+			mag.position = mag_orig_pos
+			mag.visible = false
 
 		heat = 0.0
 
@@ -406,6 +430,10 @@ func _equip_weapon(index: int) -> void:
 	weapon_muzzle_orig_pos = weapon_muzzle.position
 	weapon_ejection = current_weapon.get_node("./Ejection")
 	weapon_ejection_orig_pos = weapon_ejection.position
+
+	sprite = weapon_node.get_child(0)
+	mag = sprite.get_node("Magazine")
+	mag_orig_pos = mag.position
 
 	# set weapon stats
 	var stats: WeaponData = im.equipped_weapons[index].type_data
