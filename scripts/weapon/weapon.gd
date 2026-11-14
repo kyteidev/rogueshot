@@ -429,7 +429,7 @@ func _equip_weapon(index: int) -> void:
 	weapon_index = index
 	sm.weapon_index = index
 	for child in weapon_node.get_children():
-		child.queue_free()
+		child.free()
 
 	crosshair.cancel_reload()
 	speed_multiplier = 1.0
