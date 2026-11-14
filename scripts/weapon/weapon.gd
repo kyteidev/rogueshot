@@ -93,6 +93,8 @@ var heat := 0.0
 var can_fire := true
 var reloading := false
 
+var mag_anim_tween: Tween
+
 @onready var timer: Timer = $Timer
 @onready var weapon_node: Node2D = $Weapon
 
@@ -254,12 +256,14 @@ func load_mag_anim() -> void:
 	mag.position.y = mag_orig_pos.y + MAG_MOVE_AMOUNT
 	mag.modulate.a = 0.0
 
-	var end_tween := create_tween()
-	end_tween.set_parallel(true)
+	if mag_anim_tween:
+		mag_anim_tween.kill()
+	mag_anim_tween = create_tween()
+	mag_anim_tween.set_parallel(true)
 
-	end_tween.tween_property(mag, "position:y", mag_orig_pos.y, MAG_FADE_DURATION) \
+	mag_anim_tween.tween_property(mag, "position:y", mag_orig_pos.y, MAG_FADE_DURATION) \
 			.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
-	end_tween.tween_property(mag, "modulate:a", 1.0, MAG_FADE_DURATION) \
+	mag_anim_tween.tween_property(mag, "modulate:a", 1.0, MAG_FADE_DURATION) \
 			.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 
 
@@ -273,14 +277,16 @@ func unload_mag_anim() -> void:
 	if not weapon.type_data.mag_attached:
 		mag.modulate.a = 0.0
 
-	var start_tween := create_tween()
-	start_tween.set_parallel(true)
+	if mag_anim_tween:
+		mag_anim_tween.kill()
+	mag_anim_tween = create_tween()
+	mag_anim_tween.set_parallel(true)
 
-	start_tween \
+	mag_anim_tween \
 			.tween_property(mag, "position:y", mag_orig_pos.y + MAG_MOVE_AMOUNT, MAG_FADE_DURATION) \
 			.set_trans(Tween.TRANS_QUAD) \
 			.set_ease(Tween.EASE_IN)
-	start_tween.tween_property(mag, "modulate:a", 0.0, MAG_FADE_DURATION) \
+	mag_anim_tween.tween_property(mag, "modulate:a", 0.0, MAG_FADE_DURATION) \
 			.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
 
 
