@@ -249,6 +249,9 @@ func reload_weapon() -> void:
 
 
 func load_mag_anim() -> void:
+	if not reloading:
+		return
+
 	var sprite: Sprite2D = weapon_node.get_child(0)
 	var mag: Sprite2D = sprite.get_node("./Magazine")
 	mag.visible = true
@@ -268,6 +271,9 @@ func load_mag_anim() -> void:
 
 
 func unload_mag_anim() -> void:
+	if not reloading:
+		return
+
 	var sprite: Sprite2D = weapon_node.get_child(0)
 	var mag: Sprite2D = sprite.get_node("./Magazine")
 	sprite.texture = sprite.base_texture
@@ -432,6 +438,8 @@ func _equip_weapon(index: int) -> void:
 		child.free()
 
 	crosshair.cancel_reload()
+	reloading = false
+
 	speed_multiplier = 1.0
 
 	if weapon_index == -1:
