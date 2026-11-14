@@ -35,6 +35,7 @@ var dragging_item := false
 var hovered_equipment := ""
 
 var checking_stack := false
+var hovering_valid_container := false
 
 var sm := StateManager
 

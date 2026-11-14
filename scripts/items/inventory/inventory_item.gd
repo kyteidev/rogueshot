@@ -122,9 +122,8 @@ func _process(_delta: float) -> void:
 		pos_set = true
 
 	if not im.context_menu_open:
-		bg.modulate = (
-			Color(1.5, 1.5, 1.5, 0.784)
-			if (im.hovered_item and im.hovered_item.data == data)
+		if (
+			(im.hovered_item and im.hovered_item.data == data)
 			or (
 				mouse_hovered and im.dragged_item != null and im.dragged_item != self
 				and (
@@ -135,8 +134,12 @@ func _process(_delta: float) -> void:
 					or im.dragged_item.data.id == data.id
 				)
 			)
-			else Color(1.0, 1.0, 1.0)
-		)
+		):
+			bg.modulate = Color(1.5, 1.5, 1.5, 0.784)
+			im.hovering_valid_container = true
+		else:
+			bg.modulate = Color(1.0, 1.0, 1.0)
+			im.hovering_valid_container = false
 
 
 func _input(event: InputEvent) -> void:
@@ -401,8 +404,12 @@ func _release_item() -> void:
 		elif im.hovered_equipment != "":
 			equip_item()
 		else:
-			await get_tree().process_frame
+			# if dragging e.g. mag to equipped weapon
+			if im.hovering_valid_container:
+				position = im.slot_to_pos(prev_slot)
+				return
 
+			await get_tree().process_frame
 			if exists:
 				var equipped_slot: Variant = im.equipped_items.find_key(data)
 				if equipped_slot:
