@@ -11,6 +11,9 @@ bg_color = Color(0.20392157, 0.16078432, 0.27058825, 1)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k3mor"]
 bg_color = Color(0.5568628, 0.44705883, 0.6039216, 1)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_e8gd3"]
+bg_color = Color(0.3372549, 0.28627452, 0.43137255, 1)
+
 [node name="ContextMenuButton" type="Button" unique_id=139826522]
 custom_minimum_size = Vector2(50, 15)
 offset_right = 50.0
@@ -20,4 +23,5 @@ theme_override_font_sizes/font_size = 12
 theme_override_styles/normal = SubResource("StyleBoxFlat_vjox6")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_ghw5k")
 theme_override_styles/hover = SubResource("StyleBoxFlat_k3mor")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_e8gd3")
 text = "Text"

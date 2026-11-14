@@ -62,8 +62,14 @@ func _load_buttons(capabilities: int) -> void:
 
 		var button: Button = button_scene.instantiate()
 		var button_text: String = action_name.capitalize()
-		if button_text == "Equip" and im.context_menu_item.data in im.equipped_items.values():
-			button_text = "Unequip"
+
+		match button_text:
+			"Equip":
+				if im.context_menu_item.data in im.equipped_items.values():
+					button_text = "Unequip"
+			"Unload":
+				if im.context_menu_item.data.container_items.size() == 0:
+					button.disabled = true
 
 		button.text = button_text
 
