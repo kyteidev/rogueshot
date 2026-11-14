@@ -121,6 +121,13 @@ func _ready() -> void:
 	im.item_loaded.connect(_set_ammo_mag_data.call_deferred)
 	im.item_unloaded.connect(_set_ammo_mag_data.call_deferred.unbind(1))
 
+	im.mag_loaded.connect(
+		func() -> void:
+			get_tree().create_timer(reload_time / 2 - MAG_FADE_DURATION).timeout.connect(
+				load_mag_anim
+			),
+	)
+
 
 func _physics_process(delta: float) -> void:
 	if (
@@ -240,8 +247,13 @@ func reload_weapon() -> void:
 
 
 func load_mag_anim() -> void:
+	print("loD")
 	var sprite: Sprite2D = weapon_node.get_child(0)
 	var mag: Sprite2D = sprite.get_node("./Magazine")
+	mag.visible = true
+
+	mag.position.y = mag_orig_pos.y + MAG_MOVE_AMOUNT
+	mag.modulate.a = 0.0
 
 	var end_tween := create_tween()
 	end_tween.set_parallel(true)
