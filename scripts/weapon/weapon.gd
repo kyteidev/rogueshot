@@ -247,7 +247,6 @@ func reload_weapon() -> void:
 
 
 func load_mag_anim() -> void:
-	print("loD")
 	var sprite: Sprite2D = weapon_node.get_child(0)
 	var mag: Sprite2D = sprite.get_node("./Magazine")
 	mag.visible = true
