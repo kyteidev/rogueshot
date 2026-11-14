@@ -445,6 +445,11 @@ func _equip_weapon(index: int) -> void:
 	mag = sprite.get_node("./Magazine")
 	mag_orig_pos = mag.position
 
+	if im.equipped_weapons[index].type_data.mag_attached:
+		sprite.texture = sprite.loaded_texture
+	else:
+		sprite.texture = sprite.base_texture
+
 	# set weapon stats
 	var stats: WeaponData = im.equipped_weapons[index].type_data
 	base_damage = stats.damage
