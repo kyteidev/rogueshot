@@ -122,14 +122,6 @@ func _ready() -> void:
 	im.item_unloaded.connect(_set_ammo_mag_data.call_deferred.unbind(1))
 
 
-func _process(_delta: float) -> void:
-	if weapon_index != -1:
-		if im.equipped_weapons[weapon_index].type_data.mag_attached:
-			current_weapon.texture = current_weapon.loaded_texture
-		else:
-			current_weapon.texture = current_weapon.base_texture
-
-
 func _physics_process(delta: float) -> void:
 	if (
 		player.is_dead or (not im.equipped_weapons[0] and not im.equipped_weapons[1])
@@ -240,19 +232,10 @@ func reload_weapon() -> void:
 	if mags > 0 and not reloading:
 		reloading = true
 
-		var sprite: Sprite2D = weapon_node.get_child(0)
-		var mag: Sprite2D = sprite.get_node("./Magazine")
-		sprite.texture = sprite.base_texture
-		mag.visible = true
-
 		crosshair.start_reload()
 		crosshair.tween.finished.connect(_finish_reload)
 
-		var weapon: ItemData = im.equipped_weapons[weapon_index]
-		if not weapon.type_data.mag_attached:
-			mag.modulate.a = 0.0
-
-		_unload_mag_anim()
+		unload_mag_anim()
 		get_tree().create_timer(reload_time - MAG_FADE_DURATION).timeout.connect(load_mag_anim)
 
 
@@ -269,9 +252,15 @@ func load_mag_anim() -> void:
 			.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 
 
-func _unload_mag_anim() -> void:
+func unload_mag_anim() -> void:
 	var sprite: Sprite2D = weapon_node.get_child(0)
 	var mag: Sprite2D = sprite.get_node("./Magazine")
+	sprite.texture = sprite.base_texture
+	mag.visible = true
+
+	var weapon: ItemData = im.equipped_weapons[weapon_index]
+	if not weapon.type_data.mag_attached:
+		mag.modulate.a = 0.0
 
 	var start_tween := create_tween()
 	start_tween.set_parallel(true)

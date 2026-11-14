@@ -279,13 +279,14 @@ func unload_items() -> void:
 	if unload_item.type == ItemData.ItemType.MAGAZINE:
 		if (
 			im.weapon_index != -1
-			and unload_item.type_data.compatible == im \
+			and unload_item.type_data.compatible
+			== im \
 					.equipped_weapons[im.weapon_index] \
 					.type_data \
 					.weapon
 		):
 			var weapon: Node2D = get_tree().get_first_node_in_group("unique_weapon")
-			weapon.load_mag_anim()
+			weapon.unload_mag_anim()
 
 
 func split_stack() -> void:
@@ -464,6 +465,8 @@ func _finish_unload() -> void:
 
 	im.checking_stack = true
 	im.item_unloaded.emit(unload_item)
+
+	await get_tree().process_frame
 
 
 func _on_load_timer_timeout() -> void:

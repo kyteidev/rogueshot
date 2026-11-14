@@ -7,7 +7,7 @@
 
 [node name="OZ-2" type="Sprite2D" unique_id=78556742]
 scale = Vector2(0.6, 0.6)
-texture = ExtResource("1_ge4p5")
+texture = ExtResource("3_32jl1")
 offset = Vector2(3, 0)
 script = ExtResource("2_3a6af")
 base_texture = ExtResource("3_32jl1")
