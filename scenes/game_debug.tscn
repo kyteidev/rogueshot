@@ -5,7 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://hop8m0c1ubuo" path="res://assets/sprites/environment/world-tileset.png" id="2_17cyv"]
 [ext_resource type="Script" uid="uid://ffbt8aq075s4" path="res://scripts/camera.gd" id="3_2wr2m"]
 [ext_resource type="PackedScene" uid="uid://c7lkx746oul73" path="res://scenes/characters/enemy.tscn" id="3_ex044"]
-[ext_resource type="PackedScene" uid="uid://c6evxkovosp2y" path="res://scenes/hud.tscn" id="4_1s6p4"]
+[ext_resource type="PackedScene" uid="uid://c6evxkovosp2y" path="res://scenes/hud/hud.tscn" id="4_1s6p4"]
 [ext_resource type="PackedScene" uid="uid://byg2oli55neme" path="res://scenes/weapons/crosshair.tscn" id="4_8285f"]
 [ext_resource type="PackedScene" uid="uid://bojjbmn2cos6p" path="res://scenes/menus/pause_menu.tscn" id="5_d1y6d"]
 [ext_resource type="PackedScene" uid="uid://bv8l68anm4bn0" path="res://scenes/inventory/inventory.tscn" id="7_ylwvt"]

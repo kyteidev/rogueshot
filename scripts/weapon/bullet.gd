@@ -34,16 +34,22 @@ func _physics_process(delta: float) -> void:
 		trail.add_point(collided.get_position())
 
 		var friendly_fire := true
-		if type == Types.FRIENDLY:
-			if not hit.is_in_group("player"):
-				friendly_fire = false
-		elif type == Types.ENEMY:
-			if not hit.is_in_group("enemy"):
-				friendly_fire = false
+		var damage: float
+		match type:
+			Types.FRIENDLY:
+				if not hit.is_in_group("player"):
+					friendly_fire = false
+
+				damage = sm.damage
+			Types.ENEMY:
+				if not hit.is_in_group("enemy"):
+					friendly_fire = false
+
+				damage = sm.enemy_damage
 
 		if not friendly_fire:
 			if hit.has_method("take_damage"):
-				hit.take_damage(sm.damage, global_position)
+				hit.take_damage(damage, global_position)
 
 			if hit.has_method("set_target_pos"):
 				hit.set_target_pos(origin_pos)

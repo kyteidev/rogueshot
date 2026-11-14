@@ -255,8 +255,8 @@ func equip_item() -> void:
 
 
 func unequip_item() -> void:
-	im.remove_item(data)
-	im.add_item(data)
+	if im.add_item(data):
+		im.remove_item(data)
 
 
 func unload_items() -> void:
@@ -274,6 +274,18 @@ func unload_items() -> void:
 	# inventory weight is updated when unloaded item is added
 	# no need to call the update function again
 	data.container_weight -= (unload_item.weight * unload_item.count + unload_item.container_weight)
+
+	# show unload animation if its a magazine
+	if unload_item.type == ItemData.ItemType.MAGAZINE:
+		if (
+			im.weapon_index != -1
+			and unload_item.type_data.compatible == im \
+					.equipped_weapons[im.weapon_index] \
+					.type_data \
+					.weapon
+		):
+			var weapon: Node2D = get_tree().get_first_node_in_group("unique_weapon")
+			weapon.load_mag_anim()
 
 
 func split_stack() -> void:
@@ -403,6 +415,10 @@ func _stack_items(item: ItemData) -> void:
 	if new_count > data.max_stack:
 		item.count = new_count - data.max_stack
 		data.count = data.max_stack
+
+		# for checking if item fits in inventory after unloading from container
+		if not im.place_item(item, item.slot):
+			im.drop_item(item)
 	else:
 		data.count = new_count
 		im.remove_item(item)

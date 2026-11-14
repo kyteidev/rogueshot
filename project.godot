@@ -64,6 +64,7 @@ unique_player="a group unique to playable player, used when path to player in no
 unique_inventory_items=""
 unique_inventory_equipment=""
 unique_inventory=""
+unique_weapon=""
 
 [input]
 

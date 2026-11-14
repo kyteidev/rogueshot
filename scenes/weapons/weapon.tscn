@@ -6,7 +6,7 @@
 z_index = 1
 script = ExtResource("1_uxn4k")
 
-[node name="Timer" type="Timer" parent="." unique_id=873251949]
+[node name="Timer" type="Timer" parent="." unique_id=873251949 groups=["unique_weapon"]]
 one_shot = true
 
 [node name="Weapon" type="Node2D" parent="." unique_id=1714535286]
