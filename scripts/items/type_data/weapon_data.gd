@@ -25,7 +25,7 @@ const WEAPON_STATS = {
 		"heat": 0.18,
 		"cooling_rate": 1.04,
 		"speed_multiplier": 1.0,
-		"jam_chance": 0.1,
+		"jam_chance": 0.005,
 	},
 	Weapon.OZ2: {
 		"scene_path": "res://scenes/weapons/types/rifles/oz2.tscn",
@@ -44,7 +44,7 @@ const WEAPON_STATS = {
 		"heat": 0.22,
 		"cooling_rate": 0.87,
 		"speed_multiplier": 0.9,
-		"jam_chance": 0.1,
+		"jam_chance": 0.003,
 	},
 }
 

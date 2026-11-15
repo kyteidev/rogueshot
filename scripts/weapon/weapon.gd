@@ -4,6 +4,9 @@ const MAX_STAMINA_SPREAD_MULTIPLIER = 2.0
 const NO_AIM_SPREAD_MULTIPLIER = 2.0
 const MAX_DURA_SPREAD_MULTIPLIER = 2.0
 
+const JAM_START = 50.0 # durability percent when jamming can start to happen
+const MAX_JAM_CHANCE = 0.80
+
 const BULLET = preload("res://scenes/weapons/bullet.tscn")
 const BULLET_SCALE = 0.15
 
@@ -463,12 +466,13 @@ func _fire_weapon() -> void:
 		camera.shake_strength = camera_shake
 
 		# weapon jamming
-		var roll: float = randf()
-		if weapon_data.durability <= 0.25:
-			if roll <= weapon_data.type_data.jam_chance * 2:
-				weapon_data.type_data.jammed = true
-		elif weapon_data.durability <= 0.50:
-			if roll <= weapon_data.type_data.jam_chance:
+		if weapon_data.durability <= JAM_START:
+			var roll: float = randf()
+			if roll <= lerp(
+				weapon_data.type_data.jam_chance,
+				MAX_JAM_CHANCE,
+				((JAM_START - weapon_data.durability) / JAM_START) ** 4,
+			):
 				weapon_data.type_data.jammed = true
 
 		# deplete durability
