@@ -319,6 +319,8 @@ func unload_mag_anim(reload_key := true) -> void:
 
 
 func _finish_reload() -> void:
+	status_label.hide_status_label()
+
 	var weapon: ItemData = im.equipped_weapons[weapon_index]
 	var stats: WeaponData = weapon.type_data
 
