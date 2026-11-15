@@ -572,6 +572,11 @@ func _set_ammo_mag_data() -> void:
 			if item.container_items.size() > 0:
 				mag_count += 1
 
+	var total_ammo: int = 0
+	if weapon.container_items.size() > 0 and weapon.container_items[0].container_items.size() > 0:
+		total_ammo = weapon.container_items[0].container_items[0].count
+	stats.total_ammo = total_ammo
+
 	weapon_state[weapon_name] = { "ammo": stats.total_ammo, "mags": mag_count }
 
 	# restore saved state
