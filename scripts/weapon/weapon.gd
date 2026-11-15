@@ -106,6 +106,7 @@ var weapon_state: Dictionary = { }
 @onready var weapon_node: Node2D = $Weapon
 
 @onready var player: CharacterBody2D = get_parent()
+@onready var status_label: Label = player.get_node("./StatusLabel")
 @onready var crosshair: CanvasLayer = player.crosshair
 
 
@@ -374,7 +375,11 @@ func _finish_reload() -> void:
 
 func _fire_weapon() -> void:
 	var weapon_data: ItemData = im.equipped_weapons[weapon_index]
-	if can_fire and ammo > 0 and weapon_data.durability > 0.0:
+	if can_fire and ammo > 0:
+		if weapon_data.durability == 0.0:
+			status_label.show_status_label("Jammed")
+			return
+
 		# spawn bullet
 		var bullet_instance: CharacterBody2D = BULLET.instantiate()
 		bullet_instance.type = bullet_instance.Types.FRIENDLY

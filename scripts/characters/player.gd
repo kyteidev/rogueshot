@@ -44,6 +44,8 @@ const JUMP_BUFFER_TIME = 0.12
 
 const DEATH_TRANS_DELAY = 1.0
 
+const STATUS_LABEL_ORIG_X = -11.5
+
 @export var transition: CanvasLayer
 @export var crosshair: CanvasLayer
 
@@ -136,6 +138,8 @@ var overweight := false
 @onready var stamina_bar_timer: Timer = $StaminaBarOutline/StaminaBarTimer
 @onready var stamina_bar_fade_timer: Timer = $StaminaBarOutline/StaminaBarFadeTimer
 
+@onready var status_label: Label = %StatusLabel
+
 @onready var hud: CanvasLayer = get_node("../HUD")
 
 
@@ -183,6 +187,7 @@ func _physics_process(delta: float) -> void:
 
 	if not input_locked:
 		anim_sprite.flip_h = flipped
+		status_label.position.x = STATUS_LABEL_ORIG_X + (-1.0 if anim_sprite.flip_h else 1.0)
 	var same_direction: bool = (direction == -1 and flipped) or (direction == 1 and not flipped)
 
 	# apply no aim multiplier if needed

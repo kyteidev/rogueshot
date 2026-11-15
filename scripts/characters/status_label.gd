@@ -1,16 +1,30 @@
 extends Label
 
+const SHOW_DURATION = 2.0
 const FADE_DURATION = 0.3
 
 var fade_tween: Tween
+var timer: Timer
 
 
 func _ready() -> void:
 	visible = false
 
+	timer = Timer.new()
+	timer.wait_time = SHOW_DURATION
+	timer.one_shot = true
+	add_child(timer)
+
+	timer.timeout.connect(hide_status_label)
+
 
 func show_status_label(status_text: String) -> void:
 	text = status_text
+	timer.start()
+
+	if visible:
+		return
+
 	modulate = Color("ffffff00")
 	visible = true
 
