@@ -167,6 +167,9 @@ func _ready() -> void:
 
 	weapon_data.type_data.mag_attached = true
 
+	# randomize starting weapon durability
+	weapon_data.durability *= randf_range(0.25, 0.75)
+
 
 func _process(_delta: float) -> void:
 	# flip weapon if necessary
