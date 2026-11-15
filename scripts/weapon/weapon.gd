@@ -427,6 +427,16 @@ func _fire_weapon() -> void:
 		var camera: Camera2D = get_node("../../Camera")
 		camera.shake_strength = camera_shake
 
+		# weapon jamming
+		var durability_percent: float = weapon_data.durability / weapon_data.max_durability
+		var roll: float = randf()
+		if durability_percent <= 0.25:
+			if roll <= weapon_data.type_data.jam_chance * 2:
+				weapon_data.type_data.jammed = true
+		elif durability_percent <= 0.50:
+			if roll <= weapon_data.type_data.jam_chance:
+				weapon_data.type_data.jammed = true
+
 		# deplete durability
 		weapon_data.durability -= weapon_data.durability_rate
 		weapon_data.durability = max(weapon_data.durability, 0.0)

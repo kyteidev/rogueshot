@@ -25,6 +25,7 @@ const WEAPON_STATS = {
 		"heat": 0.18,
 		"cooling_rate": 1.04,
 		"speed_multiplier": 1.0,
+		"jam_chance": 0.1,
 	},
 	Weapon.OZ2: {
 		"scene_path": "res://scenes/weapons/types/rifles/oz2.tscn",
@@ -43,6 +44,7 @@ const WEAPON_STATS = {
 		"heat": 0.22,
 		"cooling_rate": 0.87,
 		"speed_multiplier": 0.9,
+		"jam_chance": 0.1,
 	},
 }
 
@@ -57,6 +59,7 @@ const WEAPON_STATS = {
 	set(value):
 		total_ammo = value
 		# SET AMMO COUNT IN MAG TO BE value - 1 if round_chambered else 0
+@export var jammed := false
 
 # WEAPON STATS
 var damage: int
@@ -73,6 +76,7 @@ var camera_shake: float
 var heat: float
 var cooling_rate: float
 var speed_multiplier: float
+var jam_chance: float
 var weapon_scene: PackedScene
 
 
@@ -102,3 +106,5 @@ func _apply_values() -> void:
 	cooling_rate = stats.cooling_rate
 
 	speed_multiplier = stats.speed_multiplier
+
+	jam_chance = stats.jam_chance
