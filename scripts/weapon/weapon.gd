@@ -96,6 +96,8 @@ var reloading := false
 
 var mag_anim_tween: Tween
 
+var flipped: bool
+
 @onready var timer: Timer = $Timer
 @onready var weapon_node: Node2D = $Weapon
 
@@ -127,7 +129,8 @@ func _ready() -> void:
 	im.mag_loaded.connect(
 		func() -> void:
 			get_tree().create_timer(reload_time / 2 - MAG_FADE_DURATION).timeout.connect(
-				load_mag_anim
+				func() -> void:
+					load_mag_anim(false),
 			),
 	)
 
@@ -151,7 +154,9 @@ func _physics_process(delta: float) -> void:
 	# flip direction if necessary
 	var mouse_pos: Vector2 = get_global_mouse_position()
 	var direction: Vector2 = mouse_pos - global_position
-	var flipped: bool = direction.x < 0
+
+	if not input_locked:
+		flipped = direction.x < 0
 
 	if not input_locked:
 		current_weapon.flip_v = flipped
@@ -257,17 +262,14 @@ func reload_weapon() -> void:
 		get_tree().create_timer(real_reload_time - MAG_FADE_DURATION).timeout.connect(load_mag_anim)
 
 
-func load_mag_anim() -> void:
-	if not reloading:
+func load_mag_anim(reload_key := true) -> void:
+	if not reloading and reload_key:
 		return
 
 	var sprite: Sprite2D = weapon_node.get_child(0)
 	var mag: Sprite2D = sprite.get_node("./Magazine")
 	mag.visible = true
 
-	var mouse_pos: Vector2 = get_global_mouse_position()
-	var direction: Vector2 = mouse_pos - global_position
-	var flipped: bool = direction.x < 0
 	var orig_pos: float = -mag_orig_pos.y - MAG_MOVE_AMOUNT if flipped else mag_orig_pos.y + MAG_MOVE_AMOUNT
 	var target_pos: float = -mag_orig_pos.y if flipped else mag_orig_pos.y
 	mag.position.y = orig_pos
@@ -284,8 +286,8 @@ func load_mag_anim() -> void:
 			.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 
 
-func unload_mag_anim() -> void:
-	if not reloading:
+func unload_mag_anim(reload_key := true) -> void:
+	if not reloading and reload_key:
 		return
 
 	var sprite: Sprite2D = weapon_node.get_child(0)
@@ -302,9 +304,6 @@ func unload_mag_anim() -> void:
 	mag_anim_tween = create_tween()
 	mag_anim_tween.set_parallel(true)
 
-	var mouse_pos: Vector2 = get_global_mouse_position()
-	var direction: Vector2 = mouse_pos - global_position
-	var flipped: bool = direction.x < 0
 	var target_pos: float = -mag_orig_pos.y - MAG_MOVE_AMOUNT if flipped else mag_orig_pos.y + MAG_MOVE_AMOUNT
 
 	mag_anim_tween \

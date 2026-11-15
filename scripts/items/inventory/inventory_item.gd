@@ -302,7 +302,7 @@ func unload_items() -> void:
 					.weapon
 		):
 			var weapon: Node2D = get_tree().get_first_node_in_group("unique_weapon")
-			weapon.unload_mag_anim()
+			weapon.unload_mag_anim(false)
 
 
 func split_stack() -> void:
