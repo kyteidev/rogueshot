@@ -251,6 +251,8 @@ func reload_weapon() -> void:
 	if mags > 0 and not reloading:
 		reloading = true
 
+		status_label.show_status_label("RELOADING")
+
 		var weapon: ItemData = im.equipped_weapons[weapon_index]
 		var real_reload_time: float = reload_time
 		if not weapon.type_data.mag_attached:

@@ -44,7 +44,7 @@ const JUMP_BUFFER_TIME = 0.12
 
 const DEATH_TRANS_DELAY = 1.0
 
-const STATUS_LABEL_ORIG_X = -20.0
+const STATUS_LABEL_ORIG_X = -38.5
 
 @export var transition: CanvasLayer
 @export var crosshair: CanvasLayer
