@@ -91,6 +91,8 @@ const MAX_AMMO = 25
 const HEADSHOT_MULTIPLIER = 2.0
 const PARTIAL_DMG_MULTIPLIER = 0.5
 
+const PARTICLE_MIN_VEL = 20.0
+
 @export var weapon_data: ItemData
 @export var mag_data: ItemData
 @export var ammo_data: ItemData
@@ -153,6 +155,8 @@ var im := ItemManager
 @onready var weapon_rest_pos: Vector2 = weapon.position
 
 @onready var weapon_muzzle_orig_pos: Vector2 = weapon_muzzle.position
+
+@onready var walk_particles: CPUParticles2D = %WalkParticles
 
 
 func _ready() -> void:
@@ -245,6 +249,8 @@ func _physics_process(delta: float) -> void:
 		velocity.x = move_toward(velocity.x, direction * speed, accel * delta)
 
 	move_and_slide()
+
+	_walk_particles()
 
 
 func take_damage(damage: float, hit_pos: Vector2) -> void:
@@ -628,6 +634,15 @@ func _point_toward(point_direction: int) -> void:
 		high_wall_ray.target_position *= -1
 		ledge_ray.position.x *= -1
 		status_container.position.x = STATUS_CONTAINER_CENTER_X - 1.0
+
+
+func _walk_particles() -> void:
+	if not is_on_floor() or abs(velocity.x) <= PARTICLE_MIN_VEL:
+		walk_particles.emitting = false
+		return
+
+	walk_particles.emitting = true
+	walk_particles.direction = Vector2(-sign(velocity.x), -0.4)
 
 
 func _on_detection_area_body_entered(body: Node2D) -> void:
