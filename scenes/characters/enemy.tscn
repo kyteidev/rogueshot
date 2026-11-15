@@ -3,7 +3,9 @@
 [ext_resource type="Script" uid="uid://bpqxislc5uiqk" path="res://scripts/characters/enemy.gd" id="1_4ra3w"]
 [ext_resource type="Texture2D" uid="uid://bxil48e432vuf" path="res://assets/sprites/characters/enemy1.png" id="1_md0e3"]
 [ext_resource type="Resource" uid="uid://dnsl2swq8owc7" path="res://resources/items/weapons/rifles/oz-2/oz2.tres" id="2_0ag5d"]
+[ext_resource type="Resource" uid="uid://ciuaxrrej43ip" path="res://resources/items/weapons/rifles/oz-2/oz2_mag.tres" id="3_f0ik5"]
 [ext_resource type="Texture2D" uid="uid://sxdj3w7nress" path="res://assets/sprites/icons/question mark.png" id="4_21x0f"]
+[ext_resource type="Resource" uid="uid://clbie6ews1yvb" path="res://resources/items/ammo/556.tres" id="4_rc7n0"]
 [ext_resource type="Texture2D" uid="uid://c4114geuy27sw" path="res://assets/sprites/weapons/guns/rifles/oz2/oz2_loaded.png" id="5_f0ik5"]
 [ext_resource type="Script" uid="uid://dtictyumsb7ps" path="res://scripts/characters/enemy_status_icon.gd" id="5_jgk6k"]
 [ext_resource type="FontFile" uid="uid://4jxi61jcsc2c" path="res://assets/fonts/groundhog.ttf" id="6_3k4es"]
@@ -157,6 +159,8 @@ outline_color = Color(0.08235294, 0.039215688, 0.20392157, 1)
 [node name="Enemy" type="CharacterBody2D" unique_id=73622017 groups=["enemy", "living"]]
 script = ExtResource("1_4ra3w")
 weapon_data = ExtResource("2_0ag5d")
+mag_data = ExtResource("3_f0ik5")
+ammo_data = ExtResource("4_rc7n0")
 
 [node name="AnimSprite" type="AnimatedSprite2D" parent="." unique_id=1345892962]
 position = Vector2(0, -8)

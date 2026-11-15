@@ -92,6 +92,8 @@ const HEADSHOT_MULTIPLIER = 2.0
 const PARTIAL_DMG_MULTIPLIER = 0.5
 
 @export var weapon_data: ItemData
+@export var mag_data: ItemData
+@export var ammo_data: ItemData
 
 var state := State.PATROL
 var target: CharacterBody2D = null
@@ -514,6 +516,12 @@ func _state_dead(delta: float) -> void:
 
 			# hide weapon and drop a weapon item instead
 			weapon.visible = false
+
+			# set correct data
+			ammo_data.count = ammo
+			mag_data.container_items.append(ammo_data)
+			weapon_data.container_items.append(mag_data)
+			weapon_data.type_data.mag_attached = true
 
 			im.drop_item(weapon_data, false, weapon.global_position)
 		elif not anim.is_playing():
