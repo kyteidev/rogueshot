@@ -34,6 +34,9 @@ func _ready() -> void:
 	# connect signals
 	im.new_item_placed.connect(_new_item_placed)
 
+	# clear inventory
+	im.reset_inventory()
+
 	# place starting items
 	for item in starting_items:
 		im.add_item(item.duplicate(true))
