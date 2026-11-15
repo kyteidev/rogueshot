@@ -46,6 +46,8 @@ const DEATH_TRANS_DELAY = 1.0
 
 const STATUS_LABEL_ORIG_X = -38.5
 
+const PARTICLE_MIN_VEL = 20.0 # minimum x velocity for walk particles to appear
+
 @export var transition: CanvasLayer
 @export var crosshair: CanvasLayer
 
@@ -121,6 +123,8 @@ var closest_item: Node2D
 # status effects
 var overweight := false
 
+var highlight_changed := false
+
 @onready var coyote_timer: Timer = $CoyoteTimer
 @onready var jump_buffer_timer: Timer = $JumpBufferTimer
 
@@ -139,6 +143,8 @@ var overweight := false
 @onready var stamina_bar_fade_timer: Timer = $StaminaBarOutline/StaminaBarFadeTimer
 
 @onready var status_label: Label = %StatusLabel
+
+@onready var walk_particles: CPUParticles2D = %WalkParticles
 
 @onready var hud: CanvasLayer = get_node("../HUD")
 
@@ -337,8 +343,9 @@ func _physics_process(delta: float) -> void:
 	if was_on_floor and not is_on_floor() and velocity.y >= 0:
 		coyote_timer.start(COYOTE_TIME)
 
-	# stamina
 	_update_stamina_bar(delta)
+
+	_walk_particles()
 
 	# item stuff
 	_highlight_items()
@@ -461,6 +468,15 @@ func _update_stamina_bar(delta: float) -> void:
 	stamina_loss_bar.value = displayed_stamina_loss
 
 
+func _walk_particles() -> void:
+	if not is_on_floor() or abs(velocity.x) <= PARTICLE_MIN_VEL:
+		walk_particles.emitting = false
+		return
+
+	walk_particles.emitting = true
+	walk_particles.direction = Vector2(-sign(velocity.x), -0.4)
+
+
 func _item_pickup() -> void:
 	if (
 		sm.is_input_locked() or items_in_range.size() == 0
@@ -476,9 +492,6 @@ func _item_pickup() -> void:
 
 # YAY THIS WORKS NOW :D
 # there's probably a more efficient method but I'm too lazy to fix that rn
-var highlight_changed := false
-
-
 func _highlight_items() -> void:
 	if items_in_range.size() == 0:
 		if highlight_changed:
