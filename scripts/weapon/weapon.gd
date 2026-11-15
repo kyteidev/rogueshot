@@ -256,10 +256,11 @@ func fade_weapon() -> void:
 
 func reload_weapon() -> void:
 	# this cant run if weapon_index == -1
-	if im.equipped_weapons[weapon_index].type_data.jammed:
+	var weapon: ItemData = im.equipped_weapons[weapon_index]
+	if weapon.type_data.jammed:
 		status_label.show_status_label("UNJAMMING")
 
-		crosshair.reload_time = reload_time
+		crosshair.reload_time = weapon.type_data.unjam_time
 		crosshair.start_reload()
 		crosshair.tween.finished.connect(
 			func() -> void:
@@ -275,7 +276,6 @@ func reload_weapon() -> void:
 
 		status_label.show_status_label("RELOADING")
 
-		var weapon: ItemData = im.equipped_weapons[weapon_index]
 		var real_reload_time: float = reload_time
 		if not weapon.type_data.mag_attached:
 			real_reload_time /= 2
@@ -471,7 +471,8 @@ func _fire_weapon() -> void:
 			if roll <= lerp(
 				weapon_data.type_data.jam_chance,
 				MAX_JAM_CHANCE,
-				((JAM_START - weapon_data.durability) / JAM_START) ** 4,
+				((JAM_START - weapon_data.durability) / JAM_START)
+				** weapon_data.type_data.jam_weight,
 			):
 				weapon_data.type_data.jammed = true
 

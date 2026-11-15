@@ -26,6 +26,8 @@ const WEAPON_STATS = {
 		"cooling_rate": 1.04,
 		"speed_multiplier": 1.0,
 		"jam_chance": 0.005,
+		"jam_weight": 4.0,
+		"unjam_time": 0.6,
 	},
 	Weapon.OZ2: {
 		"scene_path": "res://scenes/weapons/types/rifles/oz2.tscn",
@@ -45,6 +47,8 @@ const WEAPON_STATS = {
 		"cooling_rate": 0.87,
 		"speed_multiplier": 0.9,
 		"jam_chance": 0.003,
+		"jam_weight": 4.0,
+		"unjam_time": 0.9,
 	},
 }
 
@@ -77,6 +81,8 @@ var heat: float
 var cooling_rate: float
 var speed_multiplier: float
 var jam_chance: float
+var jam_weight: float
+var unjam_time: float
 var weapon_scene: PackedScene
 
 
@@ -108,3 +114,5 @@ func _apply_values() -> void:
 	speed_multiplier = stats.speed_multiplier
 
 	jam_chance = stats.jam_chance
+	jam_weight = stats.jam_weight
+	unjam_time = stats.unjam_time
