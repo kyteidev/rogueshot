@@ -1,3 +1,37 @@
+v0.1.0-dev.6:
+Reloading has been fixed!!!!!
+- added magazine-based reloading :D (huge feature!!!!!)
+- added item stack splitting
+- added 5.56 caliber ammo
+- added item loading and unloading delay to container items
+- added ability to combine item stacks
+- added weapon loaded and unloaded textures
+- added item descriptions
+- added weapon names
+- added item weight
+- added overweight status effect
+- added magazine reload animation
+- added item durability
+- added weapon jamming and unjamming
+- added walk particles
+- added player status label
+- fixed container item overflow
+- fixed item being stuck in drag state when moving cursor very fast
+- fixed crash when using context menu without hovering over item
+- fixed item ghosting when unloading from container
+- fixed crash when unloading empty container
+- fixed being able to pick up item while in inventory
+- fixed enemy not dealing correct damage
+- fixed inventory overflow stuff
+- fixed enemy status icon and label clipping
+- fixed being able to drag item to container when it's full
+- fixed inventory not reset when reloading game scene
+- made inventory item dragging better
+- made item go to existing stack when unloaded
+- made player weapon and world item weapon show/hide mag when necessary
+- made debug labels hidden
+- made enemy drop weapon with correct properties
+
 v0.1.0-dev.5:
 Reloading is still broken :(
 - added item equipping using context menus
