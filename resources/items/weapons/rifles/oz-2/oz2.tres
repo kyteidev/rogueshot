@@ -9,6 +9,7 @@
 script = ExtResource("4_a2v65")
 weapon = 2
 loaded_icon = ExtResource("3_jhsau")
+jammed = true
 metadata/_custom_type_script = "uid://fn8hix2hcrvm"
 
 [resource]

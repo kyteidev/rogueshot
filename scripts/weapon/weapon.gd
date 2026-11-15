@@ -248,6 +248,20 @@ func fade_weapon() -> void:
 
 
 func reload_weapon() -> void:
+	# this cant run if weapon_index == -1
+	if im.equipped_weapons[weapon_index].type_data.jammed:
+		status_label.show_status_label("UNJAMMING")
+
+		crosshair.reload_time = reload_time
+		crosshair.start_reload()
+		crosshair.tween.finished.connect(
+			func() -> void:
+				im.equipped_weapons[weapon_index].type_data.jammed = false
+				status_label.hide_status_label(),
+		)
+
+		return
+
 	if mags > 0 and not reloading:
 		reloading = true
 
