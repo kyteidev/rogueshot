@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://byeekqi7jy3jk" path="res://scenes/weapons/weapon.tscn" id="3_qhqgy"]
 [ext_resource type="Texture2D" uid="uid://cdf5h5jgg2u5w" path="res://assets/sprites/bar/bar-base.png" id="4_atpat"]
 [ext_resource type="Texture2D" uid="uid://wyplv53mg8ky" path="res://assets/sprites/bar/bar-progress.png" id="5_kqtwu"]
-[ext_resource type="FontFile" uid="uid://4jxi61jcsc2c" path="res://assets/fonts/groundhog.ttf" id="6_6eyoc"]
+[ext_resource type="FontFile" uid="uid://f2n8hokso8m2" path="res://assets/fonts/deckhand_regular_8px.ttf" id="6_6eyoc"]
 [ext_resource type="Script" uid="uid://1w732e3gs1gb" path="res://scripts/characters/status_label.gd" id="7_6eyoc"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_76oj4"]
@@ -159,6 +159,7 @@ radius = 20.0
 
 [sub_resource type="LabelSettings" id="LabelSettings_qgnko"]
 font = ExtResource("6_6eyoc")
+font_size = 8
 font_color = Color(0.99215686, 0.94509804, 1, 1)
 outline_size = 2
 outline_color = Color(0.08235294, 0.039215688, 0.20392157, 1)
@@ -256,9 +257,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -38.5
-offset_top = -30.0
+offset_top = -22.125
 offset_right = 38.5
-offset_bottom = -11.0
+offset_bottom = -13.625
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(0.5, 0.5)
