@@ -51,8 +51,7 @@ const CAPABILITIES = {
 @export var max_stack: int = 1
 @export var count: int = 1
 @export var weight := 0.0
-@export var max_durability := 100.0
-@export var durability := 100.0
+@export var durability := 100.0 # in percent
 @export var durability_rate := 0.0 # rate per use
 
 # world
