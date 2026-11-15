@@ -476,11 +476,18 @@ func _item_pickup() -> void:
 
 # YAY THIS WORKS NOW :D
 # there's probably a more efficient method but I'm too lazy to fix that rn
+var highlight_changed := false
+
+
 func _highlight_items() -> void:
 	if items_in_range.size() == 0:
-		hud.update_hint_label(false)
-		closest_item = null
+		if highlight_changed:
+			highlight_changed = false
+
+			hud.update_hint_label(false)
+			closest_item = null
 		return
+	highlight_changed = true
 
 	var closest_distance: float
 

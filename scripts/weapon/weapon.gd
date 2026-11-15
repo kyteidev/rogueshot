@@ -107,6 +107,7 @@ var weapon_state: Dictionary = { }
 
 @onready var player: CharacterBody2D = get_parent()
 @onready var status_label: Label = player.get_node("./StatusLabel")
+@onready var hud: CanvasLayer = player.get_node("../HUD")
 @onready var crosshair: CanvasLayer = player.crosshair
 
 
@@ -257,6 +258,7 @@ func reload_weapon() -> void:
 		crosshair.tween.finished.connect(
 			func() -> void:
 				im.equipped_weapons[weapon_index].type_data.jammed = false
+				hud.update_hint_label(false)
 				status_label.hide_status_label(),
 		)
 
@@ -400,6 +402,7 @@ func _fire_weapon() -> void:
 
 		if weapon_data.type_data.jammed:
 			status_label.show_status_label("JAMMED")
+			hud.update_hint_label(true, "weapon_reload", "unjam weapon")
 			return
 
 		# spawn bullet
