@@ -91,7 +91,13 @@ const MAX_AMMO = 25
 const HEADSHOT_MULTIPLIER = 2.0
 const PARTIAL_DMG_MULTIPLIER = 0.5
 
+# walk particles
 const PARTICLE_MIN_VEL = 20.0
+const PARTICLE_MAX_VEL = RUN_SPEED
+
+const PARTICLE_AMOUNT_SLOW = 3
+const PARTICLE_AMOUNT_NORMAL = 7
+const PARTICLE_AMOUNT_FAST = 12
 
 @export var weapon_data: ItemData
 @export var mag_data: ItemData
@@ -637,9 +643,24 @@ func _point_toward(point_direction: int) -> void:
 
 
 func _walk_particles() -> void:
-	if not is_on_floor() or abs(velocity.x) <= PARTICLE_MIN_VEL:
+	# using speed variable might cause racing problems maybe
+	# just get speed from velocity instead
+	var move_speed: float = abs(velocity.x)
+	if not is_on_floor() or move_speed <= PARTICLE_MIN_VEL:
 		walk_particles.emitting = false
 		return
+
+	var percent: float = move_speed / PARTICLE_MAX_VEL
+	var target_amount: int
+	if percent <= 0.4:
+		target_amount = PARTICLE_AMOUNT_SLOW
+	elif percent <= 0.8:
+		target_amount = PARTICLE_AMOUNT_NORMAL
+	else:
+		target_amount = PARTICLE_AMOUNT_FAST
+
+	if walk_particles.amount != target_amount:
+		walk_particles.amount = target_amount
 
 	walk_particles.emitting = true
 	walk_particles.direction = Vector2(-sign(velocity.x), -0.4)
