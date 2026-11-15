@@ -151,7 +151,7 @@ size = Vector2(250, 160)
 
 [sub_resource type="LabelSettings" id="LabelSettings_x5khh"]
 font = ExtResource("6_3k4es")
-font_size = 4
+font_size = 8
 font_color = Color(0.99215686, 0.94509804, 1, 1)
 outline_size = 2
 outline_color = Color(0.08235294, 0.039215688, 0.20392157, 1)
@@ -284,7 +284,7 @@ one_shot = true
 [node name="StatusLabel" type="Label" parent="StatusContainer" unique_id=388896039]
 unique_name_in_owner = true
 layout_mode = 2
-text = "hello world"
+text = "RELOADING"
 label_settings = SubResource("LabelSettings_x5khh")
 horizontal_alignment = 1
 vertical_alignment = 1
