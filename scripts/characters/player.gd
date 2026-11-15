@@ -46,7 +46,13 @@ const DEATH_TRANS_DELAY = 1.0
 
 const STATUS_LABEL_ORIG_X = -38.5
 
+# walk particle stuff
 const PARTICLE_MIN_VEL = 20.0 # minimum x velocity for walk particles to appear
+const PARTICLE_MAX_VEL = BASE_SPEED * SPRINT_MULTIPLIER
+
+const PARTICLE_AMOUNT_SLOW = 4
+const PARTICLE_AMOUNT_NORMAL = 8
+const PARTICLE_AMOUNT_FAST = 14
 
 @export var transition: CanvasLayer
 @export var crosshair: CanvasLayer
@@ -469,9 +475,24 @@ func _update_stamina_bar(delta: float) -> void:
 
 
 func _walk_particles() -> void:
-	if not is_on_floor() or abs(velocity.x) <= PARTICLE_MIN_VEL:
+	# using speed variable might cause racing problems maybe
+	# just get speed from velocity instead
+	var move_speed: float = abs(velocity.x)
+	if not is_on_floor() or move_speed <= PARTICLE_MIN_VEL:
 		walk_particles.emitting = false
 		return
+
+	var percent: float = move_speed / PARTICLE_MAX_VEL
+	var target_amount: int
+	if percent <= 0.4:
+		target_amount = PARTICLE_AMOUNT_SLOW
+	elif percent <= 0.8:
+		target_amount = PARTICLE_AMOUNT_NORMAL
+	else:
+		target_amount = PARTICLE_AMOUNT_FAST
+
+	if walk_particles.amount != target_amount:
+		walk_particles.amount = target_amount
 
 	walk_particles.emitting = true
 	walk_particles.direction = Vector2(-sign(velocity.x), -0.4)
