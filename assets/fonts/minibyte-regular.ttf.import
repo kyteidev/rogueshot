@@ -2,18 +2,18 @@
 
 importer="font_data_dynamic"
 type="FontFile"
-uid="uid://c4222bnvnxtc8"
-path="res://.godot/imported/Tiny5Mono-Regular.ttf-542d7b8a7e79c808e1406bae28dc6d36.fontdata"
+uid="uid://8xvofljdojob"
+path="res://.godot/imported/minibyte-regular.ttf-ae6b17bcdfac3e62f0d4826bf3239872.fontdata"
 
 [deps]
 
-source_file="res://assets/fonts/Tiny5Mono-Regular.ttf"
-dest_files=["res://.godot/imported/Tiny5Mono-Regular.ttf-542d7b8a7e79c808e1406bae28dc6d36.fontdata"]
+source_file="res://assets/fonts/minibyte-regular.ttf"
+dest_files=["res://.godot/imported/minibyte-regular.ttf-ae6b17bcdfac3e62f0d4826bf3239872.fontdata"]
 
 [params]
 
 Rendering=null
-antialiasing=1
+antialiasing=0
 generate_mipmaps=false
 disable_embedded_bitmaps=true
 multichannel_signed_distance_field=false
