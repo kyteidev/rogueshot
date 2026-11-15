@@ -372,7 +372,8 @@ func _finish_reload() -> void:
 
 
 func _fire_weapon() -> void:
-	if can_fire and ammo > 0:
+	var weapon_data: ItemData = im.equipped_weapons[weapon_index]
+	if can_fire and ammo > 0 and weapon_data.durability > 0.0:
 		# spawn bullet
 		var bullet_instance: CharacterBody2D = BULLET.instantiate()
 		bullet_instance.type = bullet_instance.Types.FRIENDLY
@@ -425,6 +426,10 @@ func _fire_weapon() -> void:
 		# shake camera
 		var camera: Camera2D = get_node("../../Camera")
 		camera.shake_strength = camera_shake
+
+		# deplete durability
+		weapon_data.durability -= weapon_data.durability_rate
+		weapon_data.durability = max(weapon_data.durability, 0.0)
 
 
 func _equip_weapon(index: int) -> void:
