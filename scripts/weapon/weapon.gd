@@ -129,11 +129,14 @@ func _ready() -> void:
 	im.item_loaded.connect(_set_ammo_mag_data.call_deferred)
 	im.item_unloaded.connect(_set_ammo_mag_data.call_deferred.unbind(1))
 
+	# gets called immediately when mag is dragged to weapon
 	im.mag_loaded.connect(
 		func() -> void:
+			var index: int = weapon_index
 			get_tree().create_timer(reload_time / 2 - MAG_FADE_DURATION).timeout.connect(
 				func() -> void:
-					load_mag_anim(false),
+					if index == weapon_index:
+						load_mag_anim(false),
 			),
 	)
 
