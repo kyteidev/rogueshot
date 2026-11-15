@@ -15,7 +15,7 @@ var max_ammo: int = 0
 var mags: int = 0
 
 var reloading := false
-var weapon_index: int = -1
+var weapon_index: int = -1 # idk why both im and sm have this
 
 var lost_health := false
 
