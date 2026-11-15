@@ -19,7 +19,7 @@ func _ready() -> void:
 
 
 func show_status_label(status_text: String) -> void:
-	text = status_text
+	text = status_text.to_upper()
 	timer.start()
 
 	if visible:
