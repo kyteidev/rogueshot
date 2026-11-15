@@ -531,7 +531,7 @@ func _state_dead(delta: float) -> void:
 
 
 func _shoot() -> void:
-	if ammo > 0 and weapon_reload_timer.is_stopped():
+	if ammo > 0 and weapon_reload_timer.is_stopped() and weapon_data.durability > 0.0:
 		status_label.hide_status_label()
 		# spawn bullet
 		var bullet_instance: CharacterBody2D = BULLET.instantiate()
@@ -571,6 +571,9 @@ func _shoot() -> void:
 		var spark_instance: CPUParticles2D = SPARK_PARTICLES.instantiate()
 		spark_instance.position = muzzle_flash.position
 		weapon.add_child(spark_instance)
+
+		# deplete durability
+		weapon_data.durability -= weapon_data.durability_rate
 	elif ammo == 0:
 		weapon_reload_timer.start(WEAPON_RELOAD_TIME)
 		ammo = MAX_AMMO
