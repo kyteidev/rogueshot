@@ -165,6 +165,11 @@ func _ready() -> void:
 	smoke = SMOKE_PARTICLES.instantiate()
 	weapon.add_child(smoke)
 
+	# duplicate data
+	weapon_data = weapon_data.duplicate(true)
+	mag_data = mag_data.duplicate(true)
+	ammo_data = ammo_data.duplicate(true)
+
 	weapon_data.type_data.mag_attached = true
 
 	# randomize starting weapon durability
