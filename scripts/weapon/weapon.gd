@@ -2,6 +2,7 @@ extends Node2D
 
 const MAX_STAMINA_SPREAD_MULTIPLIER = 2.0
 const NO_AIM_SPREAD_MULTIPLIER = 2.0
+const MAX_DURA_SPREAD_MULTIPLIER = 2.0
 
 const BULLET = preload("res://scenes/weapons/bullet.tscn")
 const BULLET_SCALE = 0.15
@@ -98,14 +99,14 @@ var mag_anim_tween: Tween
 
 var flipped: bool
 
+# format: weapon_name: { ammo, mags }
+var weapon_state: Dictionary = { }
+
 @onready var timer: Timer = $Timer
 @onready var weapon_node: Node2D = $Weapon
 
 @onready var player: CharacterBody2D = get_parent()
 @onready var crosshair: CanvasLayer = player.crosshair
-
-# format: weapon_name: { ammo, mags }
-var weapon_state: Dictionary = { }
 
 
 func _ready() -> void:
@@ -380,6 +381,7 @@ func _fire_weapon() -> void:
 
 		# apply spread
 		spread_multiplier *= ((100 - player.stamina) / 100) * MAX_STAMINA_SPREAD_MULTIPLIER
+		spread_multiplier *= ((50.0 - weapon_data.durability) / 50.0) * MAX_DURA_SPREAD_MULTIPLIER
 		var spread_angle: float = deg_to_rad(randf_range(-current_spread, current_spread)) \
 				* spread_multiplier
 
