@@ -263,7 +263,7 @@ func reload_weapon() -> void:
 
 
 func load_mag_anim(reload_key := true) -> void:
-	if not reloading and reload_key:
+	if not reloading and reload_key or weapon_index == -1:
 		return
 
 	var sprite: Sprite2D = weapon_node.get_child(0)
@@ -287,7 +287,7 @@ func load_mag_anim(reload_key := true) -> void:
 
 
 func unload_mag_anim(reload_key := true) -> void:
-	if not reloading and reload_key:
+	if not reloading and reload_key or weapon_index == -1:
 		return
 
 	var sprite: Sprite2D = weapon_node.get_child(0)
