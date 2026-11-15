@@ -35,6 +35,7 @@ var weapon_muzzle_orig_pos := Vector2(0.0, 0.0)
 var weapon_ejection: Marker2D = null
 var weapon_ejection_orig_pos := Vector2(0.0, 0.0)
 
+var weapon_mag: Sprite2D
 var mag_orig_pos := Vector2(0.0, 0.0)
 
 var base_damage: int = 0:
@@ -158,6 +159,8 @@ func _physics_process(delta: float) -> void:
 				else weapon_muzzle_orig_pos.y
 		weapon_ejection.position.y = -weapon_ejection_orig_pos.y if flipped \
 				else weapon_ejection_orig_pos.y
+		weapon_mag.position.y = -mag_orig_pos.y if flipped else mag_orig_pos.y
+		weapon_mag.flip_v = flipped
 
 	# recoil and kick recovery and apply kick
 	current_spread = move_toward(current_spread, 0.0, spread_recovery * delta)
@@ -262,7 +265,12 @@ func load_mag_anim() -> void:
 	var mag: Sprite2D = sprite.get_node("./Magazine")
 	mag.visible = true
 
-	mag.position.y = mag_orig_pos.y + MAG_MOVE_AMOUNT
+	var mouse_pos: Vector2 = get_global_mouse_position()
+	var direction: Vector2 = mouse_pos - global_position
+	var flipped: bool = direction.x < 0
+	var orig_pos: float = -mag_orig_pos.y - MAG_MOVE_AMOUNT if flipped else mag_orig_pos.y + MAG_MOVE_AMOUNT
+	var target_pos: float = -mag_orig_pos.y if flipped else mag_orig_pos.y
+	mag.position.y = orig_pos
 	mag.modulate.a = 0.0
 
 	if mag_anim_tween:
@@ -270,7 +278,7 @@ func load_mag_anim() -> void:
 	mag_anim_tween = create_tween()
 	mag_anim_tween.set_parallel(true)
 
-	mag_anim_tween.tween_property(mag, "position:y", mag_orig_pos.y, MAG_FADE_DURATION) \
+	mag_anim_tween.tween_property(mag, "position:y", target_pos, MAG_FADE_DURATION) \
 			.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 	mag_anim_tween.tween_property(mag, "modulate:a", 1.0, MAG_FADE_DURATION) \
 			.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
@@ -294,8 +302,13 @@ func unload_mag_anim() -> void:
 	mag_anim_tween = create_tween()
 	mag_anim_tween.set_parallel(true)
 
+	var mouse_pos: Vector2 = get_global_mouse_position()
+	var direction: Vector2 = mouse_pos - global_position
+	var flipped: bool = direction.x < 0
+	var target_pos: float = -mag_orig_pos.y - MAG_MOVE_AMOUNT if flipped else mag_orig_pos.y + MAG_MOVE_AMOUNT
+
 	mag_anim_tween \
-			.tween_property(mag, "position:y", mag_orig_pos.y + MAG_MOVE_AMOUNT, MAG_FADE_DURATION) \
+			.tween_property(mag, "position:y", target_pos, MAG_FADE_DURATION) \
 			.set_trans(Tween.TRANS_QUAD) \
 			.set_ease(Tween.EASE_IN)
 	mag_anim_tween.tween_property(mag, "modulate:a", 0.0, MAG_FADE_DURATION) \
@@ -417,12 +430,10 @@ func _fire_weapon() -> void:
 
 func _equip_weapon(index: int) -> void:
 	# reset and save weapon stats before switching
-	var sprite: Sprite2D
-	var mag: Sprite2D
+	var old_mag: Sprite2D
 
 	if weapon_index != -1:
-		sprite = weapon_node.get_child(0)
-		mag = sprite.get_node("Magazine")
+		old_mag = current_weapon.get_node("Magazine")
 
 	if current_weapon != null:
 		current_weapon.flip_v = false
@@ -432,8 +443,8 @@ func _equip_weapon(index: int) -> void:
 		weapon_state[weapon_name] = { "ammo": ammo, "mags": mags }
 
 		if weapon_index != -1:
-			mag.position = mag_orig_pos
-			mag.visible = false
+			old_mag.position = mag_orig_pos
+			old_mag.visible = false
 
 		heat = 0.0
 
@@ -461,14 +472,13 @@ func _equip_weapon(index: int) -> void:
 	weapon_ejection = current_weapon.get_node("./Ejection")
 	weapon_ejection_orig_pos = weapon_ejection.position
 
-	sprite = weapon_node.get_child(0)
-	mag = sprite.get_node("./Magazine")
-	mag_orig_pos = mag.position
+	weapon_mag = current_weapon.get_node("./Magazine")
+	mag_orig_pos = weapon_mag.position
 
 	if im.equipped_weapons[index].type_data.mag_attached:
-		sprite.texture = sprite.loaded_texture
+		current_weapon.texture = current_weapon.loaded_texture
 	else:
-		sprite.texture = sprite.base_texture
+		current_weapon.texture = current_weapon.base_texture
 
 	# set weapon stats
 	var stats: WeaponData = im.equipped_weapons[index].type_data
