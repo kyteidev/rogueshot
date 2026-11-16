@@ -5,13 +5,12 @@ const SLOT_TEXTURE = preload("res://assets/sprites/ui/inventory/inventory-slot.p
 
 const SLOT_SIZE = 24.0
 
-@export var crosshair: CanvasLayer
+@export var crosshair: Node2D
 @export var starting_items: Array[ItemData]
 
 var sm := StateManager
 var im := ItemManager
 
-@onready var cursor: Node2D = crosshair.get_child(0)
 @onready var slots_container: GridContainer = $InventoryContainer/SlotsContainer
 @onready var items_container: Control = $InventoryContainer/ItemsContainer
 @onready var context_menu: Control = $ContextMenu
@@ -70,8 +69,8 @@ func toggle_inventory() -> void:
 	context_menu.process_mode = Node.PROCESS_MODE_INHERIT if visible else Node.PROCESS_MODE_DISABLED
 
 	# move cursor to crosshair after exiting
-	if cursor.position != get_viewport().get_mouse_position():
-		get_viewport().warp_mouse(cursor.position)
+	if crosshair.position != get_viewport().get_mouse_position():
+		get_viewport().warp_mouse(crosshair.get_global_transform_with_canvas().get_origin())
 
 	crosshair.cancel_reload()
 

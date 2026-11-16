@@ -95,8 +95,8 @@ const PARTIAL_DMG_MULTIPLIER = 0.5
 const PARTICLE_MIN_VEL = 20.0
 const PARTICLE_MAX_VEL = RUN_SPEED
 
-const PARTICLE_AMOUNT_SLOW = 3
-const PARTICLE_AMOUNT_NORMAL = 7
+const PARTICLE_AMOUNT_SLOW = 3.0 / PARTICLE_AMOUNT_FAST
+const PARTICLE_AMOUNT_NORMAL = 7.0 / PARTICLE_AMOUNT_FAST
 const PARTICLE_AMOUNT_FAST = 12
 
 @export var weapon_data: ItemData
@@ -162,7 +162,7 @@ var im := ItemManager
 
 @onready var weapon_muzzle_orig_pos: Vector2 = weapon_muzzle.position
 
-@onready var walk_particles: CPUParticles2D = %WalkParticles
+@onready var walk_particles: GPUParticles2D = %WalkParticles
 
 
 func _ready() -> void:
@@ -184,6 +184,8 @@ func _ready() -> void:
 
 	# randomize starting weapon durability
 	weapon_data.durability *= randf_range(0.25, 0.75)
+
+	walk_particles.amount = PARTICLE_AMOUNT_FAST
 
 
 func _process(_delta: float) -> void:
@@ -651,19 +653,19 @@ func _walk_particles() -> void:
 		return
 
 	var percent: float = move_speed / PARTICLE_MAX_VEL
-	var target_amount: int
+	var target_amount: float
 	if percent <= 0.4:
 		target_amount = PARTICLE_AMOUNT_SLOW
 	elif percent <= 0.8:
 		target_amount = PARTICLE_AMOUNT_NORMAL
 	else:
-		target_amount = PARTICLE_AMOUNT_FAST
+		target_amount = 1.0
 
-	if walk_particles.amount != target_amount:
-		walk_particles.amount = target_amount
+	if walk_particles.amount_ratio != target_amount:
+		walk_particles.amount_ratio = 1.0
 
 	walk_particles.emitting = true
-	walk_particles.direction = Vector2(-sign(velocity.x), -0.4)
+	walk_particles.process_material.direction = Vector3(-sign(velocity.x), -0.4, 0.0)
 
 
 func _on_detection_area_body_entered(body: Node2D) -> void:

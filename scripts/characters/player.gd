@@ -50,12 +50,12 @@ const STATUS_LABEL_ORIG_X = -38.5
 const PARTICLE_MIN_VEL = 20.0 # minimum x velocity for walk particles to appear
 const PARTICLE_MAX_VEL = BASE_SPEED * SPRINT_MULTIPLIER
 
-const PARTICLE_AMOUNT_SLOW = 4
-const PARTICLE_AMOUNT_NORMAL = 8
+const PARTICLE_AMOUNT_SLOW = 4.0 / PARTICLE_AMOUNT_FAST
+const PARTICLE_AMOUNT_NORMAL = 8.0 / PARTICLE_AMOUNT_FAST
 const PARTICLE_AMOUNT_FAST = 14
 
 @export var transition: CanvasLayer
-@export var crosshair: CanvasLayer
+@export var crosshair: Node2D
 
 var sm := StateManager
 var im := ItemManager
@@ -150,7 +150,7 @@ var highlight_changed := false
 
 @onready var status_label: Label = %StatusLabel
 
-@onready var walk_particles: CPUParticles2D = %WalkParticles
+@onready var walk_particles: GPUParticles2D = %WalkParticles
 
 @onready var hud: CanvasLayer = get_node("../HUD")
 
@@ -167,6 +167,8 @@ func _ready() -> void:
 	sm.health = health
 	sm.max_health = MAX_HEALTH
 	sm.stamina = stamina
+
+	walk_particles.amount = PARTICLE_AMOUNT_FAST
 
 
 func _process(_delta: float) -> void:
@@ -483,19 +485,19 @@ func _walk_particles() -> void:
 		return
 
 	var percent: float = move_speed / PARTICLE_MAX_VEL
-	var target_amount: int
+	var target_amount: float
 	if percent <= 0.4:
 		target_amount = PARTICLE_AMOUNT_SLOW
 	elif percent <= 0.8:
 		target_amount = PARTICLE_AMOUNT_NORMAL
 	else:
-		target_amount = PARTICLE_AMOUNT_FAST
+		target_amount = 1.0
 
-	if walk_particles.amount != target_amount:
-		walk_particles.amount = target_amount
+	if walk_particles.amount_ratio != target_amount:
+		walk_particles.amount_ratio = 1.0
 
 	walk_particles.emitting = true
-	walk_particles.direction = Vector2(-sign(velocity.x), -0.4)
+	walk_particles.process_material.direction = Vector3(-sign(velocity.x), -0.4, 0.0)
 
 
 func _item_pickup() -> void:

@@ -1,15 +1,21 @@
-extends CanvasLayer
+extends Node2D
 
 const STEPS: int = 128
+const RECOIL_SPEED = 3.0
 
 var sm := StateManager
 var tween: Tween
 
 var reload_time := 0.0
 
-@onready var cursor: Node2D = $Cursor
-@onready var reticle: Sprite2D = $Cursor/Reticle
-@onready var ring: TextureProgressBar = $Cursor/ReloadRing
+var recoil_offset := Vector2.ZERO
+var recoil_velocity := Vector2.ZERO
+
+var stiffness := 0.0
+var damping := 0.0
+
+@onready var reticle: Sprite2D = $Reticle
+@onready var ring: TextureProgressBar = $ReloadRing
 
 
 func _ready() -> void:
@@ -20,9 +26,24 @@ func _ready() -> void:
 	visible = true
 
 
-func _process(_delta: float) -> void:
+func _process(delta: float) -> void:
 	if not sm.is_input_locked():
-		cursor.position = get_viewport().get_mouse_position()
+		var spring_force: Vector2 = -stiffness * recoil_offset
+		var damping_force: Vector2 = -damping * recoil_velocity
+
+		recoil_velocity += (spring_force + damping_force) * delta
+		recoil_offset += recoil_velocity * delta
+		global_position = get_global_mouse_position() + recoil_offset
+
+
+func apply_recoil(weapon_rotation: float, h_recoil_amount: float, v_recoil_amount: float) -> void:
+	var v_direction := Vector2(cos(weapon_rotation), sin(weapon_rotation))
+	var h_direction := Vector2(-v_direction.y, v_direction.x)
+	var impulse: Vector2 = (v_direction * v_recoil_amount) + (
+		h_direction * randf_range(-h_recoil_amount, h_recoil_amount)
+	)
+
+	recoil_velocity += impulse
 
 
 func start_reload() -> void:

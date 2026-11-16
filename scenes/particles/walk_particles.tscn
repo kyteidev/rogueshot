@@ -1,28 +1,40 @@
 [gd_scene format=3 uid="uid://lbxyk5rhhfpo"]
 
-[sub_resource type="Curve" id="Curve_nxkl5"]
-_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
-point_count = 2
-
 [sub_resource type="Gradient" id="Gradient_nxkl5"]
 offsets = PackedFloat32Array(0, 0.5, 1)
 colors = PackedColorArray(0.9098039, 0.83137256, 0.9411765, 0.78431374, 0.72156864, 0.6039216, 0.76862746, 0.54901963, 0.5568628, 0.44705883, 0.6039216, 0)
 metadata/_snap_enabled = true
 
-[node name="WalkParticles" type="CPUParticles2D" unique_id=1500162428]
-lifetime = 0.4
-randomness = 0.4
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_nxkl5"]
+gradient = SubResource("Gradient_nxkl5")
+
+[sub_resource type="Curve" id="Curve_nxkl5"]
+_data = [Vector2(0, 0.48120308), 0.0, 0.0, 0, 0, Vector2(0.35111105, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_o4vji"]
+curve = SubResource("Curve_nxkl5")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_06iil"]
 lifetime_randomness = 0.2
-direction = Vector2(0, -1)
+particle_flag_disable_z = true
+direction = Vector3(0, -1, 0)
 spread = 30.0
-gravity = Vector2(0, -10)
 initial_velocity_min = 10.0
 initial_velocity_max = 30.0
+gravity = Vector3(0, -10, 0)
 damping_min = 40.0
 damping_max = 70.0
-scale_amount_min = 0.8
-scale_amount_max = 1.4
-scale_amount_curve = SubResource("Curve_nxkl5")
-color_ramp = SubResource("Gradient_nxkl5")
+scale_min = 0.8
+scale_max = 1.4
+scale_curve = SubResource("CurveTexture_o4vji")
+color_ramp = SubResource("GradientTexture1D_nxkl5")
 hue_variation_min = -0.02
 hue_variation_max = 0.02
+
+[node name="WalkParticles" type="GPUParticles2D" unique_id=1101245519]
+lifetime = 0.4
+randomness = 0.4
+fixed_fps = 0
+draw_order = 0
+process_material = SubResource("ParticleProcessMaterial_06iil")
