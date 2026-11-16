@@ -28,7 +28,7 @@ CONTROLS:
 - Space: jump
 - Left mouse button: shoot
 - Z: facing lock (player direction follows movement instead of cursor)
-- R: reload (currently broken)
+- R: reload
 - Q: cycle weapon
   - 1: Equip Primary
   - 2: Equip Secondary
