@@ -8,6 +8,7 @@
 script = ExtResource("1_norqy")
 
 [node name="Reticle" type="Sprite2D" parent="." unique_id=864043456]
+scale = Vector2(0.75, 0.75)
 texture = ExtResource("2_qnjby")
 
 [node name="ReloadRing" type="TextureProgressBar" parent="." unique_id=228523896]
