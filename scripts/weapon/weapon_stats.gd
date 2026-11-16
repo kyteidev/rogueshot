@@ -2,7 +2,6 @@ class_name WeaponStats
 extends Resource
 
 @export var damage: int
-@export var caliber: AmmoData.Caliber
 @export var fire_rate: float
 @export var mag_size: int
 @export var reload_time: float

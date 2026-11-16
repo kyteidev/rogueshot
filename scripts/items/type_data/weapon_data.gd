@@ -8,6 +8,7 @@ enum Weapon {
 }
 
 @export var weapon: Weapon
+@export var caliber: AmmoData.Caliber
 @export var weapon_data: WeaponStats
 @export var weapon_scene: PackedScene
 @export var loaded_icon: Texture2D

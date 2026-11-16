@@ -10,7 +10,6 @@
 [sub_resource type="Resource" id="Resource_svse4"]
 script = ExtResource("5_s7248")
 damage = 25
-caliber = 1
 mag_size = 13
 reload_time = 0.9
 kick = 5.0
@@ -34,6 +33,7 @@ metadata/_custom_type_script = "uid://1wh2npoujpnn"
 [sub_resource type="Resource" id="Resource_nqevj"]
 script = ExtResource("4_xb7fl")
 weapon = 1
+caliber = 1
 weapon_data = SubResource("Resource_svse4")
 weapon_scene = ExtResource("5_svse4")
 loaded_icon = ExtResource("3_svse4")
