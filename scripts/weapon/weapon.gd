@@ -540,7 +540,7 @@ func _equip_weapon(index: int) -> void:
 		current_weapon.texture = current_weapon.base_texture
 
 	# set weapon stats
-	var stats: WeaponData = im.equipped_weapons[index].type_data
+	var stats: WeaponStats = im.equipped_weapons[index].type_data.weapon_data
 	base_damage = stats.damage
 	fire_rate = stats.fire_rate
 	max_ammo = stats.mag_size
