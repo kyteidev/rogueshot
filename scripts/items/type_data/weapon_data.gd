@@ -17,9 +17,13 @@ const WEAPON_STATS = {
 		"total_mags": 5,
 		"kick": 5.0,
 		"kick_recovery": 60.0,
+		"horizontal_recoil": 80.0,
+		"vertical_recoil": 320.0,
+		"recoil_stiffness": 200.0,
+		"recoil_damping": 15.0,
 		"spread": 3.0,
 		"max_spread": 8.0,
-		"spread_recovery": 8.0,
+		"spread_recovery": 6.0,
 		"reload_time": 0.9,
 		"camera_shake": 1.0,
 		"heat": 0.18,
@@ -38,6 +42,10 @@ const WEAPON_STATS = {
 		"total_mags": 4,
 		"kick": 3.0,
 		"kick_recovery": 40.0,
+		"horizontal_recoil": 85.0,
+		"vertical_recoil": 155.0,
+		"recoil_stiffness": 105.0,
+		"recoil_damping": 10.0,
 		"spread": 1.2,
 		"max_spread": 7.0,
 		"spread_recovery": 5.0,
@@ -70,19 +78,31 @@ var damage: int
 var caliber: int
 var fire_rate: float
 var mag_size: int
+var reload_time: float
+
 var kick: float
 var kick_recovery: float
+
+var horizontal_recoil: float
+var vertical_recoil: float
+var recoil_stiffness: float
+var recoil_damping: float
+
 var spread: float
 var max_spread: float
 var spread_recovery: float
-var reload_time: float
+
 var camera_shake: float
+
 var heat: float
 var cooling_rate: float
+
 var speed_multiplier: float
+
 var jam_chance: float
 var jam_weight: float
 var unjam_time: float
+
 var weapon_scene: PackedScene
 
 
@@ -100,6 +120,12 @@ func _apply_values() -> void:
 
 	kick = stats.kick
 	kick_recovery = stats.kick_recovery
+
+	horizontal_recoil = stats.horizontal_recoil
+	vertical_recoil = stats.vertical_recoil
+	recoil_stiffness = stats.recoil_stiffness
+	recoil_damping = stats.recoil_damping
+
 	spread = stats.spread
 	max_spread = stats.max_spread
 	spread_recovery = stats.spread_recovery

@@ -77,6 +77,9 @@ var spread_per_shot := 0.0
 var max_spread := 0.0
 var spread_recovery := 0.0
 
+var h_recoil: float
+var v_recoil: float
+
 var reload_time := 0.0
 
 var current_spread := 0.0
@@ -111,7 +114,7 @@ var weapon_state: Dictionary = { }
 @onready var player: CharacterBody2D = get_parent()
 @onready var status_label: Label = player.get_node("./StatusLabel")
 @onready var hud: CanvasLayer = player.get_node("../HUD")
-@onready var crosshair: CanvasLayer = player.crosshair
+@onready var crosshair: Node2D = player.crosshair
 
 
 func _ready() -> void:
@@ -156,9 +159,9 @@ func _physics_process(delta: float) -> void:
 	# reset spread multiplier, otherwise it will scale infinitely
 	spread_multiplier = 1.0
 
-	# make weapon point towards mouse pointer
+	# make weapon point towards crosshiar
 	if not input_locked:
-		look_at(get_global_mouse_position())
+		look_at(crosshair.global_position)
 
 	# flip direction if necessary
 	var mouse_pos: Vector2 = get_global_mouse_position()
@@ -449,6 +452,9 @@ func _fire_weapon() -> void:
 		current_spread = min(current_spread + spread_per_shot, max_spread)
 		kick_offset = min(kick_offset + kick, kick * 2.0)
 
+		# apply recoil
+		crosshair.apply_recoil(current_weapon.global_rotation, h_recoil, v_recoil)
+
 		# eject casing
 		var casing_instance: RigidBody2D = CASING.instantiate()
 		get_tree().root.add_child(casing_instance)
@@ -544,6 +550,11 @@ func _equip_weapon(index: int) -> void:
 	spread_per_shot = stats.spread
 	max_spread = stats.max_spread
 	spread_recovery = stats.spread_recovery
+
+	h_recoil = stats.horizontal_recoil
+	v_recoil = stats.vertical_recoil
+	crosshair.stiffness = stats.recoil_stiffness
+	crosshair.damping = stats.recoil_damping
 
 	reload_time = stats.reload_time
 	crosshair.reload_time = reload_time

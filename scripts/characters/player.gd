@@ -55,7 +55,7 @@ const PARTICLE_AMOUNT_NORMAL = 8.0 / PARTICLE_AMOUNT_FAST
 const PARTICLE_AMOUNT_FAST = 14
 
 @export var transition: CanvasLayer
-@export var crosshair: CanvasLayer
+@export var crosshair: Node2D
 
 var sm := StateManager
 var im := ItemManager

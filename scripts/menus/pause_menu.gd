@@ -1,9 +1,7 @@
 extends CanvasLayer
 
-@export var crosshair: CanvasLayer
+@export var crosshair: Node2D
 @export var inventory: CanvasLayer
-
-@onready var cursor: Node2D = crosshair.get_child(0)
 
 
 func _ready() -> void:
@@ -22,8 +20,8 @@ func _toggle_pause() -> void:
 	get_tree().paused = not get_tree().paused
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE if get_tree().paused else Input.MOUSE_MODE_HIDDEN
 
-	if cursor.position != get_viewport().get_mouse_position():
-		get_viewport().warp_mouse(cursor.position)
+	if crosshair.position != get_viewport().get_mouse_position():
+		get_viewport().warp_mouse(crosshair.get_global_transform_with_canvas().get_origin())
 
 
 func _on_resume_button_pressed() -> void:

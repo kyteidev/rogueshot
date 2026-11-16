@@ -4,15 +4,13 @@
 [ext_resource type="Script" uid="uid://da2tov2kp0y53" path="res://scripts/crosshair.gd" id="1_norqy"]
 [ext_resource type="Texture2D" uid="uid://j7h8d1tjs84j" path="res://assets/sprites/crosshair/reticle.png" id="2_qnjby"]
 
-[node name="CrosshairCanvas" type="CanvasLayer" unique_id=1451679454]
+[node name="Cursor" type="Node2D" unique_id=537525748]
 script = ExtResource("1_norqy")
 
-[node name="Cursor" type="Node2D" parent="." unique_id=537525748]
-
-[node name="Reticle" type="Sprite2D" parent="Cursor" unique_id=864043456]
+[node name="Reticle" type="Sprite2D" parent="." unique_id=864043456]
 texture = ExtResource("2_qnjby")
 
-[node name="ReloadRing" type="TextureProgressBar" parent="Cursor" unique_id=228523896]
+[node name="ReloadRing" type="TextureProgressBar" parent="." unique_id=228523896]
 visible = false
 offset_right = 40.0
 offset_bottom = 40.0
