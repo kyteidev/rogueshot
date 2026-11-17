@@ -26,7 +26,8 @@ func show_tooltip(data: ItemData) -> void:
 	stat_text = ""
 	stat_text += str(ItemData.ItemType.keys()[data.type]).replace("_", " ").capitalize()
 	stat_text += "Weight: %skg" % (data.weight * data.count + data.container_weight)
-	stat_text += "Durability: %.2f%%" % data.durability
+	if data.has_durability:
+		stat_text += "Durability: %.2f%%" % data.durability
 	stat_label.text = stat_text.strip_edges()
 
 	extra_label.visible = true
