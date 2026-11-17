@@ -3,7 +3,6 @@ extends Node2D
 const STEPS: int = 128
 const RECOIL_SPEED = 3.0
 
-const BASE_GAP = 3.0 # temp, use idle spread instead
 const LINE_COLOR = Color("ffffff")
 const LINE_LENGTH = 5.0
 const LINE_THICKNESS = 1.5
@@ -17,8 +16,8 @@ var tween: Tween
 var reload_time := 0.0
 
 # spread stuff idk
-var gap: float = BASE_GAP
-var target_gap: float = BASE_GAP
+var gap: float = 0.0
+var target_gap: float = 0.0
 
 # recoil stuff
 var recoil_offset := Vector2.ZERO
@@ -52,7 +51,7 @@ func _process(delta: float) -> void:
 	if im.weapon_index != -1:
 		var weapon: Node2D = player.get_node("./Weapon")
 		var dist_to_weapon: float = global_position.distance_to(weapon.global_position)
-		target_gap = BASE_GAP + dist_to_weapon * tan(
+		target_gap = dist_to_weapon * tan(
 			deg_to_rad(weapon.current_spread * weapon.spread_multiplier)
 		)
 	gap = lerp(gap, target_gap, delta * 10.0)
