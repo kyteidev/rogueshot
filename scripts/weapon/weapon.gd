@@ -351,7 +351,7 @@ func unload_mag_anim(reload_key := true) -> void:
 
 
 func get_spread_multiplier() -> float:
-	if im.weapon_index == -1:
+	if im.weapon_index == -1 or player.is_dead:
 		return 1.0
 
 	var weapon_data: ItemData = im.equipped_weapons[im.weapon_index]
