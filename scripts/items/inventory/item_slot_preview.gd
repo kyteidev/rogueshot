@@ -1,6 +1,7 @@
 extends ColorRect
 
 var im := ItemManager
+
 @onready var items_container: Control = $"../ItemsContainer"
 
 
