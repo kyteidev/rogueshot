@@ -54,6 +54,8 @@ func _process(delta: float) -> void:
 		target_gap = dist_to_weapon * tan(
 			deg_to_rad(weapon.current_spread * weapon.spread_multiplier)
 		)
+	else:
+		target_gap = 0.0
 	gap = lerp(gap, target_gap, delta * 10.0)
 
 	queue_redraw()
