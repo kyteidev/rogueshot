@@ -533,6 +533,7 @@ func _equip_weapon(index: int) -> void:
 		child.free()
 
 	crosshair.cancel_reload()
+	status_label.hide_status_label()
 	reloading = false
 
 	speed_multiplier = 1.0
