@@ -17,6 +17,7 @@ extends Resource
 @export var spread: float
 @export var max_spread: float
 @export var spread_recovery: float
+@export var first_shot_spread_mult: float
 
 @export var camera_shake: float
 

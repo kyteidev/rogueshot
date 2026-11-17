@@ -45,7 +45,7 @@ var sm := StateManager
 
 # for placing items in inventory: when final position is known
 func place_item(item: ItemData, slot: Vector2i) -> bool:
-	if not _can_place(item, slot):
+	if not can_place(item, slot):
 		return false
 
 	# clear item's old slots
@@ -178,7 +178,7 @@ func in_bounds(slot: Vector2i, size: Vector2i) -> bool:
 	)
 
 
-func _can_place(item: ItemData, slot: Vector2i) -> bool:
+func can_place(item: ItemData, slot: Vector2i) -> bool:
 	if not in_bounds(slot, item.size):
 		return false
 

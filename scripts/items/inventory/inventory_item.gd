@@ -36,6 +36,7 @@ var container_full := false
 
 @onready var inventory: CanvasLayer = get_node("../../../")
 @onready var tooltip: PanelContainer = inventory.get_node("./Tooltip")
+@onready var slot_preview: ColorRect = inventory.get_node("./InventoryContainer/ItemSlotPreview")
 
 @onready var icon: TextureRect = $Icon
 @onready var bg: ColorRect = $Background

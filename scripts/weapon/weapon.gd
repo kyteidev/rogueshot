@@ -3,6 +3,7 @@ extends Node2D
 const MAX_STAMINA_SPREAD_MULTIPLIER = 2.0
 const NO_AIM_SPREAD_MULTIPLIER = 2.0
 const MAX_DURA_SPREAD_MULTIPLIER = 2.0
+const WALK_SPREAD_MULTIPLIER = 3.0
 
 const JAM_START = 50.0 # durability percent when jamming can start to happen
 const MAX_JAM_CHANCE = 0.80
@@ -74,8 +75,11 @@ var mags: int = 0:
 var kick := 0.0
 var kick_recovery := 0.0
 var spread_per_shot := 0.0
+
 var max_spread := 0.0
 var spread_recovery := 0.0
+var spread_multiplier := 1.0
+var first_shot_spread_mult := 1.0
 
 var h_recoil: float
 var v_recoil: float
@@ -91,8 +95,6 @@ var heat_per_shot := 0.0
 var cooling_rate := 0.0
 
 var speed_multiplier := 1.0
-
-var spread_multiplier := 1.0
 
 var muzzle_flash: Node2D
 var smoke: CPUParticles2D
@@ -156,9 +158,6 @@ func _physics_process(delta: float) -> void:
 
 	var input_locked: bool = sm.is_input_locked()
 
-	# reset spread multiplier, otherwise it will scale infinitely
-	spread_multiplier = 1.0
-
 	# make weapon point towards crosshiar
 	if not input_locked:
 		look_at(crosshair.global_position)
@@ -179,8 +178,16 @@ func _physics_process(delta: float) -> void:
 		weapon_mag.position.y = -mag_orig_pos.y if flipped else mag_orig_pos.y
 		weapon_mag.flip_v = flipped
 
+	var walk_spread_mult := 1.0
+	if abs(player.velocity.length()) > 0.0:
+		walk_spread_mult = WALK_SPREAD_MULTIPLIER
+
 	# recoil and kick recovery and apply kick
-	current_spread = move_toward(current_spread, 0.0, spread_recovery * delta)
+	current_spread = move_toward(
+		current_spread,
+		spread_per_shot * first_shot_spread_mult * walk_spread_mult,
+		spread_recovery * delta,
+	)
 	kick_offset = move_toward(kick_offset, 0.0, kick_recovery * delta)
 	current_weapon.position = weapon_rest_pos + Vector2(-kick_offset, 0)
 
@@ -343,6 +350,20 @@ func unload_mag_anim(reload_key := true) -> void:
 			.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
 
 
+func get_spread_multiplier() -> float:
+	if im.weapon_index == -1:
+		return 1.0
+
+	var weapon_data: ItemData = im.equipped_weapons[im.weapon_index]
+	var stamina_weight: float = clamp(((100 - player.stamina) / 100), 0.0, 1.0)
+	var durability_weight: float = clamp(((50.0 - weapon_data.durability) / 50.0), 0.0, 1.0)
+
+	var mult := 1.0
+	mult *= lerp(1.0, MAX_STAMINA_SPREAD_MULTIPLIER, stamina_weight)
+	mult *= lerp(1.0, MAX_DURA_SPREAD_MULTIPLIER, durability_weight)
+	return mult
+
+
 func _finish_reload() -> void:
 	status_label.hide_status_label()
 
@@ -419,10 +440,8 @@ func _fire_weapon() -> void:
 		bullet_instance.type = bullet_instance.Types.FRIENDLY
 
 		# apply spread
-		spread_multiplier *= ((100 - player.stamina) / 100) * MAX_STAMINA_SPREAD_MULTIPLIER
-		spread_multiplier *= ((50.0 - weapon_data.durability) / 50.0) * MAX_DURA_SPREAD_MULTIPLIER
 		var spread_angle: float = deg_to_rad(randf_range(-current_spread, current_spread)) \
-				* spread_multiplier
+				* get_spread_multiplier()
 
 		bullet_instance.global_position = weapon_muzzle.global_position
 		bullet_instance.rotation = global_rotation + spread_angle
@@ -514,6 +533,7 @@ func _equip_weapon(index: int) -> void:
 		child.free()
 
 	crosshair.cancel_reload()
+	status_label.hide_status_label()
 	reloading = false
 
 	speed_multiplier = 1.0
@@ -547,9 +567,11 @@ func _equip_weapon(index: int) -> void:
 
 	kick = stats.kick
 	kick_recovery = stats.kick_recovery
+
 	spread_per_shot = stats.spread
 	max_spread = stats.max_spread
 	spread_recovery = stats.spread_recovery
+	first_shot_spread_mult = stats.first_shot_spread_mult
 
 	h_recoil = stats.horizontal_recoil
 	v_recoil = stats.vertical_recoil

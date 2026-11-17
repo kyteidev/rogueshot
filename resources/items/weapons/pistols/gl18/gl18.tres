@@ -21,6 +21,7 @@ recoil_damping = 15.0
 spread = 3.0
 max_spread = 8.0
 spread_recovery = 6.0
+first_shot_spread_mult = 0.25
 camera_shake = 1.0
 heat = 0.18
 cooling_rate = 1.04
