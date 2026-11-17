@@ -28,6 +28,7 @@ const MAG_MOVE_AMOUNT = 3.0
 
 var sm := StateManager
 var im := ItemManager
+var rng := Random.rng
 
 var weapon_index: int = -1:
 	set(value):
@@ -440,7 +441,7 @@ func _fire_weapon() -> void:
 		bullet_instance.type = bullet_instance.Types.FRIENDLY
 
 		# apply spread
-		var spread_angle: float = deg_to_rad(randf_range(-current_spread, current_spread)) \
+		var spread_angle: float = deg_to_rad(rng.randf_range(-current_spread, current_spread)) \
 				* get_spread_multiplier()
 
 		bullet_instance.global_position = weapon_muzzle.global_position
@@ -492,7 +493,7 @@ func _fire_weapon() -> void:
 
 		# weapon jamming
 		if weapon_data.durability <= JAM_START:
-			var roll: float = randf()
+			var roll: float = rng.randf()
 			if roll <= lerp(
 				weapon_data.type_data.jam_chance,
 				MAX_JAM_CHANCE,

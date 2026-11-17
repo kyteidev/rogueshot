@@ -41,6 +41,7 @@ var checking_stack := false
 var hovering_valid_container := false
 
 var sm := StateManager
+var rng := Random.rng
 
 
 # for placing items in inventory: when final position is known
@@ -98,7 +99,7 @@ func spawn_item(item_data: ItemData, position: Vector2) -> void:
 	var inst := ITEM_SCENE.instantiate()
 	get_tree().current_scene.add_child(inst)
 	inst.global_position = position
-	inst.global_rotation += randf_range(-DROP_RAND_ROT, DROP_RAND_ROT)
+	inst.global_rotation += rng.randf_range(-DROP_RAND_ROT, DROP_RAND_ROT)
 	inst.setup(item_data)
 
 
@@ -111,8 +112,8 @@ func drop_item(item_data: ItemData, from_player := true, pos := Vector2.ZERO) ->
 				.get_first_node_in_group("unique_player") \
 				.global_position
 		spawn_pos += Vector2(
-			randf_range(-DROP_OFFSET * 1.5, DROP_OFFSET * 1.5),
-			randf_range(-DROP_OFFSET / 2, -DROP_OFFSET),
+			rng.randf_range(-DROP_OFFSET * 1.5, DROP_OFFSET * 1.5),
+			rng.randf_range(-DROP_OFFSET / 2, -DROP_OFFSET),
 		)
 	else:
 		spawn_pos = pos

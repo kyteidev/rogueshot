@@ -7,6 +7,8 @@ const OFFSET = 1.0
 
 const FLASH_TIME = 0.05
 
+var rng := Random.rng
+
 var tween: Tween
 
 
@@ -19,7 +21,7 @@ func fire(muzzle_position: Vector2, weapon_rotation: float) -> void:
 	global_rotation = weapon_rotation
 	position.x += OFFSET
 
-	scale = Vector2.ONE * randf_range(MIN_SCALE, MAX_SCALE)
+	scale = Vector2.ONE * rng.randf_range(MIN_SCALE, MAX_SCALE)
 	visible = true
 
 	if tween:
