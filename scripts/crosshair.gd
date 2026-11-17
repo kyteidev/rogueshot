@@ -41,7 +41,9 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	if sm.is_input_locked():
+		visible = false
 		return
+	visible = true
 
 	var spring_force: Vector2 = -stiffness * recoil_offset
 	var damping_force: Vector2 = -damping * recoil_velocity
