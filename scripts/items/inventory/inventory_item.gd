@@ -1,6 +1,10 @@
 class_name InventoryItem
 extends Panel
 
+const DURABILITY_HIGH_COLOR = Color("#3cffae")
+const DURABILITY_MEDIUM_COLOR = Color("#ffb49e")
+const DURABILITY_LOW_COLOR = Color("#ff2e8a")
+
 var im := ItemManager
 var sm := StateManager
 var data: ItemData
@@ -45,6 +49,9 @@ var container_full := false
 @onready var container_label: Label = $ContainerCount/Label
 @onready var tooltip_timer: Timer = $Timer
 
+@onready var durability_bar_outline: TextureRect = %DurabilityBarOutline
+@onready var durability_bar: TextureProgressBar = %DurabilityBar
+
 @onready var load_timer: Timer = $LoadTimer
 @onready var load_bar: TextureProgressBar = $LoadProgress
 @onready var unload_timer: Timer = $UnloadTimer
@@ -85,6 +92,20 @@ func _process(_delta: float) -> void:
 				count += item.count
 			container_text = str(count)
 	container_label.text = container_text
+
+	# update durability bar if needed
+	if data.has_durability:
+		durability_bar_outline.visible = true
+		durability_bar.value = data.durability
+
+		if data.durability <= 25.0:
+			durability_bar.tint_progress = DURABILITY_LOW_COLOR
+		elif data.durability <= 50.0:
+			durability_bar.tint_progress = DURABILITY_MEDIUM_COLOR
+		else:
+			durability_bar.tint_progress = DURABILITY_HIGH_COLOR
+	else:
+		durability_bar_outline.visible = false
 
 	# item type specific logic
 	_item_type_logic()
