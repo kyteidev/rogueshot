@@ -5,38 +5,13 @@
 [ext_resource type="Texture2D" uid="uid://c4114geuy27sw" path="res://assets/sprites/weapons/guns/rifles/oz2/oz2_loaded.png" id="3_jhsau"]
 [ext_resource type="Script" uid="uid://fn8hix2hcrvm" path="res://scripts/items/type_data/weapon_data.gd" id="4_a2v65"]
 [ext_resource type="PackedScene" uid="uid://bpjm35k12y14k" path="res://scenes/weapons/types/rifles/oz2.tscn" id="5_8xnib"]
-[ext_resource type="Script" uid="uid://1wh2npoujpnn" path="res://scripts/weapon/weapon_stats.gd" id="5_jhsau"]
-
-[sub_resource type="Resource" id="Resource_s7248"]
-script = ExtResource("5_jhsau")
-damage = 15
-fire_rate = 0.1
-mag_size = 25
-reload_time = 2.6
-kick = 3.0
-kick_recovery = 40.0
-horizontal_recoil = 85.0
-vertical_recoil = 155.0
-recoil_stiffness = 105.0
-recoil_damping = 10.0
-spread = 1.2
-max_spread = 7.0
-spread_recovery = 5.0
-first_shot_spread_mult = 0.5
-camera_shake = 0.5
-heat = 0.22
-cooling_rate = 0.87
-speed_multiplier = 0.9
-jam_chance = 0.003
-jam_weight = 4.0
-unjam_time = 0.9
-metadata/_custom_type_script = "uid://1wh2npoujpnn"
+[ext_resource type="Resource" uid="uid://bdscxydpi2ner" path="res://resources/items/weapons/rifles/oz-2/oz2_stats.tres" id="5_jhsau"]
 
 [sub_resource type="Resource" id="Resource_ge4p5"]
 script = ExtResource("4_a2v65")
 weapon = 2
 caliber = 2
-weapon_data = SubResource("Resource_s7248")
+weapon_stats = ExtResource("5_jhsau")
 weapon_scene = ExtResource("5_8xnib")
 loaded_icon = ExtResource("3_jhsau")
 metadata/_custom_type_script = "uid://fn8hix2hcrvm"
