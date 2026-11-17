@@ -27,6 +27,7 @@ var stiffness := 0.0
 var damping := 0.0
 
 @onready var ring: TextureProgressBar = $ReloadRing
+@onready var weapon: Node2D = player.get_node("./Weapon")
 
 
 func _ready() -> void:
@@ -49,7 +50,6 @@ func _process(delta: float) -> void:
 	global_position = get_global_mouse_position() + recoil_offset
 
 	if im.weapon_index != -1:
-		var weapon: Node2D = player.get_node("./Weapon")
 		var dist_to_weapon: float = global_position.distance_to(
 			weapon.weapon_muzzle.global_position
 		)
