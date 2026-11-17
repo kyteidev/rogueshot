@@ -2,6 +2,7 @@ extends Node2D
 
 const STEPS: int = 128
 const RECOIL_SPEED = 3.0
+const GAP_RECOVERY_SPEED = 10.0
 
 const LINE_COLOR = Color("ffffff")
 const LINE_LENGTH = 5.0
@@ -58,7 +59,7 @@ func _process(delta: float) -> void:
 		)
 	else:
 		target_gap = 0.0
-	gap = lerp(gap, target_gap, delta * 10.0)
+	gap = lerp(gap, target_gap, 1.0 - exp(-GAP_RECOVERY_SPEED * delta))
 
 	queue_redraw()
 
