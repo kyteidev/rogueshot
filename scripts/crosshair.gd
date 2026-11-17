@@ -50,7 +50,9 @@ func _process(delta: float) -> void:
 
 	if im.weapon_index != -1:
 		var weapon: Node2D = player.get_node("./Weapon")
-		var dist_to_weapon: float = global_position.distance_to(weapon.global_position)
+		var dist_to_weapon: float = global_position.distance_to(
+			weapon.weapon_muzzle.global_position
+		)
 		target_gap = dist_to_weapon * tan(
 			deg_to_rad(weapon.current_spread * weapon.spread_multiplier)
 		)
