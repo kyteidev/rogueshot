@@ -3,6 +3,7 @@ extends Node2D
 const MAX_STAMINA_SPREAD_MULTIPLIER = 2.0
 const NO_AIM_SPREAD_MULTIPLIER = 2.0
 const MAX_DURA_SPREAD_MULTIPLIER = 2.0
+const WALK_SPREAD_MULTIPLIER = 3.0
 
 const JAM_START = 50.0 # durability percent when jamming can start to happen
 const MAX_JAM_CHANCE = 0.80
@@ -180,10 +181,14 @@ func _physics_process(delta: float) -> void:
 		weapon_mag.position.y = -mag_orig_pos.y if flipped else mag_orig_pos.y
 		weapon_mag.flip_v = flipped
 
+	var walk_spread_mult := 1.0
+	if abs(player.velocity.length()) > 0.0:
+		walk_spread_mult = WALK_SPREAD_MULTIPLIER
+
 	# recoil and kick recovery and apply kick
 	current_spread = move_toward(
 		current_spread,
-		spread_per_shot * first_shot_spread_mult,
+		spread_per_shot * first_shot_spread_mult * walk_spread_mult,
 		spread_recovery * delta,
 	)
 	kick_offset = move_toward(kick_offset, 0.0, kick_recovery * delta)
