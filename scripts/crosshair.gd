@@ -54,7 +54,7 @@ func _process(delta: float) -> void:
 			weapon.weapon_muzzle.global_position
 		)
 		target_gap = dist_to_weapon * tan(
-			deg_to_rad(weapon.current_spread * weapon.spread_multiplier)
+			deg_to_rad(weapon.current_spread * weapon.get_spread_multiplier())
 		)
 	else:
 		target_gap = 0.0

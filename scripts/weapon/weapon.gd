@@ -158,9 +158,6 @@ func _physics_process(delta: float) -> void:
 
 	var input_locked: bool = sm.is_input_locked()
 
-	# reset spread multiplier, otherwise it will scale infinitely
-	spread_multiplier = 1.0
-
 	# make weapon point towards crosshiar
 	if not input_locked:
 		look_at(crosshair.global_position)
@@ -353,6 +350,20 @@ func unload_mag_anim(reload_key := true) -> void:
 			.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
 
 
+func get_spread_multiplier() -> float:
+	if im.weapon_index == -1:
+		return 1.0
+
+	var weapon_data: ItemData = im.equipped_weapons[im.weapon_index]
+	var stamina_weight: float = clamp(((100 - player.stamina) / 100), 0.0, 1.0)
+	var durability_weight: float = clamp(((50.0 - weapon_data.durability) / 50.0), 0.0, 1.0)
+
+	var mult := 1.0
+	mult *= lerp(1.0, MAX_STAMINA_SPREAD_MULTIPLIER, stamina_weight)
+	mult *= lerp(1.0, MAX_DURA_SPREAD_MULTIPLIER, durability_weight)
+	return mult
+
+
 func _finish_reload() -> void:
 	status_label.hide_status_label()
 
@@ -429,10 +440,8 @@ func _fire_weapon() -> void:
 		bullet_instance.type = bullet_instance.Types.FRIENDLY
 
 		# apply spread
-		spread_multiplier *= ((100 - player.stamina) / 100) * MAX_STAMINA_SPREAD_MULTIPLIER
-		spread_multiplier *= ((50.0 - weapon_data.durability) / 50.0) * MAX_DURA_SPREAD_MULTIPLIER
 		var spread_angle: float = deg_to_rad(randf_range(-current_spread, current_spread)) \
-				* spread_multiplier
+				* get_spread_multiplier()
 
 		bullet_instance.global_position = weapon_muzzle.global_position
 		bullet_instance.rotation = global_rotation + spread_angle
