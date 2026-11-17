@@ -74,8 +74,11 @@ var mags: int = 0:
 var kick := 0.0
 var kick_recovery := 0.0
 var spread_per_shot := 0.0
+
 var max_spread := 0.0
 var spread_recovery := 0.0
+var spread_multiplier := 1.0
+var first_shot_spread_mult := 1.0
 
 var h_recoil: float
 var v_recoil: float
@@ -91,8 +94,6 @@ var heat_per_shot := 0.0
 var cooling_rate := 0.0
 
 var speed_multiplier := 1.0
-
-var spread_multiplier := 1.0
 
 var muzzle_flash: Node2D
 var smoke: CPUParticles2D
@@ -180,7 +181,11 @@ func _physics_process(delta: float) -> void:
 		weapon_mag.flip_v = flipped
 
 	# recoil and kick recovery and apply kick
-	current_spread = move_toward(current_spread, spread_per_shot, spread_recovery * delta)
+	current_spread = move_toward(
+		current_spread,
+		spread_per_shot * first_shot_spread_mult,
+		spread_recovery * delta,
+	)
 	kick_offset = move_toward(kick_offset, 0.0, kick_recovery * delta)
 	current_weapon.position = weapon_rest_pos + Vector2(-kick_offset, 0)
 
@@ -547,9 +552,11 @@ func _equip_weapon(index: int) -> void:
 
 	kick = stats.kick
 	kick_recovery = stats.kick_recovery
+
 	spread_per_shot = stats.spread
 	max_spread = stats.max_spread
 	spread_recovery = stats.spread_recovery
+	first_shot_spread_mult = stats.first_shot_spread_mult
 
 	h_recoil = stats.horizontal_recoil
 	v_recoil = stats.vertical_recoil
