@@ -328,10 +328,15 @@ func _rotate() -> void:
 
 	# icon size gets changed when setting InventoryItem size,
 	# set icon size to value before rotation so it rotates properly
-	icon.size = old_size
-	icon.pivot_offset = old_size / 2
-	icon.position = (size - old_size) / 2
-	icon.rotation = PI / 2 if data.rotated else 0.0
+	if not data.rotated:
+		icon.position = Vector2.ZERO
+		icon.size = size
+		icon.rotation = 0.0
+	else:
+		icon.size = old_size
+		icon.pivot_offset = old_size / 2
+		icon.position = (size - old_size) / 2
+		icon.rotation = PI / 2
 
 	mouse_offset = size / 2
 
