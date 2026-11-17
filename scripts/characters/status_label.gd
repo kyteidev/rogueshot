@@ -22,9 +22,6 @@ func show_status_label(status_text: String) -> void:
 	text = status_text.to_upper()
 	timer.start()
 
-	if visible:
-		return
-
 	modulate = Color("ffffff00")
 	visible = true
 
@@ -37,9 +34,6 @@ func show_status_label(status_text: String) -> void:
 
 
 func hide_status_label() -> void:
-	if not visible:
-		return
-
 	# fade out animation
 	if fade_tween:
 		fade_tween.kill()
