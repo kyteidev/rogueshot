@@ -185,6 +185,7 @@ func _ready() -> void:
 
 	# randomize starting weapon durability
 	weapon_data.durability *= rng.randf_range(0.25, 0.75)
+	mag_data.durability *= rng.randf_range(0.25, 0.75)
 
 	walk_particles.amount = PARTICLE_AMOUNT_FAST
 
