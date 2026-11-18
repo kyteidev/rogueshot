@@ -399,6 +399,9 @@ func _load_item(loaded_item: InventoryItem) -> void:
 	data.container_weight += (item_data.weight * item_data.count + item_data.container_weight)
 	sm.update_inventory_weight()
 
+	if item_data.type == ItemData.ItemType.MAGAZINE:
+		item_data.durability -= item_data.durability_rate
+
 
 # for checking compatibility when dragging to container item
 func _check_compatibility() -> bool:
@@ -497,9 +500,12 @@ func _finish_unload() -> void:
 	data.container_items.pop_back()
 	im.add_item(unload_item, false)
 
+	if unload_item.type == ItemData.ItemType.MAGAZINE:
+		unload_item.durability -= unload_item.durability_rate
+
 	im.item_unloaded.emit(unload_item)
 
-	await get_tree().process_frame
+	await get_tree().process_frame # idk why this is here but its probably important
 
 
 func _on_load_timer_timeout() -> void:

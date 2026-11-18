@@ -295,7 +295,8 @@ func reload_weapon() -> void:
 
 		crosshair.tween.set_speed_scale(2.0)
 
-		var mag: ItemData = im.equipped_weapons[weapon_index].container_items[0]
+		var mag: ItemData = weapon.container_items[0]
+		mag.durability -= mag.durability_rate * 2 # adds 2x on top of the 1x rate
 		im.drop_item(mag)
 		im.equipped_weapons[weapon_index].container_items.clear()
 
@@ -315,6 +316,11 @@ func reload_weapon() -> void:
 
 		unload_mag_anim()
 		get_tree().create_timer(real_reload_time - MAG_FADE_DURATION).timeout.connect(load_mag_anim)
+
+		# durability applies to mag already attached
+		if weapon.type_data.mag_attached:
+			var mag: ItemData = weapon.container_items[0]
+			mag.durability -= mag.durability_rate
 
 
 func load_mag_anim(reload_key := true) -> void:
@@ -397,6 +403,9 @@ func _finish_reload() -> void:
 				fullest_mag = item
 				fullest_mag_size = item.container_items[0].count
 
+	# applies to new magazine
+	fullest_mag.durability -= fullest_mag.durability_rate
+
 	if weapon.container_items.size() > 0:
 		# if a magazine is loaded already
 		var mag_items: Array[ItemData] = weapon.container_items[0].container_items
@@ -419,7 +428,8 @@ func _finish_reload() -> void:
 			ammo = weapon.container_items[0].container_items[0].count
 	else:
 		# load new magazine
-		weapon.container_items.append(fullest_mag.duplicate(true))
+		var new_mag: ItemData = fullest_mag.duplicate(true)
+		weapon.container_items.append(new_mag)
 		im.remove_item(fullest_mag)
 		im.item_loaded.emit()
 
