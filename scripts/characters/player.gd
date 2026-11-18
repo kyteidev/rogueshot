@@ -512,6 +512,8 @@ func _item_pickup() -> void:
 			closest_item.queue_free()
 			closest_item = null
 
+			im.item_picked_up.emit()
+
 
 # YAY THIS WORKS NOW :D
 # there's probably a more efficient method but I'm too lazy to fix that rn

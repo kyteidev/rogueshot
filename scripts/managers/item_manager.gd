@@ -6,6 +6,9 @@ signal weapon_unequipped
 signal item_loaded
 @warning_ignore("unused_signal") # used in other places
 signal item_unloaded(item: ItemData)
+@warning_ignore("unused_signal")
+signal item_picked_up
+signal item_dropped
 
 @warning_ignore("unused_signal")
 signal mag_loaded # only used when dragging mag to weapon in inventory
@@ -118,6 +121,7 @@ func drop_item(item_data: ItemData, from_player := true, pos := Vector2.ZERO) ->
 	else:
 		spawn_pos = pos
 	spawn_item(item_data, spawn_pos)
+	item_dropped.emit()
 
 
 func equip_item(equipment_slot: String, item: ItemData) -> bool:

@@ -138,6 +138,9 @@ func _ready() -> void:
 	im.item_loaded.connect(_set_ammo_mag_data.call_deferred)
 	im.item_unloaded.connect(_set_ammo_mag_data.call_deferred.unbind(1))
 
+	im.item_picked_up.connect(_set_ammo_mag_data.call_deferred)
+	im.item_dropped.connect(_set_ammo_mag_data.call_deferred)
+
 	# gets called immediately when mag is dragged to weapon
 	im.mag_loaded.connect(
 		func() -> void:
