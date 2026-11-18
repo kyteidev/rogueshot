@@ -40,7 +40,6 @@ var context_menu_open := false
 var dragging_item := false
 var hovered_equipment := ""
 
-var checking_stack := false
 var hovering_valid_container := false
 
 var sm := StateManager
@@ -67,9 +66,23 @@ func place_item(item: ItemData, slot: Vector2i) -> bool:
 
 
 # for placing items when final position has to be determined
-func add_item(item: ItemData, duplicate_item := true) -> bool:
+func add_item(item: ItemData, duplicate_item := true, combine_items := true) -> bool:
 	# find a free slot
 	var new_item: ItemData = item.duplicate() if duplicate_item else item
+
+	if combine_items:
+		for existing_item in inventory_items:
+			if new_item.id != existing_item.id or existing_item.count == existing_item.max_stack:
+				continue
+
+			var new_count: int = new_item.count + existing_item.count
+			if new_count > existing_item.max_stack:
+				new_item.count = new_count - existing_item.max_stack
+				existing_item.count = existing_item.max_stack
+			else:
+				existing_item.count = new_count
+				return true
+
 	for x in TOTAL_COLUMNS:
 		for y in TOTAL_ROWS:
 			var possible_slot := Vector2i(x, y)
@@ -78,6 +91,7 @@ func add_item(item: ItemData, duplicate_item := true) -> bool:
 				new_item_placed.emit(new_item)
 				return true
 
+	drop_item(new_item)
 	return false
 
 

@@ -254,8 +254,6 @@ func setup(item_data: ItemData) -> void:
 	load_timer.wait_time = data.container_load_time if data.container_load_time != 0.0 else 0.001
 	unload_timer.wait_time = data.container_load_time if data.container_load_time != 0.0 else 0.001
 
-	im.item_unloaded.connect(_check_stack)
-
 
 func equip_item() -> void:
 	if data.rotated:
@@ -336,7 +334,7 @@ func split_stack() -> void:
 	new_item_data.count = floori(new_item_data.count / 2)
 	data.count -= new_item_data.count
 
-	im.add_item(new_item_data)
+	im.add_item(new_item_data, true, false)
 	sm.update_inventory_weight()
 
 
@@ -458,28 +456,17 @@ func _release_item() -> void:
 				im.drop_item(data)
 
 
+# this is needed for stacking item to specific spot
+# item manager add_items only checks for first spot
 func _stack_items(item: ItemData) -> void:
 	var new_count: int = data.count + item.count
 	if new_count > data.max_stack:
 		item.count = new_count - data.max_stack
 		data.count = data.max_stack
-
-		# for checking if item fits in inventory after unloading from container
-		if not im.place_item(item, item.slot):
-			im.drop_item(item)
 	else:
 		data.count = new_count
 		im.remove_item(item)
 	sm.update_inventory_weight()
-
-
-func _check_stack(item: ItemData) -> void:
-	if item.id != data.id:
-		return
-
-	if im.checking_stack:
-		im.checking_stack = false
-		_stack_items(item)
 
 
 func _on_tooltip_timer_timeout() -> void:
@@ -507,10 +494,9 @@ func _item_type_logic() -> void:
 
 
 func _finish_unload() -> void:
-	im.add_item(unload_item, false)
 	data.container_items.pop_back()
+	im.add_item(unload_item, false)
 
-	im.checking_stack = true
 	im.item_unloaded.emit(unload_item)
 
 	await get_tree().process_frame
