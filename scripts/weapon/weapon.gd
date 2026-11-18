@@ -274,7 +274,7 @@ func reload_weapon() -> void:
 	if weapon.type_data.jammed:
 		status_label.show_status_label("UNJAMMING")
 
-		crosshair.reload_time = weapon.type_data.unjam_time
+		crosshair.reload_time = weapon.type_data.weapon_stats.unjam_time
 		crosshair.start_reload()
 		crosshair.tween.finished.connect(
 			func() -> void:
@@ -520,14 +520,15 @@ func _fire_weapon() -> void:
 		camera.shake_strength = camera_shake
 
 		# weapon jamming
-		if weapon_data.durability <= JAM_START:
+		var mag_data: ItemData = weapon_data.container_items[0]
+		var total_durability: float = weapon_data.durability + mag_data.durability
+		if total_durability <= JAM_START * 2:
+			var weight: float = 1.0 - total_durability / (JAM_START * 2)
+			weight = clamp(weight, 0.0, 1.0)
+			weight **= weapon_data.type_data.weapon_stats.jam_weight
+
 			var roll: float = rng.randf()
-			if roll <= lerp(
-				weapon_data.type_data.jam_chance,
-				MAX_JAM_CHANCE,
-				((JAM_START - weapon_data.durability) / JAM_START)
-				** weapon_data.type_data.jam_weight,
-			):
+			if roll <= lerp(weapon_data.type_data.weapon_stats.jam_chance, MAX_JAM_CHANCE, weight):
 				weapon_data.type_data.jammed = true
 
 		# deplete durability
