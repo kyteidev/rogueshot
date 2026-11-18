@@ -2,8 +2,10 @@
 
 [ext_resource type="Script" uid="uid://d6h86jkhfenr" path="res://scripts/items/inventory/inventory_item.gd" id="1_u6pog"]
 [ext_resource type="FontFile" uid="uid://4jxi61jcsc2c" path="res://assets/fonts/groundhog.ttf" id="2_g5m5k"]
+[ext_resource type="Texture2D" uid="uid://cdf5h5jgg2u5w" path="res://assets/sprites/bar/bar-base.png" id="3_8ea8g"]
 [ext_resource type="Texture2D" uid="uid://dpogluv54xj85" path="res://assets/sprites/crosshair/reload_circle.png" id="3_fxhcy"]
 [ext_resource type="Script" uid="uid://dy8lxjgdm7gnf" path="res://scripts/items/inventory/inventory_item_load_progress.gd" id="4_hgum0"]
+[ext_resource type="Texture2D" uid="uid://wyplv53mg8ky" path="res://assets/sprites/bar/bar-progress.png" id="4_sn6l7"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_vjox6"]
 font = ExtResource("2_g5m5k")
@@ -80,6 +82,36 @@ theme_override_constants/margin_top = 1
 layout_mode = 2
 text = "1"
 label_settings = SubResource("LabelSettings_vjox6")
+
+[node name="DurabilityBarOutline" type="TextureRect" parent="." unique_id=427647673]
+unique_name_in_owner = true
+visible = false
+z_index = 2
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 2.0
+offset_top = -13.0
+offset_right = 240.0
+offset_bottom = 33.0
+grow_vertical = 0
+scale = Vector2(0.05, 0.05)
+texture = ExtResource("3_8ea8g")
+stretch_mode = 2
+
+[node name="DurabilityBar" type="TextureProgressBar" parent="DurabilityBarOutline" unique_id=437879283]
+unique_name_in_owner = true
+z_index = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+value = 50.0
+texture_progress = ExtResource("4_sn6l7")
+tint_progress = Color(0.23529412, 1, 0.68235296, 1)
 
 [node name="Overlay" type="ColorRect" parent="." unique_id=1561964391]
 unique_name_in_owner = true

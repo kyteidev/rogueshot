@@ -1,0 +1,28 @@
+[gd_resource type="Resource" script_class="WeaponStats" format=3 uid="uid://bdscxydpi2ner"]
+
+[ext_resource type="Script" uid="uid://1wh2npoujpnn" path="res://scripts/weapon/weapon_stats.gd" id="1_e3gcx"]
+
+[resource]
+script = ExtResource("1_e3gcx")
+damage = 15
+fire_rate = 0.1
+mag_size = 25
+reload_time = 2.6
+kick = 3.0
+kick_recovery = 40.0
+horizontal_recoil = 85.0
+vertical_recoil = 155.0
+recoil_stiffness = 105.0
+recoil_damping = 10.0
+spread = 1.2
+max_spread = 7.0
+spread_recovery = 5.0
+first_shot_spread_mult = 0.5
+camera_shake = 0.5
+heat = 0.22
+cooling_rate = 0.87
+speed_multiplier = 0.9
+jam_chance = 0.003
+jam_weight = 4.0
+unjam_time = 0.9
+metadata/_custom_type_script = "uid://1wh2npoujpnn"

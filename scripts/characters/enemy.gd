@@ -95,9 +95,9 @@ const PARTIAL_DMG_MULTIPLIER = 0.5
 const PARTICLE_MIN_VEL = 20.0
 const PARTICLE_MAX_VEL = RUN_SPEED
 
-const PARTICLE_AMOUNT_SLOW = 3.0 / PARTICLE_AMOUNT_FAST
-const PARTICLE_AMOUNT_NORMAL = 7.0 / PARTICLE_AMOUNT_FAST
-const PARTICLE_AMOUNT_FAST = 12
+const PARTICLE_AMOUNT_SLOW = 1.0 / PARTICLE_AMOUNT_FAST
+const PARTICLE_AMOUNT_NORMAL = 5.0 / PARTICLE_AMOUNT_FAST
+const PARTICLE_AMOUNT_FAST = 8
 
 @export var weapon_data: ItemData
 @export var mag_data: ItemData
@@ -135,6 +135,7 @@ var status_icons := [
 
 var sm := StateManager
 var im := ItemManager
+var rng := Random.rng
 
 @onready var anim: AnimatedSprite2D = $AnimSprite
 
@@ -183,7 +184,8 @@ func _ready() -> void:
 	weapon_data.type_data.mag_attached = true
 
 	# randomize starting weapon durability
-	weapon_data.durability *= randf_range(0.25, 0.75)
+	weapon_data.durability *= rng.randf_range(0.25, 0.75)
+	mag_data.durability *= rng.randf_range(0.25, 0.75)
 
 	walk_particles.amount = PARTICLE_AMOUNT_FAST
 
@@ -559,7 +561,7 @@ func _shoot() -> void:
 		var bullet_instance: CharacterBody2D = BULLET.instantiate()
 		bullet_instance.type = bullet_instance.Types.ENEMY
 
-		var spread_angle: float = deg_to_rad(randf_range(-WEAPON_SPREAD, WEAPON_SPREAD))
+		var spread_angle: float = deg_to_rad(rng.randf_range(-WEAPON_SPREAD, WEAPON_SPREAD))
 
 		bullet_instance.global_position = weapon_muzzle.global_position
 		bullet_instance.rotation = weapon.global_rotation + spread_angle

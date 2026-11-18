@@ -6,6 +6,9 @@ signal weapon_unequipped
 signal item_loaded
 @warning_ignore("unused_signal") # used in other places
 signal item_unloaded(item: ItemData)
+@warning_ignore("unused_signal")
+signal item_picked_up
+signal item_dropped
 
 @warning_ignore("unused_signal")
 signal mag_loaded # only used when dragging mag to weapon in inventory
@@ -37,10 +40,10 @@ var context_menu_open := false
 var dragging_item := false
 var hovered_equipment := ""
 
-var checking_stack := false
 var hovering_valid_container := false
 
 var sm := StateManager
+var rng := Random.rng
 
 
 # for placing items in inventory: when final position is known
@@ -63,9 +66,23 @@ func place_item(item: ItemData, slot: Vector2i) -> bool:
 
 
 # for placing items when final position has to be determined
-func add_item(item: ItemData, duplicate_item := true) -> bool:
+func add_item(item: ItemData, duplicate_item := true, combine_items := true) -> bool:
 	# find a free slot
 	var new_item: ItemData = item.duplicate() if duplicate_item else item
+
+	if combine_items:
+		for existing_item in inventory_items:
+			if new_item.id != existing_item.id or existing_item.count == existing_item.max_stack:
+				continue
+
+			var new_count: int = new_item.count + existing_item.count
+			if new_count > existing_item.max_stack:
+				new_item.count = new_count - existing_item.max_stack
+				existing_item.count = existing_item.max_stack
+			else:
+				existing_item.count = new_count
+				return true
+
 	for x in TOTAL_COLUMNS:
 		for y in TOTAL_ROWS:
 			var possible_slot := Vector2i(x, y)
@@ -74,6 +91,7 @@ func add_item(item: ItemData, duplicate_item := true) -> bool:
 				new_item_placed.emit(new_item)
 				return true
 
+	drop_item(new_item)
 	return false
 
 
@@ -98,7 +116,7 @@ func spawn_item(item_data: ItemData, position: Vector2) -> void:
 	var inst := ITEM_SCENE.instantiate()
 	get_tree().current_scene.add_child(inst)
 	inst.global_position = position
-	inst.global_rotation += randf_range(-DROP_RAND_ROT, DROP_RAND_ROT)
+	inst.global_rotation += rng.randf_range(-DROP_RAND_ROT, DROP_RAND_ROT)
 	inst.setup(item_data)
 
 
@@ -111,12 +129,13 @@ func drop_item(item_data: ItemData, from_player := true, pos := Vector2.ZERO) ->
 				.get_first_node_in_group("unique_player") \
 				.global_position
 		spawn_pos += Vector2(
-			randf_range(-DROP_OFFSET * 1.5, DROP_OFFSET * 1.5),
-			randf_range(-DROP_OFFSET / 2, -DROP_OFFSET),
+			rng.randf_range(-DROP_OFFSET * 1.5, DROP_OFFSET * 1.5),
+			rng.randf_range(-DROP_OFFSET / 2, -DROP_OFFSET),
 		)
 	else:
 		spawn_pos = pos
 	spawn_item(item_data, spawn_pos)
+	item_dropped.emit()
 
 
 func equip_item(equipment_slot: String, item: ItemData) -> bool:

@@ -28,6 +28,7 @@ const MAG_MOVE_AMOUNT = 3.0
 
 var sm := StateManager
 var im := ItemManager
+var rng := Random.rng
 
 var weapon_index: int = -1:
 	set(value):
@@ -136,6 +137,9 @@ func _ready() -> void:
 	# update data if e.g. mag is loaded or unloaded
 	im.item_loaded.connect(_set_ammo_mag_data.call_deferred)
 	im.item_unloaded.connect(_set_ammo_mag_data.call_deferred.unbind(1))
+
+	im.item_picked_up.connect(_set_ammo_mag_data.call_deferred)
+	im.item_dropped.connect(_set_ammo_mag_data.call_deferred)
 
 	# gets called immediately when mag is dragged to weapon
 	im.mag_loaded.connect(
@@ -270,7 +274,7 @@ func reload_weapon() -> void:
 	if weapon.type_data.jammed:
 		status_label.show_status_label("UNJAMMING")
 
-		crosshair.reload_time = weapon.type_data.unjam_time
+		crosshair.reload_time = weapon.type_data.weapon_stats.unjam_time
 		crosshair.start_reload()
 		crosshair.tween.finished.connect(
 			func() -> void:
@@ -281,7 +285,23 @@ func reload_weapon() -> void:
 
 		return
 
-	if mags > 0 and not reloading:
+	if reloading:
+		# fast reload
+		if (
+			im.equipped_weapons[weapon_index].container_items.size() == 0
+			or crosshair.tween.get_total_elapsed_time() >= reload_time / 2
+		):
+			return
+
+		crosshair.tween.set_speed_scale(2.0)
+
+		var mag: ItemData = weapon.container_items[0]
+		mag.durability -= mag.durability_rate * 2 # adds 2x on top of the 1x rate
+		im.drop_item(mag)
+		im.equipped_weapons[weapon_index].container_items.clear()
+
+	elif mags > 0:
+		# standard reload
 		reloading = true
 
 		status_label.show_status_label("RELOADING")
@@ -296,6 +316,11 @@ func reload_weapon() -> void:
 
 		unload_mag_anim()
 		get_tree().create_timer(real_reload_time - MAG_FADE_DURATION).timeout.connect(load_mag_anim)
+
+		# durability applies to mag already attached
+		if weapon.type_data.mag_attached:
+			var mag: ItemData = weapon.container_items[0]
+			mag.durability -= mag.durability_rate
 
 
 func load_mag_anim(reload_key := true) -> void:
@@ -351,7 +376,7 @@ func unload_mag_anim(reload_key := true) -> void:
 
 
 func get_spread_multiplier() -> float:
-	if im.weapon_index == -1:
+	if im.weapon_index == -1 or player.is_dead:
 		return 1.0
 
 	var weapon_data: ItemData = im.equipped_weapons[im.weapon_index]
@@ -378,6 +403,9 @@ func _finish_reload() -> void:
 				fullest_mag = item
 				fullest_mag_size = item.container_items[0].count
 
+	# applies to new magazine
+	fullest_mag.durability -= fullest_mag.durability_rate
+
 	if weapon.container_items.size() > 0:
 		# if a magazine is loaded already
 		var mag_items: Array[ItemData] = weapon.container_items[0].container_items
@@ -400,7 +428,8 @@ func _finish_reload() -> void:
 			ammo = weapon.container_items[0].container_items[0].count
 	else:
 		# load new magazine
-		weapon.container_items.append(fullest_mag.duplicate(true))
+		var new_mag: ItemData = fullest_mag.duplicate(true)
+		weapon.container_items.append(new_mag)
 		im.remove_item(fullest_mag)
 		im.item_loaded.emit()
 
@@ -440,7 +469,7 @@ func _fire_weapon() -> void:
 		bullet_instance.type = bullet_instance.Types.FRIENDLY
 
 		# apply spread
-		var spread_angle: float = deg_to_rad(randf_range(-current_spread, current_spread)) \
+		var spread_angle: float = deg_to_rad(rng.randf_range(-current_spread, current_spread)) \
 				* get_spread_multiplier()
 
 		bullet_instance.global_position = weapon_muzzle.global_position
@@ -491,14 +520,15 @@ func _fire_weapon() -> void:
 		camera.shake_strength = camera_shake
 
 		# weapon jamming
-		if weapon_data.durability <= JAM_START:
-			var roll: float = randf()
-			if roll <= lerp(
-				weapon_data.type_data.jam_chance,
-				MAX_JAM_CHANCE,
-				((JAM_START - weapon_data.durability) / JAM_START)
-				** weapon_data.type_data.jam_weight,
-			):
+		var mag_data: ItemData = weapon_data.container_items[0]
+		var total_durability: float = weapon_data.durability + mag_data.durability
+		if total_durability <= JAM_START * 2:
+			var weight: float = 1.0 - total_durability / (JAM_START * 2)
+			weight = clamp(weight, 0.0, 1.0)
+			weight **= weapon_data.type_data.weapon_stats.jam_weight
+
+			var roll: float = rng.randf()
+			if roll <= lerp(weapon_data.type_data.weapon_stats.jam_chance, MAX_JAM_CHANCE, weight):
 				weapon_data.type_data.jammed = true
 
 		# deplete durability
@@ -560,7 +590,7 @@ func _equip_weapon(index: int) -> void:
 		current_weapon.texture = current_weapon.base_texture
 
 	# set weapon stats
-	var stats: WeaponStats = im.equipped_weapons[index].type_data.weapon_data
+	var stats: WeaponStats = im.equipped_weapons[index].type_data.weapon_stats
 	base_damage = stats.damage
 	fire_rate = stats.fire_rate
 	max_ammo = stats.mag_size

@@ -12,6 +12,8 @@ const MAX_SPEED = 150.0
 const MIN_SPIN = 12.0
 const MAX_SPIN = 18.0
 
+var rng := Random.rng
+
 @onready var sprite: Sprite2D = $Sprite2D
 @onready var collision: CollisionShape2D = $CollisionShape2D
 @onready var timer: Timer = $Timer
@@ -24,14 +26,17 @@ func _ready() -> void:
 func eject(weapon_rotation: float) -> void:
 	var weapon_facing: int = 1 if Vector2.from_angle(weapon_rotation).x >= 0.0 else -1
 	var new_weapon_rotation: float = weapon_rotation \
-			+ PI / 2.0 * -weapon_facing * randf_range(MIN_DIRECTION_WEIGHT, MAX_DIRECTION_WEIGHT)
+			+ PI / 2.0 * -weapon_facing * rng.randf_range(
+		MIN_DIRECTION_WEIGHT,
+		MAX_DIRECTION_WEIGHT,
+	)
 
 	var direction := Vector2.from_angle(new_weapon_rotation)
-	var speed: float = randf_range(MIN_SPEED, MAX_SPEED)
-	var spin: float = randf_range(MIN_SPIN, MAX_SPIN)
+	var speed: float = rng.randf_range(MIN_SPEED, MAX_SPEED)
+	var spin: float = rng.randf_range(MIN_SPIN, MAX_SPIN)
 
 	linear_velocity = direction * speed
-	angular_velocity = randf_range(-spin, spin)
+	angular_velocity = rng.randf_range(-spin, spin)
 	global_rotation = weapon_rotation
 
 

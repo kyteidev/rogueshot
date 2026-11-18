@@ -4,38 +4,14 @@
 [ext_resource type="Texture2D" uid="uid://7oku3sbs81nx" path="res://assets/sprites/weapons/guns/pistols/gl18/gl18_base.png" id="2_7w85i"]
 [ext_resource type="Texture2D" uid="uid://l03bvdf7cx6g" path="res://assets/sprites/weapons/guns/pistols/gl18/gl18_loaded.png" id="3_svse4"]
 [ext_resource type="Script" uid="uid://fn8hix2hcrvm" path="res://scripts/items/type_data/weapon_data.gd" id="4_xb7fl"]
-[ext_resource type="Script" uid="uid://1wh2npoujpnn" path="res://scripts/weapon/weapon_stats.gd" id="5_s7248"]
+[ext_resource type="Resource" uid="uid://df0s67hbc22uu" path="res://resources/items/weapons/pistols/gl18/gl18_stats.tres" id="5_s7248"]
 [ext_resource type="PackedScene" uid="uid://bafk0v7pn61qj" path="res://scenes/weapons/types/pistols/gl18.tscn" id="5_svse4"]
-
-[sub_resource type="Resource" id="Resource_svse4"]
-script = ExtResource("5_s7248")
-damage = 25
-mag_size = 13
-reload_time = 0.9
-kick = 5.0
-kick_recovery = 60.0
-horizontal_recoil = 80.0
-vertical_recoil = 320.0
-recoil_stiffness = 200.0
-recoil_damping = 15.0
-spread = 3.0
-max_spread = 8.0
-spread_recovery = 6.0
-first_shot_spread_mult = 0.25
-camera_shake = 1.0
-heat = 0.18
-cooling_rate = 1.04
-speed_multiplier = 1.0
-jam_chance = 0.005
-jam_weight = 4.0
-unjam_time = 0.6
-metadata/_custom_type_script = "uid://1wh2npoujpnn"
 
 [sub_resource type="Resource" id="Resource_nqevj"]
 script = ExtResource("4_xb7fl")
 weapon = 1
 caliber = 1
-weapon_data = SubResource("Resource_svse4")
+weapon_stats = ExtResource("5_s7248")
 weapon_scene = ExtResource("5_svse4")
 loaded_icon = ExtResource("3_svse4")
 metadata/_custom_type_script = "uid://fn8hix2hcrvm"
@@ -49,7 +25,7 @@ type = 2
 type_data = SubResource("Resource_nqevj")
 icon = ExtResource("2_7w85i")
 weight = 0.72
-durability = null
+has_durability = true
 durability_rate = 0.17
 scale = 0.75
 size = Vector2i(3, 2)

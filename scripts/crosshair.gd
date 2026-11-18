@@ -12,6 +12,7 @@ const LINE_THICKNESS = 1.5
 
 var sm := StateManager
 var im := ItemManager
+var rng := Random.rng
 var tween: Tween
 
 var reload_time := 0.0
@@ -41,7 +42,9 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	if sm.is_input_locked():
+		visible = false
 		return
+	visible = true
 
 	var spring_force: Vector2 = -stiffness * recoil_offset
 	var damping_force: Vector2 = -damping * recoil_velocity
@@ -79,7 +82,7 @@ func apply_recoil(weapon_rotation: float, h_recoil_amount: float, v_recoil_amoun
 	var v_direction := Vector2(cos(weapon_rotation), sin(weapon_rotation))
 	var h_direction := Vector2(-v_direction.y, v_direction.x)
 	var impulse: Vector2 = (v_direction * v_recoil_amount) + (
-		h_direction * randf_range(-h_recoil_amount, h_recoil_amount)
+		h_direction * rng.randf_range(-h_recoil_amount, h_recoil_amount)
 	)
 
 	recoil_velocity += impulse

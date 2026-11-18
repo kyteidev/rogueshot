@@ -1,6 +1,10 @@
 class_name InventoryItem
 extends Panel
 
+const DURABILITY_HIGH_COLOR = Color("#3cffae")
+const DURABILITY_MEDIUM_COLOR = Color("#ffb49e")
+const DURABILITY_LOW_COLOR = Color("#ff2e8a")
+
 var im := ItemManager
 var sm := StateManager
 var data: ItemData
@@ -45,6 +49,9 @@ var container_full := false
 @onready var container_label: Label = $ContainerCount/Label
 @onready var tooltip_timer: Timer = $Timer
 
+@onready var durability_bar_outline: TextureRect = %DurabilityBarOutline
+@onready var durability_bar: TextureProgressBar = %DurabilityBar
+
 @onready var load_timer: Timer = $LoadTimer
 @onready var load_bar: TextureProgressBar = $LoadProgress
 @onready var unload_timer: Timer = $UnloadTimer
@@ -85,6 +92,20 @@ func _process(_delta: float) -> void:
 				count += item.count
 			container_text = str(count)
 	container_label.text = container_text
+
+	# update durability bar if needed
+	if data.has_durability:
+		durability_bar_outline.visible = true
+		durability_bar.value = data.durability
+
+		if data.durability <= 25.0:
+			durability_bar.tint_progress = DURABILITY_LOW_COLOR
+		elif data.durability <= 50.0:
+			durability_bar.tint_progress = DURABILITY_MEDIUM_COLOR
+		else:
+			durability_bar.tint_progress = DURABILITY_HIGH_COLOR
+	else:
+		durability_bar_outline.visible = false
 
 	# item type specific logic
 	_item_type_logic()
@@ -233,8 +254,6 @@ func setup(item_data: ItemData) -> void:
 	load_timer.wait_time = data.container_load_time if data.container_load_time != 0.0 else 0.001
 	unload_timer.wait_time = data.container_load_time if data.container_load_time != 0.0 else 0.001
 
-	im.item_unloaded.connect(_check_stack)
-
 
 func equip_item() -> void:
 	if data.rotated:
@@ -315,7 +334,7 @@ func split_stack() -> void:
 	new_item_data.count = floori(new_item_data.count / 2)
 	data.count -= new_item_data.count
 
-	im.add_item(new_item_data)
+	im.add_item(new_item_data, true, false)
 	sm.update_inventory_weight()
 
 
@@ -328,10 +347,15 @@ func _rotate() -> void:
 
 	# icon size gets changed when setting InventoryItem size,
 	# set icon size to value before rotation so it rotates properly
-	icon.size = old_size
-	icon.pivot_offset = old_size / 2
-	icon.position = (size - old_size) / 2
-	icon.rotation = PI / 2 if data.rotated else 0.0
+	if not data.rotated:
+		icon.position = Vector2.ZERO
+		icon.size = size
+		icon.rotation = 0.0
+	else:
+		icon.size = old_size
+		icon.pivot_offset = old_size / 2
+		icon.position = (size - old_size) / 2
+		icon.rotation = PI / 2
 
 	mouse_offset = size / 2
 
@@ -374,6 +398,9 @@ func _load_item(loaded_item: InventoryItem) -> void:
 	# update weight
 	data.container_weight += (item_data.weight * item_data.count + item_data.container_weight)
 	sm.update_inventory_weight()
+
+	if item_data.type == ItemData.ItemType.MAGAZINE:
+		item_data.durability -= item_data.durability_rate
 
 
 # for checking compatibility when dragging to container item
@@ -432,28 +459,17 @@ func _release_item() -> void:
 				im.drop_item(data)
 
 
+# this is needed for stacking item to specific spot
+# item manager add_items only checks for first spot
 func _stack_items(item: ItemData) -> void:
 	var new_count: int = data.count + item.count
 	if new_count > data.max_stack:
 		item.count = new_count - data.max_stack
 		data.count = data.max_stack
-
-		# for checking if item fits in inventory after unloading from container
-		if not im.place_item(item, item.slot):
-			im.drop_item(item)
 	else:
 		data.count = new_count
 		im.remove_item(item)
 	sm.update_inventory_weight()
-
-
-func _check_stack(item: ItemData) -> void:
-	if item.id != data.id:
-		return
-
-	if im.checking_stack:
-		im.checking_stack = false
-		_stack_items(item)
 
 
 func _on_tooltip_timer_timeout() -> void:
@@ -481,13 +497,15 @@ func _item_type_logic() -> void:
 
 
 func _finish_unload() -> void:
-	im.add_item(unload_item, false)
 	data.container_items.pop_back()
+	im.add_item(unload_item, false)
 
-	im.checking_stack = true
+	if unload_item.type == ItemData.ItemType.MAGAZINE:
+		unload_item.durability -= unload_item.durability_rate
+
 	im.item_unloaded.emit(unload_item)
 
-	await get_tree().process_frame
+	await get_tree().process_frame # idk why this is here but its probably important
 
 
 func _on_load_timer_timeout() -> void:

@@ -3,10 +3,10 @@ extends Camera2D
 const SMOOTHNESS = 3
 const SHAKE_FADE = 5.0
 
-var rng := RandomNumberGenerator.new()
 var shake_strength := 0.0
 
 var om := OptionsManager
+var rng := Random.rng
 
 @onready var player: CharacterBody2D = $"../Player"
 
