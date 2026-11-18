@@ -282,7 +282,22 @@ func reload_weapon() -> void:
 
 		return
 
-	if mags > 0 and not reloading:
+	if reloading:
+		# fast reload
+		if (
+			im.equipped_weapons[weapon_index].container_items.size() == 0
+			or crosshair.tween.get_total_elapsed_time() >= reload_time / 2
+		):
+			return
+
+		crosshair.tween.set_speed_scale(2.0)
+
+		var mag: ItemData = im.equipped_weapons[weapon_index].container_items[0]
+		im.drop_item(mag)
+		im.equipped_weapons[weapon_index].container_items.clear()
+
+	elif mags > 0:
+		# standard reload
 		reloading = true
 
 		status_label.show_status_label("RELOADING")
