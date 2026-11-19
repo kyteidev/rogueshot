@@ -7,6 +7,7 @@ script = ExtResource("1_fnqhm")
 damage = 25
 mag_size = 13
 reload_time = 0.9
+ads_time = 0.11
 kick = 5.0
 kick_recovery = 60.0
 horizontal_recoil = 80.0

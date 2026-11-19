@@ -88,6 +88,7 @@ var h_recoil: float
 var v_recoil: float
 
 var reload_time := 0.0
+var ads_time := 0.0
 
 var current_spread := 0.0
 var kick_offset := 0.0
@@ -110,6 +111,7 @@ var ads := false:
 	set(value):
 		ads = value
 		sm.ads = value
+var ads_progress := 0.0
 
 var mag_anim_tween: Tween
 
@@ -194,7 +196,10 @@ func _physics_process(delta: float) -> void:
 		walk_spread_mult = WALK_SPREAD_MULTIPLIER
 
 	# recoil and kick recovery and apply kick
-	var spread_per_shot: float = ads_spread if ads else hipfire_spread
+	var target_ads_progress := 1.0 if ads else 0.0
+	ads_progress = move_toward(ads_progress, target_ads_progress, delta / ads_time)
+
+	var spread_per_shot: float = lerp(hipfire_spread, ads_spread, ads_progress)
 	current_spread = move_toward(
 		current_spread,
 		spread_per_shot * first_shot_spread_mult * walk_spread_mult,
@@ -627,6 +632,7 @@ func _equip_weapon(index: int) -> void:
 
 	reload_time = stats.reload_time
 	reticle.reload_time = reload_time
+	ads_time = stats.ads_time
 
 	current_spread = 0.0
 	kick_offset = 0.0

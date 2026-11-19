@@ -2,9 +2,11 @@ class_name WeaponStats
 extends Resource
 
 @export var damage: int
+## Fire rate in seconds. 0.0 is semi-auto
 @export var fire_rate: float
 @export var mag_size: int
 @export var reload_time: float
+@export var ads_time: float
 
 ## Weapon kick, in pixels
 @export var kick: float
