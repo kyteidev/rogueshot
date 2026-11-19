@@ -28,6 +28,7 @@ const MAG_MOVE_AMOUNT = 3.0
 
 var sm := StateManager
 var im := ItemManager
+var om := OptionsManager
 var rng := Random.rng
 
 var weapon_index: int = -1:
@@ -134,8 +135,9 @@ func _ready() -> void:
 	muzzle_flash = MUZZLE_FLASH.instantiate()
 	add_child(muzzle_flash)
 
-	smoke = SMOKE_PARTICLES.instantiate()
-	add_child(smoke)
+	if om.get_option("particles"):
+		smoke = SMOKE_PARTICLES.instantiate()
+		add_child(smoke)
 
 	# weapon unequipping
 	im.weapon_unequipped.connect(
@@ -210,13 +212,14 @@ func _physics_process(delta: float) -> void:
 
 	# muzzle smoke logic
 	heat = max(heat - cooling_rate * delta, 0.0)
-	smoke.emitting = true if heat > 0.0 else false
+	if om.get_option("particles"):
+		smoke.emitting = true if heat > 0.0 else false
 
-	smoke.modulate.a = lerp(
-		smoke.modulate.a,
-		smoothstep(0.0, SMOKE_BASE_ALPHA, heat),
-		1.0 - exp(-SMOKE_FADE_SPEED * delta),
-	)
+		smoke.modulate.a = lerp(
+			smoke.modulate.a,
+			smoothstep(0.0, SMOKE_BASE_ALPHA, heat),
+			1.0 - exp(-SMOKE_FADE_SPEED * delta),
+		)
 
 	# ADS
 	if not input_locked:
@@ -502,13 +505,15 @@ func _fire_weapon() -> void:
 		muzzle_flash.fire(weapon_muzzle.global_position, global_rotation)
 
 		# muzzle sparks
-		var spark_instance: CPUParticles2D = SPARK_PARTICLES.instantiate()
-		spark_instance.position = muzzle_flash.position
-		add_child(spark_instance)
+		if om.get_option("particles"):
+			var spark_instance: CPUParticles2D = SPARK_PARTICLES.instantiate()
+			spark_instance.position = muzzle_flash.position
+			add_child(spark_instance)
 
 		# smoke
 		heat = min(heat + heat_per_shot, MAX_HEAT)
-		smoke.global_position = weapon_muzzle.global_position
+		if om.get_option("particles"):
+			smoke.global_position = weapon_muzzle.global_position
 
 		# deduct ammo
 		ammo -= 1

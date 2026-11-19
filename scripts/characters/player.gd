@@ -59,6 +59,7 @@ const PARTICLE_AMOUNT_FAST = 14
 
 var sm := StateManager
 var im := ItemManager
+var om := OptionsManager
 
 var prev_health: float = MAX_HEALTH
 var health: float = MAX_HEALTH:
@@ -479,6 +480,9 @@ func _update_stamina_bar(delta: float) -> void:
 
 
 func _walk_particles() -> void:
+	if not om.get_option("particles"):
+		return
+
 	# using speed variable might cause racing problems maybe
 	# just get speed from velocity instead
 	var move_speed: float = abs(velocity.x)

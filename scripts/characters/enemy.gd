@@ -135,6 +135,7 @@ var status_icons := [
 
 var sm := StateManager
 var im := ItemManager
+var om := OptionsManager
 var rng := Random.rng
 
 @onready var anim: AnimatedSprite2D = $AnimSprite
@@ -173,8 +174,9 @@ func _ready() -> void:
 	muzzle_flash = MUZZLE_FLASH.instantiate()
 	weapon.add_child(muzzle_flash)
 
-	smoke = SMOKE_PARTICLES.instantiate()
-	weapon.add_child(smoke)
+	if om.get_option("particles"):
+		smoke = SMOKE_PARTICLES.instantiate()
+		weapon.add_child(smoke)
 
 	# duplicate data
 	weapon_data = weapon_data.duplicate(true)
@@ -214,13 +216,14 @@ func _physics_process(delta: float) -> void:
 
 	# muzzle smoke logic
 	heat = max(heat - WEAPON_COOLING_RATE * delta, 0.0)
-	smoke.emitting = true if heat > 0.0 else false
+	if om.get_option("particles"):
+		smoke.emitting = true if heat > 0.0 else false
 
-	smoke.modulate.a = lerp(
-		smoke.modulate.a,
-		smoothstep(0.0, SMOKE_BASE_ALPHA, heat),
-		1.0 - exp(-SMOKE_FADE_SPEED * delta),
-	)
+		smoke.modulate.a = lerp(
+			smoke.modulate.a,
+			smoothstep(0.0, SMOKE_BASE_ALPHA, heat),
+			1.0 - exp(-SMOKE_FADE_SPEED * delta),
+		)
 
 	match state:
 		State.IDLE:
@@ -592,9 +595,10 @@ func _shoot() -> void:
 		muzzle_flash.fire(weapon_muzzle.global_position, weapon.global_rotation)
 
 		# muzzle sparks
-		var spark_instance: CPUParticles2D = SPARK_PARTICLES.instantiate()
-		spark_instance.position = muzzle_flash.position
-		weapon.add_child(spark_instance)
+		if om.get_option("particles"):
+			var spark_instance: CPUParticles2D = SPARK_PARTICLES.instantiate()
+			spark_instance.position = muzzle_flash.position
+			weapon.add_child(spark_instance)
 
 		# deplete durability
 		weapon_data.durability -= weapon_data.durability_rate
@@ -647,6 +651,9 @@ func _point_toward(point_direction: int) -> void:
 
 
 func _walk_particles() -> void:
+	if not om.get_option("particles"):
+		return
+
 	# using speed variable might cause racing problems maybe
 	# just get speed from velocity instead
 	var move_speed: float = abs(velocity.x)

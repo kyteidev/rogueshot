@@ -1,6 +1,7 @@
 extends Node
 
 var camera_shake := true
+var particles := true
 
 var options: Array
 
@@ -13,7 +14,7 @@ func _ready() -> void:
 	# 		-> 0: gameplay, 1: video, 2: audio, 3: controls
 	# layer 1: options
 	options = [
-		{ "camera_shake": camera_shake },
+		{ "camera_shake": camera_shake, "particles": particles },
 		{ "lorem ipsum": false },
 		{ "lorem ipsum": false },
 		# keybinds are managed independently in option_keybind_button.gd

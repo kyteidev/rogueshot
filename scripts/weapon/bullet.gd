@@ -11,6 +11,7 @@ const SPEED = 1000
 const TRAIL_MAX_POINTS = 7
 
 var sm := StateManager
+var om := OptionsManager
 var type := Types.FRIENDLY
 
 var origin_pos: Vector2
@@ -67,6 +68,9 @@ func _physics_process(delta: float) -> void:
 
 
 func _draw_impact_particles(impact_type: int) -> void:
+	if not om.get_option("particles"):
+		return
+
 	var impact_particles: CPUParticles2D = IMPACT_PARTICLES.instantiate()
 	impact_particles.global_position = global_position
 	impact_particles.global_rotation = global_rotation + PI
