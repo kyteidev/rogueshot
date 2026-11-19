@@ -5,7 +5,7 @@ const SLOT_TEXTURE = preload("res://assets/sprites/ui/inventory/inventory-slot.p
 
 const SLOT_SIZE = 24.0
 
-@export var crosshair: Node2D
+@export var reticle: Node2D
 @export var starting_items: Array[ItemData]
 
 var sm := StateManager
@@ -63,16 +63,16 @@ func _input(_event: InputEvent) -> void:
 
 
 func toggle_inventory() -> void:
-	# toggle between mouse cursor and crosshair
+	# toggle between mouse cursor and reticle
 	visible = not visible
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE if visible else Input.MOUSE_MODE_HIDDEN
 	context_menu.process_mode = Node.PROCESS_MODE_INHERIT if visible else Node.PROCESS_MODE_DISABLED
 
-	# move cursor to crosshair after exiting
-	if crosshair.position != get_viewport().get_mouse_position():
-		get_viewport().warp_mouse(crosshair.get_global_transform_with_canvas().get_origin())
+	# move cursor to reticle after exiting
+	if reticle.position != get_viewport().get_mouse_position():
+		get_viewport().warp_mouse(reticle.get_global_transform_with_canvas().get_origin())
 
-	crosshair.cancel_reload()
+	reticle.cancel_reload()
 
 	sm.set_input_lock("inventory", visible)
 

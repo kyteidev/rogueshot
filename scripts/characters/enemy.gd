@@ -274,22 +274,22 @@ func take_damage(damage: float, hit_pos: Vector2) -> void:
 		).call_deferred()
 
 	var multiplier := 1.0
-	var crosshair_pos: Vector2 = get_local_mouse_position()
+	var reticle_pos: Vector2 = get_local_mouse_position()
 
 	# check if bullet hits enemy head
 	if hit_pos.y <= global_position.y + HEAD_POS_Y:
 		# check if cursor is on enemy head
-		if HEAD_POS_X <= crosshair_pos.x and crosshair_pos.x <= HEAD_POS_X + HEAD_WIDTH:
-			if HEAD_POS_Y >= crosshair_pos.y and crosshair_pos.y >= HEAD_POS_Y + HEAD_HEIGHT:
+		if HEAD_POS_X <= reticle_pos.x and reticle_pos.x <= HEAD_POS_X + HEAD_WIDTH:
+			if HEAD_POS_Y >= reticle_pos.y and reticle_pos.y >= HEAD_POS_Y + HEAD_HEIGHT:
 				multiplier *= HEADSHOT_MULTIPLIER
 
-	# check if crosshair is not on body
+	# check if reticle is not on body
 	# split into variables because otherwise the if statement is too long lol
 	var not_in_body_x: bool = (
-		BODY_POS_X >= crosshair_pos.x or crosshair_pos.x >= BODY_POS_X + BODY_WIDTH
+		BODY_POS_X >= reticle_pos.x or reticle_pos.x >= BODY_POS_X + BODY_WIDTH
 	)
 	var not_in_body_y: bool = (
-		BODY_POS_Y <= crosshair_pos.y or crosshair_pos.y <= BODY_POS_Y + BODY_HEIGHT
+		BODY_POS_Y <= reticle_pos.y or reticle_pos.y <= BODY_POS_Y + BODY_HEIGHT
 	)
 	var tween := create_tween()
 	if not_in_body_x or not_in_body_y:

@@ -55,7 +55,7 @@ const PARTICLE_AMOUNT_NORMAL = 8.0 / PARTICLE_AMOUNT_FAST
 const PARTICLE_AMOUNT_FAST = 14
 
 @export var transition: CanvasLayer
-@export var crosshair: Node2D
+@export var reticle: Node2D
 
 var sm := StateManager
 var im := ItemManager
@@ -268,7 +268,7 @@ func _physics_process(delta: float) -> void:
 
 			# cancel reload if sprinting
 			if sm.reloading:
-				crosshair.cancel_reload()
+				reticle.cancel_reload()
 		else:
 			sprinting = false
 

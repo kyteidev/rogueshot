@@ -124,7 +124,7 @@ var weapon_state: Dictionary = { }
 @onready var player: CharacterBody2D = get_parent()
 @onready var status_label: Label = player.get_node("./StatusLabel")
 @onready var hud: CanvasLayer = player.get_node("../HUD")
-@onready var crosshair: Node2D = player.crosshair
+@onready var reticle: Node2D = player.reticle
 
 
 func _ready() -> void:
@@ -171,7 +171,7 @@ func _physics_process(delta: float) -> void:
 
 	# make weapon point towards crosshiar
 	if not input_locked:
-		look_at(crosshair.global_position)
+		look_at(reticle.global_position)
 
 	# flip direction if necessary
 	var mouse_pos: Vector2 = get_global_mouse_position()
@@ -286,9 +286,9 @@ func reload_weapon() -> void:
 	if weapon.type_data.jammed:
 		status_label.show_status_label("UNJAMMING")
 
-		crosshair.reload_time = weapon.type_data.weapon_stats.unjam_time
-		crosshair.start_reload()
-		crosshair.tween.finished.connect(
+		reticle.reload_time = weapon.type_data.weapon_stats.unjam_time
+		reticle.start_reload()
+		reticle.tween.finished.connect(
 			func() -> void:
 				im.equipped_weapons[weapon_index].type_data.jammed = false
 				hud.update_hint_label(false)
@@ -301,11 +301,11 @@ func reload_weapon() -> void:
 		# fast reload
 		if (
 			im.equipped_weapons[weapon_index].container_items.size() == 0
-			or crosshair.tween.get_total_elapsed_time() >= reload_time / 2
+			or reticle.tween.get_total_elapsed_time() >= reload_time / 2
 		):
 			return
 
-		crosshair.tween.set_speed_scale(2.0)
+		reticle.tween.set_speed_scale(2.0)
 
 		var mag: ItemData = weapon.container_items[0]
 		mag.durability -= mag.durability_rate * 2 # adds 2x on top of the 1x rate
@@ -322,9 +322,9 @@ func reload_weapon() -> void:
 		if not weapon.type_data.mag_attached:
 			real_reload_time /= 2
 
-		crosshair.reload_time = real_reload_time
-		crosshair.start_reload()
-		crosshair.tween.finished.connect(_finish_reload)
+		reticle.reload_time = real_reload_time
+		reticle.start_reload()
+		reticle.tween.finished.connect(_finish_reload)
 
 		unload_mag_anim()
 		get_tree().create_timer(real_reload_time - MAG_FADE_DURATION).timeout.connect(load_mag_anim)
@@ -515,7 +515,7 @@ func _fire_weapon() -> void:
 		kick_offset = min(kick_offset + kick, kick * 2.0)
 
 		# apply recoil
-		crosshair.apply_recoil(current_weapon.global_rotation, h_recoil, v_recoil)
+		reticle.apply_recoil(current_weapon.global_rotation, h_recoil, v_recoil)
 
 		# eject casing
 		var casing_instance: RigidBody2D = CASING.instantiate()
@@ -576,7 +576,7 @@ func _equip_weapon(index: int) -> void:
 	for child in weapon_node.get_children():
 		child.free()
 
-	crosshair.cancel_reload()
+	reticle.cancel_reload()
 	status_label.hide_status_label()
 	reloading = false
 
@@ -622,11 +622,11 @@ func _equip_weapon(index: int) -> void:
 
 	h_recoil = stats.horizontal_recoil
 	v_recoil = stats.vertical_recoil
-	crosshair.stiffness = stats.recoil_stiffness
-	crosshair.damping = stats.recoil_damping
+	reticle.stiffness = stats.recoil_stiffness
+	reticle.damping = stats.recoil_damping
 
 	reload_time = stats.reload_time
-	crosshair.reload_time = reload_time
+	reticle.reload_time = reload_time
 
 	current_spread = 0.0
 	kick_offset = 0.0

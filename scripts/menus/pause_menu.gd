@@ -1,6 +1,6 @@
 extends CanvasLayer
 
-@export var crosshair: Node2D
+@export var reticle: Node2D
 @export var inventory: CanvasLayer
 
 
@@ -20,9 +20,9 @@ func _toggle_pause() -> void:
 	get_tree().paused = not get_tree().paused
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE if get_tree().paused else Input.MOUSE_MODE_HIDDEN
 
-	crosshair.visible = not visible
-	if crosshair.position != get_viewport().get_mouse_position():
-		get_viewport().warp_mouse(crosshair.get_global_transform_with_canvas().get_origin())
+	reticle.visible = not visible
+	if reticle.position != get_viewport().get_mouse_position():
+		get_viewport().warp_mouse(reticle.get_global_transform_with_canvas().get_origin())
 
 
 func _on_resume_button_pressed() -> void:

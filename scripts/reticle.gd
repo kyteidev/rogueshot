@@ -35,7 +35,7 @@ var damping := 0.0
 func _ready() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
 	ring.max_value = STEPS
-	ring.position = -ring.texture_progress.get_size() / 2.0 # center crosshair
+	ring.position = -ring.texture_progress.get_size() / 2.0 # center reticle
 
 	visible = true
 
