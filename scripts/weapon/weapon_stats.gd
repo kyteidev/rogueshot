@@ -20,8 +20,10 @@ extends Resource
 # Recoil damping, in pixels
 @export var recoil_damping: float
 
-# Weapon spread per shot, in degrees
-@export var spread: float
+# Weapon hipfire spread per shot, in degrees
+@export var hipfire_spread: float
+# Weapon ADS spread per shot, in degrees
+@export var ads_spread: float
 # Maximum weapon spread, in degrees
 @export var max_spread: float
 # Spead recovery, in degrees per second

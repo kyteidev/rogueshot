@@ -75,8 +75,9 @@ var mags: int = 0:
 
 var kick := 0.0
 var kick_recovery := 0.0
-var spread_per_shot := 0.0
 
+var hipfire_spread := 0.0
+var ads_spread := 0.0
 var max_spread := 0.0
 var spread_recovery := 0.0
 var spread_multiplier := 1.0
@@ -103,6 +104,7 @@ var heat := 0.0
 
 var can_fire := true
 var reloading := false
+var ads := false
 
 var mag_anim_tween: Tween
 
@@ -187,6 +189,7 @@ func _physics_process(delta: float) -> void:
 		walk_spread_mult = WALK_SPREAD_MULTIPLIER
 
 	# recoil and kick recovery and apply kick
+	var spread_per_shot: float = ads_spread if ads else hipfire_spread
 	current_spread = move_toward(
 		current_spread,
 		spread_per_shot * first_shot_spread_mult * walk_spread_mult,
@@ -204,6 +207,10 @@ func _physics_process(delta: float) -> void:
 		smoothstep(0.0, SMOKE_BASE_ALPHA, heat),
 		1.0 - exp(-SMOKE_FADE_SPEED * delta),
 	)
+
+	# ADS
+	if not input_locked:
+		ads = Input.is_action_pressed("player_aim")
 
 	# weapon firing
 	if not input_locked and Input.is_action_pressed("player_shoot"):
@@ -497,6 +504,7 @@ func _fire_weapon() -> void:
 		ammo -= 1
 
 		# cap spread and kick
+		var spread_per_shot: float = ads_spread if ads else hipfire_spread
 		current_spread = min(current_spread + spread_per_shot, max_spread)
 		kick_offset = min(kick_offset + kick, kick * 2.0)
 
@@ -598,7 +606,8 @@ func _equip_weapon(index: int) -> void:
 	kick = stats.kick
 	kick_recovery = stats.kick_recovery
 
-	spread_per_shot = stats.spread
+	hipfire_spread = stats.hipfire_spread
+	ads_spread = stats.ads_spread
 	max_spread = stats.max_spread
 	spread_recovery = stats.spread_recovery
 	first_shot_spread_mult = stats.first_shot_spread_mult
