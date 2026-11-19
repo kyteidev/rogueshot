@@ -67,6 +67,9 @@ func _load_buttons(capabilities: int) -> void:
 			"Equip":
 				if im.context_menu_item.data in im.equipped_items.values():
 					button_text = "Unequip"
+			"Split":
+				if im.context_menu_item.data.count == 1:
+					button.disabled = true
 			"Unload":
 				if im.context_menu_item.data.container_items.size() == 0:
 					button.disabled = true
