@@ -277,9 +277,7 @@ func equip_item() -> void:
 				correct_equipment_slot = child.name
 	else:
 		correct_equipment_slot = im.hovered_equipment
-	var equipment_slot_data: Dictionary[String, Vector2] = im.equipment_bounds[
-		correct_equipment_slot
-	]
+	var equipment_slot_data: Dictionary = im.equipment_bounds[correct_equipment_slot]
 	var equipment_slot_pos: Vector2 = equipment_slot_data["pos"]
 	var equipment_slot_size: Vector2 = equipment_slot_data["size"]
 	global_position.x = equipment_slot_pos.x + (equipment_slot_size.x - size.x) / 2
