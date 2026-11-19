@@ -24,10 +24,10 @@ const DROP_RAND_ROT = 0.6
 
 const ITEM_SCENE = preload("res://scenes/item.tscn")
 
-var inventory := { } # { Slot pos: ItemData }
+var inventory: Dictionary[Vector2i, ItemData] = { } # { Slot pos: ItemData }
 var inventory_items: Array[ItemData] = [] # just an array of items in inventory
-var equipped_items := { } # { "Equipment slot": ItemData }
-var equipment_bounds := { }
+var equipped_items: Dictionary[String, ItemData] = { } # { "Equipment slot": ItemData }
+var equipment_bounds: Dictionary[String, Dictionary] = { }
 
 var equipped_weapons: Array[ItemData] = [null, null]
 var weapon_index: int = -1
