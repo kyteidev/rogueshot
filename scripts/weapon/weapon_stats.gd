@@ -7,6 +7,10 @@ extends Resource
 @export var mag_size: int
 @export var reload_time: float
 @export var ads_time: float
+## Effective range, in pixels
+@export var effective_range: float
+## Maximum range, in pixels. Damage won't be dealt after this threshold
+@export var max_range: float
 
 ## Weapon kick, in pixels
 @export var kick: float

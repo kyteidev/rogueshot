@@ -74,6 +74,9 @@ var mags: int = 0:
 		mags = value
 		sm.mags = value
 
+var effective_range: float
+var max_range: float
+
 var kick := 0.0
 var kick_recovery := 0.0
 
@@ -499,6 +502,9 @@ func _fire_weapon() -> void:
 		bullet_instance.origin_pos = weapon_muzzle.global_position
 		bullet_instance.add_collision_exception_with(player)
 
+		bullet_instance.effective_range = effective_range
+		bullet_instance.max_range = max_range
+
 		get_tree().root.add_child(bullet_instance)
 
 		# muzzle flash
@@ -619,6 +625,9 @@ func _equip_weapon(index: int) -> void:
 	base_damage = stats.damage
 	fire_rate = stats.fire_rate
 	max_ammo = stats.mag_size
+
+	effective_range = stats.effective_range
+	max_range = stats.max_range
 
 	kick = stats.kick
 	kick_recovery = stats.kick_recovery
