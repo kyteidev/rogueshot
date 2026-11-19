@@ -86,7 +86,6 @@ label_settings = SubResource("LabelSettings_vjox6")
 [node name="DurabilityBarOutline" type="TextureRect" parent="." unique_id=427647673]
 unique_name_in_owner = true
 visible = false
-z_index = 2
 layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
@@ -102,7 +101,6 @@ stretch_mode = 2
 
 [node name="DurabilityBar" type="TextureProgressBar" parent="DurabilityBarOutline" unique_id=437879283]
 unique_name_in_owner = true
-z_index = 1
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
