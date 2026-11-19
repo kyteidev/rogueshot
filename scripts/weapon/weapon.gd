@@ -74,8 +74,14 @@ var mags: int = 0:
 		mags = value
 		sm.mags = value
 
-var effective_range: float
-var max_range: float
+var effective_range: float:
+	set(value):
+		effective_range = value
+		sm.effective_range = value
+var max_range: float:
+	set(value):
+		max_range = value
+		sm.max_range = value
 
 var kick := 0.0
 var kick_recovery := 0.0

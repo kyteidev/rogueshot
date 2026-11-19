@@ -31,6 +31,11 @@ var active_statuses: Array[PlayerStatus] = []
 # other states
 var ads := false
 
+# misc
+var reticle_distance := 0.0
+var effective_range := 0.0
+var max_range := 0.0
+
 # input lock
 var input_locks := { }
 

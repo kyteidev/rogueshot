@@ -4,7 +4,10 @@ const STEPS: int = 128
 const RECOIL_SPEED = 3.0
 const GAP_RECOVERY_SPEED = 10.0
 
-const LINE_COLOR = Color("ffffff")
+const BASE_COLOR = Color("ffffff")
+const INEFFECTIVE_COLOR = Color("#ffb49e")
+const USELESS_COLOR = Color("#ff2e8a")
+
 const LINE_LENGTH = 5.0
 const LINE_THICKNESS = 1.5
 
@@ -60,6 +63,8 @@ func _process(delta: float) -> void:
 		target_gap = dist_to_weapon * tan(
 			deg_to_rad(weapon.current_spread * weapon.get_spread_multiplier())
 		)
+
+		sm.reticle_distance = dist_to_weapon
 	else:
 		target_gap = 0.0
 	gap = lerp(gap, target_gap, 1.0 - exp(-GAP_RECOVERY_SPEED * delta))
@@ -71,11 +76,18 @@ func _draw() -> void:
 	if sm.reloading:
 		return
 
+	var line_color: Color = BASE_COLOR
+	if im.weapon_index != -1:
+		if sm.reticle_distance >= sm.max_range:
+			line_color = USELESS_COLOR
+		elif sm.reticle_distance >= sm.effective_range:
+			line_color = INEFFECTIVE_COLOR
+
 	# top, bottom, left, right
-	draw_line(Vector2(0.0, -gap), Vector2(0.0, -gap - LINE_LENGTH), LINE_COLOR, LINE_THICKNESS)
-	draw_line(Vector2(0.0, gap), Vector2(0.0, gap + LINE_LENGTH), LINE_COLOR, LINE_THICKNESS)
-	draw_line(Vector2(-gap, 0.0), Vector2(-gap - LINE_LENGTH, 0.0), LINE_COLOR, LINE_THICKNESS)
-	draw_line(Vector2(gap, 0.0), Vector2(gap + LINE_LENGTH, 0.0), LINE_COLOR, LINE_THICKNESS)
+	draw_line(Vector2(0.0, -gap), Vector2(0.0, -gap - LINE_LENGTH), line_color, LINE_THICKNESS)
+	draw_line(Vector2(0.0, gap), Vector2(0.0, gap + LINE_LENGTH), line_color, LINE_THICKNESS)
+	draw_line(Vector2(-gap, 0.0), Vector2(-gap - LINE_LENGTH, 0.0), line_color, LINE_THICKNESS)
+	draw_line(Vector2(gap, 0.0), Vector2(gap + LINE_LENGTH, 0.0), line_color, LINE_THICKNESS)
 
 	# draw center dot if ADS
 	if sm.ads:
