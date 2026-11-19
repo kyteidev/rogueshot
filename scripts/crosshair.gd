@@ -77,6 +77,12 @@ func _draw() -> void:
 	draw_line(Vector2(-gap, 0.0), Vector2(-gap - LINE_LENGTH, 0.0), LINE_COLOR, LINE_THICKNESS)
 	draw_line(Vector2(gap, 0.0), Vector2(gap + LINE_LENGTH, 0.0), LINE_COLOR, LINE_THICKNESS)
 
+	# draw center dot if ADS
+	if sm.ads:
+		var rect_size: Vector2 = Vector2.ONE * LINE_THICKNESS
+		var rect := Rect2(Vector2.ZERO - (rect_size / 2), rect_size)
+		draw_rect(rect, Color(Color.RED))
+
 
 func apply_recoil(weapon_rotation: float, h_recoil_amount: float, v_recoil_amount: float) -> void:
 	var v_direction := Vector2(cos(weapon_rotation), sin(weapon_rotation))

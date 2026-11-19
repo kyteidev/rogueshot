@@ -104,7 +104,10 @@ var heat := 0.0
 
 var can_fire := true
 var reloading := false
-var ads := false
+var ads := false:
+	set(value):
+		ads = value
+		sm.ads = value
 
 var mag_anim_tween: Tween
 
