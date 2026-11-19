@@ -165,14 +165,19 @@ func unequip_item(equipment_slot: String) -> void:
 
 func reset_inventory() -> void:
 	inventory = { }
+	inventory_items.clear()
 	equipped_items = { }
 	equipped_weapons = [null, null]
 
 	hovered_item = null
+	dragged_item = null
 	context_menu_item = null
 	context_menu_open = false
 	dragging_item = false
 	hovered_equipment = ""
+	hovering_valid_container = false
+
+	weapon_index = -1
 
 	var inventory_items_container: Control = get_tree().get_first_node_in_group(
 		"unique_inventory_items"
