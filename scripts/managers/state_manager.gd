@@ -28,6 +28,9 @@ var max_weight := 25.0
 
 var active_statuses: Array[PlayerStatus] = []
 
+# other states
+var ads := false
+
 # input lock
 var input_locks := { }
 

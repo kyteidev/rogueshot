@@ -6,6 +6,7 @@ const DAMAGE_FLASH_DELAY = 0.04
 const BASE_SPEED = 80.0
 const SPRINT_MULTIPLIER = 1.5
 const OVERWEIGHT_MULTIPLIER = 0.5
+const BACKWARDS_MULTIPLIER = 0.80
 
 const MAX_STAMINA = 100.0
 const STAMINA_RECOVERY_DELAY = 1.5
@@ -55,10 +56,11 @@ const PARTICLE_AMOUNT_NORMAL = 8.0 / PARTICLE_AMOUNT_FAST
 const PARTICLE_AMOUNT_FAST = 14
 
 @export var transition: CanvasLayer
-@export var crosshair: Node2D
+@export var reticle: Node2D
 
 var sm := StateManager
 var im := ItemManager
+var om := OptionsManager
 
 var prev_health: float = MAX_HEALTH
 var health: float = MAX_HEALTH:
@@ -268,7 +270,7 @@ func _physics_process(delta: float) -> void:
 
 			# cancel reload if sprinting
 			if sm.reloading:
-				crosshair.cancel_reload()
+				reticle.cancel_reload()
 		else:
 			sprinting = false
 
@@ -292,6 +294,9 @@ func _physics_process(delta: float) -> void:
 	# apply other speed multipliers
 	speed *= weapon.speed_multiplier
 	speed *= OVERWEIGHT_MULTIPLIER if overweight else 1.0
+	speed *= BACKWARDS_MULTIPLIER if not same_direction else 1.0
+	if sm.ads:
+		speed *= weapon.ads_speed_multiplier
 
 	# plays correct animation
 	if is_on_floor():
@@ -477,6 +482,9 @@ func _update_stamina_bar(delta: float) -> void:
 
 
 func _walk_particles() -> void:
+	if not om.get_option("particles"):
+		return
+
 	# using speed variable might cause racing problems maybe
 	# just get speed from velocity instead
 	var move_speed: float = abs(velocity.x)

@@ -1,9 +1,10 @@
 [gd_scene format=3 uid="uid://byg2oli55neme"]
 
 [ext_resource type="Texture2D" uid="uid://dpogluv54xj85" path="res://assets/sprites/crosshair/reload_circle.png" id="1_6blvt"]
-[ext_resource type="Script" uid="uid://da2tov2kp0y53" path="res://scripts/crosshair.gd" id="1_norqy"]
+[ext_resource type="Script" uid="uid://da2tov2kp0y53" path="res://scripts/reticle.gd" id="1_norqy"]
 
-[node name="Crosshair" type="Node2D" unique_id=537525748]
+[node name="Reticle" type="Node2D" unique_id=537525748]
+z_index = 1000
 script = ExtResource("1_norqy")
 
 [node name="ReloadRing" type="TextureProgressBar" parent="." unique_id=228523896]

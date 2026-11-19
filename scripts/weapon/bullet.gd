@@ -11,9 +11,16 @@ const SPEED = 1000
 const TRAIL_MAX_POINTS = 7
 
 var sm := StateManager
+var om := OptionsManager
 var type := Types.FRIENDLY
 
 var origin_pos: Vector2
+
+var prev_pos: Vector2
+var distance: float
+
+var effective_range: float
+var max_range: float
 
 @onready var trail: Line2D = $Trail
 
@@ -26,6 +33,11 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	var collided: KinematicCollision2D = move_and_collide(transform.x.normalized() * SPEED * delta)
+
+	# calculate distance travelled
+	if prev_pos:
+		distance += (global_position - prev_pos).length()
+	prev_pos = global_position
 
 	# check collisions and ignore sender
 	# maybe use classes instead for dealing damage?
@@ -47,6 +59,11 @@ func _physics_process(delta: float) -> void:
 
 				damage = sm.enemy_damage
 
+		# damage calculations
+		damage = damage - (
+			clamp(1.0 - (distance - effective_range) / (max_range - effective_range), 0.0, 1.0)
+		)
+
 		if not friendly_fire:
 			if hit.has_method("take_damage"):
 				hit.take_damage(damage, global_position)
@@ -67,6 +84,9 @@ func _physics_process(delta: float) -> void:
 
 
 func _draw_impact_particles(impact_type: int) -> void:
+	if not om.get_option("particles"):
+		return
+
 	var impact_particles: CPUParticles2D = IMPACT_PARTICLES.instantiate()
 	impact_particles.global_position = global_position
 	impact_particles.global_rotation = global_rotation + PI

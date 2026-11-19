@@ -135,6 +135,7 @@ var status_icons := [
 
 var sm := StateManager
 var im := ItemManager
+var om := OptionsManager
 var rng := Random.rng
 
 @onready var anim: AnimatedSprite2D = $AnimSprite
@@ -173,8 +174,9 @@ func _ready() -> void:
 	muzzle_flash = MUZZLE_FLASH.instantiate()
 	weapon.add_child(muzzle_flash)
 
-	smoke = SMOKE_PARTICLES.instantiate()
-	weapon.add_child(smoke)
+	if om.get_option("particles"):
+		smoke = SMOKE_PARTICLES.instantiate()
+		weapon.add_child(smoke)
 
 	# duplicate data
 	weapon_data = weapon_data.duplicate(true)
@@ -214,13 +216,14 @@ func _physics_process(delta: float) -> void:
 
 	# muzzle smoke logic
 	heat = max(heat - WEAPON_COOLING_RATE * delta, 0.0)
-	smoke.emitting = true if heat > 0.0 else false
+	if om.get_option("particles"):
+		smoke.emitting = true if heat > 0.0 else false
 
-	smoke.modulate.a = lerp(
-		smoke.modulate.a,
-		smoothstep(0.0, SMOKE_BASE_ALPHA, heat),
-		1.0 - exp(-SMOKE_FADE_SPEED * delta),
-	)
+		smoke.modulate.a = lerp(
+			smoke.modulate.a,
+			smoothstep(0.0, SMOKE_BASE_ALPHA, heat),
+			1.0 - exp(-SMOKE_FADE_SPEED * delta),
+		)
 
 	match state:
 		State.IDLE:
@@ -274,22 +277,22 @@ func take_damage(damage: float, hit_pos: Vector2) -> void:
 		).call_deferred()
 
 	var multiplier := 1.0
-	var crosshair_pos: Vector2 = get_local_mouse_position()
+	var reticle_pos: Vector2 = get_local_mouse_position()
 
 	# check if bullet hits enemy head
 	if hit_pos.y <= global_position.y + HEAD_POS_Y:
 		# check if cursor is on enemy head
-		if HEAD_POS_X <= crosshair_pos.x and crosshair_pos.x <= HEAD_POS_X + HEAD_WIDTH:
-			if HEAD_POS_Y >= crosshair_pos.y and crosshair_pos.y >= HEAD_POS_Y + HEAD_HEIGHT:
+		if HEAD_POS_X <= reticle_pos.x and reticle_pos.x <= HEAD_POS_X + HEAD_WIDTH:
+			if HEAD_POS_Y >= reticle_pos.y and reticle_pos.y >= HEAD_POS_Y + HEAD_HEIGHT:
 				multiplier *= HEADSHOT_MULTIPLIER
 
-	# check if crosshair is not on body
+	# check if reticle is not on body
 	# split into variables because otherwise the if statement is too long lol
 	var not_in_body_x: bool = (
-		BODY_POS_X >= crosshair_pos.x or crosshair_pos.x >= BODY_POS_X + BODY_WIDTH
+		BODY_POS_X >= reticle_pos.x or reticle_pos.x >= BODY_POS_X + BODY_WIDTH
 	)
 	var not_in_body_y: bool = (
-		BODY_POS_Y <= crosshair_pos.y or crosshair_pos.y <= BODY_POS_Y + BODY_HEIGHT
+		BODY_POS_Y <= reticle_pos.y or reticle_pos.y <= BODY_POS_Y + BODY_HEIGHT
 	)
 	var tween := create_tween()
 	if not_in_body_x or not_in_body_y:
@@ -592,9 +595,10 @@ func _shoot() -> void:
 		muzzle_flash.fire(weapon_muzzle.global_position, weapon.global_rotation)
 
 		# muzzle sparks
-		var spark_instance: CPUParticles2D = SPARK_PARTICLES.instantiate()
-		spark_instance.position = muzzle_flash.position
-		weapon.add_child(spark_instance)
+		if om.get_option("particles"):
+			var spark_instance: CPUParticles2D = SPARK_PARTICLES.instantiate()
+			spark_instance.position = muzzle_flash.position
+			weapon.add_child(spark_instance)
 
 		# deplete durability
 		weapon_data.durability -= weapon_data.durability_rate
@@ -647,6 +651,9 @@ func _point_toward(point_direction: int) -> void:
 
 
 func _walk_particles() -> void:
+	if not om.get_option("particles"):
+		return
+
 	# using speed variable might cause racing problems maybe
 	# just get speed from velocity instead
 	var move_speed: float = abs(velocity.x)

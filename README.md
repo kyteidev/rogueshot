@@ -14,9 +14,7 @@ Seriously though, I just like game dev and I like making games in Godot :D
 Currently shooting, movement, stamina, inventory (partially) and enemies (partially) is finished.
 There is a dev room where you can try out the movement and shooting mechanics.
 
-To see full list of finished features, see FEATURES.md
-
-NOTE: FEATURES.md only lists the features that are finished. To see the full changelog, see CHANGELOG.md
+To see the changelog, see CHANGELOG.md
 
 
 ### HOW TO RUN/PLAY

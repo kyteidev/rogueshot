@@ -28,6 +28,7 @@ const MAG_MOVE_AMOUNT = 3.0
 
 var sm := StateManager
 var im := ItemManager
+var om := OptionsManager
 var rng := Random.rng
 
 var weapon_index: int = -1:
@@ -73,11 +74,16 @@ var mags: int = 0:
 		mags = value
 		sm.mags = value
 
+var effective_range: float
+var max_range: float
+
 var kick := 0.0
 var kick_recovery := 0.0
-var spread_per_shot := 0.0
 
-var max_spread := 0.0
+var hipfire_spread := 0.0
+var ads_spread := 0.0
+var max_hipfire_spread := 0.0
+var max_ads_spread := 0.0
 var spread_recovery := 0.0
 var spread_multiplier := 1.0
 var first_shot_spread_mult := 1.0
@@ -86,6 +92,7 @@ var h_recoil: float
 var v_recoil: float
 
 var reload_time := 0.0
+var ads_time := 0.0
 
 var current_spread := 0.0
 var kick_offset := 0.0
@@ -96,6 +103,7 @@ var heat_per_shot := 0.0
 var cooling_rate := 0.0
 
 var speed_multiplier := 1.0
+var ads_speed_multiplier := 1.0
 
 var muzzle_flash: Node2D
 var smoke: CPUParticles2D
@@ -103,6 +111,11 @@ var heat := 0.0
 
 var can_fire := true
 var reloading := false
+var ads := false:
+	set(value):
+		ads = value
+		sm.ads = value
+var ads_progress := 0.0
 
 var mag_anim_tween: Tween
 
@@ -117,7 +130,7 @@ var weapon_state: Dictionary = { }
 @onready var player: CharacterBody2D = get_parent()
 @onready var status_label: Label = player.get_node("./StatusLabel")
 @onready var hud: CanvasLayer = player.get_node("../HUD")
-@onready var crosshair: Node2D = player.crosshair
+@onready var reticle: Node2D = player.reticle
 
 
 func _ready() -> void:
@@ -125,8 +138,9 @@ func _ready() -> void:
 	muzzle_flash = MUZZLE_FLASH.instantiate()
 	add_child(muzzle_flash)
 
-	smoke = SMOKE_PARTICLES.instantiate()
-	add_child(smoke)
+	if om.get_option("particles"):
+		smoke = SMOKE_PARTICLES.instantiate()
+		add_child(smoke)
 
 	# weapon unequipping
 	im.weapon_unequipped.connect(
@@ -164,7 +178,7 @@ func _physics_process(delta: float) -> void:
 
 	# make weapon point towards crosshiar
 	if not input_locked:
-		look_at(crosshair.global_position)
+		look_at(reticle.global_position)
 
 	# flip direction if necessary
 	var mouse_pos: Vector2 = get_global_mouse_position()
@@ -187,6 +201,10 @@ func _physics_process(delta: float) -> void:
 		walk_spread_mult = WALK_SPREAD_MULTIPLIER
 
 	# recoil and kick recovery and apply kick
+	var target_ads_progress := 1.0 if ads else 0.0
+	ads_progress = move_toward(ads_progress, target_ads_progress, delta / ads_time)
+
+	var spread_per_shot: float = lerp(hipfire_spread, ads_spread, ads_progress)
 	current_spread = move_toward(
 		current_spread,
 		spread_per_shot * first_shot_spread_mult * walk_spread_mult,
@@ -197,13 +215,18 @@ func _physics_process(delta: float) -> void:
 
 	# muzzle smoke logic
 	heat = max(heat - cooling_rate * delta, 0.0)
-	smoke.emitting = true if heat > 0.0 else false
+	if om.get_option("particles"):
+		smoke.emitting = true if heat > 0.0 else false
 
-	smoke.modulate.a = lerp(
-		smoke.modulate.a,
-		smoothstep(0.0, SMOKE_BASE_ALPHA, heat),
-		1.0 - exp(-SMOKE_FADE_SPEED * delta),
-	)
+		smoke.modulate.a = lerp(
+			smoke.modulate.a,
+			smoothstep(0.0, SMOKE_BASE_ALPHA, heat),
+			1.0 - exp(-SMOKE_FADE_SPEED * delta),
+		)
+
+	# ADS
+	if not input_locked:
+		ads = Input.is_action_pressed("player_aim")
 
 	# weapon firing
 	if not input_locked and Input.is_action_pressed("player_shoot"):
@@ -274,9 +297,9 @@ func reload_weapon() -> void:
 	if weapon.type_data.jammed:
 		status_label.show_status_label("UNJAMMING")
 
-		crosshair.reload_time = weapon.type_data.weapon_stats.unjam_time
-		crosshair.start_reload()
-		crosshair.tween.finished.connect(
+		reticle.reload_time = weapon.type_data.weapon_stats.unjam_time
+		reticle.start_reload()
+		reticle.tween.finished.connect(
 			func() -> void:
 				im.equipped_weapons[weapon_index].type_data.jammed = false
 				hud.update_hint_label(false)
@@ -289,11 +312,11 @@ func reload_weapon() -> void:
 		# fast reload
 		if (
 			im.equipped_weapons[weapon_index].container_items.size() == 0
-			or crosshair.tween.get_total_elapsed_time() >= reload_time / 2
+			or reticle.tween.get_total_elapsed_time() >= reload_time / 2
 		):
 			return
 
-		crosshair.tween.set_speed_scale(2.0)
+		reticle.tween.set_speed_scale(2.0)
 
 		var mag: ItemData = weapon.container_items[0]
 		mag.durability -= mag.durability_rate * 2 # adds 2x on top of the 1x rate
@@ -310,9 +333,9 @@ func reload_weapon() -> void:
 		if not weapon.type_data.mag_attached:
 			real_reload_time /= 2
 
-		crosshair.reload_time = real_reload_time
-		crosshair.start_reload()
-		crosshair.tween.finished.connect(_finish_reload)
+		reticle.reload_time = real_reload_time
+		reticle.start_reload()
+		reticle.tween.finished.connect(_finish_reload)
 
 		unload_mag_anim()
 		get_tree().create_timer(real_reload_time - MAG_FADE_DURATION).timeout.connect(load_mag_anim)
@@ -479,29 +502,36 @@ func _fire_weapon() -> void:
 		bullet_instance.origin_pos = weapon_muzzle.global_position
 		bullet_instance.add_collision_exception_with(player)
 
+		bullet_instance.effective_range = effective_range
+		bullet_instance.max_range = max_range
+
 		get_tree().root.add_child(bullet_instance)
 
 		# muzzle flash
 		muzzle_flash.fire(weapon_muzzle.global_position, global_rotation)
 
 		# muzzle sparks
-		var spark_instance: CPUParticles2D = SPARK_PARTICLES.instantiate()
-		spark_instance.position = muzzle_flash.position
-		add_child(spark_instance)
+		if om.get_option("particles"):
+			var spark_instance: CPUParticles2D = SPARK_PARTICLES.instantiate()
+			spark_instance.position = muzzle_flash.position
+			add_child(spark_instance)
 
 		# smoke
 		heat = min(heat + heat_per_shot, MAX_HEAT)
-		smoke.global_position = weapon_muzzle.global_position
+		if om.get_option("particles"):
+			smoke.global_position = weapon_muzzle.global_position
 
 		# deduct ammo
 		ammo -= 1
 
 		# cap spread and kick
+		var spread_per_shot: float = ads_spread if ads else hipfire_spread
+		var max_spread: float = max_ads_spread if ads else max_hipfire_spread
 		current_spread = min(current_spread + spread_per_shot, max_spread)
 		kick_offset = min(kick_offset + kick, kick * 2.0)
 
 		# apply recoil
-		crosshair.apply_recoil(current_weapon.global_rotation, h_recoil, v_recoil)
+		reticle.apply_recoil(current_weapon.global_rotation, h_recoil, v_recoil)
 
 		# eject casing
 		var casing_instance: RigidBody2D = CASING.instantiate()
@@ -562,11 +592,12 @@ func _equip_weapon(index: int) -> void:
 	for child in weapon_node.get_children():
 		child.free()
 
-	crosshair.cancel_reload()
+	reticle.cancel_reload()
 	status_label.hide_status_label()
 	reloading = false
 
 	speed_multiplier = 1.0
+	ads_speed_multiplier = 1.0
 
 	if weapon_index == -1:
 		return
@@ -595,21 +626,27 @@ func _equip_weapon(index: int) -> void:
 	fire_rate = stats.fire_rate
 	max_ammo = stats.mag_size
 
+	effective_range = stats.effective_range
+	max_range = stats.max_range
+
 	kick = stats.kick
 	kick_recovery = stats.kick_recovery
 
-	spread_per_shot = stats.spread
-	max_spread = stats.max_spread
+	hipfire_spread = stats.hipfire_spread
+	ads_spread = stats.ads_spread
+	max_hipfire_spread = stats.max_hipfire_spread
+	max_ads_spread = stats.max_ads_spread
 	spread_recovery = stats.spread_recovery
 	first_shot_spread_mult = stats.first_shot_spread_mult
 
 	h_recoil = stats.horizontal_recoil
 	v_recoil = stats.vertical_recoil
-	crosshair.stiffness = stats.recoil_stiffness
-	crosshair.damping = stats.recoil_damping
+	reticle.stiffness = stats.recoil_stiffness
+	reticle.damping = stats.recoil_damping
 
 	reload_time = stats.reload_time
-	crosshair.reload_time = reload_time
+	reticle.reload_time = reload_time
+	ads_time = stats.ads_time
 
 	current_spread = 0.0
 	kick_offset = 0.0
@@ -620,6 +657,7 @@ func _equip_weapon(index: int) -> void:
 	cooling_rate = stats.cooling_rate
 
 	speed_multiplier = stats.speed_multiplier
+	ads_speed_multiplier = stats.ads_speed_multiplier
 
 	can_fire = true
 

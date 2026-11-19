@@ -24,10 +24,10 @@ const DROP_RAND_ROT = 0.6
 
 const ITEM_SCENE = preload("res://scenes/item.tscn")
 
-var inventory := { } # { Slot pos: ItemData }
+var inventory: Dictionary[Vector2i, ItemData] = { } # { Slot pos: ItemData }
 var inventory_items: Array[ItemData] = [] # just an array of items in inventory
-var equipped_items := { } # { "Equipment slot": ItemData }
-var equipment_bounds := { }
+var equipped_items: Dictionary[String, ItemData] = { } # { "Equipment slot": ItemData }
+var equipment_bounds: Dictionary[String, Dictionary] = { }
 
 var equipped_weapons: Array[ItemData] = [null, null]
 var weapon_index: int = -1
@@ -165,14 +165,19 @@ func unequip_item(equipment_slot: String) -> void:
 
 func reset_inventory() -> void:
 	inventory = { }
+	inventory_items.clear()
 	equipped_items = { }
 	equipped_weapons = [null, null]
 
 	hovered_item = null
+	dragged_item = null
 	context_menu_item = null
 	context_menu_open = false
 	dragging_item = false
 	hovered_equipment = ""
+	hovering_valid_container = false
+
+	weapon_index = -1
 
 	var inventory_items_container: Control = get_tree().get_first_node_in_group(
 		"unique_inventory_items"
