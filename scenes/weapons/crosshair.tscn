@@ -4,6 +4,7 @@
 [ext_resource type="Script" uid="uid://da2tov2kp0y53" path="res://scripts/crosshair.gd" id="1_norqy"]
 
 [node name="Crosshair" type="Node2D" unique_id=537525748]
+z_index = 1000
 script = ExtResource("1_norqy")
 
 [node name="ReloadRing" type="TextureProgressBar" parent="." unique_id=228523896]
