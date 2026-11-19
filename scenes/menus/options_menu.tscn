@@ -443,6 +443,25 @@ text = "listening..."
 script = ExtResource("11_yxgvl")
 action_name = "player_shoot"
 
+[node name="OptionAim" type="HBoxContainer" parent="TabsContainer/Controls/ScrollContainer/OptionsContainer" unique_id=1084556417]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="TabsContainer/Controls/ScrollContainer/OptionsContainer/OptionAim" unique_id=1587664583]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "ADS"
+label_settings = ExtResource("9_gjmye")
+
+[node name="Button" type="Button" parent="TabsContainer/Controls/ScrollContainer/OptionsContainer/OptionAim" unique_id=677984570]
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("5_yxgvl")
+theme_override_font_sizes/font_size = 16
+toggle_mode = true
+text = "listening..."
+script = ExtResource("11_yxgvl")
+action_name = "player_aim"
+
 [node name="OptionReload" type="HBoxContainer" parent="TabsContainer/Controls/ScrollContainer/OptionsContainer" unique_id=454216631]
 layout_mode = 2
 
