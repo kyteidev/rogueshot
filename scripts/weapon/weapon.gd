@@ -98,6 +98,7 @@ var heat_per_shot := 0.0
 var cooling_rate := 0.0
 
 var speed_multiplier := 1.0
+var ads_speed_multiplier := 1.0
 
 var muzzle_flash: Node2D
 var smoke: CPUParticles2D
@@ -580,6 +581,7 @@ func _equip_weapon(index: int) -> void:
 	reloading = false
 
 	speed_multiplier = 1.0
+	ads_speed_multiplier = 1.0
 
 	if weapon_index == -1:
 		return
@@ -635,6 +637,7 @@ func _equip_weapon(index: int) -> void:
 	cooling_rate = stats.cooling_rate
 
 	speed_multiplier = stats.speed_multiplier
+	ads_speed_multiplier = stats.ads_speed_multiplier
 
 	can_fire = true
 

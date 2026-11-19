@@ -39,6 +39,7 @@ extends Resource
 @export var cooling_rate: float
 
 @export var speed_multiplier: float
+@export var ads_speed_multiplier: float
 
 @export var jam_chance: float
 @export var jam_weight: float

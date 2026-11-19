@@ -24,6 +24,7 @@ camera_shake = 0.5
 heat = 0.22
 cooling_rate = 0.87
 speed_multiplier = 0.9
+ads_speed_multiplier = 0.65
 jam_chance = 0.003
 jam_weight = 4.0
 unjam_time = 0.9

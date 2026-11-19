@@ -292,6 +292,8 @@ func _physics_process(delta: float) -> void:
 	# apply other speed multipliers
 	speed *= weapon.speed_multiplier
 	speed *= OVERWEIGHT_MULTIPLIER if overweight else 1.0
+	if sm.ads:
+		speed *= weapon.ads_speed_multiplier
 
 	# plays correct animation
 	if is_on_floor():
