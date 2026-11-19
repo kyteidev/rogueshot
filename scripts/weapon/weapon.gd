@@ -78,7 +78,8 @@ var kick_recovery := 0.0
 
 var hipfire_spread := 0.0
 var ads_spread := 0.0
-var max_spread := 0.0
+var max_hipfire_spread := 0.0
+var max_ads_spread := 0.0
 var spread_recovery := 0.0
 var spread_multiplier := 1.0
 var first_shot_spread_mult := 1.0
@@ -508,6 +509,7 @@ func _fire_weapon() -> void:
 
 		# cap spread and kick
 		var spread_per_shot: float = ads_spread if ads else hipfire_spread
+		var max_spread: float = max_ads_spread if ads else max_hipfire_spread
 		current_spread = min(current_spread + spread_per_shot, max_spread)
 		kick_offset = min(kick_offset + kick, kick * 2.0)
 
@@ -611,7 +613,8 @@ func _equip_weapon(index: int) -> void:
 
 	hipfire_spread = stats.hipfire_spread
 	ads_spread = stats.ads_spread
-	max_spread = stats.max_spread
+	max_hipfire_spread = stats.max_hipfire_spread
+	max_ads_spread = stats.max_ads_spread
 	spread_recovery = stats.spread_recovery
 	first_shot_spread_mult = stats.first_shot_spread_mult
 
