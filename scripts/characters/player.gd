@@ -6,6 +6,7 @@ const DAMAGE_FLASH_DELAY = 0.04
 const BASE_SPEED = 80.0
 const SPRINT_MULTIPLIER = 1.5
 const OVERWEIGHT_MULTIPLIER = 0.5
+const BACKWARDS_MULTIPLIER = 0.80
 
 const MAX_STAMINA = 100.0
 const STAMINA_RECOVERY_DELAY = 1.5
@@ -293,6 +294,7 @@ func _physics_process(delta: float) -> void:
 	# apply other speed multipliers
 	speed *= weapon.speed_multiplier
 	speed *= OVERWEIGHT_MULTIPLIER if overweight else 1.0
+	speed *= BACKWARDS_MULTIPLIER if not same_direction else 1.0
 	if sm.ads:
 		speed *= weapon.ads_speed_multiplier
 
