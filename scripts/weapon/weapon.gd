@@ -567,17 +567,22 @@ func _fire_weapon() -> void:
 		# weapon jamming
 		var mag_data: ItemData = weapon_data.container_items[0]
 		var total_durability: float = weapon_data.durability + mag_data.durability
+		var heat_weight: float = clamp(heat / MAX_HEAT, 0.0, 1.0) ** 2
 		if total_durability <= JAM_START * 2:
-			var weight: float = 1.0 - total_durability / (JAM_START * 2)
-			weight = clamp(weight, 0.0, 1.0)
-			weight **= weapon_data.type_data.weapon_stats.jam_weight
+			var dura_weight: float = 1.0 - total_durability / (JAM_START * 2)
+			dura_weight = clamp(dura_weight, 0.0, 1.0)
+			dura_weight **= weapon_data.type_data.weapon_stats.jam_weight
+			var total_weight: float = clamp(dura_weight + heat_weight, 0.0, 1.0)
 
 			var roll: float = rng.randf()
-			if roll <= lerp(weapon_data.type_data.weapon_stats.jam_chance, MAX_JAM_CHANCE, weight):
+			if roll <= lerp(
+				weapon_data.type_data.weapon_stats.jam_chance,
+				MAX_JAM_CHANCE,
+				total_weight,
+			):
 				weapon_data.type_data.jammed = true
 
 		# deplete durability
-		var heat_weight: float = clamp(heat / MAX_HEAT, 0.0, 1.0) ** 2
 		var depletion_mult: float = lerp(1.0, MAX_HEAT_DURA_MULT, heat_weight)
 		weapon_data.durability -= weapon_data.durability_rate * depletion_mult
 		weapon_data.durability = max(weapon_data.durability, 0.0)
