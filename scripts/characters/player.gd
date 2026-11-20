@@ -45,8 +45,6 @@ const JUMP_BUFFER_TIME = 0.12
 
 const DEATH_TRANS_DELAY = 1.0
 
-const STATUS_LABEL_ORIG_X = -38.5
-
 # walk particle stuff
 const PARTICLE_MIN_VEL = 20.0 # minimum x velocity for walk particles to appear
 const PARTICLE_MAX_VEL = BASE_SPEED * SPRINT_MULTIPLIER
@@ -204,7 +202,7 @@ func _physics_process(delta: float) -> void:
 
 	if not input_locked:
 		anim_sprite.flip_h = flipped
-		status_label.position.x = STATUS_LABEL_ORIG_X + (-1.0 if anim_sprite.flip_h else 1.0)
+		status_label.position.x = -(status_label.size.x / 2) + (-1.0 if anim_sprite.flip_h else 1.0)
 	var same_direction: bool = (direction == -1 and flipped) or (direction == 1 and not flipped)
 
 	# apply no aim multiplier if needed
