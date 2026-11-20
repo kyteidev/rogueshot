@@ -568,7 +568,8 @@ func _fire_weapon() -> void:
 				weapon_data.type_data.jammed = true
 
 		# deplete durability
-		weapon_data.durability -= weapon_data.durability_rate
+		var depletion_mult: float = 1.0 + heat / MAX_HEAT # maybe use an exponential formula instead
+		weapon_data.durability -= weapon_data.durability_rate * depletion_mult
 		weapon_data.durability = max(weapon_data.durability, 0.0)
 
 
