@@ -493,8 +493,15 @@ func _finish_reload() -> void:
 
 func _fire_weapon() -> void:
 	var weapon_data: ItemData = im.equipped_weapons[weapon_index]
+
 	if can_fire and ammo > 0:
-		if weapon_data.durability == 0.0:
+		if (
+			weapon_data.durability == 0.0
+			or (
+				weapon_data.container_items.size() > 0
+				and weapon_data.container_items[0].durability == 0.0
+			)
+		):
 			status_label.show_status_label("BROKEN")
 			return
 
