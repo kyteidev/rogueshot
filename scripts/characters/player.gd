@@ -363,21 +363,6 @@ func _physics_process(delta: float) -> void:
 	_highlight_items()
 	_item_pickup()
 
-	# show status label if reticle in range or not idk
-	if im.weapon_index != -1:
-		if sm.reticle_distance >= sm.max_range:
-			if prev_range_state != 2:
-				prev_range_state = 2
-				status_label.show_status_label("OUT OF RANGE")
-		elif sm.reticle_distance >= sm.effective_range:
-			if prev_range_state != 1:
-				prev_range_state = 1
-				status_label.show_status_label("WEAPON INEFFECTIVE")
-		else:
-			if prev_range_state != 0:
-				prev_range_state = 0
-				status_label.hide_status_label()
-
 
 func take_damage(damage: float, _global_position: Vector2) -> void:
 	# flash red when taking damage
