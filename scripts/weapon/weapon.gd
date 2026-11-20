@@ -495,14 +495,15 @@ func _fire_weapon() -> void:
 	var weapon_data: ItemData = im.equipped_weapons[weapon_index]
 
 	if can_fire and ammo > 0:
-		if (
-			weapon_data.durability == 0.0
-			or (
-				weapon_data.container_items.size() > 0
-				and weapon_data.container_items[0].durability == 0.0
-			)
-		):
+		if weapon_data.durability == 0.0:
 			status_label.show_status_label("BROKEN")
+			return
+
+		if (
+			weapon_data.container_items.size() > 0
+			and weapon_data.container_items[0].durability == 0.0
+		):
+			status_label.show_status_label("MAGAZINE BROKEN")
 			return
 
 		if weapon_data.type_data.jammed:
@@ -601,7 +602,6 @@ func _fire_weapon() -> void:
 		# deplete durability
 		var depletion_mult: float = lerp(1.0, MAX_HEAT_DURA_MULT, heat_weight)
 		weapon_data.durability -= weapon_data.durability_rate * depletion_mult
-		weapon_data.durability = max(weapon_data.durability, 0.0)
 
 
 func _equip_weapon(index: int) -> void:
