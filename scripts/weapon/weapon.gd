@@ -8,6 +8,9 @@ const WALK_SPREAD_MULTIPLIER = 3.0
 const JAM_START = 50.0 # durability percent when jamming can start to happen
 const MAX_JAM_CHANCE = 0.80
 
+const MAX_HEAT_DURA_MULT = 2.0 # max multiplier for decreasing durability when at max heat
+const MAX_HEAT_LIGHT_ENERGY = 10.0
+
 const BULLET = preload("res://scenes/weapons/bullet.tscn")
 const BULLET_SCALE = 0.15
 
@@ -20,7 +23,8 @@ const SPARK_PARTICLES = preload("res://scenes/particles/muzzle_sparks.tscn")
 const FADE_DURATION = 0.15
 const SMOKE_FADE_SPEED = 6.0
 
-const MAX_HEAT = 1.0
+const HEAT_THRESHOLD = 3.0
+const HEAT_JAM_THRESHOLD = 1.0 # minimum heat for it to influence jamming
 const SMOKE_BASE_ALPHA = 0.8
 
 const MAG_FADE_DURATION = 0.3
@@ -41,6 +45,7 @@ var weapon_muzzle: Marker2D = null
 var weapon_muzzle_orig_pos := Vector2(0.0, 0.0)
 var weapon_ejection: Marker2D = null
 var weapon_ejection_orig_pos := Vector2(0.0, 0.0)
+var weapon_heat_light: PointLight2D = null
 
 var weapon_mag: Sprite2D
 var mag_orig_pos := Vector2(0.0, 0.0)
@@ -74,8 +79,14 @@ var mags: int = 0:
 		mags = value
 		sm.mags = value
 
-var effective_range: float
-var max_range: float
+var effective_range: float:
+	set(value):
+		effective_range = value
+		sm.effective_range = value
+var max_range: float:
+	set(value):
+		max_range = value
+		sm.max_range = value
 
 var kick := 0.0
 var kick_recovery := 0.0
@@ -248,6 +259,11 @@ func _physics_process(delta: float) -> void:
 
 	if not input_locked and Input.is_action_just_pressed("weapon_reload"):
 		reload_weapon()
+
+	# barrel turning red from heat idk
+	if weapon_heat_light:
+		var heat_weight: float = clamp(heat / HEAT_THRESHOLD, 0.0, 1.0) ** 2
+		weapon_heat_light.energy = lerp(0.0, MAX_HEAT_LIGHT_ENERGY, heat_weight)
 
 
 func _input(_event: InputEvent) -> void:
@@ -477,9 +493,17 @@ func _finish_reload() -> void:
 
 func _fire_weapon() -> void:
 	var weapon_data: ItemData = im.equipped_weapons[weapon_index]
+
 	if can_fire and ammo > 0:
 		if weapon_data.durability == 0.0:
 			status_label.show_status_label("BROKEN")
+			return
+
+		if (
+			weapon_data.container_items.size() > 0
+			and weapon_data.container_items[0].durability == 0.0
+		):
+			status_label.show_status_label("MAGAZINE BROKEN")
 			return
 
 		if weapon_data.type_data.jammed:
@@ -517,7 +541,7 @@ func _fire_weapon() -> void:
 			add_child(spark_instance)
 
 		# smoke
-		heat = min(heat + heat_per_shot, MAX_HEAT)
+		heat += heat_per_shot
 		if om.get_option("particles"):
 			smoke.global_position = weapon_muzzle.global_position
 
@@ -550,20 +574,34 @@ func _fire_weapon() -> void:
 		camera.shake_strength = camera_shake
 
 		# weapon jamming
+		var heat_weight: float = clamp(heat / HEAT_THRESHOLD, 0.0, 1.0) ** 2
+
 		var mag_data: ItemData = weapon_data.container_items[0]
 		var total_durability: float = weapon_data.durability + mag_data.durability
+		var dura_weight := 0.0
 		if total_durability <= JAM_START * 2:
-			var weight: float = 1.0 - total_durability / (JAM_START * 2)
-			weight = clamp(weight, 0.0, 1.0)
-			weight **= weapon_data.type_data.weapon_stats.jam_weight
+			dura_weight = 1.0 - total_durability / (JAM_START * 2)
+			dura_weight = clamp(dura_weight, 0.0, 1.0)
+			dura_weight **= weapon_data.type_data.weapon_stats.jam_weight
 
+		var total_weight: float = 0.0
+		total_weight += dura_weight
+		if heat >= HEAT_JAM_THRESHOLD:
+			total_weight += heat_weight
+		total_weight = clamp(total_weight, 0.0, 1.0)
+
+		if total_weight > 0.0:
 			var roll: float = rng.randf()
-			if roll <= lerp(weapon_data.type_data.weapon_stats.jam_chance, MAX_JAM_CHANCE, weight):
+			if roll <= lerp(
+				weapon_data.type_data.weapon_stats.jam_chance,
+				MAX_JAM_CHANCE,
+				total_weight,
+			):
 				weapon_data.type_data.jammed = true
 
 		# deplete durability
-		weapon_data.durability -= weapon_data.durability_rate
-		weapon_data.durability = max(weapon_data.durability, 0.0)
+		var depletion_mult: float = lerp(1.0, MAX_HEAT_DURA_MULT, heat_weight)
+		weapon_data.durability -= weapon_data.durability_rate * depletion_mult
 
 
 func _equip_weapon(index: int) -> void:
@@ -611,6 +649,7 @@ func _equip_weapon(index: int) -> void:
 	weapon_muzzle_orig_pos = weapon_muzzle.position
 	weapon_ejection = current_weapon.get_node("./Ejection")
 	weapon_ejection_orig_pos = weapon_ejection.position
+	weapon_heat_light = current_weapon.get_node_or_null("./BarrelHeatLight")
 
 	weapon_mag = current_weapon.get_node("./Magazine")
 	mag_orig_pos = weapon_mag.position
