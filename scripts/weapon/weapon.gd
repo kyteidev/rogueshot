@@ -24,6 +24,7 @@ const FADE_DURATION = 0.15
 const SMOKE_FADE_SPEED = 6.0
 
 const HEAT_THRESHOLD = 3.0
+const HEAT_JAM_THRESHOLD = 1.0 # minimum heat for it to influence jamming
 const SMOKE_BASE_ALPHA = 0.8
 
 const MAG_FADE_DURATION = 0.3
@@ -565,15 +566,23 @@ func _fire_weapon() -> void:
 		camera.shake_strength = camera_shake
 
 		# weapon jamming
+		var heat_weight: float = clamp(heat / HEAT_THRESHOLD, 0.0, 1.0) ** 2
+
 		var mag_data: ItemData = weapon_data.container_items[0]
 		var total_durability: float = weapon_data.durability + mag_data.durability
-		var heat_weight: float = clamp(heat / HEAT_THRESHOLD, 0.0, 1.0) ** 2
+		var dura_weight := 0.0
 		if total_durability <= JAM_START * 2:
-			var dura_weight: float = 1.0 - total_durability / (JAM_START * 2)
+			dura_weight = 1.0 - total_durability / (JAM_START * 2)
 			dura_weight = clamp(dura_weight, 0.0, 1.0)
 			dura_weight **= weapon_data.type_data.weapon_stats.jam_weight
-			var total_weight: float = clamp(dura_weight + heat_weight, 0.0, 1.0)
 
+		var total_weight: float = 0.0
+		total_weight += dura_weight
+		if heat >= HEAT_JAM_THRESHOLD:
+			total_weight += heat_weight
+		total_weight = clamp(total_weight, 0.0, 1.0)
+
+		if total_weight > 0.0:
 			var roll: float = rng.randf()
 			if roll <= lerp(
 				weapon_data.type_data.weapon_stats.jam_chance,
