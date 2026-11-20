@@ -23,7 +23,7 @@ const SPARK_PARTICLES = preload("res://scenes/particles/muzzle_sparks.tscn")
 const FADE_DURATION = 0.15
 const SMOKE_FADE_SPEED = 6.0
 
-const MAX_HEAT = 1.0
+const HEAT_THRESHOLD = 3.0
 const SMOKE_BASE_ALPHA = 0.8
 
 const MAG_FADE_DURATION = 0.3
@@ -261,7 +261,7 @@ func _physics_process(delta: float) -> void:
 
 	# barrel turning red from heat idk
 	if weapon_heat_light:
-		var heat_weight: float = clamp(heat / MAX_HEAT, 0.0, 1.0) ** 2
+		var heat_weight: float = clamp(heat / HEAT_THRESHOLD, 0.0, 1.0) ** 2
 		weapon_heat_light.energy = lerp(0.0, MAX_HEAT_LIGHT_ENERGY, heat_weight)
 
 
@@ -532,7 +532,7 @@ func _fire_weapon() -> void:
 			add_child(spark_instance)
 
 		# smoke
-		heat = min(heat + heat_per_shot, MAX_HEAT)
+		heat += heat_per_shot
 		if om.get_option("particles"):
 			smoke.global_position = weapon_muzzle.global_position
 
@@ -567,7 +567,7 @@ func _fire_weapon() -> void:
 		# weapon jamming
 		var mag_data: ItemData = weapon_data.container_items[0]
 		var total_durability: float = weapon_data.durability + mag_data.durability
-		var heat_weight: float = clamp(heat / MAX_HEAT, 0.0, 1.0) ** 2
+		var heat_weight: float = clamp(heat / HEAT_THRESHOLD, 0.0, 1.0) ** 2
 		if total_durability <= JAM_START * 2:
 			var dura_weight: float = 1.0 - total_durability / (JAM_START * 2)
 			dura_weight = clamp(dura_weight, 0.0, 1.0)
