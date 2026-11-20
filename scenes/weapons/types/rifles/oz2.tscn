@@ -4,6 +4,7 @@
 [ext_resource type="Script" uid="uid://d0pixi7go812d" path="res://scripts/weapon/weapon_sprite.gd" id="2_3a6af"]
 [ext_resource type="Texture2D" uid="uid://c7tan25e3y804" path="res://assets/sprites/weapons/guns/rifles/oz2/oz2_base.png" id="3_32jl1"]
 [ext_resource type="Texture2D" uid="uid://dry375adwg3wr" path="res://assets/sprites/weapons/guns/rifles/oz2/oz2_mag.png" id="4_32jl1"]
+[ext_resource type="Texture2D" uid="uid://ddjxicwud1t2c" path="res://assets/sprites/weapons/guns/rifles/oz2/oz2_barrel.png" id="5_5w1e0"]
 
 [node name="OZ-2" type="Sprite2D" unique_id=78556742]
 scale = Vector2(0.6, 0.6)
@@ -23,3 +24,9 @@ position = Vector2(1.5, -0.5)
 visible = false
 position = Vector2(7, 3)
 texture = ExtResource("4_32jl1")
+
+[node name="BarrelHeatLight" type="PointLight2D" parent="." unique_id=654047028]
+position = Vector2(13.5, -0.5)
+color = Color(0.9999744, 0.30407184, 0.0055377316, 1)
+energy = 0.0
+texture = ExtResource("5_5w1e0")

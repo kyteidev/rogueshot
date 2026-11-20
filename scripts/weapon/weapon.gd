@@ -9,6 +9,7 @@ const JAM_START = 50.0 # durability percent when jamming can start to happen
 const MAX_JAM_CHANCE = 0.80
 
 const MAX_HEAT_DURA_MULT = 2.0 # max multiplier for decreasing durability when at max heat
+const MAX_HEAT_LIGHT_ENERGY = 10.0
 
 const BULLET = preload("res://scenes/weapons/bullet.tscn")
 const BULLET_SCALE = 0.15
@@ -43,6 +44,7 @@ var weapon_muzzle: Marker2D = null
 var weapon_muzzle_orig_pos := Vector2(0.0, 0.0)
 var weapon_ejection: Marker2D = null
 var weapon_ejection_orig_pos := Vector2(0.0, 0.0)
+var weapon_heat_light: PointLight2D = null
 
 var weapon_mag: Sprite2D
 var mag_orig_pos := Vector2(0.0, 0.0)
@@ -256,6 +258,11 @@ func _physics_process(delta: float) -> void:
 
 	if not input_locked and Input.is_action_just_pressed("weapon_reload"):
 		reload_weapon()
+
+	# barrel turning red from heat idk
+	if weapon_heat_light:
+		var heat_weight: float = clamp(heat / MAX_HEAT, 0.0, 1.0) ** 2
+		weapon_heat_light.energy = lerp(0.0, MAX_HEAT_LIGHT_ENERGY, heat_weight)
 
 
 func _input(_event: InputEvent) -> void:
@@ -570,9 +577,8 @@ func _fire_weapon() -> void:
 				weapon_data.type_data.jammed = true
 
 		# deplete durability
-		var durability_weight: float = 1.0 - heat / MAX_HEAT
-		durability_weight = clamp(durability_weight, 0.0, 1.0) ** 2
-		var depletion_mult: float = lerp(1.0, MAX_HEAT_DURA_MULT, durability_weight)
+		var heat_weight: float = clamp(heat / MAX_HEAT, 0.0, 1.0) ** 2
+		var depletion_mult: float = lerp(1.0, MAX_HEAT_DURA_MULT, heat_weight)
 		weapon_data.durability -= weapon_data.durability_rate * depletion_mult
 		weapon_data.durability = max(weapon_data.durability, 0.0)
 
@@ -622,6 +628,7 @@ func _equip_weapon(index: int) -> void:
 	weapon_muzzle_orig_pos = weapon_muzzle.position
 	weapon_ejection = current_weapon.get_node("./Ejection")
 	weapon_ejection_orig_pos = weapon_ejection.position
+	weapon_heat_light = current_weapon.get_node_or_null("./BarrelHeatLight")
 
 	weapon_mag = current_weapon.get_node("./Magazine")
 	mag_orig_pos = weapon_mag.position
