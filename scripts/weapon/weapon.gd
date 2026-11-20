@@ -8,6 +8,8 @@ const WALK_SPREAD_MULTIPLIER = 3.0
 const JAM_START = 50.0 # durability percent when jamming can start to happen
 const MAX_JAM_CHANCE = 0.80
 
+const MAX_HEAT_DURA_MULT = 2.0 # max multiplier for decreasing durability when at max heat
+
 const BULLET = preload("res://scenes/weapons/bullet.tscn")
 const BULLET_SCALE = 0.15
 
@@ -568,7 +570,9 @@ func _fire_weapon() -> void:
 				weapon_data.type_data.jammed = true
 
 		# deplete durability
-		var depletion_mult: float = 1.0 + heat / MAX_HEAT # maybe use an exponential formula instead
+		var durability_weight: float = 1.0 - heat / MAX_HEAT
+		durability_weight = clamp(durability_weight, 0.0, 1.0) ** 2
+		var depletion_mult: float = lerp(1.0, MAX_HEAT_DURA_MULT, durability_weight)
 		weapon_data.durability -= weapon_data.durability_rate * depletion_mult
 		weapon_data.durability = max(weapon_data.durability, 0.0)
 
