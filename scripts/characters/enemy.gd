@@ -545,7 +545,8 @@ func _state_dead(delta: float) -> void:
 
 			# set correct data
 			ammo_data.count = ammo
-			mag_data.container_items.append(ammo_data)
+			if ammo != 0:
+				mag_data.container_items.append(ammo_data)
 			weapon_data.container_items.append(mag_data)
 			weapon_data.type_data.mag_attached = true
 
