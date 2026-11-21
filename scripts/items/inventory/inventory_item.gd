@@ -37,6 +37,13 @@ var load_item: InventoryItem
 var unload_item: ItemData
 
 var container_full := false
+var item_count: int = 0
+
+# maybe keep separate load and unload times for clarity
+var loading_item := false
+var unloading_item := false
+var load_time := 0.0
+var unload_time := 0.0
 
 @onready var inventory: CanvasLayer = get_node("../../../")
 @onready var tooltip: PanelContainer = inventory.get_node("./Tooltip")
@@ -179,7 +186,7 @@ func _input(event: InputEvent) -> void:
 				data.container and im.dragged_item and im.dragged_item != self
 				and im.dragged_item.data.type == data.container_item_type
 			):
-				var item_count: int = 0
+				item_count = 0
 				for item in data.container_items:
 					item_count += item.count
 
@@ -197,12 +204,13 @@ func _input(event: InputEvent) -> void:
 				if load_timer.wait_time != 0.001:
 					var available_space: int = data.container_max_size - item_count
 
-					var load_time: float = data.container_load_time * min(
+					load_time = data.container_load_time * min(
 						loaded_item.data.count,
 						available_space,
 					)
 					load_bar.max_value = load_time
 					load_timer.start(load_time)
+					loading_item = true
 
 					load_item = loaded_item
 					loaded_item.overlay.visible = true
@@ -298,10 +306,11 @@ func unequip_item() -> void:
 func unload_items() -> void:
 	if data.container_items.size() == 0:
 		return
+	unloading_item = true
 
 	unload_item = data.container_items[-1]
 	if unload_timer.wait_time != 0.001:
-		var unload_time: float = data.container_load_time * unload_item.count
+		unload_time = data.container_load_time * unload_item.count
 		load_bar.max_value = unload_time
 		unload_timer.start(unload_time)
 	else:
@@ -498,11 +507,21 @@ func _item_type_logic() -> void:
 						.type_data \
 						.loaded_icon
 			)
+		types.MAGAZINE:
+			# play load sounds when loading ammo
+			if (
+				(loading_item and load_item.data.type == types.AMMO)
+				or (unloading_item and unload_item.type == types.AMMO)
+			):
+				_ammo_load_sfx()
 
 
 func _finish_unload() -> void:
-	if im.weapon_index == -1:
-		AudioManager.play("weapon_" + unload_item.id.trim_suffix("_mag") + "_unload")
+	unloading_item = false
+
+	if unload_item.type == ItemData.ItemType.MAGAZINE:
+		if im.weapon_index == -1:
+			AudioManager.play("weapon_" + unload_item.id.trim_suffix("_mag") + "_unload")
 
 	data.container_items.pop_back()
 	im.add_item(unload_item, false)
@@ -515,7 +534,22 @@ func _finish_unload() -> void:
 	await get_tree().process_frame # idk why this is here but its probably important
 
 
+func _ammo_load_sfx() -> void:
+	if not loading_item and not unloading_item:
+		return
+
+	var available_space: int = data.container_max_size - item_count
+
+	var delay: float = load_time / min(load_item.data.count, available_space) if loading_item else unload_time / unload_item.count
+	get_tree().create_timer(delay).timeout.connect(
+		func() -> void:
+			AudioManager.play("weapon_bullet_mag_load")
+			_ammo_load_sfx(),
+	)
+
+
 func _on_load_timer_timeout() -> void:
+	loading_item = false
 	if load_item:
 		_load_item(load_item)
 		load_item.overlay.visible = false
