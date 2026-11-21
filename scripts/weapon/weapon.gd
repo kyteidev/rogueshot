@@ -587,7 +587,7 @@ func _fire_weapon() -> void:
 		var total_weight: float = 0.0
 		total_weight += dura_weight
 		if heat >= HEAT_JAM_THRESHOLD:
-			total_weight += heat_weight
+			total_weight += heat_weight / 2
 		total_weight = clamp(total_weight, 0.0, 1.0)
 
 		if total_weight > 0.0:
