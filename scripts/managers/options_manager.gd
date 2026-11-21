@@ -52,19 +52,30 @@ func _ready() -> void:
 		InputMap.action_erase_events(control)
 
 		var keybind: String = keybinds[control]
+		var keycode: Variant
 		match keybind:
 			"LMB":
-				keybind = "MOUSE_BUTTON_LEFT"
+				var mouse_event := InputEventMouseButton.new()
+				mouse_event.button_index = MOUSE_BUTTON_LEFT
+				keycode = mouse_event
 			"RMB":
-				keybind = "MOUSE_BUTTON_RIGHT"
+				var mouse_event := InputEventMouseButton.new()
+				mouse_event.button_index = MOUSE_BUTTON_RIGHT
+				keycode = mouse_event
 			"MMB":
-				keybind = "MOUSE_BUTTON_MIDDLE"
+				var mouse_event := InputEventMouseButton.new()
+				mouse_event.button_index = MOUSE_BUTTON_MIDDLE
+				keycode = mouse_event
+			_:
+				keycode = OS.find_keycode_from_string(keybind)
 
-		var keycode: Key = OS.find_keycode_from_string(keybind)
-		var input_key := InputEventKey.new()
-		input_key.physical_keycode = keycode
+		if keycode is Key:
+			var input_key := InputEventKey.new()
+			input_key.physical_keycode = keycode
 
-		InputMap.action_add_event(control, input_key)
+			InputMap.action_add_event(control, input_key)
+		elif keycode is InputEventMouseButton:
+			InputMap.action_add_event(control, keycode)
 
 
 func get_option(option: String) -> Variant:
