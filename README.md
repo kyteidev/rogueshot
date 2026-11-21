@@ -46,6 +46,7 @@ CONTROLS:
 - Cyberpunk Tileset - 16X16 by MORDA - https://morda-studios.itch.io/cyberpunk-tileset-16x16?download
 - Simple circle transition shader by agurkas - https://godotshaders.com/shader/simple-circle-transition-2/ - has been modified
 - 2D outline shader by Julian-Vos - https://godotengine.org/asset-library/asset/2829 - MIT license found in shaders/outline.gdshader
+- Weapon SFX collection (multiple authors) - https://hamsunqiu.itch.io/modern-military-weapons-sound-pack-38-wav-cc0
 
 ### CREDITS
 - Celeste for inspiring me to add the wallbounce mechanic

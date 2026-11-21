@@ -603,6 +603,9 @@ func _fire_weapon() -> void:
 		var depletion_mult: float = lerp(1.0, MAX_HEAT_DURA_MULT, heat_weight)
 		weapon_data.durability -= weapon_data.durability_rate * depletion_mult
 
+		# play sfx
+		AudioManager.play("weapon_" + weapon_data.id + "_fire", weapon_muzzle.global_position)
+
 
 func _equip_weapon(index: int) -> void:
 	# reset and save weapon stats before switching
