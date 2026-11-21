@@ -317,6 +317,8 @@ func reload_weapon() -> void:
 		reticle.start_reload()
 		reticle.tween.finished.connect(
 			func() -> void:
+				AudioManager.play("weapon_unjam", global_position)
+
 				im.equipped_weapons[weapon_index].type_data.jammed = false
 				hud.update_hint_label(false)
 				status_label.hide_status_label(),
