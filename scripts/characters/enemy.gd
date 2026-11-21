@@ -197,6 +197,8 @@ func _ready() -> void:
 	weapon_effective_range = weapon_stats.effective_range
 	weapon_max_range = weapon_stats.max_range
 
+	anim.frame_changed.connect(on_anim_sprite_frame_changed.bind(anim))
+
 
 func _process(_delta: float) -> void:
 	# flip weapon if necessary

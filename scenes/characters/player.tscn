@@ -275,7 +275,6 @@ horizontal_alignment = 1
 vertical_alignment = 1
 script = ExtResource("7_6eyoc")
 
-[connection signal="frame_changed" from="AnimSprite" to="." method="_on_anim_sprite_frame_changed"]
 [connection signal="body_entered" from="ItemPickupArea" to="." method="_on_item_pickup_area_body_entered"]
 [connection signal="body_exited" from="ItemPickupArea" to="." method="_on_item_pickup_area_body_exited"]
 [connection signal="timeout" from="DeathTimer" to="." method="_on_death_timer_timeout"]

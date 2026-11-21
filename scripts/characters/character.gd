@@ -71,3 +71,12 @@ func manage_walk_particles(
 
 	particles.emitting = true
 	particles.process_material.direction = Vector3(-sign(velocity.x), -0.4, 0.0)
+
+
+func on_anim_sprite_frame_changed(anim_sprite: AnimatedSprite2D) -> void:
+	if not is_on_floor() or abs(velocity.x) == 0.0:
+		return
+
+	var walk_frames := [0, 3]
+	if anim_sprite.frame in walk_frames:
+		AudioManager.play("character_walk_rock", global_position)
