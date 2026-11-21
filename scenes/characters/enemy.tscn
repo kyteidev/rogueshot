@@ -6,8 +6,8 @@
 [ext_resource type="Resource" uid="uid://ciuaxrrej43ip" path="res://resources/items/weapons/rifles/oz-2/oz2_mag.tres" id="3_f0ik5"]
 [ext_resource type="Texture2D" uid="uid://sxdj3w7nress" path="res://assets/sprites/icons/question mark.png" id="4_21x0f"]
 [ext_resource type="Resource" uid="uid://clbie6ews1yvb" path="res://resources/items/ammo/556.tres" id="4_rc7n0"]
-[ext_resource type="Texture2D" uid="uid://c4114geuy27sw" path="res://assets/sprites/weapons/guns/rifles/oz2/oz2_loaded.png" id="5_f0ik5"]
 [ext_resource type="Script" uid="uid://dtictyumsb7ps" path="res://scripts/characters/enemy_status_icon.gd" id="5_jgk6k"]
+[ext_resource type="PackedScene" uid="uid://bpjm35k12y14k" path="res://scenes/weapons/types/rifles/oz2.tscn" id="6_gpyvg"]
 [ext_resource type="PackedScene" uid="uid://lbxyk5rhhfpo" path="res://scenes/particles/walk_particles.tscn" id="7_gpyvg"]
 [ext_resource type="Script" uid="uid://1w732e3gs1gb" path="res://scripts/characters/status_label.gd" id="7_x5khh"]
 [ext_resource type="FontFile" uid="uid://f2n8hokso8m2" path="res://assets/fonts/deckhand_regular_8px.ttf" id="9_rc7n0"]
@@ -178,16 +178,9 @@ shape = SubResource("CapsuleShape2D_nxcxh")
 position = Vector2(0, -5)
 rotation = 0.2617994
 
-[node name="Rifle1" type="Sprite2D" parent="Weapon" unique_id=455243674]
+[node name="OZ-2" parent="Weapon" unique_id=78556742 instance=ExtResource("6_gpyvg")]
+unique_name_in_owner = true
 scale = Vector2(0.6000001, 0.6000001)
-texture = ExtResource("5_f0ik5")
-offset = Vector2(3, 0)
-
-[node name="Muzzle" type="Marker2D" parent="Weapon/Rifle1" unique_id=554835805]
-position = Vector2(16, -0.5)
-
-[node name="Ejection" type="Marker2D" parent="Weapon/Rifle1" unique_id=504769942]
-position = Vector2(1.6098762, -0.431365)
 
 [node name="WeaponLOSRay" type="RayCast2D" parent="Weapon" unique_id=2114914832]
 visible = false

@@ -76,6 +76,9 @@ const MAX_AMMO = 25
 const HEADSHOT_MULTIPLIER = 2.0
 const PARTIAL_DMG_MULTIPLIER = 0.5
 
+const MAG_FADE_DURATION = 0.3
+const MAG_MOVE_AMOUNT = 3.0
+
 # walk particles
 const PARTICLE_MAX_VEL = RUN_SPEED
 
@@ -117,7 +120,11 @@ var weapon_cooling_rate: float
 var weapon_effective_range: float
 var weapon_max_range: float
 
+var flipped: bool
 var was_airborne := false
+
+var mag_orig_pos: Vector2
+var mag_anim_tween: Tween
 
 # index 0: question mark, index 1: exclamation mark
 var status_icons := [
@@ -133,9 +140,10 @@ var rng := Random.rng
 @onready var anim: AnimatedSprite2D = $AnimSprite
 
 @onready var weapon: Node2D = $Weapon
-@onready var weapon_sprite: Sprite2D = $Weapon/Rifle1
-@onready var weapon_muzzle: Marker2D = $Weapon/Rifle1/Muzzle
-@onready var weapon_ejection: Marker2D = $Weapon/Rifle1/Ejection
+@onready var weapon_sprite: Sprite2D = %"OZ-2"
+@onready var weapon_muzzle: Marker2D = %"OZ-2"/Muzzle
+@onready var weapon_ejection: Marker2D = %"OZ-2"/Ejection
+@onready var weapon_mag: Sprite2D = %"OZ-2"/Magazine
 @onready var weapon_los_ray: RayCast2D = $Weapon/WeaponLOSRay
 @onready var weapon_shoot_timer: Timer = $Weapon/WeaponShootTimer
 @onready var weapon_reload_timer: Timer = $Weapon/WeaponReloadTimer
@@ -199,13 +207,18 @@ func _ready() -> void:
 
 	anim.frame_changed.connect(on_anim_sprite_frame_changed.bind(anim))
 
+	weapon_sprite.texture = weapon_sprite.loaded_texture
+	mag_orig_pos = weapon_mag.position
+
 
 func _process(_delta: float) -> void:
 	# flip weapon if necessary
-	var flipped: bool = direction < 0
+	flipped = direction < 0
 
 	weapon_sprite.flip_v = flipped
 	weapon_muzzle.position.y = -weapon_muzzle_orig_pos.y if flipped else weapon_muzzle_orig_pos.y
+	weapon_mag.position.y = -mag_orig_pos.y if flipped else mag_orig_pos.y
+	weapon_mag.flip_v = flipped
 
 
 func _physics_process(delta: float) -> void:
@@ -624,6 +637,11 @@ func _shoot() -> void:
 
 		status_label.show_status_label("RELOADING")
 
+		_unload_mag_anim()
+		get_tree().create_timer(weapon_reload_time - MAG_FADE_DURATION).timeout.connect(
+			_load_mag_anim
+		)
+
 
 func _move_toward(pos: Vector2, move_speed: float, raise_weapon := false) -> float:
 	var pos_diff: float = global_position.x - pos.x
@@ -710,6 +728,53 @@ func _walk_particles() -> void:
 
 	walk_particles.emitting = true
 	walk_particles.process_material.direction = Vector3(-sign(velocity.x), -0.4, 0.0)
+
+
+# maybe theres a more efficient way of doing this
+# instead of copy pasting code from weapon.gd?
+func _load_mag_anim() -> void:
+	AudioManager.play("weapon_" + weapon_data.id + "_load", global_position)
+
+	var mag: Sprite2D = weapon_sprite.get_node("./Magazine")
+	mag.visible = true
+
+	var orig_pos: float = -mag_orig_pos.y - MAG_MOVE_AMOUNT if flipped else mag_orig_pos.y + MAG_MOVE_AMOUNT
+	var target_pos: float = -mag_orig_pos.y if flipped else mag_orig_pos.y
+	mag.position.y = orig_pos
+	mag.modulate.a = 0.0
+
+	if mag_anim_tween:
+		mag_anim_tween.kill()
+	mag_anim_tween = create_tween()
+	mag_anim_tween.set_parallel(true)
+
+	mag_anim_tween.tween_property(mag, "position:y", target_pos, MAG_FADE_DURATION) \
+			.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	mag_anim_tween.tween_property(mag, "modulate:a", 1.0, MAG_FADE_DURATION) \
+			.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+
+
+func _unload_mag_anim() -> void:
+	AudioManager.play("weapon_" + weapon_data.id + "_unload", global_position)
+
+	var mag: Sprite2D = weapon_sprite.get_node("./Magazine")
+	weapon_sprite.texture = weapon_sprite.base_texture
+	mag.visible = true
+	mag.modulate.a = 0.0
+
+	if mag_anim_tween:
+		mag_anim_tween.kill()
+	mag_anim_tween = create_tween()
+	mag_anim_tween.set_parallel(true)
+
+	var target_pos: float = -mag_orig_pos.y - MAG_MOVE_AMOUNT if flipped else mag_orig_pos.y + MAG_MOVE_AMOUNT
+
+	mag_anim_tween \
+			.tween_property(mag, "position:y", target_pos, MAG_FADE_DURATION) \
+			.set_trans(Tween.TRANS_QUAD) \
+			.set_ease(Tween.EASE_IN)
+	mag_anim_tween.tween_property(mag, "modulate:a", 0.0, MAG_FADE_DURATION) \
+			.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
 
 
 func _on_detection_area_body_entered(body: Node2D) -> void:
