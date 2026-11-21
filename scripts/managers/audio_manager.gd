@@ -1,6 +1,6 @@
 extends Node
 
-const SFX_PATH = "res://assets/sounds/sfx"
+const SFX_PATH = "res://assets/sounds/sfx/"
 
 var sounds: Dictionary = { }
 
@@ -27,7 +27,5 @@ func _load_folder(path: String) -> void:
 		_load_folder(path + dir + "/")
 
 	for file in DirAccess.get_files_at(path):
-		if file.get_extension() == "import":
-			continue
-
+		file = file.trim_suffix(".import")
 		sounds[file.get_basename()] = load(path + file)
