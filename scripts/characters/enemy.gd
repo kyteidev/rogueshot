@@ -114,6 +114,8 @@ var weapon_kick_recovery: float
 var weapon_reload_time: float
 var weapon_heat_per_shot: float
 var weapon_cooling_rate: float
+var weapon_effective_range: float
+var weapon_max_range: float
 
 # index 0: question mark, index 1: exclamation mark
 var status_icons := [
@@ -190,6 +192,8 @@ func _ready() -> void:
 	weapon_reload_time = weapon_stats.reload_time
 	weapon_heat_per_shot = weapon_stats.heat
 	weapon_cooling_rate = weapon_stats.cooling_rate
+	weapon_effective_range = weapon_stats.effective_range
+	weapon_max_range = weapon_stats.max_range
 
 
 func _process(_delta: float) -> void:
@@ -566,6 +570,9 @@ func _shoot() -> void:
 		bullet_instance.global_position = weapon_muzzle.global_position
 		bullet_instance.rotation = weapon.global_rotation + spread_angle
 		bullet_instance.scale = Vector2(BULLET_SCALE, BULLET_SCALE)
+
+		bullet_instance.effective_range = weapon_effective_range
+		bullet_instance.max_range = weapon_max_range
 
 		bullet_instance.add_collision_exception_with(self)
 
