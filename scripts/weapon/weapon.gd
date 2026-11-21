@@ -497,9 +497,12 @@ func _finish_reload() -> void:
 
 
 func _fire_weapon() -> void:
+	if not can_fire:
+		return
+
 	var weapon_data: ItemData = im.equipped_weapons[weapon_index]
 
-	if can_fire and ammo > 0:
+	if ammo > 0:
 		if weapon_data.durability == 0.0:
 			status_label.show_status_label("BROKEN")
 			return
@@ -610,6 +613,8 @@ func _fire_weapon() -> void:
 
 		# play sfx
 		AudioManager.play("weapon_" + weapon_data.id + "_fire", weapon_muzzle.global_position)
+	elif ammo == 0:
+		AudioManager.play("weapon_fire_empty", global_position)
 
 
 func _equip_weapon(index: int) -> void:
