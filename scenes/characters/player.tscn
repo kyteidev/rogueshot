@@ -173,7 +173,7 @@ script = ExtResource("1_g2els")
 [node name="AnimSprite" type="AnimatedSprite2D" parent="." unique_id=1345892962]
 position = Vector2(0, -8)
 sprite_frames = SubResource("SpriteFrames_6rfd2")
-animation = &"death"
+animation = &"run"
 autoplay = "idle"
 
 [node name="FullCollision" type="CollisionShape2D" parent="." unique_id=1475566916]
@@ -275,6 +275,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 script = ExtResource("7_6eyoc")
 
+[connection signal="frame_changed" from="AnimSprite" to="." method="_on_anim_sprite_frame_changed"]
 [connection signal="body_entered" from="ItemPickupArea" to="." method="_on_item_pickup_area_body_entered"]
 [connection signal="body_exited" from="ItemPickupArea" to="." method="_on_item_pickup_area_body_exited"]
 [connection signal="timeout" from="DeathTimer" to="." method="_on_death_timer_timeout"]

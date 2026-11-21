@@ -515,3 +515,12 @@ func _on_item_pickup_area_body_exited(body: Node2D) -> void:
 	var index: int = items_in_range.find(body)
 	var popped_body: Node2D = items_in_range.pop_at(index)
 	popped_body.hide_outline()
+
+
+func _on_anim_sprite_frame_changed() -> void:
+	if not is_on_floor() or abs(velocity.x) == 0.0:
+		return
+
+	var walk_frames := [0, 3]
+	if anim_sprite.frame in walk_frames:
+		AudioManager.play("character_walk_rock", global_position)

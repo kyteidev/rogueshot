@@ -50,6 +50,7 @@ CONTROLS:
 - Brackeys Platformer Assets (sounds) by Brackeys, Asbjørn Thirslund - https://brackeysgames.itch.io/brackeys-platformer-bundle
 - Bullet Casing On Concrete 2.wav by CodyGudmundsen - https://freesound.org/s/179005/ - License: Attribution 4.0
 - Latch Clicking.wav by nicklas3799 - https://freesound.org/s/467359/ - License: Attribution 4.0
+- Player Movement Samples (sfx) by leohpaz - https://opengameart.org/content/12-player-movement-sfx - Licenses: CC-BY 4.0, CC-BY 3.0
 
 
 ### CREDITS
