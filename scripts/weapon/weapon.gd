@@ -131,6 +131,7 @@ var ads_progress := 0.0
 var mag_anim_tween: Tween
 
 var flipped: bool
+var can_play_empty_sfx := true
 
 # format: weapon_name: { ammo, mags }
 var weapon_state: Dictionary = { }
@@ -254,8 +255,10 @@ func _physics_process(delta: float) -> void:
 				can_fire = true
 
 	# reset fire lock for semi auto
-	if fire_rate == 0.0 and Input.is_action_just_released("player_shoot"):
-		can_fire = true
+	if Input.is_action_just_released("player_shoot"):
+		can_play_empty_sfx = true
+		if fire_rate == 0.0:
+			can_fire = true
 
 	if not input_locked and Input.is_action_just_pressed("weapon_reload"):
 		reload_weapon()
@@ -615,7 +618,8 @@ func _fire_weapon() -> void:
 
 		# play sfx
 		AudioManager.play("weapon_" + weapon_data.id + "_fire", weapon_muzzle.global_position, -8.0)
-	elif ammo == 0:
+	elif ammo == 0 and can_play_empty_sfx:
+		can_play_empty_sfx = false
 		AudioManager.play("weapon_fire_empty", global_position)
 
 
