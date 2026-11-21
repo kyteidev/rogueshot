@@ -256,14 +256,15 @@ func _physics_process(delta: float) -> void:
 
 
 func take_damage(damage: float, hit_pos: Vector2) -> void:
+	AudioManager.play("character_hurt", global_position) # maybe change this sound later
+
 	if state == State.DEAD:
 		return
 
 	if state != State.ATTACK and state != State.CHASE:
 		# delay changing state to end of frame so that bullet origin pos is correct
 		(func() -> void:
-			_change_state(State.ALERT)
-		).call_deferred()
+			_change_state(State.ALERT)).call_deferred()
 
 	var multiplier := 1.0
 	var reticle_pos: Vector2 = get_local_mouse_position()
