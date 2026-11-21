@@ -2,10 +2,10 @@
 
 [sub_resource type="Gradient" id="Gradient_nxkl5"]
 offsets = PackedFloat32Array(0, 0.5, 1)
-colors = PackedColorArray(0.9098039, 0.83137256, 0.9411765, 0.78431374, 0.72156864, 0.6039216, 0.76862746, 0.54901963, 0.5568628, 0.44705883, 0.6039216, 0)
+colors = PackedColorArray(0.25, 0.25, 0.25, 1, 0.5, 0.5, 0.5, 1, 1, 1, 1, 0)
 metadata/_snap_enabled = true
 
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_nxkl5"]
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_o4vji"]
 gradient = SubResource("Gradient_nxkl5")
 
 [sub_resource type="Curve" id="Curve_nxkl5"]
@@ -25,12 +25,10 @@ initial_velocity_max = 30.0
 gravity = Vector3(0, 10, 0)
 damping_min = 40.0
 damping_max = 70.0
-scale_min = 0.8
+scale_min = 0.79999995
 scale_max = 1.4
 scale_curve = SubResource("CurveTexture_o4vji")
-color_ramp = SubResource("GradientTexture1D_nxkl5")
-hue_variation_min = -0.02
-hue_variation_max = 0.02
+color_ramp = SubResource("GradientTexture1D_o4vji")
 
 [node name="WalkParticles" type="GPUParticles2D" unique_id=1101245519]
 lifetime = 0.4

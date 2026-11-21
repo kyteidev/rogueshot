@@ -165,6 +165,9 @@ var rng := Random.rng
 @onready var weapon_muzzle_orig_pos: Vector2 = weapon_muzzle.position
 
 @onready var walk_particles: GPUParticles2D = %WalkParticles
+@onready var tilemap_ground: TileMapLayer = get_tree().get_first_node_in_group(
+	"unique_tilemap_ground"
+)
 
 
 func _ready() -> void:
@@ -660,6 +663,24 @@ func _walk_particles() -> void:
 	if not is_on_floor() or move_speed <= PARTICLE_MIN_VEL:
 		walk_particles.emitting = false
 		return
+
+	# retrieve color from custom data layer in ground tiles
+	var local_pos: Vector2 = tilemap_ground.to_local(global_position)
+	var tile_pos: Vector2i = tilemap_ground.local_to_map(local_pos)
+	tile_pos.y += 1 # offset by 1 to get tile data BELOW the player
+
+	var tile_data: TileData = tilemap_ground.get_cell_tile_data(tile_pos)
+	var ground_color: Color
+	if tile_data:
+		ground_color = tile_data.get_custom_data("particle_color")
+		var gradient: Gradient = walk_particles.process_material.color_ramp.gradient
+
+		gradient.set_color(0, ground_color)
+		gradient.set_color(1, ground_color)
+		gradient.set_color(
+			2,
+			Color(ground_color.r * 0.7, ground_color.g * 0.7, ground_color.b * 0.7, 0.0),
+		)
 
 	var percent: float = move_speed / PARTICLE_MAX_VEL
 	var target_amount: float

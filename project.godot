@@ -66,6 +66,7 @@ unique_inventory_items=""
 unique_inventory_equipment=""
 unique_inventory=""
 unique_weapon=""
+unique_tilemap_ground=""
 
 [input]
 
