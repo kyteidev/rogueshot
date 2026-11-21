@@ -49,6 +49,7 @@ CONTROLS:
 - Weapon SFX collection (multiple authors) - https://hamsunqiu.itch.io/modern-military-weapons-sound-pack-38-wav-cc0
 - Brackeys Platformer Assets (sounds) by Brackeys, Asbjørn Thirslund - https://brackeysgames.itch.io/brackeys-platformer-bundle
 
+
 ### CREDITS
 - Celeste for inspiring me to add the wallbounce mechanic
 - Road to Vostok for inspiring me to implement weapon stamina
