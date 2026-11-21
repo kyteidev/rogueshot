@@ -131,7 +131,6 @@ var closest_item: Node2D
 var overweight := false
 
 var highlight_changed := false
-var prev_range_state: int = 0 # 0 = in range, 1 = ineffective, 2 = useless
 
 @onready var coyote_timer: Timer = $CoyoteTimer
 @onready var jump_buffer_timer: Timer = $JumpBufferTimer
