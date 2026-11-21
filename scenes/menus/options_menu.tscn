@@ -552,19 +552,22 @@ text = "listening..."
 script = ExtResource("11_yxgvl")
 action_name = "weapon_secondary"
 
-[node name="BackButton" type="Button" parent="." unique_id=123714607]
-layout_mode = 1
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -120.0
-offset_top = -56.0
-offset_right = -64.0
-offset_bottom = -19.0
-grow_horizontal = 0
-grow_vertical = 0
+[node name="ButtonsContainer" type="HBoxContainer" parent="." unique_id=449056795]
+layout_mode = 0
+offset_left = 440.0
+offset_top = 304.0
+offset_right = 576.0
+offset_bottom = 344.0
+theme_override_constants/separation = 8
+alignment = 2
+
+[node name="ApplyButton" type="Button" parent="ButtonsContainer" unique_id=123714607]
+layout_mode = 2
+theme = SubResource("Theme_qnuys")
+text = "Apply"
+
+[node name="BackButton" type="Button" parent="ButtonsContainer" unique_id=1010704263]
+layout_mode = 2
 theme = SubResource("Theme_qnuys")
 text = "Back"
 
@@ -572,4 +575,5 @@ text = "Back"
 [connection signal="pressed" from="TabButtonsContainer/VideoTab" to="." method="_on_tab_pressed"]
 [connection signal="pressed" from="TabButtonsContainer/AudioTab" to="." method="_on_tab_pressed"]
 [connection signal="pressed" from="TabButtonsContainer/ControlsTab" to="." method="_on_tab_pressed"]
-[connection signal="pressed" from="BackButton" to="." method="_on_back_button_pressed"]
+[connection signal="pressed" from="ButtonsContainer/ApplyButton" to="." method="_on_apply_button_pressed"]
+[connection signal="pressed" from="ButtonsContainer/BackButton" to="." method="_on_back_button_pressed"]

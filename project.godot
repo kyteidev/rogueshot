@@ -18,6 +18,7 @@ config/icon="res://icon.svg"
 [autoload]
 
 Random="*uid://1ud21rp2xnqs"
+SaveManager="*uid://csqcqgmflasgw"
 StateManager="*uid://du86n6i4ajifw"
 ItemManager="*uid://dcqr5ywk7hfig"
 OptionsManager="*uid://0ip3hxuyg8uv"
@@ -66,6 +67,7 @@ unique_inventory_items=""
 unique_inventory_equipment=""
 unique_inventory=""
 unique_weapon=""
+unique_tilemap_ground=""
 
 [input]
 

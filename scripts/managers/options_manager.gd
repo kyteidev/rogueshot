@@ -1,5 +1,12 @@
 extends Node
 
+enum Category {
+	GAMEPLAY,
+	VIDEO,
+	AUDIO,
+	CONTROLS,
+}
+
 var camera_shake := true
 var particles := true
 
@@ -8,8 +15,6 @@ var options: Array
 
 func _ready() -> void:
 	# default options
-	# TODO: options saving and loading from file
-
 	# layer 0: tab type as index
 	# 		-> 0: gameplay, 1: video, 2: audio, 3: controls
 	# layer 1: options
@@ -36,6 +41,41 @@ func _ready() -> void:
 			"weapon_secondary": "2",
 		},
 	]
+
+	# load options from file
+	# setting default values initializes all the fields
+	SaveManager.load_settings()
+
+	# set keybinds
+	var keybinds: Dictionary = options[Category.CONTROLS]
+	for control: String in keybinds.keys():
+		InputMap.action_erase_events(control)
+
+		var keybind: String = keybinds[control]
+		var keycode: Variant
+		match keybind:
+			"LMB":
+				var mouse_event := InputEventMouseButton.new()
+				mouse_event.button_index = MOUSE_BUTTON_LEFT
+				keycode = mouse_event
+			"RMB":
+				var mouse_event := InputEventMouseButton.new()
+				mouse_event.button_index = MOUSE_BUTTON_RIGHT
+				keycode = mouse_event
+			"MMB":
+				var mouse_event := InputEventMouseButton.new()
+				mouse_event.button_index = MOUSE_BUTTON_MIDDLE
+				keycode = mouse_event
+			_:
+				keycode = OS.find_keycode_from_string(keybind)
+
+		if keycode is Key:
+			var input_key := InputEventKey.new()
+			input_key.physical_keycode = keycode
+
+			InputMap.action_add_event(control, input_key)
+		elif keycode is InputEventMouseButton:
+			InputMap.action_add_event(control, keycode)
 
 
 func get_option(option: String) -> Variant:
