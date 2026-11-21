@@ -117,6 +117,8 @@ var weapon_cooling_rate: float
 var weapon_effective_range: float
 var weapon_max_range: float
 
+var was_airborne := false
+
 # index 0: question mark, index 1: exclamation mark
 var status_icons := [
 	preload("res://assets/sprites/icons/question mark.png"),
@@ -205,9 +207,16 @@ func _process(_delta: float) -> void:
 
 
 func _physics_process(delta: float) -> void:
+	if was_airborne and is_on_floor():
+		AudioManager.play("character_land", global_position)
+
+	if is_on_floor():
+		was_airborne = false
+
 	# gravity
 	if not is_on_floor():
 		velocity.y += get_custom_gravity(velocity) * delta
+		was_airborne = true
 
 	_check_awareness()
 
@@ -631,6 +640,7 @@ func _move_toward(pos: Vector2, move_speed: float, raise_weapon := false) -> flo
 
 	# jump if necessary
 	if wall_ray.is_colliding() and not high_wall_ray.is_colliding() and is_on_floor():
+		AudioManager.play("character_jump", global_position)
 		velocity.y = JUMP_VELOCITY
 
 	# tilt weapon if needed
