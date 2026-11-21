@@ -10,12 +10,19 @@ func _ready() -> void:
 	_load_folder(SFX_PATH)
 
 
-func play(sound_name: String, position: Vector2, volume := 0.0, pitch := 0.1) -> void:
-	var player := AudioStreamPlayer2D.new()
+func play(sound_name: String, position: Variant = null, volume := 0.0, pitch := 0.1) -> void:
+	var player: Variant
+	if position:
+		player = AudioStreamPlayer2D.new()
+	else:
+		player = AudioStreamPlayer.new()
+
 	player.stream = sounds[sound_name]
 	player.volume_db = volume
 	player.pitch_scale = randf_range(1.0 - pitch, 1.0 + pitch)
-	player.global_position = position
+
+	if position:
+		player.global_position = position
 
 	add_child(player)
 	player.play()

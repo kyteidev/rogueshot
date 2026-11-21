@@ -400,6 +400,10 @@ func _load_item(loaded_item: InventoryItem) -> void:
 	sm.update_inventory_weight()
 
 	if item_data.type == ItemData.ItemType.MAGAZINE:
+		# if weapon is equipped, then the load mag anim function will play the sound
+		if im.weapon_index == -1:
+			AudioManager.play("weapon_" + item_data.id.trim_suffix("_mag") + "_load")
+
 		item_data.durability -= item_data.durability_rate
 
 
@@ -497,6 +501,9 @@ func _item_type_logic() -> void:
 
 
 func _finish_unload() -> void:
+	if im.weapon_index == -1:
+		AudioManager.play("weapon_" + unload_item.id.trim_suffix("_mag") + "_unload")
+
 	data.container_items.pop_back()
 	im.add_item(unload_item, false)
 
