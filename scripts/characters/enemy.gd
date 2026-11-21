@@ -1,4 +1,4 @@
-extends CharacterBody2D
+extends Character
 
 enum State {
 	IDLE,
@@ -50,15 +50,6 @@ const RUN_SPEED = BASE_SPEED * 1.5
 const PATROL_SPEED = 30.0
 const JUMP_VELOCITY = -180.0
 
-const GROUND_ACCEL = 900.0
-const GROUND_FRICTION = 1100.0
-const AIR_ACCEL = 600.0
-const AIR_FRICTION = 300.0
-const TURN_MULTIPLIER = 1.5
-
-const GRAVITY = 750
-const FALL_GRAVITY = GRAVITY * 1.5
-
 const DAMAGE_FLASH_DELAY = 0.04
 
 const PATROL_WEAPON_TILT = 15.0
@@ -92,12 +83,7 @@ const HEADSHOT_MULTIPLIER = 2.0
 const PARTIAL_DMG_MULTIPLIER = 0.5
 
 # walk particles
-const PARTICLE_MIN_VEL = 20.0
 const PARTICLE_MAX_VEL = RUN_SPEED
-
-const PARTICLE_AMOUNT_SLOW = 1.0 / PARTICLE_AMOUNT_FAST
-const PARTICLE_AMOUNT_NORMAL = 5.0 / PARTICLE_AMOUNT_FAST
-const PARTICLE_AMOUNT_FAST = 8
 
 @export var weapon_data: ItemData
 @export var mag_data: ItemData
@@ -206,7 +192,7 @@ func _process(_delta: float) -> void:
 func _physics_process(delta: float) -> void:
 	# gravity
 	if not is_on_floor():
-		velocity.y += _get_custom_gravity(velocity) * delta
+		velocity.y += get_custom_gravity(velocity) * delta
 
 	_check_awareness()
 
@@ -329,12 +315,6 @@ func _set_run_anim(move_speed: float) -> void:
 		ANIM_MAX_SCALE,
 	)
 	anim.play("run")
-
-
-func _get_custom_gravity(vel: Vector2) -> float:
-	if vel.y < 0:
-		return GRAVITY
-	return FALL_GRAVITY
 
 
 func _change_state(new_state: State, long_delay := false) -> void:

@@ -1,4 +1,6 @@
-extends CharacterBody2D
+extends Character
+
+const PARTICLE_MAX_VEL = BASE_SPEED * SPRINT_MULTIPLIER
 
 const MAX_HEALTH = 100.0
 const DAMAGE_FLASH_DELAY = 0.04
@@ -26,17 +28,8 @@ const SHOOT_STAMINA_RATE = 2.0
 
 const WALLBOUNCE_VELOCITY = 150
 
-const GROUND_ACCEL = 900.0
-const GROUND_FRICTION = 1100.0
-const AIR_ACCEL = 600.0
-const AIR_FRICTION = 300.0
-const TURN_MULTIPLIER = 1.5
-
 const JUMP_VELOCITY = -200.0
 const JUMP_VELOCITY_CUT = JUMP_VELOCITY / 3
-
-const GRAVITY = 750
-const FALL_GRAVITY = GRAVITY * 1.5
 
 const STRETCH = 0.2
 
@@ -44,14 +37,6 @@ const COYOTE_TIME = 0.12
 const JUMP_BUFFER_TIME = 0.12
 
 const DEATH_TRANS_DELAY = 1.0
-
-# walk particle stuff
-const PARTICLE_MIN_VEL = 20.0 # minimum x velocity for walk particles to appear
-const PARTICLE_MAX_VEL = BASE_SPEED * SPRINT_MULTIPLIER
-
-const PARTICLE_AMOUNT_SLOW = 4.0 / PARTICLE_AMOUNT_FAST
-const PARTICLE_AMOUNT_NORMAL = 8.0 / PARTICLE_AMOUNT_FAST
-const PARTICLE_AMOUNT_FAST = 14
 
 @export var transition: CanvasLayer
 @export var reticle: Node2D
@@ -211,7 +196,7 @@ func _physics_process(delta: float) -> void:
 
 	# gravity and jump stretch
 	if not is_on_floor():
-		velocity.y += _get_custom_gravity(velocity) * delta
+		velocity.y += get_custom_gravity(velocity) * delta
 		was_airborne = true
 
 		if not reached_peak and velocity.y >= 0:
@@ -357,7 +342,7 @@ func _physics_process(delta: float) -> void:
 
 	_update_stamina_bar(delta)
 
-	_walk_particles()
+	manage_walk_particles(walk_particles, tilemap_ground, PARTICLE_MAX_VEL)
 
 	# item stuff
 	_highlight_items()
@@ -395,12 +380,6 @@ func _stop_stamina_flash() -> void:
 		stamina_tween.kill()
 
 	create_tween().tween_property(stamina_bar, "tint_progress", STAMINA_COLOR, STAMINA_FLASH_DELAY)
-
-
-func _get_custom_gravity(vel: Vector2) -> float:
-	if vel.y < 0:
-		return GRAVITY
-	return FALL_GRAVITY
 
 
 func _on_death_timer_timeout() -> void:
@@ -478,51 +457,6 @@ func _update_stamina_bar(delta: float) -> void:
 			displayed_stamina_loss = sm.stamina
 
 	stamina_loss_bar.value = displayed_stamina_loss
-
-
-func _walk_particles() -> void:
-	if not om.get_option("particles"):
-		return
-
-	# using speed variable might cause racing problems maybe
-	# just get speed from velocity instead
-	var move_speed: float = abs(velocity.x)
-	if not is_on_floor() or move_speed <= PARTICLE_MIN_VEL:
-		walk_particles.emitting = false
-		return
-
-	# retrieve color from custom data layer in ground tiles
-	var local_pos: Vector2 = tilemap_ground.to_local(global_position)
-	var tile_pos: Vector2i = tilemap_ground.local_to_map(local_pos)
-	tile_pos.y += 1 # offset by 1 to get tile data BELOW the player
-
-	var tile_data: TileData = tilemap_ground.get_cell_tile_data(tile_pos)
-	var ground_color: Color
-	if tile_data:
-		ground_color = tile_data.get_custom_data("particle_color")
-		var gradient: Gradient = walk_particles.process_material.color_ramp.gradient
-
-		gradient.set_color(0, ground_color)
-		gradient.set_color(1, ground_color)
-		gradient.set_color(
-			2,
-			Color(ground_color.r * 0.7, ground_color.g * 0.7, ground_color.b * 0.7, 0.0),
-		)
-
-	var percent: float = move_speed / PARTICLE_MAX_VEL
-	var target_amount: float
-	if percent <= 0.4:
-		target_amount = PARTICLE_AMOUNT_SLOW
-	elif percent <= 0.8:
-		target_amount = PARTICLE_AMOUNT_NORMAL
-	else:
-		target_amount = 1.0
-
-	if walk_particles.amount_ratio != target_amount:
-		walk_particles.amount_ratio = 1.0
-
-	walk_particles.emitting = true
-	walk_particles.process_material.direction = Vector3(-sign(velocity.x), -0.4, 0.0)
 
 
 func _item_pickup() -> void:
