@@ -16,6 +16,8 @@ collision_layer = 16
 mass = 0.07
 physics_material_override = SubResource("PhysicsMaterial_tn0ww")
 continuous_cd = 1
+contact_monitor = true
+max_contacts_reported = 1
 linear_damp = 0.5
 angular_damp = 2.0
 script = ExtResource("1_ofxx0")
@@ -31,4 +33,5 @@ shape = SubResource("RectangleShape2D_nxcxh")
 [node name="Timer" type="Timer" parent="." unique_id=944217887]
 one_shot = true
 
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

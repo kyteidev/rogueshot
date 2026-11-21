@@ -13,6 +13,7 @@ const MIN_SPIN = 12.0
 const MAX_SPIN = 18.0
 
 var rng := Random.rng
+var collided := false
 
 @onready var sprite: Sprite2D = $Sprite2D
 @onready var collision: CollisionShape2D = $CollisionShape2D
@@ -45,3 +46,11 @@ func _on_timer_timeout() -> void:
 	var tween := create_tween()
 	tween.tween_property(self, "modulate", Color("ffffff00"), FADE_DURATION)
 	tween.finished.connect(queue_free)
+
+
+func _on_body_entered(_body: Node) -> void:
+	# TODO: do calculations or something to emit a more believable impact sound
+	# currently its just an audio file with set amount of impacts
+	if not collided:
+		AudioManager.play("weapon_bullet_casing_drop", global_position)
+		collided = true

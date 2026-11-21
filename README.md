@@ -48,6 +48,7 @@ CONTROLS:
 - 2D outline shader by Julian-Vos - https://godotengine.org/asset-library/asset/2829 - MIT license found in shaders/outline.gdshader
 - Weapon SFX collection (multiple authors) - https://hamsunqiu.itch.io/modern-military-weapons-sound-pack-38-wav-cc0
 - Brackeys Platformer Assets (sounds) by Brackeys, Asbjørn Thirslund - https://brackeysgames.itch.io/brackeys-platformer-bundle
+- Bullet Casing On Concrete 2.wav by CodyGudmundsen - https://freesound.org/s/179005/ - License: Attribution 4.0
 
 
 ### CREDITS
