@@ -230,6 +230,8 @@ func _physics_process(delta: float) -> void:
 	var can_jump: bool = is_on_floor() or not coyote_timer.is_stopped()
 
 	if wants_jump and can_jump:
+		AudioManager.play("character_jump", global_position)
+
 		velocity.y = JUMP_VELOCITY
 		jump_buffer_timer.stop()
 		coyote_timer.stop()
@@ -237,6 +239,12 @@ func _physics_process(delta: float) -> void:
 		# jump stretch
 		anim_sprite.scale = Vector2(1 - STRETCH, 1 + STRETCH)
 		reached_peak = false
+
+	if was_airborne and is_on_floor():
+		AudioManager.play("character_land", global_position)
+
+	if is_on_floor():
+		was_airborne = false
 
 	# reduce y velocity if player hits ceiling
 	if is_on_ceiling():
