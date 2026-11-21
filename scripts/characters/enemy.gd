@@ -54,12 +54,6 @@ const DAMAGE_FLASH_DELAY = 0.04
 
 const PATROL_WEAPON_TILT = 15.0
 const WEAPON_ROTATION_SPEED = 10.0
-const WEAPON_SPREAD = 2.0
-const WEAPON_KICK = 3.0
-const WEAPON_KICK_RECOVERY = 42.0
-const WEAPON_RELOAD_TIME = 2.3
-const WEAPON_HEAT_PER_SHOT = 0.22
-const WEAPON_COOLING_RATE = 0.87
 
 const MAX_HEAT = 1.0
 const SMOKE_BASE_ALPHA = 0.8
@@ -112,6 +106,14 @@ var desired_weapon_rotation: float = deg_to_rad(PATROL_WEAPON_TILT)
 var muzzle_flash: Node2D
 var smoke: CPUParticles2D
 var heat := 0.0
+
+# weapon stats
+var weapon_spread: float
+var weapon_kick: float
+var weapon_kick_recovery: float
+var weapon_reload_time: float
+var weapon_heat_per_shot: float
+var weapon_cooling_rate: float
 
 # index 0: question mark, index 1: exclamation mark
 var status_icons := [
@@ -180,6 +182,15 @@ func _ready() -> void:
 
 	walk_particles.amount = PARTICLE_AMOUNT_FAST
 
+	# set weapon stats
+	var weapon_stats: WeaponStats = weapon_data.type_data.weapon_stats
+	weapon_spread = weapon_stats.hipfire_spread
+	weapon_kick = weapon_stats.kick
+	weapon_kick_recovery = weapon_stats.kick_recovery
+	weapon_reload_time = weapon_stats.reload_time
+	weapon_heat_per_shot = weapon_stats.heat
+	weapon_cooling_rate = weapon_stats.cooling_rate
+
 
 func _process(_delta: float) -> void:
 	# flip weapon if necessary
@@ -204,7 +215,7 @@ func _physics_process(delta: float) -> void:
 	)
 
 	# muzzle smoke logic
-	heat = max(heat - WEAPON_COOLING_RATE * delta, 0.0)
+	heat = max(heat - weapon_cooling_rate * delta, 0.0)
 	if om.get_option("particles"):
 		smoke.emitting = true if heat > 0.0 else false
 
@@ -480,7 +491,7 @@ func _state_attack(delta: float) -> void:
 
 	# after attack delay has passed
 	if state_timer.is_stopped():
-		kick_offset = move_toward(kick_offset, 0.0, WEAPON_KICK_RECOVERY * delta)
+		kick_offset = move_toward(kick_offset, 0.0, weapon_kick_recovery * delta)
 		weapon.position = weapon_rest_pos + kick_offset * Vector2.from_angle(weapon.rotation)
 
 		# if target in aggro area and has line of sight, don't move
@@ -550,7 +561,7 @@ func _shoot() -> void:
 		var bullet_instance: CharacterBody2D = BULLET.instantiate()
 		bullet_instance.type = bullet_instance.Types.ENEMY
 
-		var spread_angle: float = deg_to_rad(rng.randf_range(-WEAPON_SPREAD, WEAPON_SPREAD))
+		var spread_angle: float = deg_to_rad(rng.randf_range(-weapon_spread, weapon_spread))
 
 		bullet_instance.global_position = weapon_muzzle.global_position
 		bullet_instance.rotation = weapon.global_rotation + spread_angle
@@ -569,12 +580,12 @@ func _shoot() -> void:
 		casing_instance.add_collision_exception_with(self)
 		casing_instance.eject(weapon.global_rotation)
 
-		kick_offset = min(kick_offset + WEAPON_KICK, WEAPON_KICK * 2.0)
+		kick_offset = min(kick_offset + weapon_kick, weapon_kick * 2.0)
 
 		ammo -= 1
 
 		# smoke
-		heat = min(heat + WEAPON_HEAT_PER_SHOT, MAX_HEAT)
+		heat = min(heat + weapon_heat_per_shot, MAX_HEAT)
 		smoke.global_position = weapon_muzzle.global_position
 
 		# muzzle flash
@@ -589,7 +600,7 @@ func _shoot() -> void:
 		# deplete durability
 		weapon_data.durability -= weapon_data.durability_rate
 	elif ammo == 0:
-		weapon_reload_timer.start(WEAPON_RELOAD_TIME)
+		weapon_reload_timer.start(weapon_reload_time)
 		ammo = MAX_AMMO
 
 		status_label.show_status_label("RELOADING")
