@@ -358,7 +358,7 @@ func _physics_process(delta: float) -> void:
 
 
 func take_damage(damage: float, _global_position: Vector2) -> void:
-	AudioManager.play("character_hurt", global_position) # maybe change this sound later
+	AudioManager.play("character_hurt", global_position, -5.0) # maybe change this sound later
 
 	# flash red when taking damage
 	var tween := create_tween()

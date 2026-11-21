@@ -40,18 +40,7 @@ CONTROLS:
 
 
 ### THIRD PARTY ASSETS
-- Groundhog font by ChevyRay - https://chevyray.itch.io/pixel-font-groundhog
-- minibyte font by WQON - https://wqonart.itch.io/minibyte
-- Deckhand font by Pixel Rascal - https://pixelrascal.itch.io/font-deckhand
-- Cyberpunk Tileset - 16X16 by MORDA - https://morda-studios.itch.io/cyberpunk-tileset-16x16?download
-- Simple circle transition shader by agurkas - https://godotshaders.com/shader/simple-circle-transition-2/ - has been modified
-- 2D outline shader by Julian-Vos - https://godotengine.org/asset-library/asset/2829 - MIT license found in shaders/outline.gdshader
-- Weapon SFX collection (multiple authors) - https://hamsunqiu.itch.io/modern-military-weapons-sound-pack-38-wav-cc0
-- Brackeys Platformer Assets (sounds) by Brackeys, Asbjørn Thirslund - https://brackeysgames.itch.io/brackeys-platformer-bundle
-- Bullet Casing On Concrete 2.wav by CodyGudmundsen - https://freesound.org/s/179005/ - License: Attribution 4.0
-- Latch Clicking.wav by nicklas3799 - https://freesound.org/s/467359/ - License: Attribution 4.0
-- Player Movement Samples (sfx) by leohpaz - https://opengameart.org/content/12-player-movement-sfx - Licenses: CC-BY 4.0, CC-BY 3.0
-- Bullet/Gun SFX CC0 by Signature Samples - https://signaturesounds.org/store/p/bullet-gun-sound-effects-cc0-free-download-wav-sample-pack-
+See THIRD_PARTY_ASSETS.md
 
 
 ### CREDITS
