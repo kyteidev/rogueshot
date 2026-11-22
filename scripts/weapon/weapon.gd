@@ -497,8 +497,9 @@ func _finish_reload() -> void:
 			.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 	mag_tween.finished.connect(
 		func() -> void:
-			mag.visible = false
-			mag.modulate.a = 1.0,
+			if mag:
+				mag.visible = false
+				mag.modulate.a = 1.0,
 	)
 
 
