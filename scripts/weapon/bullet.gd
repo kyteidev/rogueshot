@@ -72,6 +72,7 @@ func _physics_process(delta: float) -> void:
 		damage = damage - (
 			clamp(1.0 - (distance - effective_range) / (max_range - effective_range), 0.0, 1.0)
 		)
+		damage = snapped(damage, 0.1)
 
 		if not friendly_fire:
 			if hit.has_method("take_damage"):

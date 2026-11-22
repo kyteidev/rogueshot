@@ -93,7 +93,7 @@ func _process(delta: float) -> void:
 
 	# update health info
 	health_bar.value = sm.health
-	health_bar_text.text = "%s/%s" % [sm.health, sm.max_health]
+	health_bar_text.text = "%.1f/%.1f" % [sm.health, sm.max_health]
 
 	# delay the health loss bar
 	if sm.lost_health:
