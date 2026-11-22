@@ -17,6 +17,7 @@
 [ext_resource type="Resource" uid="uid://ciuaxrrej43ip" path="res://resources/items/weapons/rifles/oz-2/oz2_mag.tres" id="13_g363x"]
 [ext_resource type="Resource" uid="uid://clbie6ews1yvb" path="res://resources/items/ammo/556.tres" id="14_ai2no"]
 [ext_resource type="Resource" uid="uid://dnsl2swq8owc7" path="res://resources/items/weapons/rifles/oz-2/oz2.tres" id="15_e8gd3"]
+[ext_resource type="Resource" uid="uid://ckot7q8j0dd2b" path="res://resources/items/attachments/suppressors/ti56m.tres" id="16_ydft7"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_hpfpv"]
 texture = ExtResource("2_17cyv")
@@ -77,7 +78,7 @@ enemy = NodePath("../Enemy")
 [node name="Inventory" parent="." unique_id=1946403224 node_paths=PackedStringArray("reticle") instance=ExtResource("7_ylwvt")]
 visible = false
 reticle = NodePath("../Reticle")
-starting_items = Array[ExtResource("9_7exj4")]([ExtResource("10_sm6th"), ExtResource("12_ai2no"), ExtResource("12_g363x"), ExtResource("12_ai2no"), ExtResource("13_g363x"), ExtResource("14_ai2no"), ExtResource("15_e8gd3"), ExtResource("13_g363x")])
+starting_items = Array[ExtResource("9_7exj4")]([ExtResource("10_sm6th"), ExtResource("12_ai2no"), ExtResource("12_g363x"), ExtResource("12_ai2no"), ExtResource("13_g363x"), ExtResource("14_ai2no"), ExtResource("15_e8gd3"), ExtResource("13_g363x"), ExtResource("16_ydft7")])
 
 [node name="PauseManu" parent="." unique_id=1248834952 node_paths=PackedStringArray("reticle", "inventory") instance=ExtResource("5_d1y6d")]
 visible = false

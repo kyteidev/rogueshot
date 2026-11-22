@@ -13,6 +13,7 @@ enum ItemType {
 	GOGGLES,
 	MAGAZINE,
 	AMMO,
+	ATTACHMENT,
 }
 
 enum Capability {

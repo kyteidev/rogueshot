@@ -51,4 +51,4 @@ extends Resource
 @export var jam_weight: float
 @export var unjam_time: float
 
-@export var compatible_attachments: Array[WeaponAttachments.AttachmentType]
+@export var compatible_attachments: Array[AttachmentData.AttachmentType]

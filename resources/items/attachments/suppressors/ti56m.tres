@@ -1,0 +1,39 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://ckot7q8j0dd2b"]
+
+[ext_resource type="Script" uid="uid://coqypqa0006b" path="res://scripts/items/item_data.gd" id="1_4r1vc"]
+[ext_resource type="Script" uid="uid://crndixljqmk8n" path="res://scripts/items/type_data/attachment_data.gd" id="2_kxvhs"]
+[ext_resource type="Texture2D" uid="uid://cgb1okd536akm" path="res://assets/sprites/weapons/attachments/suppressors/ti56m.png" id="2_owk0m"]
+[ext_resource type="Script" uid="uid://dlsl5uwhv3wjo" path="res://scripts/items/type_data/attachment_type_data/suppressor.gd" id="3_kxvhs"]
+
+[sub_resource type="Resource" id="Resource_31g8f"]
+script = ExtResource("3_kxvhs")
+sound_multiplier = 0.25
+muzzle_flash_multiplier = 0.2
+smoke_multiplier = 0.6
+damage_multiplier = 0.97
+range_multiplier = 0.95
+spread_multiplier = 0.95
+metadata/_custom_type_script = "uid://dlsl5uwhv3wjo"
+
+[sub_resource type="Resource" id="Resource_e8gd3"]
+script = ExtResource("2_kxvhs")
+type = 1
+type_data = SubResource("Resource_31g8f")
+compatible = Array[int]([2])
+metadata/_custom_type_script = "uid://crndixljqmk8n"
+
+[resource]
+script = ExtResource("1_4r1vc")
+id = &"ti56m"
+name = "Ti56M"
+tooltip_name = "Ti56M Suppressor"
+description = "Made from titanium, this suppressor is lightweight and capable. It was specifically designed for the OZ-2, but it is compatible with other weapons as well."
+type = 11
+type_data = SubResource("Resource_e8gd3")
+icon = ExtResource("2_owk0m")
+weight = 0.28
+has_durability = true
+durability_rate = 0.05
+item_scale = 1.5
+size = Vector2i(2, 1)
+metadata/_custom_type_script = "uid://coqypqa0006b"
