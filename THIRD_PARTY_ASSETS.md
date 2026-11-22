@@ -5,8 +5,8 @@
 
 ## Fonts
 - Groundhog by ChevyRay - https://chevyray.itch.io/pixel-font-groundhog
-- minibyte by WQON - https://wqonart.itch.io/minibyte
 - Deckhand by Pixel Rascal - https://pixelrascal.itch.io/font-deckhand
+- Another Tiny Pixel Font by Alassë Eärfalas - https://alasseearfalas.itch.io/another-tiny-pixel-font-mono-3x5
 
 
 ## Shaders
