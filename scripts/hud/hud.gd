@@ -125,7 +125,7 @@ func _process(delta: float) -> void:
 
 	# hide ammo and mag label if no weapons equipped
 	ammo_mag_container.visible = (
-		(im.equipped_weapons[0] != null or im.equipped_weapons[1] != null) and sm.weapon_index != -1
+		(im.equipped_weapons[0] != null or im.equipped_weapons[1] != null) and im.weapon_index != -1
 	)
 
 	# update keybind

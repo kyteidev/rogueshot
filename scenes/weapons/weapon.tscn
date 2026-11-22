@@ -6,7 +6,14 @@
 z_index = 1
 script = ExtResource("1_uxn4k")
 
-[node name="Timer" type="Timer" parent="." unique_id=873251949]
+[node name="Weapon" type="Node2D" parent="." unique_id=1714535286]
+
+[node name="ShootTimer" type="Timer" parent="." unique_id=873251949]
+unique_name_in_owner = true
 one_shot = true
 
-[node name="Weapon" type="Node2D" parent="." unique_id=1714535286]
+[node name="MagAnimTimer" type="Timer" parent="." unique_id=1125016415]
+unique_name_in_owner = true
+one_shot = true
+
+[connection signal="timeout" from="MagAnimTimer" to="." method="_on_mag_anim_timer_timeout"]

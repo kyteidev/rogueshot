@@ -133,10 +133,15 @@ var mag_anim_tween: Tween
 var flipped: bool
 var can_play_empty_sfx := true
 
+var mag_anim_reload_key := true
+var unjamming := false
+
 # format: weapon_name: { ammo, mags }
 var weapon_state: Dictionary = { }
 
-@onready var timer: Timer = $Timer
+@onready var shoot_timer: Timer = %ShootTimer
+@onready var mag_anim_timer: Timer = %MagAnimTimer
+
 @onready var weapon_node: Node2D = $Weapon
 
 @onready var player: CharacterBody2D = get_parent()
@@ -170,12 +175,7 @@ func _ready() -> void:
 	# gets called immediately when mag is dragged to weapon
 	im.mag_loaded.connect(
 		func() -> void:
-			var index: int = weapon_index
-			get_tree().create_timer(reload_time / 2 - MAG_FADE_DURATION).timeout.connect(
-				func() -> void:
-					if index == weapon_index:
-						load_mag_anim(false),
-			),
+			_schedule_load_mag_anim(reload_time / 2 - MAG_FADE_DURATION, false),
 	)
 
 
@@ -250,8 +250,8 @@ func _physics_process(delta: float) -> void:
 		elif fire_rate > 0.0:
 			if can_fire:
 				can_fire = false
-				timer.start(fire_rate)
-			elif timer.is_stopped():
+				shoot_timer.start(fire_rate)
+			elif shoot_timer.is_stopped():
 				can_fire = true
 
 	# reset fire lock for semi auto
@@ -314,36 +314,28 @@ func reload_weapon() -> void:
 	# this cant run if weapon_index == -1
 	var weapon: ItemData = im.equipped_weapons[weapon_index]
 	if weapon.type_data.jammed:
-		status_label.show_status_label("UNJAMMING")
+		_start_unjam(weapon)
+		return
 
-		reticle.reload_time = weapon.type_data.weapon_stats.unjam_time
-		reticle.start_reload()
-		reticle.tween.finished.connect(
-			func() -> void:
-				AudioManager.play("weapon_unjam", global_position)
-
-				im.equipped_weapons[weapon_index].type_data.jammed = false
-				hud.update_hint_label(false)
-				status_label.hide_status_label(),
-		)
-
+	if unjamming:
 		return
 
 	if reloading:
 		# fast reload
-		if (
-			im.equipped_weapons[weapon_index].container_items.size() == 0
-			or reticle.tween.get_total_elapsed_time() >= reload_time / 2
-		):
+		var anim_elapsed: float = reticle.tween.get_total_elapsed_time()
+		if (weapon.container_items.size() == 0 or anim_elapsed >= reload_time / 2):
 			return
 
+		var anim_remaining: float = (reload_time - anim_elapsed) / 2.0
 		reticle.tween.set_speed_scale(2.0)
 
 		var mag: ItemData = weapon.container_items[0]
 		mag.durability -= mag.durability_rate * 2 # adds 2x on top of the 1x rate
 		im.drop_item(mag)
-		im.equipped_weapons[weapon_index].container_items.clear()
+		weapon.container_items.clear()
+		weapon.type_data.mag_attached = false
 
+		_schedule_load_mag_anim(anim_remaining - MAG_FADE_DURATION, true)
 	elif mags > 0:
 		# standard reload
 		reloading = true
@@ -356,11 +348,11 @@ func reload_weapon() -> void:
 
 		reticle.reload_time = real_reload_time
 		reticle.start_reload()
-		reticle.tween.finished.connect(_finish_reload)
+		reticle.tween.finished.connect(_finish_reload, CONNECT_ONE_SHOT)
 
 		if weapon.type_data.mag_attached:
 			unload_mag_anim()
-		get_tree().create_timer(real_reload_time - MAG_FADE_DURATION).timeout.connect(load_mag_anim)
+		_schedule_load_mag_anim(real_reload_time - MAG_FADE_DURATION, true)
 
 		# durability applies to mag already attached
 		if weapon.type_data.mag_attached:
@@ -441,19 +433,16 @@ func get_spread_multiplier() -> float:
 
 func _finish_reload() -> void:
 	status_label.hide_status_label()
+	reloading = false
 
 	var weapon: ItemData = im.equipped_weapons[weapon_index]
-	var stats: WeaponData = weapon.type_data
+	var fullest_mag: ItemData = _find_fullest_mag(weapon)
+	if not fullest_mag:
+		_restore_mag_sprite(weapon.container_items.size() > 0)
+		_set_ammo_mag_data()
+		return
 
-	stats.mag_attached = true
-
-	var fullest_mag: ItemData
-	var fullest_mag_size: int = 0
-	for item in im.inventory_items:
-		if item.type == ItemData.ItemType.MAGAZINE and stats.weapon == item.type_data.compatible:
-			if item.container_items.size() > 0 and item.container_items[0].count > fullest_mag_size:
-				fullest_mag = item
-				fullest_mag_size = item.container_items[0].count
+	weapon.type_data.mag_attached = true
 
 	# applies to new magazine
 	fullest_mag.durability -= fullest_mag.durability_rate
@@ -464,20 +453,13 @@ func _finish_reload() -> void:
 		var fullest_mag_items: Array[ItemData] = fullest_mag.container_items
 		if mag_items.size() > 0:
 			var current_ammo: int = mag_items[0].count
-			var most_ammo: int = fullest_mag.container_items[0].count
+			var most_ammo: int = fullest_mag_items[0].count
 
 			mag_items[0].count = most_ammo
 			fullest_mag_items[0].count = current_ammo
-
-			ammo = most_ammo
 		else:
-			weapon_state[weapon_name]["mags"] -= 1
-			mags = weapon_state[weapon_name].mags
-
 			weapon.container_items[0].container_items = fullest_mag_items.duplicate(true)
 			fullest_mag.container_items.clear()
-
-			ammo = weapon.container_items[0].container_items[0].count
 	else:
 		# load new magazine
 		var new_mag: ItemData = fullest_mag.duplicate(true)
@@ -485,28 +467,15 @@ func _finish_reload() -> void:
 		im.remove_item(fullest_mag)
 		im.item_loaded.emit()
 
-		ammo = weapon.container_items[0].container_items[0].count
-		weapon.type_data.total_ammo = ammo
-
-	reloading = false
-
-	var sprite: Sprite2D = weapon_node.get_child(0)
-	var mag: Sprite2D = sprite.get_node("./Magazine")
-	sprite.texture = sprite.loaded_texture
-
-	var mag_tween := create_tween()
-	mag_tween.tween_property(mag, "modulate:a", 0.0, 0.1) \
-			.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
-	mag_tween.finished.connect(
-		func() -> void:
-			if mag:
-				mag.visible = false
-				mag.modulate.a = 1.0,
-	)
+	_set_ammo_mag_data()
+	_restore_mag_sprite(true)
 
 
 func _fire_weapon() -> void:
 	if not can_fire:
+		return
+
+	if reloading or unjamming:
 		return
 
 	var weapon_data: ItemData = im.equipped_weapons[weapon_index]
@@ -637,6 +606,11 @@ func _fire_weapon() -> void:
 
 
 func _equip_weapon(index: int) -> void:
+	_cancel_load_mag_anim()
+	unjamming = false
+	if mag_anim_tween:
+		mag_anim_tween.kill()
+
 	# reset and save weapon stats before switching
 	var old_mag: Sprite2D
 
@@ -658,7 +632,6 @@ func _equip_weapon(index: int) -> void:
 
 	# get weapon stuff
 	weapon_index = index
-	sm.weapon_index = index
 	for child in weapon_node.get_children():
 		child.free()
 
@@ -736,7 +709,10 @@ func _equip_weapon(index: int) -> void:
 
 
 func _set_ammo_mag_data() -> void:
-	var weapon: ItemData = im.equipped_weapons[sm.weapon_index]
+	if weapon_index == -1:
+		return
+
+	var weapon: ItemData = im.equipped_weapons[weapon_index]
 	if not weapon:
 		return
 
@@ -759,3 +735,83 @@ func _set_ammo_mag_data() -> void:
 	# restore saved state
 	ammo = weapon_state[weapon_name].ammo
 	mags = weapon_state[weapon_name].mags
+
+
+func _schedule_load_mag_anim(delay: float, reload_key: bool) -> void:
+	mag_anim_reload_key = reload_key
+	mag_anim_timer.start(max(delay, 0.001))
+
+
+func _cancel_load_mag_anim() -> void:
+	mag_anim_timer.stop()
+
+
+func _on_mag_anim_timer_timeout() -> void:
+	load_mag_anim(mag_anim_reload_key)
+
+
+func _get_loaded_ammo(weapon: ItemData) -> int:
+	if weapon.container_items.size() == 0:
+		return 0
+
+	var mag_items: Array[ItemData] = weapon.container_items[0].container_items
+	var count: int = mag_items[0].count if mag_items.size() > 0 else 0
+	return count
+
+
+func _find_fullest_mag(weapon: ItemData) -> ItemData:
+	var fullest_mag: ItemData
+	var fullest_mag_size: int = 0
+	for item in im.inventory_items:
+		if (
+			item.type == ItemData.ItemType.MAGAZINE
+			and weapon.type_data.weapon == item.type_data.compatible
+		):
+			if item.container_items.size() > 0 and item.container_items[0].count > fullest_mag_size:
+				fullest_mag = item
+				fullest_mag_size = item.container_items[0].count
+	return fullest_mag
+
+
+func _restore_mag_sprite(attached: bool) -> void:
+	var sprite: Sprite2D = weapon_node.get_child(0)
+	var mag: Sprite2D = sprite.get_node("./Magazine")
+	sprite.texture = sprite.loaded_texture if attached else sprite.bare_texture
+
+	if mag_anim_tween:
+		mag_anim_tween.kill()
+
+	var mag_tween := create_tween()
+	mag_tween.tween_property(mag, "modulate:a", 0.0, 0.1) \
+			.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+	mag_tween.finished.connect(
+		func() -> void:
+			if mag:
+				mag.visible = false
+				mag.modulate.a = 1.0,
+	)
+
+
+func _start_unjam(weapon: ItemData) -> void:
+	if unjamming:
+		return
+	unjamming = true
+	var unjam_weapon_index: int = weapon_index
+
+	status_label.show_status_label("UNJAMMING")
+
+	reticle.reload_time = weapon.type_data.weapon_stats.unjam_time
+	reticle.start_reload()
+	reticle.tween.finished.connect(
+		func() -> void:
+			AudioManager.play("weapon_unjam", global_position)
+
+			unjamming = false
+			if unjam_weapon_index != weapon_index: # handle case if player switches weapon mid unjam
+				return
+
+			weapon.type_data.jammed = false
+			hud.update_hint_label(false)
+			status_label.hide_status_label(),
+		CONNECT_ONE_SHOT,
+	)

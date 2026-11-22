@@ -45,6 +45,8 @@ var unloading_item := false
 var load_time := 0.0
 var unload_time := 0.0
 
+var ammo_sfx_running := false
+
 @onready var inventory: CanvasLayer = get_node("../../../")
 @onready var tooltip: PanelContainer = inventory.get_node("./Tooltip")
 @onready var slot_preview: ColorRect = inventory.get_node("./InventoryContainer/ItemSlotPreview")
@@ -191,6 +193,9 @@ func _input(event: InputEvent) -> void:
 				data.container and im.dragged_item and im.dragged_item != self
 				and im.dragged_item.data.type == data.container_item_type
 			):
+				if loading_item:
+					return
+
 				item_count = 0
 				for item in data.container_items:
 					item_count += item.count
@@ -221,7 +226,7 @@ func _input(event: InputEvent) -> void:
 					loaded_item.overlay.visible = true
 
 					# mags always have load time
-					if im.weapon_index != -1 and loaded_item.data.type == ItemData.ItemType.MAGAZINE:
+					if _is_equipped_weapon() and loaded_item.data.type == ItemData.ItemType.MAGAZINE:
 						im.mag_loaded.emit()
 				else:
 					_load_item(loaded_item)
@@ -311,7 +316,7 @@ func unequip_item() -> void:
 
 
 func unload_items() -> void:
-	if data.container_items.size() == 0:
+	if data.container_items.size() == 0 or unloading_item:
 		return
 	unloading_item = true
 
@@ -328,17 +333,9 @@ func unload_items() -> void:
 	data.container_weight -= (unload_item.weight * unload_item.count + unload_item.container_weight)
 
 	# show unload animation if its a magazine
-	if unload_item.type == ItemData.ItemType.MAGAZINE:
-		if (
-			im.weapon_index != -1
-			and unload_item.type_data.compatible
-			== im \
-					.equipped_weapons[im.weapon_index] \
-					.type_data \
-					.weapon
-		):
-			var weapon: Node2D = get_tree().get_first_node_in_group("unique_weapon")
-			weapon.unload_mag_anim(false)
+	if _is_equipped_weapon() and unload_item.type == ItemData.ItemType.MAGAZINE:
+		var weapon: Sprite2D = get_tree().get_first_node_in_group("unique_weapon")
+		weapon.unload_mag_anim(false)
 
 
 func split_stack() -> void:
@@ -417,7 +414,7 @@ func _load_item(loaded_item: InventoryItem) -> void:
 
 	if item_data.type == ItemData.ItemType.MAGAZINE:
 		# if weapon is equipped, then the load mag anim function will play the sound
-		if im.weapon_index == -1:
+		if not _is_equipped_weapon():
 			AudioManager.play("weapon_" + item_data.id.trim_suffix("_mag") + "_load", null, -9.0)
 
 		item_data.durability -= item_data.durability_rate
@@ -436,6 +433,10 @@ func _check_compatibility() -> bool:
 			if im.dragged_item.data.type_data.type != data.type_data.caliber:
 				return false
 	return true
+
+
+func _is_equipped_weapon() -> bool:
+	return im.weapon_index != -1 and im.equipped_weapons[im.weapon_index] == data
 
 
 # when releasing item from drag
@@ -548,7 +549,7 @@ func _finish_unload() -> void:
 	unloading_item = false
 
 	if unload_item.type == ItemData.ItemType.MAGAZINE:
-		if im.weapon_index == -1:
+		if not _is_equipped_weapon():
 			AudioManager.play(
 				"weapon_" + unload_item.id.trim_suffix("_mag") + "_unload",
 				null,
@@ -567,20 +568,35 @@ func _finish_unload() -> void:
 
 
 func _ammo_load_sfx() -> void:
-	if not loading_item and not unloading_item:
+	if ammo_sfx_running or not (loading_item or unloading_item):
 		return
 
-	if get_tree().paused:
-		await sm.game_unpaused
+	ammo_sfx_running = true
+	_queue_ammo_load_sfx(0.5)
 
-	var available_space: int = data.container_max_size - item_count
 
-	var delay: float = load_time / min(load_item.data.count, available_space) if loading_item else unload_time / unload_item.count
-	get_tree().create_timer(delay).timeout.connect(
-		func() -> void:
-			AudioManager.play("weapon_bullet_mag_load", null, -5.0)
-			_ammo_load_sfx(),
-	)
+func _queue_ammo_load_sfx(delay_mult := 1.0) -> void:
+	var count: int
+	var total_time: float
+	if loading_item:
+		var available_space: int = data.container_max_size - item_count
+		count = min(load_item.data.count, available_space)
+		total_time = load_time
+	else:
+		count = unload_item.count
+		total_time = unload_time
+
+	var delay: float = max(total_time / max(count, 1), 0.02) * delay_mult
+	get_tree().create_timer(delay, false).timeout.connect(_play_ammo_load_sfx, CONNECT_ONE_SHOT)
+
+
+func _play_ammo_load_sfx() -> void:
+	if not (loading_item or unloading_item):
+		ammo_sfx_running = false
+		return
+
+	AudioManager.play("weapon_bullet_mag_load", null, -5.0)
+	_queue_ammo_load_sfx()
 
 
 func _on_load_timer_timeout() -> void:
