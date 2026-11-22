@@ -20,13 +20,16 @@ enum Capability {
 	EQUIP = 1 << 0,
 	UNLOAD = 1 << 1,
 	SPLIT = 1 << 2,
-	DROP = 1 << 3,
+	MODIFY = 1 << 3,
+	DROP = 1 << 4,
 }
 
 const CAPABILITIES = {
 	ItemType.DEFAULT: Capability.DROP,
-	ItemType.PRIMARY_WEAPON: Capability.EQUIP | Capability.UNLOAD | Capability.DROP,
-	ItemType.SECONDARY_WEAPON: Capability.EQUIP | Capability.UNLOAD | Capability.DROP,
+	ItemType.PRIMARY_WEAPON: Capability.EQUIP | Capability.UNLOAD
+	| Capability.MODIFY | Capability.DROP,
+	ItemType.SECONDARY_WEAPON: Capability.EQUIP | Capability.UNLOAD
+	| Capability.MODIFY | Capability.DROP,
 	ItemType.HELMET: Capability.EQUIP | Capability.DROP,
 	ItemType.ARMOR: Capability.EQUIP | Capability.DROP,
 	ItemType.BACKPACK: Capability.EQUIP | Capability.DROP,

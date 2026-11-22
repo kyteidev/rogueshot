@@ -55,6 +55,7 @@ func _input(event: InputEvent) -> void:
 func _load_buttons(capabilities: int) -> void:
 	# load buttons for each menu type
 	var button_count: int = 0
+	var button_size: Vector2
 	for action_name: String in ItemData.Capability:
 		var action: ItemData.Capability = ItemData.Capability[action_name]
 		if (capabilities & action) == 0:
@@ -73,6 +74,9 @@ func _load_buttons(capabilities: int) -> void:
 			"Unload":
 				if im.context_menu_item.data.container_items.size() == 0:
 					button.disabled = true
+			"Modify":
+				if im.context_menu_item.data.type_data.attachments.size() == 0:
+					button.disabled = true
 
 		button.text = button_text
 
@@ -83,10 +87,11 @@ func _load_buttons(capabilities: int) -> void:
 		)
 
 		button_count += 1
+		button_size = button.size
 
-		# calculate size of context menu
-		menu_size.x = button.size.x
-		menu_size.y = button.size.y * button_count
+	# calculate size of context menu
+	menu_size.x = button_size.x
+	menu_size.y = button_size.y * button_count
 
 
 func _unload_buttons() -> void:
