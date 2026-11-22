@@ -578,7 +578,7 @@ func _ammo_load_sfx() -> void:
 	var delay: float = load_time / min(load_item.data.count, available_space) if loading_item else unload_time / unload_item.count
 	get_tree().create_timer(delay).timeout.connect(
 		func() -> void:
-			AudioManager.play("weapon_bullet_mag_load")
+			AudioManager.play("weapon_bullet_mag_load", null, -5.0)
 			_ammo_load_sfx(),
 	)
 
