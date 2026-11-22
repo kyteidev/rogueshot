@@ -19,3 +19,4 @@ enum Weapon {
 		total_ammo = value
 		# SET AMMO COUNT IN MAG TO BE value - 1 if round_chambered else 0
 @export var jammed := false
+@export var attachments: WeaponAttachments

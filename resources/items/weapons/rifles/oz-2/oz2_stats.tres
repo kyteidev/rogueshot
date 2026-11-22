@@ -31,4 +31,5 @@ ads_speed_multiplier = 0.65
 jam_chance = 0.003
 jam_weight = 4.0
 unjam_time = 0.9
+compatible_attachments = Array[int]([0, 1, 2, 4])
 metadata/_custom_type_script = "uid://1wh2npoujpnn"
