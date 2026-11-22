@@ -85,7 +85,7 @@ func on_anim_sprite_frame_changed(
 
 	var walk_frames := [0, 3]
 	if anim_sprite.frame in walk_frames:
-		var volume: float = randf_range(2.0, 4.0) + volume_offset
+		var volume: float = randf_range(6.0, 8.0) + volume_offset
 		var new_id := ""
 		while new_id == "" or new_id == sfx_last_step_id:
 			new_id = sound_ids.pick_random()

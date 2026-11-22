@@ -583,7 +583,13 @@ func _state_dead(delta: float) -> void:
 
 func _shoot() -> void:
 	if ammo > 0 and weapon_reload_timer.is_stopped() and weapon_data.durability > 0.0:
-		AudioManager.play("weapon_" + weapon_data.id + "_fire", weapon_muzzle.global_position, -8.0)
+		AudioManager.play(
+			"weapon_" + weapon_data.id + "_fire",
+			weapon_muzzle.global_position,
+			0.0,
+			0.1,
+			&"Weapon",
+		)
 		status_label.hide_status_label()
 
 		# spawn bullet

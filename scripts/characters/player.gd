@@ -157,7 +157,7 @@ func _ready() -> void:
 	walk_particles.amount = PARTICLE_AMOUNT_FAST
 
 	anim_sprite.frame_changed.connect(
-		on_anim_sprite_frame_changed.bind(anim_sprite, ["10", "11"], -10.0)
+		on_anim_sprite_frame_changed.bind(anim_sprite, ["10", "11"], -8.0)
 	)
 
 

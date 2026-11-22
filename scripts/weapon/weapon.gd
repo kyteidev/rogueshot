@@ -617,7 +617,13 @@ func _fire_weapon() -> void:
 		weapon_data.durability -= weapon_data.durability_rate * depletion_mult
 
 		# play sfx
-		AudioManager.play("weapon_" + weapon_data.id + "_fire", weapon_muzzle.global_position, -8.0)
+		AudioManager.play(
+			"weapon_" + weapon_data.id + "_fire",
+			weapon_muzzle.global_position,
+			0.0,
+			0.1,
+			&"Weapon",
+		)
 	elif ammo == 0 and can_play_empty_sfx:
 		can_play_empty_sfx = false
 		AudioManager.play("weapon_fire_empty", global_position)
