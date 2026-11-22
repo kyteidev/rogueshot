@@ -358,7 +358,8 @@ func reload_weapon() -> void:
 		reticle.start_reload()
 		reticle.tween.finished.connect(_finish_reload)
 
-		unload_mag_anim()
+		if weapon.type_data.mag_attached:
+			unload_mag_anim()
 		get_tree().create_timer(real_reload_time - MAG_FADE_DURATION).timeout.connect(load_mag_anim)
 
 		# durability applies to mag already attached
