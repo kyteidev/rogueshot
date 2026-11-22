@@ -66,6 +66,9 @@ var unload_time := 0.0
 
 
 func _process(_delta: float) -> void:
+	if not sm.inventory_open:
+		return
+
 	if overlay.visible:
 		tooltip_timer.stop()
 		mouse_hovered = false
@@ -177,7 +180,7 @@ func _process(_delta: float) -> void:
 
 
 func _input(event: InputEvent) -> void:
-	if overlay.visible:
+	if not sm.inventory_open or overlay.visible:
 		return
 
 	if mouse_hovered and not im.context_menu_open:

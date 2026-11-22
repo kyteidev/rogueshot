@@ -29,6 +29,7 @@ var max_weight := 25.0
 var active_statuses: Array[PlayerStatus] = []
 
 # other states
+var inventory_open := false
 var ads := false
 
 # misc

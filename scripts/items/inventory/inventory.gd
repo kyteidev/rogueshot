@@ -65,6 +65,7 @@ func _input(_event: InputEvent) -> void:
 func toggle_inventory() -> void:
 	# toggle between mouse cursor and reticle
 	visible = not visible
+	sm.inventory_open = visible
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE if visible else Input.MOUSE_MODE_HIDDEN
 	context_menu.process_mode = Node.PROCESS_MODE_INHERIT if visible else Node.PROCESS_MODE_DISABLED
 
