@@ -27,6 +27,8 @@ func _ready() -> void:
 					control.button_pressed = value
 				TYPE_STRING:
 					control.text = value
+				TYPE_FLOAT:
+					control.value = value
 
 
 func _on_tab_pressed() -> void:

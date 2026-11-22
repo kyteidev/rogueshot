@@ -1,5 +1,7 @@
 extends Node
 
+signal option_changed
+
 enum Category {
 	GAMEPLAY,
 	VIDEO,
@@ -9,6 +11,10 @@ enum Category {
 
 var camera_shake := true
 var particles := true
+
+var master_volume := 100.0
+var bgm := true
+var sfx := true
 
 var options: Array
 
@@ -21,7 +27,7 @@ func _ready() -> void:
 	options = [
 		{ "camera_shake": camera_shake, "particles": particles },
 		{ "lorem ipsum": false },
-		{ "lorem ipsum": false },
+		{ "master_volume": master_volume, "bgm": bgm, "sfx": sfx },
 		# keybinds are managed independently in option_keybind_button.gd
 		# this is for displaying the keybind in options menu
 		{
@@ -83,6 +89,7 @@ func get_option(option: String) -> Variant:
 	for category: Dictionary in options:
 		if category.has(option):
 			value = category.get(option)
+			break
 	return value
 
 
@@ -90,3 +97,5 @@ func set_option(option: String, value: Variant) -> void:
 	for category: Dictionary in options:
 		if category.has(option):
 			category[option] = value
+			break
+	option_changed.emit()

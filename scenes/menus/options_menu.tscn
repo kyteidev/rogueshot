@@ -10,6 +10,7 @@
 [ext_resource type="ButtonGroup" uid="uid://cex2h80qiylfv" path="res://resources/groups/settings_tab_group.tres" id="7_23plx"]
 [ext_resource type="LabelSettings" uid="uid://dg0kb8y76xk08" path="res://resources/themes/label_options.tres" id="9_gjmye"]
 [ext_resource type="Script" uid="uid://d0o72ftsra2lh" path="res://scripts/option_controls/option_checkbutton.gd" id="10_muvh2"]
+[ext_resource type="Script" uid="uid://cpq4eldf0gn0x" path="res://scripts/option_controls/option_slider.gd" id="11_frorf"]
 [ext_resource type="Script" uid="uid://yub1y1mkcpw7" path="res://scripts/option_controls/option_keybind_button.gd" id="11_yxgvl"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_vjox6"]
@@ -256,17 +257,51 @@ grow_vertical = 2
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="lorem ipsum" type="HBoxContainer" parent="TabsContainer/Audio/ScrollContainer/OptionsContainer" unique_id=1440279358]
+[node name="OptionVolume" type="HBoxContainer" parent="TabsContainer/Audio/ScrollContainer/OptionsContainer" unique_id=1850775799]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="TabsContainer/Audio/ScrollContainer/OptionsContainer/lorem ipsum" unique_id=2132732415]
+[node name="Label" type="Label" parent="TabsContainer/Audio/ScrollContainer/OptionsContainer/OptionVolume" unique_id=1469097143]
 layout_mode = 2
 size_flags_horizontal = 3
-text = "lorem ipsum"
+text = "Master Volume"
 label_settings = ExtResource("9_gjmye")
 
-[node name="CheckButton" type="CheckButton" parent="TabsContainer/Audio/ScrollContainer/OptionsContainer/lorem ipsum" unique_id=478585720]
+[node name="HSlider" type="HSlider" parent="TabsContainer/Audio/ScrollContainer/OptionsContainer/OptionVolume" unique_id=1488137954]
+custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
+max_value = 1.0
+step = 0.01
+value = 1.0
+script = ExtResource("11_frorf")
+setting_key = "master_volume"
+
+[node name="OptionBGM" type="HBoxContainer" parent="TabsContainer/Audio/ScrollContainer/OptionsContainer" unique_id=979658847]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="TabsContainer/Audio/ScrollContainer/OptionsContainer/OptionBGM" unique_id=21223759]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Background Music"
+label_settings = ExtResource("9_gjmye")
+
+[node name="CheckButton" type="CheckButton" parent="TabsContainer/Audio/ScrollContainer/OptionsContainer/OptionBGM" unique_id=354160998]
+layout_mode = 2
+script = ExtResource("10_muvh2")
+setting_key = "bgm"
+
+[node name="OptionSFX" type="HBoxContainer" parent="TabsContainer/Audio/ScrollContainer/OptionsContainer" unique_id=1339675418]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="TabsContainer/Audio/ScrollContainer/OptionsContainer/OptionSFX" unique_id=1966451917]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Sound Effects"
+label_settings = ExtResource("9_gjmye")
+
+[node name="CheckButton" type="CheckButton" parent="TabsContainer/Audio/ScrollContainer/OptionsContainer/OptionSFX" unique_id=317348693]
+layout_mode = 2
+script = ExtResource("10_muvh2")
+setting_key = "sfx"
 
 [node name="Controls" type="Control" parent="TabsContainer" unique_id=402162721]
 visible = false
