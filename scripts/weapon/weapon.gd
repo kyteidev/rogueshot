@@ -445,6 +445,8 @@ func _finish_reload() -> void:
 	var weapon: ItemData = im.equipped_weapons[weapon_index]
 	var stats: WeaponData = weapon.type_data
 
+	stats.mag_attached = true
+
 	var fullest_mag: ItemData
 	var fullest_mag_size: int = 0
 	for item in im.inventory_items:
