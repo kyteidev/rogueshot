@@ -1,7 +1,7 @@
 // Adapted from Color vignette by randomDam - https://godotshaders.com/shader/color-vignetting/
 shader_type canvas_item;
 
-instance uniform float vignette_opacity : hint_range(0.0, 1.0) = 0.5;
+instance uniform float vignette_opacity : hint_range(0.0, 1.0) = 0.0;
 uniform float vignette_intensity = 0.4;
 uniform vec4 vignette_rgb : source_color = vec4(0.0, 0.0, 0.0, 1.0);
 
