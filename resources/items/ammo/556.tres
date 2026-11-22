@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://clbie6ews1yvb"]
 
 [ext_resource type="Script" uid="uid://coqypqa0006b" path="res://scripts/items/item_data.gd" id="1_vexds"]
-[ext_resource type="Texture2D" uid="uid://dfmvm3hb6slg" path="res://assets/sprites/weapons/bullet.png" id="2_bkgh7"]
+[ext_resource type="Texture2D" uid="uid://b8rnetctir0tb" path="res://assets/sprites/weapons/bullets/556/556.png" id="2_vexds"]
 [ext_resource type="Script" uid="uid://dsupdcfcpbi3s" path="res://scripts/items/type_data/ammo_data.gd" id="3_v70ix"]
 
 [sub_resource type="Resource" id="Resource_ai2no"]
@@ -17,7 +17,7 @@ tooltip_name = "5.56x45mm Ammo"
 description = "This caliber is the gold standard of the special forces. It is best suited for penetrating medium armor."
 type = 10
 type_data = SubResource("Resource_ai2no")
-icon = ExtResource("2_bkgh7")
+icon = ExtResource("2_vexds")
 max_stack = 150
 count = 30
 weight = 0.11

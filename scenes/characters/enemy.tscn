@@ -7,7 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://sxdj3w7nress" path="res://assets/sprites/icons/question mark.png" id="4_21x0f"]
 [ext_resource type="Resource" uid="uid://clbie6ews1yvb" path="res://resources/items/ammo/556.tres" id="4_rc7n0"]
 [ext_resource type="Script" uid="uid://dtictyumsb7ps" path="res://scripts/characters/enemy_status_icon.gd" id="5_jgk6k"]
-[ext_resource type="PackedScene" uid="uid://bpjm35k12y14k" path="res://scenes/weapons/types/rifles/oz2.tscn" id="6_gpyvg"]
+[ext_resource type="PackedScene" uid="uid://bpjm35k12y14k" path="res://scenes/weapons/weapon_models/rifles/oz2.tscn" id="6_gpyvg"]
 [ext_resource type="PackedScene" uid="uid://lbxyk5rhhfpo" path="res://scenes/particles/walk_particles.tscn" id="7_gpyvg"]
 [ext_resource type="Script" uid="uid://1w732e3gs1gb" path="res://scripts/characters/status_label.gd" id="7_x5khh"]
 [ext_resource type="FontFile" uid="uid://f2n8hokso8m2" path="res://assets/fonts/deckhand_regular_8px.ttf" id="9_rc7n0"]

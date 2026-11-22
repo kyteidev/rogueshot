@@ -543,6 +543,8 @@ func _fire_weapon() -> void:
 		bullet_instance.effective_range = effective_range
 		bullet_instance.max_range = max_range
 
+		bullet_instance.caliber = weapon_data.type_data.caliber
+
 		get_tree().root.add_child(bullet_instance)
 
 		# muzzle flash
@@ -573,6 +575,7 @@ func _fire_weapon() -> void:
 
 		# eject casing
 		var casing_instance: RigidBody2D = CASING.instantiate()
+		casing_instance.caliber = weapon_data.type_data.caliber
 		get_tree().root.add_child(casing_instance)
 
 		casing_instance.global_position = weapon_ejection.global_position

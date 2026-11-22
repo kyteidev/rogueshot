@@ -5,7 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://l03bvdf7cx6g" path="res://assets/sprites/weapons/guns/pistols/gl18/gl18_loaded.png" id="3_svse4"]
 [ext_resource type="Script" uid="uid://fn8hix2hcrvm" path="res://scripts/items/type_data/weapon_data.gd" id="4_xb7fl"]
 [ext_resource type="Resource" uid="uid://df0s67hbc22uu" path="res://resources/items/weapons/pistols/gl18/gl18_stats.tres" id="5_s7248"]
-[ext_resource type="PackedScene" uid="uid://bafk0v7pn61qj" path="res://scenes/weapons/types/pistols/gl18.tscn" id="5_svse4"]
+[ext_resource type="PackedScene" uid="uid://bafk0v7pn61qj" path="res://scenes/weapons/weapon_models/pistols/gl18.tscn" id="5_svse4"]
 
 [sub_resource type="Resource" id="Resource_nqevj"]
 script = ExtResource("4_xb7fl")

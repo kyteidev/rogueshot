@@ -12,16 +12,23 @@ const MAX_SPEED = 150.0
 const MIN_SPIN = 12.0
 const MAX_SPIN = 18.0
 
+@export var bullet_casings: Dictionary[AmmoData.Caliber, PackedScene]
+
 var rng := Random.rng
 var collided := false
 
-@onready var sprite: Sprite2D = $Sprite2D
-@onready var collision: CollisionShape2D = $CollisionShape2D
+var caliber: AmmoData.Caliber
+
 @onready var timer: Timer = $Timer
 
 
 func _ready() -> void:
 	timer.start(LIFETIME)
+
+	var casing_scene: Sprite2D = bullet_casings[caliber].instantiate()
+	add_child(casing_scene)
+	var collision_shape: CollisionShape2D = casing_scene.get_child(0) # gets the collisionshape2d
+	collision_shape.reparent(self)
 
 
 func eject(weapon_rotation: float) -> void:

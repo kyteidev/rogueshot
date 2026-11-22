@@ -10,6 +10,8 @@ const IMPACT_PARTICLES = preload("res://scenes/particles/bullet_impact.tscn")
 const SPEED = 1000
 const TRAIL_MAX_POINTS = 7
 
+@export var bullet_calibers: Dictionary[AmmoData.Caliber, PackedScene]
+
 var sm := StateManager
 var om := OptionsManager
 var type := Types.FRIENDLY
@@ -22,6 +24,8 @@ var distance: float
 var effective_range: float
 var max_range: float
 
+var caliber: AmmoData.Caliber
+
 @onready var trail: Line2D = $Trail
 
 
@@ -29,6 +33,11 @@ func _ready() -> void:
 	trail.top_level = true
 	trail.clear_points() # clear any points i might have left in editor
 	trail.add_point(global_position)
+
+	var bullet_scene: Sprite2D = bullet_calibers[caliber].instantiate()
+	add_child(bullet_scene)
+	var collision: CollisionShape2D = bullet_scene.get_child(0) # gets the collisionshape2d
+	collision.reparent(self)
 
 
 func _physics_process(delta: float) -> void:

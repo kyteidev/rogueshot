@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://dnbpq3a2eyoq7"]
+
+[ext_resource type="Texture2D" uid="uid://da8ekqf0cmse0" path="res://assets/sprites/weapons/bullets/9x19/9x19_casing.png" id="1_4nlgh"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3upmk"]
+size = Vector2(18, 10)
+
+[node name="9x19Casing" type="Sprite2D" unique_id=912253283]
+scale = Vector2(0.15, 0.15)
+texture = ExtResource("1_4nlgh")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1499571199]
+shape = SubResource("RectangleShape2D_3upmk")

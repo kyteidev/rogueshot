@@ -1,7 +1,8 @@
 [gd_scene format=3 uid="uid://b0rerk3cn0pob"]
 
-[ext_resource type="Texture2D" uid="uid://dfmvm3hb6slg" path="res://assets/sprites/weapons/bullet.png" id="1_mkf8s"]
 [ext_resource type="Script" uid="uid://ct25setqlsdgc" path="res://scripts/weapon/bullet.gd" id="1_y25gk"]
+[ext_resource type="PackedScene" uid="uid://7ob3wplnye6g" path="res://scenes/weapons/bullets/9x19/9x19.tscn" id="2_1t05q"]
+[ext_resource type="PackedScene" uid="uid://dmdofq6ig7lik" path="res://scenes/weapons/bullets/556/556.tscn" id="3_ymvs7"]
 
 [sub_resource type="Curve" id="Curve_4iqke"]
 _data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 0.27123284), 0.0, 0.0, 0, 0]
@@ -11,25 +12,18 @@ point_count = 2
 offsets = PackedFloat32Array(0.0061728396, 0.97530866)
 colors = PackedColorArray(0, 0, 0, 0, 0.9843137, 0.9490196, 0.21176471, 1)
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_nxcxh"]
-radius = 3.0
-height = 12.0
-
 [node name="Bullet" type="CharacterBody2D" unique_id=890673520 groups=["projectile"]]
 collision_layer = 2
 script = ExtResource("1_y25gk")
+bullet_calibers = Dictionary[int, PackedScene]({
+1: ExtResource("2_1t05q"),
+2: ExtResource("3_ymvs7")
+})
 
 [node name="Trail" type="Line2D" parent="." unique_id=343892780]
 width = 5.0
 width_curve = SubResource("Curve_4iqke")
 gradient = SubResource("Gradient_e0k1m")
-
-[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1814169947]
-texture = ExtResource("1_mkf8s")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1074824542]
-rotation = 1.5707964
-shape = SubResource("CapsuleShape2D_nxcxh")
 
 [node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="." unique_id=291184140]
 rect = Rect2(-28, -28, 56, 56)

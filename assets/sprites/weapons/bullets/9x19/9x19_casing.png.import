@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bfh76bxpvicoh"
-path="res://.godot/imported/bullet-casing.png-6bd8350cfc85427943f9f442bdd30f2d.ctex"
+uid="uid://da8ekqf0cmse0"
+path="res://.godot/imported/9x19_casing.png-e66b3a8a27294a604244cf98ea2eb802.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sprites/weapons/bullet-casing.png"
-dest_files=["res://.godot/imported/bullet-casing.png-6bd8350cfc85427943f9f442bdd30f2d.ctex"]
+source_file="res://assets/sprites/weapons/bullets/9x19/9x19_casing.png"
+dest_files=["res://.godot/imported/9x19_casing.png-e66b3a8a27294a604244cf98ea2eb802.ctex"]
 
 [params]
 

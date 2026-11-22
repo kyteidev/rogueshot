@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://c0f4a84fr3w0v"]
 
 [ext_resource type="Script" uid="uid://coqypqa0006b" path="res://scripts/items/item_data.gd" id="1_m0lvf"]
-[ext_resource type="Texture2D" uid="uid://dfmvm3hb6slg" path="res://assets/sprites/weapons/bullet.png" id="2_6rmmr"]
+[ext_resource type="Texture2D" uid="uid://yw7whrosu5ah" path="res://assets/sprites/weapons/bullets/9x19/9x19.png" id="2_dy6jw"]
 [ext_resource type="Script" uid="uid://dsupdcfcpbi3s" path="res://scripts/items/type_data/ammo_data.gd" id="3_gwm7o"]
 
 [sub_resource type="Resource" id="Resource_ai2no"]
@@ -17,7 +17,7 @@ tooltip_name = "9x19mm Ammo"
 description = "A small but lethal caliber, it is best suited for smaller firearms."
 type = 10
 type_data = SubResource("Resource_ai2no")
-icon = ExtResource("2_6rmmr")
+icon = ExtResource("2_dy6jw")
 max_stack = 200
 count = 20
 weight = 0.002

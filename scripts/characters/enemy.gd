@@ -605,12 +605,15 @@ func _shoot() -> void:
 		bullet_instance.effective_range = weapon_effective_range
 		bullet_instance.max_range = weapon_max_range
 
+		bullet_instance.caliber = weapon_data.type_data.caliber
+
 		bullet_instance.add_collision_exception_with(self)
 
 		get_tree().root.add_child(bullet_instance)
 
 		# eject casing
 		var casing_instance: RigidBody2D = CASING.instantiate()
+		casing_instance.caliber = weapon_data.type_data.caliber
 		get_tree().root.add_child(casing_instance)
 
 		casing_instance.global_position = weapon_ejection.global_position

@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://dmdofq6ig7lik"]
+
+[ext_resource type="Texture2D" uid="uid://b8rnetctir0tb" path="res://assets/sprites/weapons/bullets/556/556.png" id="1_vu24p"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_yu437"]
+radius = 3.0
+height = 18.0
+
+[node name="556" type="Sprite2D" unique_id=28048609]
+texture = ExtResource("1_vu24p")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1509082275]
+rotation = 1.5707964
+shape = SubResource("CapsuleShape2D_yu437")
