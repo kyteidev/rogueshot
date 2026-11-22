@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://4dl8r15cxdfb" path="res://scripts/tooltip.gd" id="1_38lrx"]
 [ext_resource type="FontFile" uid="uid://4jxi61jcsc2c" path="res://assets/fonts/groundhog.ttf" id="1_58k1f"]
 [ext_resource type="FontFile" uid="uid://f2n8hokso8m2" path="res://assets/fonts/deckhand_regular_8px.ttf" id="3_do3ue"]
-[ext_resource type="FontFile" uid="uid://h1kmcv72jqa7" path="res://assets/fonts/my 3x5 tiny mono pixel font.ttf" id="4_do3ue"]
+[ext_resource type="FontFile" uid="uid://c8law3csbqejj" path="res://assets/fonts/3x5-Microfont.woff2" id="4_do3ue"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_do3ue"]
 bg_color = Color(0.3372549, 0.28627452, 0.43137255, 1)

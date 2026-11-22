@@ -2,13 +2,13 @@
 
 importer="font_data_dynamic"
 type="FontFile"
-uid="uid://h1kmcv72jqa7"
-path="res://.godot/imported/my 3x5 tiny mono pixel font.ttf-9756a9a6ba128d3beafcb2130134e703.fontdata"
+uid="uid://c8law3csbqejj"
+path="res://.godot/imported/3x5-Microfont.woff2-f38a77664acedbb1747d5899546100d0.fontdata"
 
 [deps]
 
-source_file="res://assets/fonts/my 3x5 tiny mono pixel font.ttf"
-dest_files=["res://.godot/imported/my 3x5 tiny mono pixel font.ttf-9756a9a6ba128d3beafcb2130134e703.fontdata"]
+source_file="res://assets/fonts/3x5-Microfont.woff2"
+dest_files=["res://.godot/imported/3x5-Microfont.woff2-f38a77664acedbb1747d5899546100d0.fontdata"]
 
 [params]
 
