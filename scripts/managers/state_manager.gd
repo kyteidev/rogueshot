@@ -1,5 +1,8 @@
 extends Node
 
+signal game_paused
+signal game_unpaused
+
 enum PlayerStatus {
 	OVERWEIGHT,
 }
@@ -39,6 +42,14 @@ var max_range := 0.0
 
 # input lock
 var input_locks := { }
+
+
+func _notification(what: int) -> void:
+	match what:
+		NOTIFICATION_PAUSED:
+			game_paused.emit()
+		NOTIFICATION_UNPAUSED:
+			game_unpaused.emit()
 
 
 func set_input_lock(origin: String, enabled: bool) -> void:

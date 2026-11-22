@@ -564,6 +564,9 @@ func _ammo_load_sfx() -> void:
 	if not loading_item and not unloading_item:
 		return
 
+	if get_tree().paused:
+		await sm.game_unpaused
+
 	var available_space: int = data.container_max_size - item_count
 
 	var delay: float = load_time / min(load_item.data.count, available_space) if loading_item else unload_time / unload_item.count
