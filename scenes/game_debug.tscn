@@ -86,3 +86,5 @@ inventory = NodePath("../Inventory")
 
 [node name="TransitionCircle" parent="." unique_id=1599442735 node_paths=PackedStringArray("player") instance=ExtResource("9_bdsyy")]
 player = NodePath("../Player")
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="." unique_id=1945762057]

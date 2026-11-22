@@ -1,6 +1,8 @@
 extends Node
 
 const SFX_PATH = "res://assets/sounds/sfx/"
+const MAX_DISTANCE = 350.0
+const ATTENUATION = 1.5
 
 var sounds: Dictionary = { }
 var master_volume := 1.0
@@ -18,7 +20,13 @@ func _ready() -> void:
 	)
 
 
-func play(sound_name: String, position: Variant = null, volume := 0.0, pitch := 0.1) -> void:
+func play(
+	sound_name: String,
+	position: Variant = null,
+	volume := 0.0,
+	pitch := 0.1,
+	bus := &"",
+) -> void:
 	if not om.get_option("sfx"):
 		return
 
@@ -31,9 +39,15 @@ func play(sound_name: String, position: Variant = null, volume := 0.0, pitch := 
 	player.stream = sounds[sound_name]
 	player.volume_db = linear_to_db(master_volume) + volume
 	player.pitch_scale = randf_range(1.0 - pitch, 1.0 + pitch)
+	player.process_mode = PROCESS_MODE_ALWAYS
+
+	if bus != &"":
+		player.bus = bus
 
 	if position:
 		player.global_position = position
+		player.max_distance = MAX_DISTANCE
+		player.attenuation = ATTENUATION
 
 	add_child(player)
 	player.play()
