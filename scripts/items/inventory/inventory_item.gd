@@ -158,27 +158,7 @@ func _process(_delta: float) -> void:
 		pos_set = true
 
 	if not im.context_menu_open:
-		if (
-			(im.hovered_item and im.hovered_item.data == data)
-			or (
-				mouse_hovered and im.dragged_item != null and im.dragged_item != self
-				and (
-					(
-						data.container and im.dragged_item.data.type == data.container_item_type
-						and _check_compatibility()
-					)
-					or im.dragged_item.data.id == data.id
-				)
-			)
-			and not container_full
-		):
-			bg.modulate = Color(1.5, 1.5, 1.5, 0.784)
-
-			if im.dragged_item != self:
-				im.hovering_valid_container = true
-		else:
-			bg.modulate = Color(1.0, 1.0, 1.0)
-			im.hovering_valid_container = false
+		_update_hover_visual()
 
 
 func _input(event: InputEvent) -> void:
@@ -188,55 +168,8 @@ func _input(event: InputEvent) -> void:
 	if mouse_hovered and not im.context_menu_open:
 		# ignore if isn't left mouse button
 		if event is InputEventMouseButton and event.button_index == 1:
-			# dragging item to container logic
-			if (
-				data.container and im.dragged_item and im.dragged_item != self
-				and im.dragged_item.data.type == data.container_item_type
-			):
-				if loading_item:
-					return
-
-				item_count = 0
-				for item in data.container_items:
-					item_count += item.count
-
-				# weapon compatibility check for magazines
-				if not _check_compatibility():
-					return
-
-				if item_count == data.container_max_size:
-					container_full = true
-					return
-				container_full = false
-
-				var loaded_item: InventoryItem = im.dragged_item
-
-				if load_timer.wait_time != 0.001:
-					var available_space: int = data.container_max_size - item_count
-
-					load_time = data.container_load_time * min(
-						loaded_item.data.count,
-						available_space,
-					)
-					load_bar.max_value = load_time
-					load_timer.start(load_time)
-					loading_item = true
-
-					load_item = loaded_item
-					loaded_item.overlay.visible = true
-
-					# mags always have load time
-					if _is_equipped_weapon() and loaded_item.data.type == ItemData.ItemType.MAGAZINE:
-						im.mag_loaded.emit()
-				else:
-					_load_item(loaded_item)
-
-			# stacking items logic
-			elif (
-				im.dragged_item and im.dragged_item != self and data.id == im.dragged_item.data.id
-			):
-				_stack_items(im.dragged_item.data)
-
+			if im.dragged_item and im.dragged_item != self:
+				_item_drag_to_self()
 			# item drag and drop handling
 			elif not im.dragged_item or im.dragged_item == self:
 				if event.is_pressed():
@@ -420,6 +353,71 @@ func _load_item(loaded_item: InventoryItem) -> void:
 		item_data.durability -= item_data.durability_rate
 
 
+func _item_drag_to_self() -> void:
+	# dragging item to container logic
+	if (
+		data.container and im.dragged_item.data.type == data.container_item_type
+		and _check_compatibility() and not loading_item
+	):
+		# make sure theres enough space
+		# TODO: maybe combine item count logic with the one in _is_valid_drop_target?
+		# idk or maybe not since this is setting container_full...
+		item_count = 0
+		for item in data.container_items:
+			item_count += item.count
+
+		if item_count == data.container_max_size:
+			container_full = true
+			return
+		container_full = false
+
+		var loaded_item: InventoryItem = im.dragged_item
+
+		if load_timer.wait_time != 0.001:
+			var available_space: int = data.container_max_size - item_count
+
+			load_time = data.container_load_time * min(loaded_item.data.count, available_space)
+			load_bar.max_value = load_time
+			load_timer.start(load_time)
+			loading_item = true
+
+			load_item = loaded_item
+			loaded_item.overlay.visible = true
+
+			# mags always have load time
+			if (_is_equipped_weapon() and loaded_item.data.type == ItemData.ItemType.MAGAZINE):
+				im.mag_loaded.emit()
+		else:
+			_load_item(loaded_item)
+
+	# for attaching attachments to weapon
+	elif _can_load_attachment():
+		var dragged_data: ItemData = im.dragged_item.data
+		var attachment_type: AttachmentData.AttachmentType = dragged_data.type_data.type
+		data.type_data.attachments[attachment_type] = dragged_data
+
+		data.container_weight += dragged_data.weight
+
+		im.remove_item(dragged_data)
+
+	# stacking items logic
+	elif data.id == im.dragged_item.data.id:
+		_stack_items(im.dragged_item.data)
+
+
+func _update_hover_visual() -> void:
+	var hovered: bool = im.hovered_item and im.hovered_item.data == data
+
+	if hovered or _is_valid_drop_target():
+		bg.modulate = Color(1.5, 1.5, 1.5, 0.784)
+
+		if im.dragged_item != self:
+			im.hovering_valid_container = true
+	else:
+		bg.modulate = Color(1.0, 1.0, 1.0)
+		im.hovering_valid_container = false
+
+
 # for checking compatibility when dragging to container item
 func _check_compatibility() -> bool:
 	var item_type: ItemData.ItemType = im.dragged_item.data.type
@@ -437,6 +435,41 @@ func _check_compatibility() -> bool:
 
 func _is_equipped_weapon() -> bool:
 	return im.weapon_index != -1 and im.equipped_weapons[im.weapon_index] == data
+
+
+func _is_valid_drop_target() -> bool:
+	if not mouse_hovered or im.dragged_item == null or im.dragged_item == self:
+		return false
+
+	var can_stack: bool = im.dragged_item.data.id == data.id
+	var is_valid_container: bool = (
+		data.container and im.dragged_item.data.type == data.container_item_type
+		and _check_compatibility() and not container_full
+	)
+
+	var can_load_attachment: bool = _can_load_attachment()
+
+	return can_stack or is_valid_container or can_load_attachment
+
+
+func _can_load_attachment() -> bool:
+	var item_type := ItemData.ItemType
+	var dragged_data: ItemData = im.dragged_item.data
+	var dragged_type: ItemData.ItemType = dragged_data.type
+
+	var can_load_attachment := false
+	var is_weapon: bool = (
+		data.type == item_type.PRIMARY_WEAPON or data.type == item_type.SECONDARY_WEAPON
+	)
+	if is_weapon and dragged_type == item_type.ATTACHMENT:
+		var attachments: Dictionary[AttachmentData.AttachmentType, ItemData] = data \
+				.type_data \
+				.attachments
+		var compatible: bool = data.type_data.weapon in dragged_data.type_data.compatible
+		var slot_empty: bool = not attachments.has(dragged_data.type_data.type)
+
+		can_load_attachment = (compatible and slot_empty)
+	return can_load_attachment
 
 
 # when releasing item from drag
@@ -458,7 +491,9 @@ func _release_item() -> void:
 		if data in im.equipped_items.values():
 			im.unequip_item(im.equipped_items.find_key(data))
 	else:
+		# dragging item to inventory but slot is not valid
 		if im.in_bounds(slot, data.size):
+			# make sure item returns to correct position
 			if data in im.equipped_items.values():
 				global_position = prev_pos
 			else:
