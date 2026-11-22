@@ -26,9 +26,9 @@ func play(
 	volume := 0.0,
 	pitch := 0.1,
 	bus := &"",
-) -> void:
+) -> Variant:
 	if not om.get_option("sfx"):
-		return
+		return null
 
 	var player: Variant
 	if position:
@@ -52,6 +52,7 @@ func play(
 	add_child(player)
 	player.play()
 	player.finished.connect(player.queue_free)
+	return player.finished
 
 
 func _load_folder(path: String) -> void:

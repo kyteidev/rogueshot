@@ -1,6 +1,7 @@
 extends Character
 
 const PARTICLE_MAX_VEL = BASE_SPEED * SPRINT_MULTIPLIER
+const LOW_HEALTH_THRESHOLD = 15.0
 
 const MAX_HEALTH = 100.0
 const DAMAGE_FLASH_DELAY = 0.04
@@ -116,6 +117,7 @@ var closest_item: Node2D
 var overweight := false
 
 var highlight_changed := false
+var can_play_heartbeats := true
 
 @onready var coyote_timer: Timer = $CoyoteTimer
 @onready var jump_buffer_timer: Timer = $JumpBufferTimer
@@ -360,6 +362,14 @@ func _physics_process(delta: float) -> void:
 	_highlight_items()
 	_item_pickup()
 
+	# play heartbeat sfx when low on health
+	if health <= LOW_HEALTH_THRESHOLD:
+		if can_play_heartbeats:
+			can_play_heartbeats = false
+			_play_heartbeats()
+	else:
+		can_play_heartbeats = true
+
 
 func take_damage(damage: float, _global_position: Vector2) -> void:
 	AudioManager.play("character_hurt", global_position, -5.0) # maybe change this sound later
@@ -517,6 +527,15 @@ func _highlight_items() -> void:
 	if closest_item and closest_item in items_in_range:
 		closest_item.show_outline()
 		hud.update_hint_label(true, "player_interact", "pick up item")
+
+
+func _play_heartbeats() -> void:
+	var finished: Signal = AudioManager.play("character_heartbeat", global_position)
+	finished.connect(
+		func() -> void:
+			if health <= LOW_HEALTH_THRESHOLD:
+				_play_heartbeats(),
+	)
 
 
 func _on_item_pickup_area_body_entered(body: Node2D) -> void:
