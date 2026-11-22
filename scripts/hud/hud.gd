@@ -7,6 +7,8 @@ const BASE_WEAPON_COLOR = Color("fdf1ff")
 
 const FADE_DURATION = 0.1
 
+const DAMAGE_VIGNETTE_CURVE = 3.0
+
 @export var player: CharacterBody2D
 @export var enemy: CharacterBody2D
 
@@ -42,6 +44,8 @@ var health_tween: Tween
 @onready var action_hint_label: Label = $ActionHint
 
 @onready var weapon: Node2D = player.get_node("./Weapon")
+
+@onready var damage_vignette: ColorRect = %DamageVignette
 
 # DEBUG
 @onready var debug_enemy_state_label: Label = $DebugEnemyStateLabel
@@ -129,9 +133,18 @@ func _process(delta: float) -> void:
 	secondary_weapon_keybind.text = om.get_option("weapon_secondary")
 
 	# hide action hint label if in inventory
-	action_hint_label.visible = action_hint_visible if not get_tree() \
-			.get_first_node_in_group("unique_inventory") \
-			.visible else false
+	action_hint_label.visible = (
+		action_hint_visible
+		if not get_tree() \
+				.get_first_node_in_group("unique_inventory") \
+				.visible
+		else false
+	)
+
+	# update damage vignette
+	var vignette_target_opacity: float = (1.0 - sm.health / sm.max_health) ** DAMAGE_VIGNETTE_CURVE
+	vignette_target_opacity *= 0.5 # scale to 0.5 opacity
+	damage_vignette.set_instance_shader_parameter("vignette_opacity", vignette_target_opacity)
 
 	# DEBUG SECTION
 	if enemy:

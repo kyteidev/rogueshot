@@ -13,6 +13,7 @@
 [ext_resource type="Texture2D" uid="uid://borcg0o7hn0qo" path="res://assets/sprites/weapons/guns/rifles/oz2/oz2-outline.png" id="11_apjy4"]
 [ext_resource type="Texture2D" uid="uid://7mo7g8smj1w" path="res://assets/sprites/weapons/guns/pistols/gl18/gl18-outline.png" id="12_5n1hp"]
 [ext_resource type="Script" uid="uid://02t7r3actsg2" path="res://scripts/hud/status_container.gd" id="13_558d4"]
+[ext_resource type="Shader" uid="uid://d0bli36dj4n3o" path="res://shaders/vignette.gdshader" id="14_4m1a1"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_apjy4"]
 font = ExtResource("5_047uy")
@@ -40,6 +41,12 @@ font = ExtResource("5_047uy")
 font_color = Color(0.99215686, 0.94509804, 1, 1)
 outline_size = 5
 outline_color = Color(0.08235294, 0.039215688, 0.20392157, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_558d4"]
+resource_local_to_scene = true
+shader = ExtResource("14_4m1a1")
+shader_parameter/vignette_intensity = 0.8
+shader_parameter/vignette_rgb = Color(1, 0, 0, 1)
 
 [node name="HUD" type="CanvasLayer" unique_id=465990537]
 script = ExtResource("1_558d4")
@@ -287,6 +294,16 @@ offset_right = 64.0
 offset_bottom = 312.0
 alignment = 2
 script = ExtResource("13_558d4")
+
+[node name="DamageVignette" type="ColorRect" parent="." unique_id=685057424]
+unique_name_in_owner = true
+material = SubResource("ShaderMaterial_558d4")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
 
 [node name="DebugEnemyStateLabel" type="Label" parent="." unique_id=707954335]
 visible = false
