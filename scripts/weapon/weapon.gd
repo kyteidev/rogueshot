@@ -373,7 +373,7 @@ func load_mag_anim(reload_key := true) -> void:
 		return
 
 	var weapon: ItemData = im.equipped_weapons[weapon_index]
-	AudioManager.play("weapon_" + weapon.id + "_load", global_position)
+	AudioManager.play("weapon_" + weapon.id + "_load", global_position, -9.0)
 
 	var sprite: Sprite2D = weapon_node.get_child(0)
 	var mag: Sprite2D = sprite.get_node("./Magazine")
@@ -400,7 +400,7 @@ func unload_mag_anim(reload_key := true) -> void:
 		return
 
 	var weapon: ItemData = im.equipped_weapons[weapon_index]
-	AudioManager.play("weapon_" + weapon.id + "_unload", global_position)
+	AudioManager.play("weapon_" + weapon.id + "_unload", global_position, -9.0)
 
 	var sprite: Sprite2D = weapon_node.get_child(0)
 	var mag: Sprite2D = sprite.get_node("./Magazine")
