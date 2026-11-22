@@ -261,6 +261,8 @@ func setup(item_data: ItemData) -> void:
 	custom_minimum_size = data.size * im.SLOT_SIZE
 	size = custom_minimum_size
 	icon.texture = data.icon
+	icon.scale = Vector2.ONE * data.item_scale
+	icon.pivot_offset_ratio = Vector2.ONE * 0.5
 	item_label.text = data.name
 	position = im.slot_to_pos(data.slot)
 

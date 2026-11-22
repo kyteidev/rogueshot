@@ -57,8 +57,11 @@ const CAPABILITIES = {
 	set(value):
 		durability = max(value, 0.0)
 @export var durability_rate := 0.0 # rate per use
+## Scale of texture in inventory
+@export var item_scale := 1.0
 
 # world
+## Scale of item in world
 @export var scale := 1.0
 
 # inventory
