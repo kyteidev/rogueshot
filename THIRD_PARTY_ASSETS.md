@@ -11,3 +11,4 @@
 - Player Movement Samples (sfx) by leohpaz - https://opengameart.org/content/12-player-movement-sfx - Licenses: CC-BY 4.0, CC-BY 3.0
 - Bullet/Gun SFX CC0 by Signature Samples - https://signaturesounds.org/store/p/bullet-gun-sound-effects-cc0-free-download-wav-sample-pack-
 - 080998_Bullet Hit by Freesound Community - https://pixabay.com/sound-effects/film-special-effects-080998-bullet-hit-39870/
+- Essential Series by Nox Sound Design - https://nox-sound-design.itch.io/essentials-series-sfx-nox-sound

@@ -17,6 +17,8 @@ const PARTICLE_AMOUNT_SLOW = 4.0 / PARTICLE_AMOUNT_FAST
 const PARTICLE_AMOUNT_NORMAL = 8.0 / PARTICLE_AMOUNT_FAST
 const PARTICLE_AMOUNT_FAST = 14
 
+var sfx_last_step_id := ""
+
 
 func get_custom_gravity(vel: Vector2) -> float:
 	if vel.y < 0:
@@ -73,11 +75,21 @@ func manage_walk_particles(
 	particles.process_material.direction = Vector3(-sign(velocity.x), -0.4, 0.0)
 
 
-func on_anim_sprite_frame_changed(anim_sprite: AnimatedSprite2D, volume_offset := 0.0) -> void:
+func on_anim_sprite_frame_changed(
+	anim_sprite: AnimatedSprite2D,
+	sound_ids: Array,
+	volume_offset := 0.0,
+) -> void:
 	if not is_on_floor() or abs(velocity.x) == 0.0:
 		return
 
 	var walk_frames := [0, 3]
 	if anim_sprite.frame in walk_frames:
-		var volume: float = randf_range(-2.0, 0.0) + volume_offset
-		AudioManager.play("character_walk_rock", global_position, volume)
+		var volume: float = randf_range(2.0, 4.0) + volume_offset
+		var new_id := ""
+		while new_id == "" or new_id == sfx_last_step_id:
+			new_id = sound_ids.pick_random()
+		if new_id.length() == 1:
+			new_id = "0" + new_id
+
+		AudioManager.play("character_walk_rock_" + new_id, global_position, volume)

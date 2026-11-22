@@ -156,7 +156,9 @@ func _ready() -> void:
 
 	walk_particles.amount = PARTICLE_AMOUNT_FAST
 
-	anim_sprite.frame_changed.connect(on_anim_sprite_frame_changed.bind(anim_sprite, -5.0))
+	anim_sprite.frame_changed.connect(
+		on_anim_sprite_frame_changed.bind(anim_sprite, ["10", "11"], -10.0)
+	)
 
 
 func _process(_delta: float) -> void:

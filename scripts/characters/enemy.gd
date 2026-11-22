@@ -205,7 +205,7 @@ func _ready() -> void:
 	weapon_effective_range = weapon_stats.effective_range
 	weapon_max_range = weapon_stats.max_range
 
-	anim.frame_changed.connect(on_anim_sprite_frame_changed.bind(anim))
+	anim.frame_changed.connect(on_anim_sprite_frame_changed.bind(anim, ["01", "02", "03"]))
 
 	weapon_sprite.texture = weapon_sprite.loaded_texture
 	mag_orig_pos = weapon_mag.position
