@@ -14,6 +14,7 @@
 - 2D outline shader by Julian-Vos - https://godotengine.org/asset-library/asset/2829 - MIT license found in shaders/outline.gdshader
 - Color vignette by randomDam - https://godotshaders.com/shader/color-vignetting/ - has been modified
 
+
 ## SFX
 - Weapon SFX collection (multiple authors) - https://hamsunqiu.itch.io/modern-military-weapons-sound-pack-38-wav-cc0
 - Bullet Casing On Concrete 2.wav by CodyGudmundsen - https://freesound.org/s/179005/ - License: Attribution 4.0
