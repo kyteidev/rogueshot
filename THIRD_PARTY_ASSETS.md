@@ -12,7 +12,7 @@
 ## Shaders
 - Simple circle transition shader by agurkas - https://godotshaders.com/shader/simple-circle-transition-2/ - has been modified
 - 2D outline shader by Julian-Vos - https://godotengine.org/asset-library/asset/2829 - MIT license found in shaders/outline.gdshader
-
+- Color vignette by randomDam - https://godotshaders.com/shader/color-vignetting/ - has been modified
 
 ## SFX
 - Weapon SFX collection (multiple authors) - https://hamsunqiu.itch.io/modern-military-weapons-sound-pack-38-wav-cc0
