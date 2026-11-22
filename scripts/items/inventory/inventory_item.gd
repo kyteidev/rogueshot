@@ -168,7 +168,9 @@ func _process(_delta: float) -> void:
 			and not container_full
 		):
 			bg.modulate = Color(1.5, 1.5, 1.5, 0.784)
-			im.hovering_valid_container = true
+
+			if im.dragged_item != self:
+				im.hovering_valid_container = true
 		else:
 			bg.modulate = Color(1.0, 1.0, 1.0)
 			im.hovering_valid_container = false
@@ -483,6 +485,7 @@ func _release_item() -> void:
 			if im.hovering_valid_container:
 				position = im.slot_to_pos(prev_slot)
 				return
+
 			await get_tree().process_frame
 			if exists:
 				var equipped_slot: Variant = im.equipped_items.find_key(data)
