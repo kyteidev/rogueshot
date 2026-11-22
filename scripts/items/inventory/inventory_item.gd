@@ -23,7 +23,7 @@ var mouse_dragging := false:
 		update.call_deferred()
 
 var saved_vars := false
-var prev_slot: Vector2
+var prev_slot: Vector2i
 var prev_pos: Vector2
 
 var prev_hovered_item: InventoryItem
@@ -455,14 +455,34 @@ func _release_item() -> void:
 				global_position = prev_pos
 			else:
 				position = im.slot_to_pos(prev_slot)
+		# dragging item to equipment slot
 		elif im.hovered_equipment != "":
+			var occupant: ItemData = im.equipped_items.get(im.hovered_equipment)
+
+			# replacing item in equipment slot with dragged item
+			if occupant != null and occupant != data:
+				im.remove_item(data, false)
+
+				var target_slot: Vector2i
+				if im.can_place(occupant, prev_slot):
+					target_slot = prev_slot
+				else:
+					target_slot = im.find_free_slot(occupant)
+
+				if target_slot == Vector2i(-1, -1):
+					im.place_item(data, prev_pos)
+					return
+
+				im.unequip_item(im.hovered_equipment)
+				im.remove_item(occupant, true)
+				im.place_item(occupant, target_slot)
+				im.new_item_placed.emit(occupant)
 			equip_item()
 		else:
 			# if dragging e.g. mag to equipped weapon
 			if im.hovering_valid_container:
 				position = im.slot_to_pos(prev_slot)
 				return
-
 			await get_tree().process_frame
 			if exists:
 				var equipped_slot: Variant = im.equipped_items.find_key(data)

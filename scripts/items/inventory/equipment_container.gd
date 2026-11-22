@@ -57,7 +57,7 @@ func _process(_delta: float) -> void:
 				if (im.hovered_item.data.type == SLOT_TYPES[child.name]):
 					if not occupant or occupant == im.hovered_item.data:
 						color = HOVERED_COLOR
-						hovered = child.name
+					hovered = child.name
 
 		child.modulate = color
 	im.hovered_equipment = hovered

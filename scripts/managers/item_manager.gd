@@ -163,6 +163,15 @@ func unequip_item(equipment_slot: String) -> void:
 		weapon_unequipped.emit()
 
 
+func find_free_slot(item: ItemData) -> Vector2i:
+	for x in TOTAL_COLUMNS:
+		for y in TOTAL_ROWS:
+			var possible_slot := Vector2i(x, y)
+			if can_place(item, possible_slot):
+				return possible_slot
+	return Vector2i(-1, -1)
+
+
 func reset_inventory() -> void:
 	inventory = { }
 	inventory_items.clear()
