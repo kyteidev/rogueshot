@@ -120,6 +120,10 @@ func _button_functions(button_name: String) -> void:
 			im.context_menu_item.unload_items()
 		"Split":
 			im.context_menu_item.split_stack()
+		"Modify":
+			var inventory: CanvasLayer = get_tree().get_first_node_in_group("unique_inventory")
+			var weapon_info: Control = inventory.get_node("./InventoryContainer/WeaponInfo")
+			weapon_info.show_weapon_info(im.context_menu_item.data)
 		"Drop":
 			im.drop_item(im.context_menu_item.data)
 

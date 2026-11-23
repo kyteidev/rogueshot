@@ -1,0 +1,77 @@
+[gd_scene format=3 uid="uid://by5b6e3tr8m6g"]
+
+[ext_resource type="Texture2D" uid="uid://c7tan25e3y804" path="res://assets/sprites/weapons/guns/rifles/oz2/oz2_base.png" id="1_44hqg"]
+[ext_resource type="Script" uid="uid://fxjfilyyl0ov" path="res://scripts/items/inventory/weapon_info.gd" id="1_mjd5f"]
+[ext_resource type="FontFile" uid="uid://4jxi61jcsc2c" path="res://assets/fonts/groundhog.ttf" id="2_7i3xs"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_44hqg"]
+font = ExtResource("2_7i3xs")
+
+[node name="WeaponInfo" type="Control" unique_id=271876297]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 195.0
+offset_bottom = 200.0
+script = ExtResource("1_mjd5f")
+
+[node name="Background" type="ColorRect" parent="." unique_id=164664957]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.3372549, 0.28627452, 0.43137255, 1)
+
+[node name="WeaponTexture" type="TextureRect" parent="." unique_id=40233208]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -15.5
+offset_top = -72.0
+offset_right = 16.5
+offset_bottom = -56.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(3, 3)
+pivot_offset_ratio = Vector2(0.5, 0.5)
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("1_44hqg")
+stretch_mode = 4
+
+[node name="WeaponNameLabel" type="Label" parent="." unique_id=1562721487]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -48.5
+offset_top = -147.0
+offset_right = 49.5
+offset_bottom = -124.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "lorem ipsum"
+label_settings = SubResource("LabelSettings_44hqg")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Attachments" type="VBoxContainer" parent="." unique_id=1339157685]
+layout_mode = 0
+offset_top = 100.0
+offset_right = 195.0
+offset_bottom = 140.0
+
+[node name="BackButton" type="Button" parent="Attachments" unique_id=1887772970]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "close"
+
+[connection signal="pressed" from="Attachments/BackButton" to="." method="_on_back_button_pressed"]

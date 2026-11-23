@@ -32,6 +32,7 @@ var active_statuses: Array[PlayerStatus] = []
 
 # other states
 var inventory_open := false
+var weapon_info_shown := false
 var ads := false
 
 # misc
