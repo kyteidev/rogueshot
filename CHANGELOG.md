@@ -1,3 +1,80 @@
+v0.1.0-dev.7:
+- added recoil system
+- added item slot preview when dragging inventory item
+- added reactive crosshair
+- added first shot spread multiplier
+- added walking spread multiplier
+- added durability stats to tooltip
+- added durability bar to inventory item
+- added a global rng manager for possible set seed saves
+- added fast reloading
+- added durability to magazines
+- added ability to aim down sights
+- added a red dot to reticle when ADS
+- added a separate max spread for ADS
+- added ADS movement speed multiplier
+- added setting for ADS keybind
+- added setting to disable particles
+- added effective and maximum range for weapons
+- added indicators for when aiming out of effective or maximum range
+- added player status label that shows when magazine is broken
+- added save and load for settings
+- added apply button to options menu
+- added basic sfx
+- added enemy reload animations
+- added audio settings
+- added damage vignette
+- added ability to replace equipped item by dragging another compatible item on top
+- added 5.56 ammo texture
+- added new 9x19mm ammo texture
+- added foundations for weapon attachments
+- added basic suppressor (NOT FUNCTIONAL, JUST AN ITEM)
+- added ability to equip attachments (CANNOT UNEQUIP ATTACHMENTS YET)
+- added a more legible font for tooltip description
+- added modify button to context menu to open weapon info panel
+- added foundations for weapon info panel (CANNOT HIDE WEAPON INFO PANEL WHEN OPENED, HAS TO RESTART GAME TO HIDE IT)
+- fixed walk particles disappearing abruptly
+- fixed crash when showing magazine type tooltip
+- fixed crash when player dies the same frame a shot is fired
+- fixed player status label sometimes not showing
+- fixed inventory item icon size incorrect after rotation
+- fixed mag count incorrect after dropping or picking up magazine
+- fixed item stacking when unloading from container item
+- fixed weapon jam chance calculations
+- fixed inventory not properly reset in reset inventory function
+- fixed player status label having incorrect position set
+- fixed item durability going below zero
+- fixed enemy dropping empty ammo item when out of ammo
+- fixed unload animation playing when no mag is attached
+- fixed item sometimes not being able to be dropped
+- fixed being able to drag inventory item when inventory is hidden
+- fixed crash when switching away weapon on last frame of reload
+- fixed internal mag_attached state not applied immediately after reload
+- fixed weapon magazine reloading system having inconsistent state across different methods of reloading
+- made weapon apply spread on first shot
+- made player status label hide after cancelling a reload
+- made reticle hide while in inventory or pause menu
+- made mag loading times shorter
+- made enemy magazine drops randomize durability
+- made magazine durability affect weapon jamming
+- made player speed less when moving backwards
+- made split button in context menu disabled when there is only one item in stack
+- made durability wear be affected by weapon heat
+- made weapon barrel glow red proportional to its heat
+- made weapon heat affect weapon jam chance
+- made broken mags prevent shooting
+- made walk particles change color based on ground color
+- made enemy weapon use real weapon stats
+- made weapon shoot and eject correct ammo type
+- made 9x19mm ammo icon smaller
+- made damage round to one decimal place accuracy
+- removed max weapon heat cap
+- tweaked walk particle amounts
+- tweaked walk particle gravity
+- tweaked tooltip description font and font size
+- tweaked GL18 and OZ-2 weapon spread and heating rate
+
+
 v0.1.0-dev.6:
 Reloading has been fixed!!!!!
 - added magazine-based reloading :D (huge feature!!!!!)
