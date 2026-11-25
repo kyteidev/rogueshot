@@ -29,9 +29,9 @@ func show_weapon_info(weapon: ItemData) -> void:
 func hide_weapon_info() -> void:
 	sm.weapon_info_shown = false
 
-	visible = true
-	equipment_layout.visible = false
-	equipment_container.visible = false
+	visible = false
+	equipment_layout.visible = true
+	equipment_container.visible = true
 
 
 func _on_back_button_pressed() -> void:
