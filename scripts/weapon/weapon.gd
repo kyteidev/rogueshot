@@ -50,6 +50,8 @@ var weapon_heat_light: PointLight2D = null
 var weapon_mag: Sprite2D
 var mag_orig_pos := Vector2(0.0, 0.0)
 
+var smoke_amount: int
+
 var base_damage: int = 0:
 	set(value):
 		base_damage = value
@@ -136,6 +138,16 @@ var can_play_empty_sfx := true
 var mag_anim_reload_key := true
 var unjamming := false
 
+# attachment equipped status
+# muzzle
+var suppressor_attached := false
+
+# some attachment stats stuff
+var sound_multiplier := 1.0
+var muzzle_flash_multiplier := 1.0
+var smoke_multiplier := 1.0
+var attachment_spread_multiplier := 1.0
+
 # format: weapon_name: { ammo, mags }
 var weapon_state: Dictionary = { }
 
@@ -158,6 +170,8 @@ func _ready() -> void:
 	if om.get_option("particles"):
 		smoke = SMOKE_PARTICLES.instantiate()
 		add_child(smoke)
+
+		smoke_amount = smoke.amount
 
 	# weapon unequipping
 	im.weapon_unequipped.connect(
@@ -229,6 +243,7 @@ func _physics_process(delta: float) -> void:
 	heat = max(heat - cooling_rate * delta, 0.0)
 	if om.get_option("particles"):
 		smoke.emitting = true if heat > 0.0 else false
+		smoke.amount = round(smoke_amount * smoke_multiplier)
 
 		smoke.modulate.a = lerp(
 			smoke.modulate.a,
@@ -364,6 +379,7 @@ func load_mag_anim(reload_key := true) -> void:
 	if not reloading and reload_key or weapon_index == -1:
 		return
 
+	# play gunshot sfx and apply suppressor sound if necessary
 	var weapon: ItemData = im.equipped_weapons[weapon_index]
 	AudioManager.play("weapon_" + weapon.id + "_load", global_position, -9.0)
 
@@ -520,7 +536,7 @@ func _fire_weapon() -> void:
 		get_tree().root.add_child(bullet_instance)
 
 		# muzzle flash
-		muzzle_flash.fire(weapon_muzzle.global_position, global_rotation)
+		muzzle_flash.fire(weapon_muzzle.global_position, global_rotation, muzzle_flash_multiplier)
 
 		# muzzle sparks
 		if om.get_option("particles"):
@@ -593,13 +609,17 @@ func _fire_weapon() -> void:
 		weapon_data.durability -= weapon_data.durability_rate * depletion_mult
 
 		# play sfx
-		AudioManager.play(
-			"weapon_" + weapon_data.id + "_fire",
-			weapon_muzzle.global_position,
-			0.0,
-			0.1,
-			&"Weapon",
-		)
+		var gunshot_sfx: String = "weapon_" + weapon_data.id + "_fire"
+		if suppressor_attached:
+			AudioManager.play(
+				gunshot_sfx,
+				weapon_muzzle.global_position,
+				-4.0,
+				0.1,
+				&"SuppressedWeapon",
+			)
+		else:
+			AudioManager.play(gunshot_sfx, weapon_muzzle.global_position, 0.0, 0.1, &"Weapon")
 	elif ammo == 0 and can_play_empty_sfx:
 		can_play_empty_sfx = false
 		AudioManager.play("weapon_fire_empty", global_position)
@@ -664,8 +684,18 @@ func _equip_weapon(index: int) -> void:
 	else:
 		current_weapon.texture = current_weapon.base_texture
 
-	# set weapon stats
-	var stats: WeaponStats = im.equipped_weapons[index].type_data.weapon_stats
+	_set_weapon_stats()
+
+	can_fire = true
+
+	_set_ammo_mag_data()
+
+
+func _set_weapon_stats() -> void:
+	var weapon_data: ItemData = im.equipped_weapons[weapon_index]
+	var type_data: WeaponData = weapon_data.type_data
+	var stats: WeaponStats = type_data.weapon_stats
+
 	base_damage = stats.damage
 	fire_rate = stats.fire_rate
 	max_ammo = stats.mag_size
@@ -703,9 +733,43 @@ func _equip_weapon(index: int) -> void:
 	speed_multiplier = stats.speed_multiplier
 	ads_speed_multiplier = stats.ads_speed_multiplier
 
-	can_fire = true
+	# reset attachment states
+	suppressor_attached = false
 
-	_set_ammo_mag_data()
+	# reset weapon stats stuff
+	sound_multiplier = 1.0
+	muzzle_flash_multiplier = 1.0
+	smoke_multiplier = 1.0
+	attachment_spread_multiplier = 1.0
+
+	# do stuff for applying attachment stats
+	if type_data.attachments.size() > 0:
+		for attachment: ItemData in type_data.attachments.values():
+			var attachment_data: AttachmentData = attachment.type_data
+			var attachment_stats: AttachmentTypeData = attachment_data.type_data
+			var type := AttachmentData.AttachmentType
+			match attachment_data.type:
+				type.OPTIC:
+					pass
+				type.MUZZLE:
+					sound_multiplier = attachment_stats.sound_multiplier
+					muzzle_flash_multiplier = attachment_stats.muzzle_flash_multiplier
+					smoke_multiplier = attachment_stats.smoke_multiplier
+					attachment_spread_multiplier = attachment_stats.spread_multiplier
+
+					base_damage *= attachment_stats.damage_multiplier
+					effective_range *= attachment_stats.range_multiplier
+					max_range *= attachment_stats.range_multiplier
+
+					# states
+					if attachment_stats is SuppressorData:
+						suppressor_attached = true
+				type.GRIP:
+					pass
+				type.STOCK:
+					pass
+				type.TACTICAL:
+					pass
 
 
 func _set_ammo_mag_data() -> void:

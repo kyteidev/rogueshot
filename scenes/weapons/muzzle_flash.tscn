@@ -12,9 +12,11 @@ material = SubResource("CanvasItemMaterial_nxcxh")
 script = ExtResource("1_iepi1")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=151361744]
+position = Vector2(8, 0)
 texture = ExtResource("2_xoi2e")
 
 [node name="PointLight2D" type="PointLight2D" parent="." unique_id=1860529168]
+position = Vector2(8, 0)
 color = Color(1, 0.6901961, 0.3764706, 1)
 energy = 15.0
 texture = ExtResource("2_xoi2e")

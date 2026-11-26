@@ -74,9 +74,6 @@ func _load_buttons(capabilities: int) -> void:
 			"Unload":
 				if im.context_menu_item.data.container_items.size() == 0:
 					button.disabled = true
-			"Modify":
-				if im.context_menu_item.data.type_data.attachments.size() == 0:
-					button.disabled = true
 
 		button.text = button_text
 
