@@ -1,5 +1,28 @@
 [gd_resource type="AudioBusLayout" format=3 uid="uid://bdpxmm5k7awwo"]
 
+[sub_resource type="AudioEffectLowPassFilter" id="AudioEffectLowPassFilter_52rj0"]
+resource_name = "LowPassFilter"
+cutoff_hz = 2200.0
+
+[sub_resource type="AudioEffectHighPassFilter" id="AudioEffectHighPassFilter_52rj0"]
+resource_name = "HighPassFilter"
+cutoff_hz = 80.0
+
+[sub_resource type="AudioEffectCompressor" id="AudioEffectCompressor_52rj0"]
+resource_name = "Compressor"
+threshold = -20.0
+ratio = 6.0
+attack_us = 200.0
+release_ms = 80.0
+
+[sub_resource type="AudioEffectHardLimiter" id="AudioEffectHardLimiter_52rj0"]
+resource_name = "HardLimiter"
+ceiling_db = -3.0
+
+[sub_resource type="AudioEffectPitchShift" id="AudioEffectPitchShift_52rj0"]
+resource_name = "PitchShift"
+pitch_scale = 1.2
+
 [resource]
 bus/1/name = &"Weapon"
 bus/1/solo = false
@@ -7,3 +30,19 @@ bus/1/mute = false
 bus/1/bypass_fx = false
 bus/1/volume_db = -12.204762
 bus/1/send = &"Master"
+bus/2/name = &"SuppressedWeapon"
+bus/2/solo = false
+bus/2/mute = false
+bus/2/bypass_fx = false
+bus/2/volume_db = 0.0
+bus/2/send = &"Master"
+bus/2/effect/0/effect = SubResource("AudioEffectLowPassFilter_52rj0")
+bus/2/effect/0/enabled = true
+bus/2/effect/1/effect = SubResource("AudioEffectHighPassFilter_52rj0")
+bus/2/effect/1/enabled = true
+bus/2/effect/2/effect = SubResource("AudioEffectCompressor_52rj0")
+bus/2/effect/2/enabled = true
+bus/2/effect/3/effect = SubResource("AudioEffectHardLimiter_52rj0")
+bus/2/effect/3/enabled = true
+bus/2/effect/4/effect = SubResource("AudioEffectPitchShift_52rj0")
+bus/2/effect/4/enabled = true
