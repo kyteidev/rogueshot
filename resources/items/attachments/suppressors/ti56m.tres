@@ -35,5 +35,6 @@ weight = 0.28
 has_durability = true
 durability_rate = 0.05
 item_scale = 1.5
+scale = 0.5
 size = Vector2i(2, 1)
 metadata/_custom_type_script = "uid://coqypqa0006b"
