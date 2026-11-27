@@ -6,6 +6,10 @@
 
 [sub_resource type="Resource" id="Resource_ag4kr"]
 script = ExtResource("3_p41pa")
+variable_zoom = true
+min_magnification = 1.0
+max_magnification = 4.0
+spread_multiplier = 0.88
 metadata/_custom_type_script = "uid://d3m38mtmgxiiw"
 
 [sub_resource type="Resource" id="Resource_q2aab"]
