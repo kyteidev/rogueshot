@@ -10,3 +10,5 @@ extends AttachmentTypeData
 
 @export var spread_multiplier: float
 #@export var range_multiplier: float # maybe implement?
+
+@export var reticle_style: ReticleStyle
