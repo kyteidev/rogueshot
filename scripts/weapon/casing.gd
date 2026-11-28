@@ -59,5 +59,5 @@ func _on_body_entered(_body: Node) -> void:
 	# TODO: do calculations or something to emit a more believable impact sound
 	# currently its just an audio file with set amount of impacts
 	if not collided:
-		AudioManager.play("weapon_bullet_casing_drop", global_position)
+		AudioManager.play("weapon_bullet_casing_drop", global_position, -8.0)
 		collided = true
