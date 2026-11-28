@@ -744,6 +744,9 @@ func _set_weapon_stats() -> void:
 
 
 func _set_attachment_stats() -> void:
+	if weapon_index == -1:
+		return
+
 	var weapon_data: ItemData = im.equipped_weapons[weapon_index]
 	var type_data: WeaponData = weapon_data.type_data
 
