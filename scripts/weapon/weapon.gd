@@ -889,7 +889,7 @@ func _find_fullest_mag(weapon: ItemData) -> ItemData:
 func _restore_mag_sprite(attached: bool) -> void:
 	var sprite: Sprite2D = weapon_node.get_child(0)
 	var mag: Sprite2D = sprite.get_node("./Magazine")
-	sprite.texture = sprite.loaded_texture if attached else sprite.bare_texture
+	sprite.texture = sprite.loaded_texture if attached else sprite.base_texture
 
 	if mag_anim_tween:
 		mag_anim_tween.kill()
