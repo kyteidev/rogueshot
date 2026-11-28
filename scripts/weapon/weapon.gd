@@ -617,7 +617,13 @@ func _fire_weapon() -> void:
 				-4.0,
 				0.1,
 				&"SuppressedWeapon",
+				true,
+				0.12,
+				0.08,
 			)
+
+			# layer empty fire sfx
+			AudioManager.play("weapon_fire_empty", global_position)
 		else:
 			AudioManager.play(gunshot_sfx, weapon_muzzle.global_position, 0.0, 0.1, &"Weapon")
 	elif ammo == 0 and can_play_empty_sfx:

@@ -26,6 +26,9 @@ func play(
 	volume := 0.0,
 	pitch := 0.1,
 	bus := &"",
+	fade := false,
+	keep_time := 0.0,
+	fade_time := 0.0,
 ) -> Variant:
 	if not om.get_option("sfx"):
 		return null
@@ -51,8 +54,17 @@ func play(
 
 	add_child(player)
 	player.play()
-	player.finished.connect(player.queue_free)
-	return player.finished
+
+	if not fade:
+		player.finished.connect(player.queue_free)
+		return player.finished
+	else:
+		var tween := create_tween()
+		tween.tween_interval(keep_time)
+		tween.tween_property(player, "volume_db", -60.0, fade_time) \
+				.set_trans(Tween.TRANS_EXPO).set_ease(Tween.EASE_OUT)
+		tween.finished.connect(player.queue_free)
+		return tween.finished
 
 
 func _load_folder(path: String) -> void:

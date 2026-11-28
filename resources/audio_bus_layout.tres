@@ -1,12 +1,13 @@
 [gd_resource type="AudioBusLayout" format=3 uid="uid://bdpxmm5k7awwo"]
 
-[sub_resource type="AudioEffectLowPassFilter" id="AudioEffectLowPassFilter_52rj0"]
-resource_name = "LowPassFilter"
-cutoff_hz = 2200.0
-
 [sub_resource type="AudioEffectHighPassFilter" id="AudioEffectHighPassFilter_52rj0"]
 resource_name = "HighPassFilter"
-cutoff_hz = 80.0
+cutoff_hz = 90.0
+
+[sub_resource type="AudioEffectLowPassFilter" id="AudioEffectLowPassFilter_52rj0"]
+resource_name = "LowPassFilter"
+cutoff_hz = 1800.0
+resonance = 0.4
 
 [sub_resource type="AudioEffectCompressor" id="AudioEffectCompressor_52rj0"]
 resource_name = "Compressor"
@@ -36,9 +37,9 @@ bus/2/mute = false
 bus/2/bypass_fx = false
 bus/2/volume_db = 0.0
 bus/2/send = &"Master"
-bus/2/effect/0/effect = SubResource("AudioEffectLowPassFilter_52rj0")
+bus/2/effect/0/effect = SubResource("AudioEffectHighPassFilter_52rj0")
 bus/2/effect/0/enabled = true
-bus/2/effect/1/effect = SubResource("AudioEffectHighPassFilter_52rj0")
+bus/2/effect/1/effect = SubResource("AudioEffectLowPassFilter_52rj0")
 bus/2/effect/1/enabled = true
 bus/2/effect/2/effect = SubResource("AudioEffectCompressor_52rj0")
 bus/2/effect/2/enabled = true
