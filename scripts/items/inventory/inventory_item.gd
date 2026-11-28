@@ -46,6 +46,7 @@ var load_time := 0.0
 var unload_time := 0.0
 
 var ammo_sfx_running := false
+var last_highlighted := false
 
 @onready var inventory: CanvasLayer = get_node("../../../")
 @onready var tooltip: PanelContainer = inventory.get_node("./Tooltip")
@@ -410,13 +411,19 @@ func _update_hover_visual() -> void:
 	var hovered: bool = im.hovered_item and im.hovered_item.data == data
 
 	if hovered or _is_valid_drop_target():
-		bg.modulate = Color(1.5, 1.5, 1.5, 0.784)
+		if not last_highlighted:
+			last_highlighted = true
+			bg.modulate = Color(1.5, 1.5, 1.5, 0.784)
 
-		if im.dragged_item != self:
-			im.hovering_valid_container = true
-	else:
+			if im.dragged_item != self:
+				im.hovering_valid_container = true
+				im.drag_target = self
+	elif last_highlighted:
+		last_highlighted = false
 		bg.modulate = Color(1.0, 1.0, 1.0)
-		im.hovering_valid_container = false
+
+		if im.drag_target == self:
+			im.hovering_valid_container = false
 
 
 # for checking compatibility when dragging to container item

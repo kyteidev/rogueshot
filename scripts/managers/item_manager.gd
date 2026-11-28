@@ -44,6 +44,7 @@ var context_menu_open := false
 var dragging_item := false
 var hovered_equipment := ""
 
+var drag_target: InventoryItem
 var hovering_valid_container := false
 
 var sm := StateManager
