@@ -30,6 +30,8 @@ const SMOKE_BASE_ALPHA = 0.8
 const MAG_FADE_DURATION = 0.3
 const MAG_MOVE_AMOUNT = 3.0
 
+const ATTACHMENT_DURA_THRESHOLD = 50.0 # durability when attachment stats start to have less effect
+
 var sm := StateManager
 var im := ItemManager
 var om := OptionsManager
@@ -611,6 +613,12 @@ func _fire_weapon() -> void:
 		var depletion_mult: float = lerp(1.0, MAX_HEAT_DURA_MULT, heat_weight)
 		weapon_data.durability -= weapon_data.durability_rate * depletion_mult
 
+		# deplete attachment durability and reapply mults
+		for attachment: ItemData in weapon_data.type_data.attachments.values():
+			if attachment.has_durability:
+				attachment.durability -= attachment.durability_rate
+		_set_attachment_stats()
+
 		# play sfx
 		var gunshot_sfx: String = "weapon_" + weapon_data.id + "_fire"
 		if suppressor_attached:
@@ -771,14 +779,35 @@ func _set_attachment_stats() -> void:
 				type.OPTIC:
 					pass
 				type.MUZZLE:
-					sound_multiplier = attachment_stats.sound_multiplier
-					muzzle_flash_multiplier = attachment_stats.muzzle_flash_multiplier
-					smoke_multiplier = attachment_stats.smoke_multiplier
-					attachment_spread_multiplier = attachment_stats.spread_multiplier
+					sound_multiplier = _set_attachment_stat_with_mult(
+						attachment,
+						attachment_stats.sound_multiplier,
+					)
+					muzzle_flash_multiplier = _set_attachment_stat_with_mult(
+						attachment,
+						attachment_stats.muzzle_flash_multiplier,
+					)
+					smoke_multiplier = _set_attachment_stat_with_mult(
+						attachment,
+						attachment_stats.smoke_multiplier,
+					)
+					attachment_spread_multiplier = _set_attachment_stat_with_mult(
+						attachment,
+						attachment_stats.spread_multiplier,
+					)
 
-					base_damage *= attachment_stats.damage_multiplier
-					effective_range *= attachment_stats.range_multiplier
-					max_range *= attachment_stats.range_multiplier
+					base_damage *= _set_attachment_stat_with_mult(
+						attachment,
+						attachment_stats.damage_multiplier,
+					)
+					effective_range *= _set_attachment_stat_with_mult(
+						attachment,
+						attachment_stats.range_multiplier,
+					)
+					max_range *= _set_attachment_stat_with_mult(
+						attachment,
+						attachment_stats.range_multiplier,
+					)
 
 					# states
 					if attachment_stats is SuppressorData:
@@ -898,3 +927,8 @@ func _start_unjam(weapon: ItemData) -> void:
 			status_label.hide_status_label(),
 		CONNECT_ONE_SHOT,
 	)
+
+
+func _set_attachment_stat_with_mult(attachment: ItemData, base_mult: float) -> float:
+	var weight: float = clamp(attachment.durability / ATTACHMENT_DURA_THRESHOLD, 0.0, 1.0) ** 3.0
+	return lerp(1.0, base_mult, weight)
