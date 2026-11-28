@@ -54,7 +54,7 @@ var mag_orig_pos := Vector2(0.0, 0.0)
 
 var smoke_amount: int
 
-var base_damage: int = 0:
+var base_damage: float = 0:
 	set(value):
 		base_damage = value
 		sm.damage = value

@@ -1,7 +1,7 @@
 class_name WeaponStats
 extends Resource
 
-@export var damage: int
+@export var damage: float
 ## Fire rate in seconds. 0.0 is semi-auto
 @export var fire_rate: float
 @export var mag_size: int

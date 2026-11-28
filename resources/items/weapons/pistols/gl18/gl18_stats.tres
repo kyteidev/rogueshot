@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource("1_fnqhm")
-damage = 25
+damage = 25.0
 mag_size = 13
 reload_time = 0.9
 ads_time = 0.11

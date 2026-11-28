@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource("1_e3gcx")
-damage = 15
+damage = 15.0
 fire_rate = 0.1
 mag_size = 25
 reload_time = 2.6
