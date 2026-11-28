@@ -12,6 +12,10 @@ signal item_dropped
 
 @warning_ignore("unused_signal")
 signal mag_loaded # only used when dragging mag to weapon in inventory
+@warning_ignore("unused_signal")
+signal attachment_loaded
+@warning_ignore("unused_signal")
+signal attachment_unloaded
 
 const SLOT_SIZE = 24
 const TOTAL_SLOTS = 44

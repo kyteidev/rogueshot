@@ -192,6 +192,9 @@ func _ready() -> void:
 			_schedule_load_mag_anim(reload_time / 2 - MAG_FADE_DURATION, false),
 	)
 
+	# attachment loading and unloading
+	im.attachment_loaded.connect(_set_attachment_stats)
+
 
 func _physics_process(delta: float) -> void:
 	if (
@@ -738,6 +741,11 @@ func _set_weapon_stats() -> void:
 
 	speed_multiplier = stats.speed_multiplier
 	ads_speed_multiplier = stats.ads_speed_multiplier
+
+
+func _set_attachment_stats() -> void:
+	var weapon_data: ItemData = im.equipped_weapons[weapon_index]
+	var type_data: WeaponData = weapon_data.type_data
 
 	# reset attachment states
 	suppressor_attached = false

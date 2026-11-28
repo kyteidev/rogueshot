@@ -399,6 +399,7 @@ func _item_drag_to_self() -> void:
 		data.container_weight += dragged_data.weight
 
 		im.remove_item(dragged_data)
+		im.attachment_loaded.emit()
 
 	# stacking items logic
 	elif data.id == im.dragged_item.data.id:
