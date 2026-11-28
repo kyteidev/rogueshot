@@ -617,16 +617,16 @@ func _fire_weapon() -> void:
 			AudioManager.play(
 				gunshot_sfx,
 				weapon_muzzle.global_position,
-				-4.0,
+				4.0,
 				0.1,
 				&"SuppressedWeapon",
 				true,
-				0.12,
-				0.08,
+				0.06,
+				1.8,
 			)
 
 			# layer empty fire sfx
-			AudioManager.play("weapon_fire_empty", global_position)
+			AudioManager.play("weapon_fire_empty", global_position, 2.0)
 		else:
 			AudioManager.play(gunshot_sfx, weapon_muzzle.global_position, 0.0, 0.1, &"Weapon")
 	elif ammo == 0 and can_play_empty_sfx:
@@ -741,6 +741,8 @@ func _set_weapon_stats() -> void:
 
 	speed_multiplier = stats.speed_multiplier
 	ads_speed_multiplier = stats.ads_speed_multiplier
+
+	_set_attachment_stats()
 
 
 func _set_attachment_stats() -> void:

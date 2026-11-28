@@ -62,7 +62,7 @@ func play(
 		var tween := create_tween()
 		tween.tween_interval(keep_time)
 		tween.tween_property(player, "volume_db", -60.0, fade_time) \
-				.set_trans(Tween.TRANS_EXPO).set_ease(Tween.EASE_OUT)
+				.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 		tween.finished.connect(player.queue_free)
 		return tween.finished
 
