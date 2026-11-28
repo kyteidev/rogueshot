@@ -348,8 +348,10 @@ func _load_item(loaded_item: InventoryItem) -> void:
 	sm.update_inventory_weight()
 
 	if item_data.type == ItemData.ItemType.MAGAZINE:
-		# if weapon is equipped, then the load mag anim function will play the sound
-		if not _is_equipped_weapon():
+		if _is_equipped_weapon():
+			im.mag_loaded.emit()
+		else:
+			# if weapon is equipped, then the load mag anim function will play the sound
 			AudioManager.play("weapon_" + item_data.id.trim_suffix("_mag") + "_load", null, -9.0)
 
 		item_data.durability -= item_data.durability_rate
@@ -385,10 +387,6 @@ func _item_drag_to_self() -> void:
 
 			load_item = loaded_item
 			loaded_item.overlay.visible = true
-
-			# mags always have load time
-			if (_is_equipped_weapon() and loaded_item.data.type == ItemData.ItemType.MAGAZINE):
-				im.mag_loaded.emit()
 		else:
 			_load_item(loaded_item)
 

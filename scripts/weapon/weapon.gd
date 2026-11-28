@@ -191,7 +191,7 @@ func _ready() -> void:
 	# gets called immediately when mag is dragged to weapon
 	im.mag_loaded.connect(
 		func() -> void:
-			_schedule_load_mag_anim(reload_time / 2 - MAG_FADE_DURATION, false),
+			load_mag_anim(false),
 	)
 
 	# attachment loading and unloading
@@ -703,10 +703,9 @@ func _equip_weapon(index: int) -> void:
 		current_weapon.texture = current_weapon.base_texture
 
 	_set_weapon_stats()
+	_set_ammo_mag_data()
 
 	can_fire = true
-
-	_set_ammo_mag_data()
 
 
 func _set_weapon_stats() -> void:
@@ -886,6 +885,7 @@ func _find_fullest_mag(weapon: ItemData) -> ItemData:
 	return fullest_mag
 
 
+# after a reload etc.
 func _restore_mag_sprite(attached: bool) -> void:
 	var sprite: Sprite2D = weapon_node.get_child(0)
 	var mag: Sprite2D = sprite.get_node("./Magazine")
