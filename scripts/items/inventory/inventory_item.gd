@@ -268,7 +268,8 @@ func unload_items() -> void:
 
 	# show unload animation if its a magazine
 	if _is_equipped_weapon() and unload_item.type == ItemData.ItemType.MAGAZINE:
-		var weapon: Sprite2D = get_tree().get_first_node_in_group("unique_weapon")
+		print(get_tree().get_nodes_in_group("unique_weapon"))
+		var weapon: Node2D = get_tree().get_first_node_in_group("unique_weapon")
 		weapon.unload_mag_anim(false)
 
 
