@@ -449,6 +449,7 @@ func get_spread_multiplier() -> float:
 	var mult := 1.0
 	mult *= lerp(1.0, MAX_STAMINA_SPREAD_MULTIPLIER, stamina_weight)
 	mult *= lerp(1.0, MAX_DURA_SPREAD_MULTIPLIER, durability_weight)
+	mult *= attachment_spread_multiplier
 	return mult
 
 
